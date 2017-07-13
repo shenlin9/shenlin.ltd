@@ -5,7 +5,7 @@
 # Site
 title: bitbite's blog
 subtitle: 2b or not 2b, that is a question
-description:
+description: just a programmer's blog
 author: bitbite
 language:
 timezone:
@@ -72,11 +72,11 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: hueman
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy: 
   type: git
-  repo: git@github.com:bitbiteme/bitbiteme.github.io.git
-  branch: master
+  repo: git@github.com:shenlin9/shenlin9.github.io.git
+  branch: gh-pages
