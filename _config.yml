@@ -3,11 +3,11 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: bitbite's blog
+title: shenlin's blog
 subtitle: 2b or not 2b, that is a question
 description: just a programmer's blog
-author: bitbite
-language:
+author: shenlin
+language: zh_cn
 timezone:
 
 # URL
