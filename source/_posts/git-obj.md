@@ -1,8 +1,6 @@
-
-# git 对象
-
-标签（空格分隔）： AAA git 
-
+---
+title: git 对象
+tags: git 
 ---
 
 ## git 对象类型
