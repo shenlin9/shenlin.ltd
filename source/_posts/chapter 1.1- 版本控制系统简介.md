@@ -1,0 +1,72 @@
+﻿# chapter 1.1: 版本控制系统简介
+
+标签（空格分隔）： AAA Book-ProGit git 
+
+---
+
+### 版本控制系统
+
+是一种记录一个或若干文件内容变化，以便将来查阅特定版本修订情况的系统。
+
+### 本地版本控制系统 
+
+![DVCS](https://git-scm.com/book/en/v2/images/local.png)
+
+本地版本控制系统，大多都是采用某种简单的数据库来记录文件的历次更新差异。
+
+最流行的是RCS，工作原理是在硬盘上保存补丁集（补丁是指文件修订前后的变化）；通过应用所有的补丁，可以重新计算出各个版本的文件内容。
+
+* 缺点：
+无法让不同系统上的开发者系统工作
+整个项目的历史记录被保存在单一位置，就有丢失所有历史更新记录的风险。
+
+### 集中化的版本控制系统
+
+![DVCS](https://git-scm.com/book/en/v2/images/centralized.png)
+
+Centralized Version Control Systems，简称 CVCS
+
+可以让不同系统上的开发者协同工作，诸如 CVS、Subversion 以及 Perforce 等，都有一个单一的集中管理的服务器，保存所有文件的修订版本，而协同工作的人们都通过客户端连到这台服务器，取出最新的文件或者提交更新。
+
+* 优点：
+
+每个人都可以在一定程度上看到项目中的其他人正在做些什么。
+管理员可以轻松掌控每个开发者的权限
+管理一个 CVCS 要远比在各个客户端上维护本地数据库来得轻松容易
+
+* 缺点：
+
+中央服务器的单点故障。
+如果宕机一小时，那么在这一小时内，谁都无法提交更新，也就无法协同工作。
+如果中心数据库所在的磁盘发生损坏，又没有做恰当备份，毫无疑问你将丢失所有数据——包括项目的整个变更历史，只剩下人们在各自机器上保留的单独快照。
+
+### 分布式版本控制系统
+
+![DVCS](https://git-scm.com/book/en/v2/images/distributed.png)
+
+Distributed Version Control System，简称 DVCS
+
+这类系统中，像 Git、Mercurial、Bazaar 以及 Darcs 等，客户端并不只提取最新版本的文件快照，而是把代码仓库完整地镜像下来。
+
+优点：
+
+任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。 因为每一次的克隆操作，实际上都是一次对代码仓库的完整备份。
+
+许多这类系统都可以指定和若干不同的远端代码仓库进行交互。籍此，你就可以在同一个项目中，分别和不同工作小组的人相互协作。
+
+你可以根据需要设定不同的协作流程，比如层次模型式的工作流，而这在以前的集中式系统中是无法实现的。
+
+
+9.2 Why is GnuPG warning me about using insecure memory?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  GnuPG tries to lock memory so that no other process can see it and so
+  that the memory will not be written to swap.  If for some reason it’s
+  not able to do this (for instance, certain platforms don’t support
+  this kind of memory locking), GnuPG will warn you that it’s using
+  insecure memory.
+
+  While it’s almost always better to use secure memory, it’s not
+  necessarily a bad thing to use insecure memory.  If you own the
+  machine and you’re confident it’s not harboring malware, then this
+  warning can probably be ignored.

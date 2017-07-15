@@ -79,4 +79,4 @@ theme: next
 deploy: 
   type: git
   repo: git@github.com:shenlin9/shenlin9.github.io.git
-  branch: gh-pages
+  branch: master
