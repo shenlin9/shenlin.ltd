@@ -50,7 +50,7 @@ $ npm install hexo-deployer-rsync --save
       message: [message]
 
 * YAML依靠缩进来确定元素间的从属关系。因此，请确保每个同级元素的缩进长度相同，并且使用空格缩进。
-* message	自定义提交信息 (默认为 Site updated: {{ now('YYYY-MM-DD HH:mm:ss') }})
+* message	自定义提交信息，默认为 `Site updated: { { now('YYYY-MM-DD HH:mm:ss') }}`
 
 ### 安装 hexo-server
 
@@ -110,7 +110,7 @@ $ cd <BlogFolder>
 $ npm install
 npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@^1.0.0 (node_modules\chokidar\node_modules\fsevents):
 
-npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.1.2: wanted {"os":"darwin","arch":"any"} (current: {"os":"win32","arch":"ia32"})
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.1.2: wanted `{"os":"darwin","arch":"any"}` (current: `{"os":"win32","arch":"ia32"}`)
 ```
 
 ## 布局 Layout
@@ -368,3 +368,15 @@ $ git clone https://github.com/ppoffice/hexo-theme-hueman.git themes/hueman
 theme: hueman
 ```
 * theme/hueman 下的配置文件原名是 _config.yml.example 改名为 _config.yml
+
+## Q&A
+
+1. Template render error
+```
+$ hexo g
+INFO  Start processing
+FATAL Something's wrong. Maybe you can find the solution here: http://hexo.io/docs/troubleshooting.html
+Template render error: (unknown path) [Line 13, Column 46]
+```
+
+hexo转义时候发生的错误，文章中可能出现了连续两个`{`或一个`{`后紧跟一个`%`，用反引号转义也不行，可以在`{`后加一个空格，即`{ {}}`，`{ %%}`。
