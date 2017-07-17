@@ -67,7 +67,6 @@ $ cnpm install [name]
 
 ### 初始化站点目录
 
-初始化博客目录
 ```
 $ hexo init <BlogFolder>
 ```
@@ -91,10 +90,13 @@ $ hexo init <BlogFolder>
 |public|存放生成的页面|
 |themes|主题 文件夹。<br/>Hexo 会根据主题来生成静态页面。|
 |db.json|从 source 解析得到的缓存文件|
-|node_modules|是依赖包|
+|node_modules|hexo 插件|
 
 
-???这里目前看不懂，还有两个错误
+### 安装 hexo 插件
+
+??? 这一步貌似可以不执行，git init 时已经安装过依赖包了
+
 ```
 $ cd <BlogFolder>
 
@@ -103,6 +105,8 @@ npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@^1.0.0 (node_modules\ch
 
 npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.1.2: wanted `{"os":"darwin","arch":"any"}` (current: `{"os":"win32","arch":"ia32"}`)
 ```
+* 在包目录中安装时无需指定参数
+* 警告提示 `Unsupported platform` 是因为 fsevents 是用于 OS X 系统的，在 windowns 或 linux 下使用就有警告，忽略即可，或者加上 `--no-optional` 参数
 
 ### 创建其他目录 
 
@@ -172,6 +176,7 @@ $ hexo s
 
 * YAML依靠缩进来确定元素间的从属关系。因此，请确保每个同级元素的缩进长度相同，并且使用空格缩进。
 * message	自定义提交信息，默认为 `Site updated: { { now('YYYY-MM-DD HH:mm:ss') }}`
+* 使用的时间脚本是：[Moment.js](http://momentjs.com/) 
 
 ### 远程部署
 
@@ -196,6 +201,15 @@ $ git clone https://github.com/ppoffice/hexo-theme-hueman.git themes/hueman
 theme: hueman
 ```
 * theme/hueman 下的`主题配置文件`原名是 _config.yml.example 改名为 _config.yml
+
+## 站点地图
+
+http://www.jianshu.com/p/ab44b916a8b6
+
+## 评论系统
+
+http://www.uyan.cc/
+http://www.jianshu.com/p/4729e92fddbe
 
 ## 更多配置
 

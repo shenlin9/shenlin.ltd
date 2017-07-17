@@ -1,7 +1,10 @@
-﻿# vim 基本操作
-title: vim 基本操作
-categories: vim
-tags: AAA vim
+﻿# Vim 基本操作
+标签: AAA vim
+
+title: Vim 基本操作
+categories: Vim
+tags: Vim
+
 ---
 
 buffer操作

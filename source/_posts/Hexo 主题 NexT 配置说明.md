@@ -15,7 +15,7 @@ Hexo 有两份主要的配置文件，名称都是 _config.yml。一份位于站
 <!-- more -->
 为了描述方便，在以下说明中，将前者称为`站点配置文件`， 后者称为 `主题配置文件`。
 
-## 安装
+## 安装主题
 
 安装最新版本
 ```
@@ -48,6 +48,22 @@ $ hexo s --debug
 ```
 * 开启 hexo 服务器的调试模式，查看输出是否有错误异常信息
 * 无异常则可以使用 http://localhost:4000/ 访问
+
+## 更改宽度
+
+NexT 对于内容的宽度的设定如下：
+* 700px，当屏幕宽度 < 1600px
+* 900px，当屏幕宽度 >= 1600px
+* 移动设备下，宽度自适应
+
+编辑文件：`source/css/_variables/custom.styl`
+```
+// 当屏幕宽度小于 1600px 
+$content-desktop = 700px
+
+// 当屏幕宽度大于 1600px
+$content-desktop-large = 900px
+```
 
 ## 主题设置
 
@@ -233,18 +249,3 @@ NexT 使用 [Tomorrow Theme](https://github.com/chriskempson/tomorrow-theme) 作
           length: 150
     默认截取的长度为 150 字符
     
-### 更改宽度
-
-NexT 对于内容的宽度的设定如下：
-* 700px，当屏幕宽度 < 1600px
-* 900px，当屏幕宽度 >= 1600px
-* 移动设备下，宽度自适应
-
-编辑文件：`source/css/_variables/custom.styl`
-```
-// 当屏幕宽度小于 1600px 
-$content-desktop = 700px
-
-// 当屏幕宽度大于 1600px
-$content-desktop-large = 900px
-```
