@@ -1,7 +1,11 @@
 ﻿# vim 安装插件管理器 vundle
-
-Tags ：AAA vim vundle 
-
+标签: AAA vim vundle
+title: vim 安装插件管理器 vundle
+categories:
+  - vim
+tags:
+  - vim
+  - vundle
 ---
 
 vundle 表示 vim bundle，是一个 vim 的插件管理器
@@ -22,7 +26,7 @@ $ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 ```
 
 打开配置文件
-```
+````
 //windows
 gvim $VIM\_vimrc
 
@@ -48,7 +52,6 @@ Plugin 'iamcco/mathjax-support-for-mkdp'
 Plugin 'iamcco/markdown-preview.vim'
 
 call vundle#end()
-
 filetype plugin indent on
 ```
 * 所有插件必须写在`call vundle#begin()`和`call vundle#end()`之间
@@ -58,5 +61,19 @@ filetype plugin indent on
 
 重新载入配置文件，查看插件列表
 ```
+:so $VIM\_vimrc
+
+:PluginList
 ```
 
+安装插件
+```
+:PluginInstall
+```
+
+安装配色方案
+```
+Plugin 'desert-warm-256'
+colorscheme desert-warm
+```
+https://github.com/VundleVim/Vundle.vim/issues/119

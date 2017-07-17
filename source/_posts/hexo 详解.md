@@ -1,17 +1,19 @@
 ﻿# Hexo 详解
+标签: AAA Hexo
+
 title: Hexo 详解
-categories: 
-- hexo
-tags: AAA git github hexo
+categories: Hexo
+tags: Hexo
+
 ---
 
-## 简介
+Hexo 是一个简洁高效的静态站点生成框架，可以基于 Markdown 文件生成纯静态博客。
 
-Hexo 是一个简洁高效的博客框架，可以基于 Markdown 文件生成纯静态博客。
+<!-- more -->
 
-## 安装
+## 安装软件
 
-hexo 依赖于 Git 和 Node.js，需先安装这两个软件包。
+hexo 依赖于 Git 和 Node.js，需先安装这两个软件包，安装过程省略。
 
 ### 安装 hexo
 
@@ -39,19 +41,6 @@ $ npm install hexo-deployer-heroku --save
 $ npm install hexo-deployer-rsync --save
 ```
 
-### 修改 deploy 配置
-
-需配合 _config.yml 文件增加配置，不同的 deployer 配置不同，git 库的配置修改如下：
-
-    deploy:
-      type: git
-      repo: <repository url>
-      branch: [branch]
-      message: [message]
-
-* YAML依靠缩进来确定元素间的从属关系。因此，请确保每个同级元素的缩进长度相同，并且使用空格缩进。
-* message	自定义提交信息，默认为 `Site updated: { { now('YYYY-MM-DD HH:mm:ss') }}`
-
 ### 安装 hexo-server
 
 Hexo 3.0 把服务器独立成了模块，必须先安装 hexo-server 才能使用。
@@ -74,7 +63,9 @@ $ npm install -g cnpm --registry=https://registry.npm.taobao.org
 $ cnpm install [name]
 ```
 
-## 建站
+## 创建目录
+
+### 初始化站点目录
 
 初始化博客目录
 ```
@@ -94,13 +85,13 @@ $ hexo init <BlogFolder>
 |文件夹|保存内容|
 |---|---|
 |package.json|应用程序和已安装模块的版本信息。EJS, Stylus 和 Markdown renderer 已默认安装|
-|_config.yml|网站配置|
-|node_modules|是依赖包|
+|_config.yml|站点配置文件，每个主题也有对应得到主题配置文件，位于 themes/theme_name 目录下|
 |scaffolds|模版 文件夹。<br/>新建文章时，Hexo 会根据 scaffold 来建立文件。|
-|source|资源文件夹是存放用户资源的地方。<br/>除 _posts 文件夹之外，以下划线 _ 开头命名的文件或文件夹和隐藏的文件将会被忽略。<br/>Markdown 和 HTML 文件会被解析并放到 public 文件夹，而其他文件会被拷贝过去。|
-|themes|主题 文件夹。<br/>Hexo 会根据主题来生成静态页面。|
-|db.json|source解析所得到的|
+|source|资源文件夹是存放用户资源的地方。<br/><br/><b>_posts 目录里存放的就是用户的文章，Hexo 会根据这里的文章生成静态网页，Markdown 和 HTML 文件会被解析并放到 public 文件夹，而其他文件会被拷贝过去。</b><br/><br/>_drafts 目录存放的是草稿文件。<br/><br/>除 _posts 文件夹之外，以下划线 _ 开头命名的文件或文件夹和隐藏的文件将会被忽略。|
 |public|存放生成的页面|
+|themes|主题 文件夹。<br/>Hexo 会根据主题来生成静态页面。|
+|db.json|从 source 解析得到的缓存文件|
+|node_modules|是依赖包|
 
 
 ???这里目前看不懂，还有两个错误
@@ -113,7 +104,92 @@ npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@^1.0.0 (node_modules\ch
 npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.1.2: wanted `{"os":"darwin","arch":"any"}` (current: `{"os":"win32","arch":"ia32"}`)
 ```
 
-## 布局 Layout
+### 创建其他目录 
+
+常用目录还包括 tags, categories, archives，需要手动创建
+
+下面命令会自动创建 tags 目录 和 index.md 文件
+```
+$ hexo new page tags
+INFO  Created: D:\git\shenlin.ltd\source\tags\index.md
+```
+
+编辑 index.md，在最后一行 --- 上面加上这行
+```
+type: "tags"
+```
+* 这步是必须的，否则 index.md 就是个普通文件
+
+相同的步骤创建 categories 和 archives
+```
+$ hexo new page categories
+INFO  Created: D:\git\shenlin.ltd\source\categories\index.md
+
+$ vim source/categories/index.md
+type: "categories"
+
+$ hexo new page archives
+INFO  Created: D:\git\shenlin.ltd\source\archives\index.md
+
+$ vim source/archives/index.md
+type: "archives"
+```
+
+## 本地运行
+
+经过上面的步骤，所需软件包已全部安装，目录也生成了，hexo 默认有篇名为 hello-world.md 位于 source/_posts 目录下，可以运行看效果了：
+
+```
+//生成静态文件
+$ hexo g
+
+//启动内置服务器
+$ hexo s
+```
+浏览 http://localhost:4000 就可以看到效果
+
+## 远程部署
+
+### 修改配置
+
+修改 _config.yml 配置，不同的 deployer 配置不同，git 库的配置修改如下：
+
+    deploy:
+      type: git
+      repo: <repository url>
+      branch: [branch]
+      message: [message]
+
+* YAML依靠缩进来确定元素间的从属关系。因此，请确保每个同级元素的缩进长度相同，并且使用空格缩进。
+* message	自定义提交信息，默认为 `Site updated: { { now('YYYY-MM-DD HH:mm:ss') }}`
+
+### 远程部署
+
+//部署到远程服务器如 github
+```
+$ hexo d
+```
+
+可以使用远程地址查看效果，如 http://username.github.io/project_name
+
+## 更换主题
+
+浏览并找到喜欢的 theme ：https://hexo.io/themes/
+
+git clone 到本地
+```
+$ git clone https://github.com/ppoffice/hexo-theme-hueman.git themes/hueman
+```
+
+修改根目录下的`站点配置文件` _config.yml
+```
+theme: hueman
+```
+* theme/hueman 下的`主题配置文件`原名是 _config.yml.example 改名为 _config.yml
+
+## 更多配置
+
+### 布局 Layout
 
 Hexo 有三种默认布局，使用不同布局的文章默认保存的位置也不同：
 
@@ -125,7 +201,7 @@ Hexo 有三种默认布局，使用不同布局的文章默认保存的位置也
 |自定义|source/_posts|
 |false|文章将不被处理|
 
-## 模板 Scaffold
+### 模板 Scaffold
 
 使用 Scaffold 目录的 phpto 模板建立文件
 ```
@@ -133,7 +209,7 @@ $ hexo new photo "My Gallery"
 ```
 * 模板中仅可使用下列变量：layout, title, date
 
-## Front-matter
+### Front-matter
 
 文件最上方以 --- 分割的区域，用于定义当前文件的参数，可用参数：
 
@@ -166,7 +242,7 @@ $ hexo new photo "My Gallery"
         ;;;
 * 如果不想文章被处理，可以将 Front-Matter 中的 layout: 设为 false 。
 
-## Asset 文件夹
+### Asset 文件夹
 
 资源（Asset）代表 source 文件夹中除了文章以外的所有文件，例如图片、CSS、JS 文件等。
 
@@ -182,9 +258,11 @@ post_asset_folder: true
 ```
 上述命令启用了 Asset 文件夹，Hexo 将会在你每一次通过`hexo new [layout] <title>`命令创建新文章时自动创建一个文件夹。这个资源文件夹将会有与这个 markdown 文件一样的名字。将所有与你的文章有关的资源放在这个关联文件夹中之后，你可以通过相对路径来引用它们，这样你就得到了一个更简单而且方便得多的工作流。
 
-## 配置
+### _config.yml 配置
 
 _config.yml 使用 YAML 语言
+
+#### YAML
 
 YAML: YAML Ain't Markup Language
 
@@ -199,6 +277,9 @@ YAML依靠缩进来确定元素间的从属关系。因此，请确保每个同�
 
 _config.yml 文件中所有冒号后面的空格，格式很严格，必须是只有一个半角空格。不管是多了还是少了都会报错，这是 yml 解释器所定义的语法，并且不能使用Tab。
 
+一些人显而易见的配置项如 title, author 等未在下面列出。
+
+#### 配置列表
 
 |配置项|含义|
 |---|---|
@@ -250,7 +331,7 @@ deploy:
 ```
 
 
-## 命令
+## 更多命令
 
 新建网站
 ```
@@ -354,22 +435,7 @@ $ hexo migrate <type>
 |调试模式<br/>`$ hexo --debug`|在终端中显示调试信息并记录到 debug.log。当您碰到问题时，可以尝试用调试模式重新执行一次，并 提交调试信息到 GitHub。|
 |简洁模式<br/>`$ hexo --silent`|隐藏终端信息|
 
-## 更改 theme
-
-浏览并找到喜欢的 theme ：https://hexo.io/themes/
-
-clone 到本地
-```
-$ git clone https://github.com/ppoffice/hexo-theme-hueman.git themes/hueman
-```
-
-修改配置文件 _config.yml
-```
-theme: hueman
-```
-* theme/hueman 下的配置文件原名是 _config.yml.example 改名为 _config.yml
-
-## Q&A
+## Q&amp;A
 
 1. Template render error
 ```
@@ -379,4 +445,4 @@ FATAL Something's wrong. Maybe you can find the solution here: http://hexo.io/do
 Template render error: (unknown path) [Line 13, Column 46]
 ```
 
-hexo转义时候发生的错误，文章中可能出现了连续两个`{`或一个`{`后紧跟一个`%`，用反引号转义也不行，可以在`{`后加一个空格，即`{ {}}`，`{ %%}`。
+hexo转义时候发生的错误，文章中可能出现了连续两个`{`或一个`{`后紧跟一个`%`，经测试用反引号转义也不行，在`{`后加一个空格通过，即写成`{ {}}`，`{ %%}`的样式。

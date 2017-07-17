@@ -4,7 +4,6 @@ categories: vim
 tags: AAA vim
 ---
 
-
 buffer操作
 
     :ls     查看当前已打开的buffer
@@ -18,3 +17,14 @@ buffer操作
     ctrl+o 
     ctrl+i
 
+查看当前scheme
+
+    :colorscheme
+
+查看已安装的scheme
+
+    :colorscheme <Tab>
+    
+* 注意有个空格和 Tab
+* 可以通过按 Tab 在 scheme 之间切换
+    
