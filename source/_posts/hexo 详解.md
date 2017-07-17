@@ -106,19 +106,25 @@ npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@
 
 ### 创建其他目录 
 
-常用目录还包括 tags, categories, archives，需要手动创建
+常用目录还包括 tags、categories、archives、about 需要手动创建
 
-下面命令会自动创建 tags 目录 和 index.md 文件
+新建页面，命名为 tags
 ```
 $ hexo new page tags
 INFO  Created: D:\git\shenlin.ltd\source\tags\index.md
 ```
+* 其实是自动创建了 tags 目录 和 tags/index.md 文件
 
-编辑 index.md，在最后一行 --- 上面加上这行
+更改文件类型
 ```
+//编辑 index.md
+$ vi tags/index.md
+
+//在最后一行 --- 上面加上这行
 type: "tags"
 ```
-* 这步是必须的，否则 index.md 就是个普通文件
+* 这步是必须的，否则 index.md 就是个普通文件，但 about/index.md 不需要
+* hexo 将自动为标签页面创建标签云
 
 相同的步骤创建 categories 和 archives
 ```
@@ -133,7 +139,11 @@ INFO  Created: D:\git\shenlin.ltd\source\archives\index.md
 
 $ vim source/archives/index.md
 type: "archives"
+
+$ hexo new page about
+INFO  Created: D:\git\shenlin.ltd\source\about\index.md
 ```
+* about 页面无需增加 `type: "about"` 这行
 
 ## 本地运行
 
