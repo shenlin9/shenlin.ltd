@@ -1,18 +1,22 @@
 ﻿# vim 安装插件管理器 vundle
-标签: AAA vim vundle
-title: vim 安装插件管理器 vundle
+标签: AAA Vim Vundle
+
+title: Vim 安装插件管理器 Vundle
 categories:
-  - vim
+  - Vim
+  - Vundle
 tags:
-  - vim
-  - vundle
+  - Vim
+  - Vundle
 ---
 
 vundle 表示 vim bundle，是一个 vim 的插件管理器
 
 vundle 依赖于 git 和 curl，需要先安装它们，并且把他们的路径加入环境变量 PATH
 ```
-C:\Program Files\Git\bin;C:\Program Files\Git\mingw32\bin;C:\Program Files\Git\mingw32\libexec\git-core;
+C:\Program Files\Git\bin;
+C:\Program Files\Git\mingw32\bin;
+C:\Program Files\Git\mingw32\libexec\git-core;
 ```
 
 使用 git 把 vundle 库克隆到目标文件夹

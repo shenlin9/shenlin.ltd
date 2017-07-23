@@ -465,7 +465,7 @@ Submodule work tree 'themes/next' contains a .git directory
 (use 'rm -rf' if you really want to remove it including all of its history)
 ```
 https://stackoverflow.com/questions/23271424/issue-with-removing-a-git-submodule
-貌似要先移除或改名子模块文件夹，然后再deinit
+貌似要先移除或改名子模块文件夹，然后再 deinit
 
 https://stackoverflow.com/questions/1260748/how-do-i-remove-a-submodule
 
@@ -476,12 +476,23 @@ https://stackoverflow.com/questions/16160993/moving-a-git-working-copy-containin
 git subtree？
 
 
+下面这个网址是关于 `core.worktree`
+
+https://stackoverflow.com/questions/10821825/how-to-set-git-dir-git-work-tree-when-maintaining-multiple-repositories
+
+下面网址是关于 detached Head
+
+https://stackoverflow.com/questions/3965676/why-did-my-git-repo-enter-a-detached-head-state
+
+https://stackoverflow.com/questions/471300/git-switch-branch-without-detaching-head
+
+https://stackoverflow.com/questions/41465194/head-detached-at-when-jenkins-run
 
 ---
 
 changesets 是什么玩意？
 
-    就是提交对象的部分集合
+    就是提交对象的集合
     
     [other history]   [ "changeset 1" ]
     o - o - o - o - o ( - o - o - o - o)
