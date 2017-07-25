@@ -1,5 +1,4 @@
 ﻿# Vim 基本操作
-标签: AAA vim
 
 title: Vim 基本操作
 categories: Vim
@@ -7,7 +6,22 @@ tags: Vim
 
 ---
 
-buffer操作
+
+## 回车和换行
+
+查找时，\n 代表换行符 (newline)， \r 代表回车符 (CR carriage return = Ctrl-M = ^M)
+
+```
+/\n
+```
+
+替换时，\r 代表换行，\n 代表空字符 (null byte 0x00)
+
+```
+:%s/$/\r/g
+```
+
+## buffer操作
 
     :ls     查看当前已打开的buffer
     :b n    切换buffer，n为buffer list中的编号
@@ -16,10 +30,12 @@ buffer操作
     :b#     前一个 buffer
     :bdelete n 删除buffer，n为buffer list中的编号
 
-光标跳转
+## 光标跳转
 
     ctrl+o 
     ctrl+i
+
+## colorscheme
 
 查看当前scheme
 
@@ -139,8 +155,8 @@ Tab、空格和缩进
 
     4、增大或减少窗口大小：
         Ctrl + W + =：让所有窗口调整至相同尺寸（平均划分）
-        Ctrl + W + -：将当前窗口的高度减少一行，也可在ex命令中，：resize -4明确指定减少的尺寸
-        Ctrl + W + +：将当前窗口的高度增加一行。同样在ex命令中，：resize +n 明确指定增加尺寸
+        Ctrl + W + -：将当前窗口的高度减少一行，- 号前也可以加数字指定行数，也可在ex命令中，：resize -4明确指定减少的尺寸
+        Ctrl + W + +：将当前窗口的高度增加一行，+ 号前也可以加数字指定行数。同样在ex命令中，：resize +n 明确指定增加尺寸
 
         Ctrl + W + < ：将当前窗口的宽度减少
         Ctrl + W + > ：将当前窗口的宽度增加
@@ -279,4 +295,37 @@ runtimepath 是一个目录列表，用来定位运行时文件
 :set runtimepath+=some\path,some\path
 :runtime syntax/c.vim
 :ru syntax/c.vim
+```
+
+## .netrwhist
+
+netrw 是一个通过网络读写文件的 vim 插件，.netrwhist 就是 netrw 的历史记录文件，保存的是被修改的目录的列表，当修改 ~/.vim 目录下的文件时就加入记录
+
+内容一般如下：
+```
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/Users/wolever/EnSi/repos/web/env/web/lib/python2.6/site-packages/django'
+let g:netrw_dirhist_2='/private/tmp/b/.hg/attic'
+let g:netrw_dirhist_3='/Users/wolever/code/sandbox/pydhcplib-0.6.2/pydhcplib'
+let g:netrw_dirhist_4='/Users/wolever/EnSi/repos/common/env/common/bin'
+let g:netrw_dirhist_5='/Users/wolever/EnSi/repos/common/explode'
+let g:netrw_dirhist_6='/Users/wolever/Sites/massuni-wiki/conf'
+```
+* netrw_dirhistmax 表示记录的最多历史条数
+* netrw_dirhist_cnt 表示当前已记录条数
+
+没有禁用产生 .netrwhist 文件的方法，可以设置为产生后立即自动删除
+```
+au VimLeave * if filereadable("[path here]/.netrwhist")|call delete("[path here]/.netrwhist")|endif 
+```
+
+或设置最多记录数为 0 则不再记录，但原先的 .netrwhist 或 .netrwbook 并不会自动删除 
+```
+:let g:netrw_dirhistmax = 0
+```
+
+可以指定 .netrwhist 文件的位置，以免和 vim 的 runtimepath 文件混在一起
+```
+let g:netrw_home=$XDG_CACHE_HOME.'/vim'
 ```
