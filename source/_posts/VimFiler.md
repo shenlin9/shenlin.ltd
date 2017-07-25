@@ -29,6 +29,7 @@ let g:vimfiler_enable_auto_cd = 1
     t           展开目录
     T           递归展开目录
     <S-SPC>     标记文件或目录
+    r           重命名
     q			隐藏
 
     *			<Plug>(vimfiler_toggle_mark_all_lines)
@@ -40,7 +41,6 @@ let g:vimfiler_enable_auto_cd = 1
     Cc			<Plug>(vimfiler_clipboard_copy_file)
     Cm			<Plug>(vimfiler_clipboard_move_file)
     Cp			<Plug>(vimfiler_clipboard_paste)
-    r			<Plug>(vimfiler_rename_file)
     K			<Plug>(vimfiler_make_directory)
     N			<Plug>(vimfiler_new_file)
     <Enter>			<Plug>(vimfiler_cd_or_edit)

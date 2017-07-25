@@ -75,6 +75,13 @@ vim 打开文件后会自动执行 Updating plugins，第一次其实是安装�
 ```
 Updating plugins (153/154)
 ```
+
+安装失败则手动安装
+```
+:call dein#install()
+```
+* dein 是 SpaceVim 的默认插件管理器
+
 ## Leader key
 
 ![](https://user-images.githubusercontent.com/13142418/27549426-8141bd86-5ace-11e7-9082-eb86b398acdc.png)
@@ -285,9 +292,37 @@ Alt + Left/Right : switch between buffer. Alt + 1-9 : jump to specified channel.
 
 for more mappings in chatting buffer, please read :h vim-chat.
 
-## Q&amp;A
+## 编译 vimproc
+
+SpaceVim 启动时总是有下列提示：
 
 ```
 [vimproc]vimproc's DLL:"C:/users/ssl/.cache/vimfiles/repos/github.com/Shougo...m/lib/vimproc_win32.dll" is not found.
 Please read :help vimproc and make it.
 ```
+
+需要自己编译生成 vimproc_win32.dll
+
+先使用 Mingw 安装 gcc 编译环境，具体步骤参见文章：[Windows 下使用 MinGW 安装 gcc 编译环境](Windows 下使用 MinGW 安装 gcc 编译环境.md)
+
+下载 vimproc 库，SpaceVim 已下载，省略
+```
+//进入 vimproc 库目录
+cd C:\Users\ssl\.cache\vimfiles\repos\github.com\Shougo\vimproc.vim\src
+
+//编译
+λ mingw32-make -f make_mingw32.mak
+
+    提示丢失 libmingwex-0.dll,有几乎同名的 libmingwex.a，但不管用，搜索发现真有 libmingwex 这个包
+
+//安装这个库
+λ mingw-get install libmingwex
+
+//再次编译成功
+λ mingw32-make -f make_mingw32.mak
+
+//复制文件到 SpaceVim 的 runtimepath
+λ cp auload/* plugin/* lib/* $HOME/.SpaceVim.d/
+```
+
+## Q&amp;A
