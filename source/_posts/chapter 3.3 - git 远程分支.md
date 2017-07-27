@@ -193,12 +193,20 @@ $ git checkout --track origin/dev
 或者修改正在跟踪的上游分支
 ```
 $ git branch -u origin/dev
+
+$ git branch -u origin/master
+
+    Branch master set up to track remote branch master from origin.
+
+$ git push -u origin master
 ```
 
 可以使用`@{u}`来表示上游分支，下面两个命令等效
 ```
 $ git merge origin/master
 $ git merge @{u}
+
+$ git merge origin/master --allow-unrelated-histories
 ```
 
 #### 查看跟踪分支

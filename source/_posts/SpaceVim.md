@@ -177,6 +177,8 @@ Updating plugins (153/154)
 :SPSet {opt} [value]
 ```
 * `{opt}` 为上面的配置项去掉前面的`g:spacevim_`
+* SPSet plugin_manager 插件管理器
+* SPSet plugin_groups 已安装插件
 
 输出 debug 信息
 ```
@@ -207,6 +209,11 @@ Updating plugins (153/154)
 ```
 SpaceVim#layers#load({layer})
 ```
+例如
+```
+call SpaceVim#layers#load("lang#php")
+call SpaceVim#layers#load("lang#php","lang#markdown")
+```
 
 设置 debug 级别，默认是1
 ```
@@ -224,6 +231,7 @@ SpaceVim#logger#setLevel({level})
 SpaceVim#logger#setOutput({file})
 ```
 * 默认文件 `~/.SpaceVim/.SpaceVim.log`.
+* runtime log: `~/.cache/SpaceVim/SpaceVim.log`
 
 ## Layer
 

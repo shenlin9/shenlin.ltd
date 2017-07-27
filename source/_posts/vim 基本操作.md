@@ -329,3 +329,28 @@ au VimLeave * if filereadable("[path here]/.netrwhist")|call delete("[path here]
 ```
 let g:netrw_home=$XDG_CACHE_HOME.'/vim'
 ```
+
+## vim 查看文件时多了很多 <200b> <200c> <200d>
+
+如：
+`git submodule [--quiet] deinit [-f|--force] (--all|[--] <path>…​)`
+
+commonly abbreviated ZWSP
+this character is intended for invisible word separation and for line break control; it has no width, but its presence between two characters does not prevent increased letter spacing in justification
+http://www.fileformat.info/info/unicode/char/200B/index.htm
+
+这些字符是排版过程中产生的，而排版使用的规范是Unicode编码标准
+
+|name|unicode code point|utf-8(in literal)|
+|---|---|---|
+|ZERO WIDTH SPACE|U+200b|\xe2\x80\x8b|
+|ZERO WIDTH JOINER|U+200c|\xe2\x80\x8c|
+|ZERO WIDTH NON-JOINER|U+200d|\xe2\x80\x8d|
+
+```
+$value = str_replace("\xe2\x80\x8b", '', $value); 
+$value = str_replace("\xe2\x80\x8c", '', $value); 
+$value = str_replace("\xe2\x80\x8d", '', $value); 
+```
+
+https://superuser.com/questions/207207/how-can-i-delete-u200b-zero-width-space-using-sed

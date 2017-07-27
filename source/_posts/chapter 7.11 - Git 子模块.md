@@ -12,7 +12,9 @@ tags:
 ---
 
 Git 子模块可以让一个库在子目录里包含另外一个库，这两个库分别有自己独立的提交历史记录，不会互相混淆。
+
 <!-- more -->
+
 为方便叙述，把两个库分别称为主库和子库，对应的项目分别称为主项目和子项目。
 
 Git 子模块常用于当项目需要外部依赖如第三方库时。
@@ -26,6 +28,8 @@ Git 子模块常用于当项目需要外部依赖如第三方库时。
 子模块的组成：主库里有一个称为`gitlink`的树条目，链接了子库中一个特殊的提交对象。
 
 主项目根目录下的 `.gitmodules` 文件里指定了子模块的逻辑名和从哪个URL克隆。可以通过逻辑名用本地库地址重写URL。
+
+`.gitmodules` 文件也需加入 git 库被推送和拉取，这样项目其他成员才可以根据此文件获取子模块，也因此需要保证文件中的 URL 值是可以被项目成员访问到的。
 
 不要搞混了远程库 remotes 和子模块 submodules，远程库是同一个项目的另外一个库，子模块是独立于主项目的另一个完全不同的子项目，是完全独立的两个项目，所以不能在主项目内部修改子模块的内容。
 
@@ -82,7 +86,7 @@ The default remote is the remote of the remote tracking branch of the current br
 * 可选
 * 值是子模块在主项目中的相对路径
 * 也被用作子模块的逻辑名，除非使用`--name`选项指定了逻辑名
-* 没有此参数则根据`<repo>`参数自动生成，如"/path/to/repo.git"生成"repo"
+* 没有此参数则根据`<repo>`参数自动生成，一般为仓库`<repo>`同名的目录，如"/path/to/repo.git"生成"repo"
 * 如果指定的路径已经存在且是一个有效的 git 库，则只把子模块添加到暂存区但不执行克隆，这种方法很容易从头开始创建全新子模块，创建完后需要推送到 URL 去。
 
 例子：添加已存在的 git 库为子模块
@@ -500,16 +504,19 @@ changesets 是什么玩意？
       (o - o - o - o - o)
       [ "changeset 2" ]
 
+
 如何将库中现有的子项目添加为子模块？
+
 ```
 $ git submodule
 fatal: no submodule mapping found in .gitmodules for path 'themes/hueman'
+fatal: no submodule mapping found in .gitmodules for path 'themes/next'
 
 $ git submodule add git@github.com:ppoffice/hexo-theme-hueman.git ./themes/hueman
 'themes/hueman' already exists in the index
 
-$ cat .gitmoduless
-cat: .gitmoduless: No such file or directory
+$ cat .gitmodules
+cat: .gitmodules: No such file or directory
 
 $ git rm --cached themes/hueman
 rm 'themes/hueman'
