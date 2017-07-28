@@ -32,6 +32,17 @@ Git 子模块常用于当项目需要外部依赖如第三方库时。
 `.gitmodules` 文件也需加入 git 库被推送和拉取，这样项目其他成员才可以根据此文件获取子模块，也因此需要保证文件中的 URL 值是可以被项目成员访问到的。
 
 不要搞混了远程库 remotes 和子模块 submodules，远程库是同一个项目的另外一个库，子模块是独立于主项目的另一个完全不同的子项目，是完全独立的两个项目，所以不能在主项目内部修改子模块的内容。
+主项目也不会跟踪子模块的内容，而是将子模块看做是主项目仓库的一个特殊提交；
+
+```
+$ git diff
+diff --git a/themes/next b/themes/next
+--- a/themes/next
++++ b/themes/next
+@@ -1 +1 @@
+-Subproject commit 403bbd06f7f00faf4c19fd8c12b52b5183a2807b
++Subproject commit 403bbd06f7f00faf4c19fd8c12b52b5183a2807b-dirty
+```
 
 如果想将主项目和子项目的历史合并，把它们作为一个整体项目对待，如同时克隆和检出，则可以使用`git subtree merge`策略，。
 

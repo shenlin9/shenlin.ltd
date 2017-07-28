@@ -77,10 +77,34 @@ cmder 支持多种 shell，新建 Tab 时，可选择 shell 的种类：
 
 ## Q&amp;A
 
-`ls`时中文文件名乱码
+* `ls` 中文显示为`??`号
+
+    打开`windows/system32/cmd.exe`文件属性，选择“使用旧版控制台”
+
+* `ls`时中文文件名乱码
 
     打开设置面板，找到Startup -> Envrioment选项，
 
-    在下面的文本框里添加一行 `set LANG=zh_CN.UTF-8`
-                              
+    在下面的文本框里添加
 
+    ```
+    set LANG=zh_CN.UTF-8
+    ```
+
+* 使用上下方向键切换历史命令时总是莫名其妙多出字符
+
+    和默认提示字符 `λ` 有关，打开文件 `cmder/vendor/clink.lua`
+
+    找到下列行，将字符 `λ` 替换为 `$` 即可
+
+    ```
+    if env == nil then
+        lambda = "λ"
+    else
+        lambda = "("..env..") λ"
+    end
+    ```
+
+* 命令行里有中文字符时，就可以删除到底把提示符 `$`  都删了
+
+    打开`settings --> main --> 选择Alternative font`，设置字体为黑体，Unicode ranges 为CJK，然后点击 apply
