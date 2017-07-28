@@ -26,6 +26,11 @@ Git 子模块常用于当项目需要外部依赖如第三方库时。
 `git submodule init` 和 `git submodule update` 子命令用于检出子库到用户工作目录。
 
 子模块的组成：主库里有一个称为`gitlink`的树条目，链接了子库中一个特殊的提交对象。
+160000 模式。 这是 Git 中的一种特殊模式，它本质上意味着你是将一次提交记作一项目录记录的，而非将它记录成一个子目录或者一个文件
+```
+$ git ls-files -s|grep themes/next
+160000 403bbd06f7f00faf4c19fd8c12b52b5183a2807b 0       themes/next
+```
 
 主项目根目录下的 `.gitmodules` 文件里指定了子模块的逻辑名和从哪个URL克隆。可以通过逻辑名用本地库地址重写URL。
 
