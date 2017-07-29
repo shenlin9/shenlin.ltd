@@ -64,6 +64,127 @@ $ git diff
 
 如果想将主项目和子项目的历史合并，把它们作为一个整体项目对待，如同时克隆和检出，则可以使用`git subtree merge`策略，。
 
+## 子模块流程
+
+### 更改子模块
+
+当运行 `git submodule update` 从子模块仓库中抓取修改时，Git 会拉取改动并 [更新] 子目录中的文件，但是会将子仓库留在一个称作 “游离的 HEAD (detached HEAD)” 的状态，即正常的 HEAD 应该是指向一个分支如 master，然后分支 master 再指向 commit 提交对象，游离的 HEAD 却直接指向了 commit 提交对象，也就是没有本地分支（例如 “master”）跟踪工作目录的改动，这意味着在本地更改了子模块后，即使提交更新到了子模块库，下次执行`git submodule update` 时也很可能丢失本地的更新。
+
+所以，对于更改过的本地子模块，需要下列步骤来实现对本地更改的跟踪：
+
+    1. 进入每个子模块然后检出一个分支
+
+    2. 执行 `git submodule update --remote` 时使用 `--merge` 或 `--rebase` 选项
+
+如果忘记 --rebase 或 --merge，Git 会将子模块更新为服务器上的状态。并且会将项目重置为一个游离的 HEAD 状态。只需回到目录中再次检出你的分支（即还包含着你的工作的分支）然后手动地合并或变基 origin/master（或任何一个你想要的远程分支）就行了
+
+### 推送子模块
+
+当更改了子模块后，需要确保子模块的更改推送到远程库，否则其他成员获取不到新的更改会产生问题，相关命令选项
+
+在主项目推送前先检查是否所有子模块的更改都已推送，若有未推送子模块则停止推送主项目
+
+```
+$ git push --recurse-submodules=check
+```
+
+在主项目推送前先推送子模块，子模块推送失败则主项目也不推送
+
+```
+$ git push --recurse-submodules=on-demand
+```
+
+### 合并子模块
+
+
+## 子模块技巧
+
+### 子模块遍历
+
+```
+$ git submodule foreach 'command'
+```
+遍历所有子模块并执行 command，如果项目中包含了大量子模块时会非常有用
+
+例如 : 需要开发新功能或修复bug，并且涉及到子模块的修改
+```
+//保存所有子模块工作进度
+$ git submodule foreach 'git stash'
+
+//在所有子模块中创建并切换到新分支
+$ git submodule foreach 'git checkout -b featureA'
+```
+
+例如 : 生成主项目和所有子项目的所有改动
+```
+$ git diff; git submodule foreach 'git diff'
+```
+
+### 子模块别名
+
+如果 git 操作涉及到大量子模块命令，可以使用别名简化操作
+
+```
+$ git config alias.sdiff '!'"git diff && git submodule foreach 'git diff'"
+$ git config alias.spush 'push --recurse-submodules=on-demand'
+$ git config alias.supdate 'submodule update --remote --merge'
+```
+
+## 子模块的问题
+
+### 切换分支
+
+原分支 master 没有子模块，新创建一个分支 dev，添加一个子模块 submodule-a，
+
+再切回原分支 master 时会有一个未跟踪的子模块目录 submodule-a……
+
+
+如果在分支 master 移除目录 submodule-a，再切换回 dev 分支时，需要重新建立
+
+和填充子模块 submodule-a，使用命令 `git submodule updates --init`
+
+### 子目录转换为子模块
+
+原分支 master 有子目录 subdir，检出新分支 dev
+
+把分支 dev 已存在的子目录 subdir 添加为子模块时，会提示
+```
+$ git submodule add subdir
+'subdir' already exists in the index
+```
+
+需要先从暂存区中移除再添加
+```
+$ git rm -rc subdir
+$ git submodule add subdir
+```
+* -c --cached 保留目录文件，从暂存区 index 移除
+* -r 递归移除，没有此参数一是移除不了子目录下的文件在 index 中的条目，二是需要写完整名称，如 subdir/module.txt
+
+再切换回分支 master 时，subdir 是子目录，则报错
+```
+$ git checkout master
+error: The following untracked working tree files would be overwritten by checkout:
+  subdir/module.txt
+  ...
+Please move or remove them before you can switch branches.
+Aborting
+```
+
+可以强制切换，会覆盖到 subdir 的本地修改
+```
+$ git checkout -f master
+warning: unable to rmdir subdir: Directory not empty
+Switched to branch 'master'
+```
+
+此时得到的是一个空的 subdir 目录，并且 `git submodule update` 也无法修复它，
+
+需要进入到子模块目录中运行 `git checkout` 来找回所有的文件。 也可以通过 `submodule foreach` 脚本来为多个子模块运行它。
+
+要特别注意的是，近来子模块会将它们的所有 Git 数据保存在顶级项目的 .git 目录中，所以不像旧版本的 Git，摧毁一个子模块目录并不会丢失任何提交或分支。
+
+
 ## 子模块配置文件
 
 ```
@@ -246,7 +367,19 @@ update 有多种执行方式，怎样执行由命令行选项和配置变量`sub
 
 * `git submodule update --remote`
 
-    git 自动进入子模块拉取合并
+    git 自动进入子模块拉取更新
+
+    ??? 需测试
+
+* `git submodule update --remote --merge`
+
+    git 自动进入子模块拉取更新并合并
+
+    ??? 需测试
+
+* `git submodule update --remote --rebase`
+
+
 
 * `git submodule update --init`
  
@@ -494,6 +627,87 @@ Use this option to integrate changes from the upstream subproject with your subm
 #### `<path>…`
 
     表示子模块的路径，指定后则限制命令只能操作指定路径的子模块
+
+
+## 子模块相关选项
+
+使用 `git config [--system | --global | --local]` 设置
+
+status.submoduleSummary
+
+    设置 `git status` 时是否显示子模块摘要
+
+    ??? 这个命令貌似也影响 git diff
+    ??? 这个没有测试成功，子模块的的 summary 不显示，包括 git submodule 命令的 summary
+    
+    Defaults to false. If this is set to a non zero number or true (identical to -1 or an unlimited number), the submodule summary will be enabled and a summary of commits for modified submodules will be shown (see --summary-limit option of git-submodule(1)). Please note that the summary output command will be suppressed for all submodules when diff.ignoreSubmodules is set to all or only for those submodules where submodule.<name>.ignore=all. The only exception to that rule is that status and commit will show staged submodule changes. To also view the summary for ignored submodules you can either use the --ignore-submodules=dirty command-line option or the git submodule summary command, which shows a similar output but does not honor these settings.
+
+
+diff.submodule
+
+    设置 `git diff` 时显示子模块差异的样式
+
+    Specify the format in which differences in submodules are shown. The "short" format just shows the names of the commits at the beginning and end of the range. The "log" format lists the commits in the range like git-submodule(1) summary does. The "diff" format shows an inline diff of the changed contents of the submodule. Defaults to "short".
+
+
+diff.ignoreSubmodules
+
+    Sets the default value of --ignore-submodules. Note that this affects only git diff Porcelain, and not lower level diff commands such as git diff-files. git checkout also honors this setting when reporting uncommitted changes. Setting it to all disables the submodule summary normally shown by git commit and git status when status.submoduleSummary is set unless it is overridden by using the --ignore-submodules command-line option. The git submodule commands are not affected by this setting.
+
+
+fetch.recurseSubmodules
+
+    This option can be either set to a boolean value or to on-demand. Setting it to a boolean changes the behavior of fetch and pull to unconditionally recurse into submodules when set to true or to not recurse at all when set to false. When set to on-demand (the default value), fetch and pull will only recurse into a populated submodule when its superproject retrieves a commit that updates the submodule’s reference.
+
+
+push.recurseSubmodules
+
+    Make sure all submodule commits used by the revisions to be pushed are available on a remote-tracking branch. If the value is check then Git will verify that all submodule commits that changed in the revisions to be pushed are available on at least one remote of the submodule. If any commits are missing, the push will be aborted and exit with non-zero status. If the value is on-demand then all submodules that changed in the revisions to be pushed will be pushed. If on-demand was not able to push all necessary revisions it will also be aborted and exit with non-zero status. If the value is no then default behavior of ignoring submodules when pushing is retained. You may override this configuration at time of push by specifying --recurse-submodules=check|on-demand|no.
+
+
+
+submodule.<name>.url
+
+    The URL for a submodule. This variable is copied from the .gitmodules file to the git config via git submodule init. The user can change the configured URL before obtaining the submodule via git submodule update. If neither submodule.<name>.active or submodule.active are set, the presence of this variable is used as a fallback to indicate whether the submodule is of interest to git commands. See git-submodule(1) and gitmodules(5) for details.
+
+submodule.<name>.update
+
+    The default update procedure for a submodule. This variable is populated by git submodule init from the gitmodules(5) file. See description of update command in git-submodule(1).
+
+submodule.<name>.branch
+
+    The remote branch name for a submodule, used by git submodule update --remote. Set this option to override the value found in the .gitmodules file. See git-submodule(1) and gitmodules(5) for details.
+
+submodule.<name>.fetchRecurseSubmodules
+
+    This option can be used to control recursive fetching of this submodule. It can be overridden by using the --[no-]recurse-submodules command-line option to "git fetch" and "git pull". This setting will override that from in the gitmodules(5) file.
+
+submodule.<name>.ignore
+
+    Defines under what circumstances "git status" and the diff family show a submodule as modified. When set to "all", it will never be considered modified (but it will nonetheless show up in the output of status and commit when it has been staged), "dirty" will ignore all changes to the submodules work tree and takes only differences between the HEAD of the submodule and the commit recorded in the superproject into account. "untracked" will additionally let submodules with modified tracked files in their work tree show up. Using "none" (the default when this option is not set) also shows submodules that have untracked files in their work tree as changed. This setting overrides any setting made in .gitmodules for this submodule, both settings can be overridden on the command line by using the "--ignore-submodules" option. The git submodule commands are not affected by this setting.
+
+submodule.<name>.active
+
+    Boolean value indicating if the submodule is of interest to git commands. This config option takes precedence over the submodule.active config option.
+
+submodule.active
+
+    A repeated field which contains a pathspec used to match against a submodule’s path to determine if the submodule is of interest to git commands.
+
+submodule.fetchJobs
+
+    Specifies how many submodules are fetched/cloned at the same time. A positive integer allows up to that number of submodules fetched in parallel. A value of 0 will give some reasonable default. If unset, it defaults to 1.
+
+submodule.alternateLocation
+
+    Specifies how the submodules obtain alternates when submodules are cloned. Possible values are no, superproject. By default no is assumed, which doesn’t add references. When the value is set to superproject the submodule to be cloned computes its alternates location relative to the superprojects alternate.
+
+submodule.alternateErrorStrategy
+
+    Specifies how to treat errors with the alternates for a submodule as computed via submodule.alternateLocation. Possible values are ignore, info, die. Default is die.
+
+
+
 
 ## Q&amp;A
 
