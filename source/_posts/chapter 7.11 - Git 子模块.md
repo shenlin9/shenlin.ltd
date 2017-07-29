@@ -21,12 +21,14 @@ Git 子模块常用于当项目需要外部依赖如第三方库时。
 
 使用 `git submodule` 命令来检验、更新和管理子模块。
 
-当`git clone`或`git pull`一个包含子模块的库时，默认情况下子库不会被检出到用户的工作目录。
+当`git clone`或`git pull`一个包含子模块的库时，默认情况下子库不会被检出到用户的工作目录，只会创建一个空的子库目录。
 
-`git submodule init` 和 `git submodule update` 子命令用于检出子库到用户工作目录。
+`git submodule init` 用来初始化子模块配置文件，和 `git submodule update` 用于抓取数据并检出子库到用户工作目录。
+
+`git clone --recursive` 则会自动初始化、抓取、检出库的每一个子模块
 
 子模块的组成：主库里有一个称为`gitlink`的树条目，链接了子库中一个特殊的提交对象。
-160000 模式。 这是 Git 中的一种特殊模式，它本质上意味着你是将一次提交记作一项目录记录的，而非将它记录成一个子目录或者一个文件
+子模块记录是 160000 模式。 这是 Git 中的一种特殊模式，它本质上意味着你是将一次提交记作一项目录记录的，而非将它记录成一个子目录或者一个文件
 ```
 $ git ls-files -s|grep themes/next
 160000 403bbd06f7f00faf4c19fd8c12b52b5183a2807b 0       themes/next
@@ -47,6 +49,17 @@ diff --git a/themes/next b/themes/next
 @@ -1 +1 @@
 -Subproject commit 403bbd06f7f00faf4c19fd8c12b52b5183a2807b
 +Subproject commit 403bbd06f7f00faf4c19fd8c12b52b5183a2807b-dirty
+```
+
+???没有测试成功???
+使用 `--submodule` 参数显示子模块的更改
+```
+$ git diff --submodule
+```
+可以将 diff.submodule 设置为 “log” 来将每次都显示子模块更改作为默认行为
+```
+$ git config --global diff.submodule log
+$ git diff
 ```
 
 如果想将主项目和子项目的历史合并，把它们作为一个整体项目对待，如同时克隆和检出，则可以使用`git subtree merge`策略，。
@@ -96,6 +109,15 @@ $ cat .gitmodules
 `<repository>` is the URL of the new submodule’s origin repository. This may be either an absolute URL, or (if it begins with ./ or ../), the location relative to the superproject’s default remote repository (Please note that to specify a repository foo.git which is located right next to a superproject bar.git, you’ll have to use ../foo.git instead of ./foo.git - as one might expect when following the rules for relative URLs - because the evaluation of relative URLs in Git is identical to that of relative directories).
 
 The default remote is the remote of the remote tracking branch of the current branch. If no such remote tracking branch exists or the HEAD is detached, "origin" is assumed to be the default remote. If the superproject doesn’t have a default remote configured the superproject is its own authoritative upstream and the current working directory is used instead.
+
+`-b <branch>`
+
+* 指定子模块要检出的分支，默认为 master，也可以通过修改 config 文件来设置
+
+    ```
+    $ git config -f .gitmodules submodule.DbConnector.branch stable
+    ```
+    * `-f .gitmodules` 选项表示写入 .gitmodules 文件，否则仅对当前会话起作用
 
 `<path>`
 
@@ -221,6 +243,10 @@ update 有多种执行方式，怎样执行由命令行选项和配置变量`sub
    
     不更新子模块
     <br/>
+
+* `git submodule update --remote`
+
+    git 自动进入子模块拉取合并
 
 * `git submodule update --init`
  
