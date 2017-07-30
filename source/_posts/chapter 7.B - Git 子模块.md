@@ -1,5 +1,4 @@
 ﻿# chapter 7.11 : Git 子模块
-标签: AAA Git Book-ProGit submodule
 
 title: Git 子模块
 categories:
@@ -11,13 +10,13 @@ tags:
 
 ---
 
+Git 子模块常用于当项目需要外部依赖如第三方库时。
+
 Git 子模块可以让一个库在子目录里包含另外一个库，这两个库分别有自己独立的提交历史记录，不会互相混淆。
 
 <!-- more -->
 
 为方便叙述，把两个库分别称为主库和子库，对应的项目分别称为主项目和子项目。
-
-Git 子模块常用于当项目需要外部依赖如第三方库时。
 
 使用 `git submodule` 命令来检验、更新和管理子模块。
 
@@ -51,22 +50,83 @@ diff --git a/themes/next b/themes/next
 +Subproject commit 403bbd06f7f00faf4c19fd8c12b52b5183a2807b-dirty
 ```
 
-???没有测试成功???
-使用 `--submodule` 参数显示子模块的更改
-```
-$ git diff --submodule
-```
-可以将 diff.submodule 设置为 “log” 来将每次都显示子模块更改作为默认行为
-```
-$ git config --global diff.submodule log
-$ git diff
-```
-
 如果想将主项目和子项目的历史合并，把它们作为一个整体项目对待，如同时克隆和检出，则可以使用`git subtree merge`策略，。
 
 ## 子模块流程
 
-### 更改子模块
+### 获取更新
+
+获取更新方法一：在子模块工作目录
+```
+$ cd DBConnector
+$ git fetch
+$ git merge origin/master
+```
+
+获取更新方法二：在主项目目录获取更新时同时更新子模块，默认检出子模块的 master 分支
+```
+$ git submodule update --remote DBConnector
+```
+
+设置子模块的默认检出分支
+```
+$ git config submodule.DbConnector.branch stable
+
+$ git config -f .gitmodules submodule.DbConnector.branch stable
+```
+* 针对 git submodule update 命令
+* -f .gitmodules 表示写入 .gitmodules 文件，否则仅对此次会话有效
+
+### 显示更新
+
+显示子模块的更改摘要
+```
+$ git config status.submodulesummary 1
+```
+* 针对 git status 命令
+
+开启和关闭 status.submodulesummary 的效果比较
+```
+$ git config status.submodulesummary 0
+
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+...
+no changes added to commit (use "git add" and/or "git commit -a")
+
+$ git config status.submodulesummary 1
+
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+...
+Submodules changed but not updated:
+
+* themes/hueman c88e232...aa8ab81 (1):
+  > Merge remote-tracking branch 'origin/master'
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+显示更改时同时显示子模块的更改
+```
+$ git diff --submodule
+```
+
+设置子模块更改的显示样式
+```
+$ git config --global diff.submodule log
+```
+* 针对 git diff 命令
+* 取值：log, short, diff
+
+日志中查看子模块更改记录
+```
+$ git log -p --submodule
+```
+
+### 修改子模块
 
 当运行 `git submodule update` 从子模块仓库中抓取修改时，Git 会拉取改动并 [更新] 子目录中的文件，但是会将子仓库留在一个称作 “游离的 HEAD (detached HEAD)” 的状态，即正常的 HEAD 应该是指向一个分支如 master，然后分支 master 再指向 commit 提交对象，游离的 HEAD 却直接指向了 commit 提交对象，也就是没有本地分支（例如 “master”）跟踪工作目录的改动，这意味着在本地更改了子模块后，即使提交更新到了子模块库，下次执行`git submodule update` 时也很可能丢失本地的更新。
 
@@ -134,14 +194,14 @@ $ git config alias.supdate 'submodule update --remote --merge'
 
 ### 切换分支
 
-原分支 master 没有子模块，新创建一个分支 dev，添加一个子模块 submodule-a，
+原分支 master 没有子模块，新创建一个分支 dev，添加一个子模块 DBConnector，
 
-再切回原分支 master 时会有一个未跟踪的子模块目录 submodule-a……
+再切回原分支 master 时会有一个未跟踪的子模块目录 DBConnector……
 
 
-如果在分支 master 移除目录 submodule-a，再切换回 dev 分支时，需要重新建立
+如果在分支 master 移除目录 DBConnector，再切换回 dev 分支时，需要重新建立
 
-和填充子模块 submodule-a，使用命令 `git submodule updates --init`
+和填充子模块 DBConnector，使用命令 `git submodule updates --init`
 
 ### 子目录转换为子模块
 
