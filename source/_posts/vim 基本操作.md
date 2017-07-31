@@ -6,30 +6,120 @@ tags: Vim
 
 ---
 
+## 转换大小写
+
+gu 转换为小写
+gU 转换为大写
+
+整篇文章
+
+    ggguG
+    gggUG
+
+单词转换
+
+    guw 、gue
+    gUw、gUe
+    gu5w、gu5e
+
+行转换
+
+    gU0        ：从光标所在位置到行首，都变为大写
+    gU$        ：从光标所在位置到行尾，都变为大写
+    gUG        ：从光标所在位置到文章最后一个字符，都变为大写
+
+## 文件最后一行结束符
+
+EOL 表示 endofline
+
+vim 认为文件是由行组成的，并且文件最后一行是以`<EOL>`为结束符的
+
+查看当前设置
+```
+:echo &eol
+```
+
+设置文件以`<EOL>`结尾
+```
+:set eol
+```
+
+不以`<EOL>`结尾
+```
+:set noeol
+```
+
+查看是否自动修正不以`<EOL>`结尾的文件
+```
+:echo &fixeol
+```
+
+自动修正
+```
+:set fixeol
+```
+
+不自动修正
+```
+:set nofixeol
+```
 
 ## 回车和换行
 
-查找时，\n 代表换行符 (newline)， \r 代表回车符 (CR carriage return = Ctrl-M = ^M)
+windows, linux, macos 对待换行的方式都不一样，需要进行针对性设置
 
+### 读写文件时
+
+设置读取文件时的换行检测
 ```
-/\n
+:set fileformats=dos,unix
+:set ffs=dos,unix
 ```
+
+查看、设置当前文件换行格式
+```
+:set fileformat
+:set fileformat=unix
+:set ff=unix
+```
+    取值和对应的换行符
+	    dos	    <CR> <NL>
+	    unix    <NL>
+	    mac	    <CR>
+
+显示换行符和 tab 符
+```
+:set list
+```
+
+取消换行符和 tab 符的显示
+```
+:set nolist
+```
+
+### 查找替换时
+
+??? 没有测试成功，始终无法查找到回车符
+
+查找时，\n 代表换行符 (newline)， \r 代表回车符 (CR carriage return = Ctrl-M = ^M)
 
 替换时，\r 代表换行，\n 代表空字符 (null byte 0x00)
 
+所以下列命令可以转换DOS回车符“^M”为真正的换行符：
+
 ```
-:%s/$/\r/g
+:%s/\r/\r/g
 ```
 
-## ^M 字符
-
-此字符是因为 windows 以回车 \r 和换行 \n 两个字符表示换行，linux 以 \n 表示换行，^M 就是 linux 下多余出来的回车 \r 字符
+有时在文本编辑器里看到的的 `^M` 字符是因为 windows 以回车 \r 和换行 \n 两个字符表示换行，linux 以 \n 表示换行，`^M` 就是 linux 下多余出来的回车 \r 字符
 
 替换 ^M 字符为空字符，下列命令中的 ^ 和 M 字符不是直接输入的，而是按住 Ctrl 再按对应的 ^ 和 M 产生的
 
 ```
 :%s///g
 ```
+??? 么有测试通过
+
 
 ## buffer操作
 
