@@ -1,6 +1,6 @@
 # chapter 8.2 : Git 属性
 
-title:  Git 属性
+title: Git 属性
 categories:
   - Git
   - Book-ProGit
@@ -21,4 +21,4 @@ git 可以对特定的路径配置某些儿设置项，这些基于路径的设�
 2. 实现比较非文本文件
 3. 在提交或检出前过滤内容
 
-## 
+## 二进制文件
