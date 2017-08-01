@@ -6,6 +6,7 @@ categories:
   - Book-ProGit
 tags:
   - Git
+  - Git-Hooks
 
 ---
 
