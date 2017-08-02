@@ -67,23 +67,3 @@ Two-factor authentication，简写为2FA，是一种用于降低因密码被盗�
 更多说明：
 https://help.github.com/articles/configuring-two-factor-authentication-via-a-totp-mobile-app/
 
-### 派生项目
-
-![](https://git-scm.com/book/en/v2/images/forkbutton.png)
-
-如果想要参与某个项目，但是没有推送权限，这时可以对这个项目进行“派生”。 派生的意思是指，GitHub 将在你的空间中创建一个完全属于你的项目副本，且你对其具有推送权限。
-
-fork
-: 在以前，“fork”是一个贬义词，指的是某个人使开源项目向不同的方向发展，或者创建一个竞争项目，使得原项目的贡献者分裂。 在 GitHub，“fork”指的是你自己的空间中创建的项目副本，这个副本允许你以一种更开放的方式对其进行修改。
-
-### 
-
-    					                ________________
-    					                |
-    					                |	HEAD
-    					                |	 |
-    [working directory] 	[Index]		|	master
-    					                |	 |
-    					                |	93a378d
-    					                |	filev3
-    					                |______________

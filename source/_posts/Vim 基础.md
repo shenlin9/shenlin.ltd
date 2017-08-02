@@ -8,6 +8,19 @@ vim 的基本设置和基础操作
 
 <!--more-->
 
+## 跳转
+
+http://easwy.com/blog/archives/advanced-vim-skills-advanced-move-method/
+
+ma 设定标记a
+'a 跳转到设定的标记a
+
+'' 在最后两次的位置来回跳转
+
+zt
+zz
+zb
+
 ## vim 环境变量
 
 //查看环境变量
