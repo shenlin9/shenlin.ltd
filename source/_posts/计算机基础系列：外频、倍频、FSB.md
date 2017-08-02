@@ -1,4 +1,4 @@
-title: 计算机基础系列：外频、倍频、FSB
+title: 计算机基础系列 - 外频、倍频、FSB
 categories: 计算机基础
 tags: 
   - 外频
