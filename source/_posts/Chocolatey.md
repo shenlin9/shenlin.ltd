@@ -8,6 +8,9 @@ tags:
 
 ---
 
+Chocolatey 是 Windows 下的软件包管理工具。
+
+<!--more-->
 
 Cmder 和 Chocolatey 依赖于 PowerShell 2+，win7 自带 2.0
 

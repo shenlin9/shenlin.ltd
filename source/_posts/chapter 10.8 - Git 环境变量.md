@@ -1,8 +1,9 @@
-title: chapter 10.8 - 环境变量
+title: chapter 10.8 - Git 环境变量
 categories:
-  - Vim
+  - Git
+  - Book-ProGit
 tags:
-  - Vim
+  - Git
 
 ---
 

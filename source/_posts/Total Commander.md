@@ -1,9 +1,6 @@
-# Total Commander
-
 title: Total Commander
 categories:
   - Windows
-  - Total Commander
 tags:
   - Windows
   - Total Commander

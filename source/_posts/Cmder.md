@@ -1,17 +1,15 @@
-# cmder
-标签: AAA Windows cmder
-
-title: cmder
+title: Cmder
 categories:
   - Windows
-  - cmder
 tags:
   - Windows
-  - cmder
+  - Cmder
 
 ---
 
 可使用 cmder 代替 Windows 的命令行窗口，cmder 支持多种 shell，如 Git, PowerShell, BaShell 等。
+
+<!--more-->
 
 ![](https://camo.githubusercontent.com/812b2647d6cd216ecddfb3f0ec71639473717955/687474703a2f2f692e696d6775722e636f6d2f67316e4e6630492e706e67)
 

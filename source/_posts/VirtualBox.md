@@ -1,7 +1,6 @@
 ﻿title: VirtualBox
 categories:
   - Windows
-  - Virtualbox
 tags:
   - Virtualbox
 
