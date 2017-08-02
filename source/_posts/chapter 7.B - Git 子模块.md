@@ -1,12 +1,10 @@
-﻿# chapter 7.11 : Git 子模块
-
-title: Git 子模块
+﻿title: chapter 7.11 : Git 子模块
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
-  - submodule
+  - Git-Submodule
 
 ---
 

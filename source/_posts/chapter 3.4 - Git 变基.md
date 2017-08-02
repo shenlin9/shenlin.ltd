@@ -1,8 +1,14 @@
-﻿# chapter 3.4 : git 变基
-
-tags ： AAA Book-ProGit git
+﻿title: chapter 3.4 - Git 变基
+categories:
+  - Git
+  - Book-ProGit
+tags:
+  - Git
+  - Git-Rebase
 
 ---
+
+<!--more-->
 
 ## 合并和变基
 

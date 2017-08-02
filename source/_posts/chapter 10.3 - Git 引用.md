@@ -1,11 +1,16 @@
-﻿# git 引用
-
-标签（空格分隔）： AAA Book-ProGit git
+﻿title: chapter 10.3 - Git 引用
+categories:
+  - Git
+  - Book-ProGit
+tags:
+  - Git
+  - Git-Refs
 
 ---
-## 引用说明
 
 使用一个文件来保存 commit 的 SHA 值，给文件取一个简单的名字，然后用这个简单的文件名字指针来代替复杂的 SHA 值，这样的文件在 git 里就被称为引用 references，缩写 refs。
+
+<!--more-->
 
 这也是 git 分支的本质，即把一个引用指向一个 commit 对象。
 
@@ -170,7 +175,7 @@ commit
 
 当添加一个远程版本库并执行`push`操作，即创建一个远程引用，保存在.git/refs/remotes目录下
 
-.git/refs/remotes/origin/*存储的是和远程分支对应的本地分支最后一次 commit 对象的引用
+`.git/refs/remotes/origin/*` 存储的是和远程分支对应的本地分支最后一次 commit 对象的引用
 
 ```
 $ git checkout -b monster

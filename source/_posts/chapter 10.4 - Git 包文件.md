@@ -1,6 +1,10 @@
-﻿# git 包文件
-
-tags ： AAA Book-ProGit git
+﻿title: chapter 10.4 - Git 包文件
+categories:
+  - Git
+  - Book-ProGit
+tags:
+  - Git
+  - Git-包文件
 
 ---
 
@@ -11,6 +15,8 @@ Git 最初向磁盘中存储对象时所使用的格式被称为松散（loose�
 ## 包文件
 
 Git 会不定时地自动运行一个叫做 “auto gc” 的命令将多个松散对象打包成一个称为“包文件（packfile）”的二进制文件，以节省空间和提高效率。
+
+<!--more-->
 
 ## gc命令的运行时刻
 

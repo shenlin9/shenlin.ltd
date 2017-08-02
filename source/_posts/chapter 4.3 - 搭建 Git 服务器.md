@@ -1,6 +1,9 @@
-﻿# chapter 4.3 : 搭建 git 服务器
-
-tags ： AAA Book-ProGit git
+﻿title: chapter 4.3 - 搭建 git 服务器
+categories:
+  - Git
+  - Book-ProGit
+tags:
+  - Git
 
 ---
 

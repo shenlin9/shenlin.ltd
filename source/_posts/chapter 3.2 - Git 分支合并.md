@@ -1,8 +1,14 @@
-﻿# chapter 3.2: git 分支合并
-
-tags ：AAA Book-ProGit git 
+﻿title: chapter 3.2 - Git 分支合并
+categories:
+  - Git
+  - Book-ProGit
+tags:
+  - Git
+  - Git-Branch
 
 ---
+
+<!--more-->
 
 ### 合并分支
 

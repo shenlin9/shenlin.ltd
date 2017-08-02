@@ -1,12 +1,18 @@
-﻿# chapter 3.1: git 分支基础
-
-tags ： AAA Book-ProGit git
+﻿title: chapter 3.1 - Git 分支基础
+categories:
+  - Git
+  - Book-ProGit
+tags:
+  - Git
+  - Git-Branch
 
 ---
 
 ## 分支简介
 
 git 的分支，其实本质上仅仅是指向提交对象的可变指针，每次提交后，分支都会向前移动指向最后的提交对象。
+
+<!--more-->
 
 git 的分支实质上仅是包含所指对象校验和（长度为 40 的 SHA-1 值字符串）的文件，所以创建和销毁都异常高效。 创建一个新分支就相当于往一个文件中写入 41 个字节（40 个字符和 1 个换行符）
 

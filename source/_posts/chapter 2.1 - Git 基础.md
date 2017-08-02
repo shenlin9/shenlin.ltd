@@ -1,6 +1,9 @@
-﻿# chapter 2.1: git 基础
-
-tags ： AAA Book-ProGit git 
+﻿title: chapter 2.1 - Git 基础
+categories:
+  - Git
+  - Book-ProGit
+tags:
+  - Git
 
 ---
 

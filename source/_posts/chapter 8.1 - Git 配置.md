@@ -1,6 +1,4 @@
-# chapter 8.1 : Git 设置
-
-title:  Git 设置
+title: chapter 8.1 - Git 设置
 categories:
   - Git
   - Book-ProGit

@@ -1,6 +1,9 @@
-﻿# chapter 2.3: git 标签
-
-tags ： AAA Book-ProGit git
+﻿title: chapter 2.3 - Git 标签
+categories:
+  - Git
+  - Book-ProGit
+tags:
+  - Git
 
 ---
 
@@ -9,6 +12,8 @@ tags ： AAA Book-ProGit git
 git 可以给历史中的某个提交打上标签，以示重要，比较代表性的是标记发布节点（v1.0等）
 
 标签指向一个 commit 对象，并且始终指向这个 commit 对象，不会移动，这是和分支的不同，分支会移动。
+
+<!--more-->
 
 ### 两种标签
 

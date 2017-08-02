@@ -1,6 +1,9 @@
-﻿# chapter 4.4 : gitweb & gitlab
-
-tags ： AAA Book-ProGit git
+﻿title: chapter 4.4 - gitweb & gitlab
+categories:
+  - Git
+  - Book-ProGit
+tags:
+  - Git
 
 ---
 

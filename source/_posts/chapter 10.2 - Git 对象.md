@@ -1,13 +1,16 @@
-# chapter 10.2 : Git 对象
-
-title: Git 对象
+title: chapter 10.2 - Git 对象
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
+  - Git-Objects
 
 ---
+
+Git 是一个内容寻址文件系统。这意味着，Git 的核心部分是一个简单的键值对数据库（key-value data store）。可以向该数据库插入任意类型的内容，它会返回一个键值，通过该键值可以在任意时刻再次检索（retrieve）该内容。
+
+<!--more-->
 
 ## git 对象类型
 
@@ -18,13 +21,57 @@ tags:
 
 2. tree    树对象
     内容有固定格式
+```
+100644 blob fd23bdb7c00d546fc05baf679ab071b09572f394    .gitignore
+100644 blob 1d4e6ea39ca3b189bf698ccd5ed0eb689f3468ce    README.md
+100644 blob aafbfbc387ca5eec77aad8e978d5ca05f39b9a8e    test.txt
+040000 tree 6b7916d2dc254d5b8d627094643ec6874f543aab    vendor
+```
+
+    第一列表示文件模式：
+        100644  普通文件
+        100755  可执行文件
+        120000  符号链接
+        040000  普通目录
+    第二列对象类型 
+    第三列对象指针
+    第四列文件名
 
 3. commit  提交对象
     内容有固定格式
+```
+tree 136483782871900f09f4977ca2e64a6d2ff16718
+parent 29b3988a97dd904f9644949d6f974aae8d5adef1
+author bitbite <bitbite@foxmail.com> 1497308152 +0800
+committer bitbite <bitbite@foxmail.com> 1497308152 +0800
+
+commit for tree test
+```
+
+    tree        指向顶层 tree 对象的指针
+    parent      当前 commit 对象的父对象，即上一个 commit 对象
+    author      作者和时间戳
+    committer   提交者和时间戳
 
 4. tag 附注标签对象
 
-    标签分两种，一种是对象
+    标签分轻量标签和附注标签，轻量标签是引用，附注标签是对象
+    
+```
+object fd61fc5d10a311ad261c9b1a2ff22b09faf0a776
+type commit
+tag v1.0
+tagger bitbite <bitbite@foxmail.com> 1497338311 +0800
+
+software goto 1.0
+```
+
+    object  指向被标签对象的指针
+    type    被标签对象类型
+    tag     标签
+    tagger  标签创建者信息和时间戳
+    [一个空行]
+    注释信息
 
 ## git 对象存储过程
 
@@ -365,10 +412,18 @@ f26fdbdc4eb8d65dc14e70b89ae5ef9bdf600363 Initial commit
 
 上述过程就是`git add`和`git commit`的实际执行过程：
 
-    update-index    将更改文件生成blob对象，并把blob对象注册到index区
-    write-tree      根据index区内容创建tree对象
-    commit-tree     根据tree对象创建commit对象
-    update-ref      更新分支引用指向最新的commit对象
+    update-index --> git add
+        将更改文件生成blob对象，并把blob对象更新到index区
+        
+    write-tree
+        根据index区内容创建tree对象
+        Git 会先计算每一个子目录的校验和，然后在 Git 仓库中把这些校验和保存为树对象
+        
+    commit-tree
+        根据tree对象创建commit对象
+        
+    update-ref
+        更新分支引用指向最新的commit对象
 
 
 

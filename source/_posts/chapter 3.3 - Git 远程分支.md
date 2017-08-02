@@ -1,6 +1,10 @@
-﻿# chapter 3.3 : git 远程分支
-
-tags ： AAA Book-ProGit git
+﻿title: chapter 3.3 - Git 远程分支
+categories:
+  - Git
+  - Book-ProGit
+tags:
+  - Git
+  - Git-Remote
 
 ---
 
@@ -9,6 +13,8 @@ tags ： AAA Book-ProGit git
 远程仓库是指托管在因特网或其他网络中的你的项目的版本库。
 
 你可以有好几个远程仓库，通常有些仓库对你只读，有些则可以读写。
+
+<!--more-->
 
 ### 添加远程库
 
