@@ -1,8 +1,12 @@
-﻿# svn 和 git
-
-标签（空格分隔）：AAA svn git 
+﻿title: SVN 和 Git
+categories: Git
+tags:
+  - Git
+  - SVN
 
 ---
+
+<!--more-->
 
 ### svn 和 git
 

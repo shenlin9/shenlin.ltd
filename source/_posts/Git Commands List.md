@@ -1,8 +1,14 @@
-﻿# git command list
-
-tags ： AAA git Book-ProGit commad-list
+﻿title: Git Commands List
+categories: Git
+tags:
+  - Git
+  - Git-Commands
 
 ---
+
+Git 常用命令列表
+
+<!--more-->
 
 ## 安装
 
