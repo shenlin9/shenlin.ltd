@@ -13,56 +13,9 @@ tags:
 
 ---
 
-## Git 与其他 VCS
+## Git 与 GUI
 
-### Git 与 Subversion
-
-Git 提供了和 Subversion 双向桥接的工具 `git svn` ：
-
-> 允许使用 Git 作为客户端连接到 Subversion
-> 可以使用 Git 所有本地功能，新建、合并分支，暂存，变基等
-> 可以像 Subversion 客户端一样连接到 Subversion 服务器
-> 是连接 VCS 和 DVCS 的桥梁
-
-### Git 与 Mercurial
-
-Mercurial 是除了 Git 外最流行的 DVCS。
-
-可以使用 Git 作为 Mercurial 托管仓库的客户端，再通过远程助手实现桥接 Mercurial， 
-
-项目的名字是 git-remote-hg，在 https://github.com/felipec/git-remote-hg 找到。
-
-### Git 与 Perforce
-
-混合使用 Perforce 与 Git 有两种选择。 
-
-第一个是 Perforce 官方制作的 “Git Fusion” 桥接，它可以将 Perforce 仓库中的子树表示为一个可读写的 Git 仓库，在服务器这边同步 Perforce 服务器与 Git 仓库。 
-
-http://www.perforce.com/git-fusion
-
-第二个是 git-p4，一个客户端桥接，允许将 Git 作为 Perforce 的客户端使用，而不用在 Perforce 服务器上做任何重新的配置，但不如 Git Fusion 灵活和完整。
-
-http://www.perforce.com/downloads/Perforce/20-User
-
-### Git 与 TFS
-
-Windows 上编写代码可能使用 Microsoft 的 Team Foundation Server (TFS)， 
-
-TFS 是一个包含工作项目检测与跟踪、支持 Scrum 与其他流程管理方法、代码审核、版本控制的协作套件。
-
-TFS 是服务器，它支持通过 Git 与它们自定义的 VCS 来管理源代码，这被他们称为 TFVC（Team Foundation Version Control）。
-
-Git 支持 TFS（自 2013 版本起）的部分新功能，所以在那之前所有工具都将版本控制部分称为 “TFS”，即使实际上他们大部分时间都在与 TFVC 工作。
-
-有两个工具实现 Git 与 TFS 工作：git-tf 与 git-tfs。
-
-Git-tfs （https://github.com/git-tfs/git-tfs）是一个 .NET 项目，它只能运行在 Windows 上（截至文章完成时）。
-
-Git-tf （https://gittf.codeplex.com）是一个 Java 项目，因此它可以运行在任何一个有 Java 运行时环境的电脑上。
-
-## Git 与 图形界面工具
-
-Git 的原生环境是终端，所以没有什么事情是图形界面客户端可以做而命令行客户端不能做的，命令行始终是可以完全操控仓库并发挥出全部功能和最新功能的地方。
+Git 的原生环境是命令行终端，所以没有什么事情是图形界面客户端可以做而命令行客户端不能做的，命令行始终是可以完全操控仓库并发挥出全部功能和最新功能的地方。
 
 对于某些儿任务而言，纯文本并不是最佳的选择，一个图形化的界面可能更适合。
 
@@ -267,7 +220,7 @@ Windows 中的普通命令行终端 cmd.exe 无法自定义 Git 使用体验，
 
 将会向你的 profile.ps1 文件添加适当的内容，Posh-Git 会在下次打开提示符时被启用。
 
-## Git 与编程语言
+## Git 与 编程语言
 
 Git 整合进应用程序，有三种选择：
 1. 启动一个 shell 来使用 Git 的命令行工具；
@@ -335,3 +288,51 @@ https://github.com/centic9/jgit-cookbook
 
 几个好的资源:
 http://stackoverflow.com/questions/6861881 
+
+## Git 与 其他VCS
+
+### Git 与 Subversion
+
+Git 提供了和 Subversion 双向桥接的工具 `git svn` ：
+
+> 允许使用 Git 作为客户端连接到 Subversion
+> 可以使用 Git 所有本地功能，新建、合并分支，暂存，变基等
+> 可以像 Subversion 客户端一样连接到 Subversion 服务器
+> 是连接 VCS 和 DVCS 的桥梁
+
+### Git 与 Mercurial
+
+Mercurial 是除了 Git 外最流行的 DVCS。
+
+可以使用 Git 作为 Mercurial 托管仓库的客户端，再通过远程助手实现桥接 Mercurial， 
+
+项目的名字是 git-remote-hg，在 https://github.com/felipec/git-remote-hg 找到。
+
+### Git 与 Perforce
+
+混合使用 Perforce 与 Git 有两种选择。 
+
+第一个是 Perforce 官方制作的 “Git Fusion” 桥接，它可以将 Perforce 仓库中的子树表示为一个可读写的 Git 仓库，在服务器这边同步 Perforce 服务器与 Git 仓库。 
+
+http://www.perforce.com/git-fusion
+
+第二个是 git-p4，一个客户端桥接，允许将 Git 作为 Perforce 的客户端使用，而不用在 Perforce 服务器上做任何重新的配置，但不如 Git Fusion 灵活和完整。
+
+http://www.perforce.com/downloads/Perforce/20-User
+
+### Git 与 TFS
+
+Windows 上编写代码可能使用 Microsoft 的 Team Foundation Server (TFS)， 
+
+TFS 是一个包含工作项目检测与跟踪、支持 Scrum 与其他流程管理方法、代码审核、版本控制的协作套件。
+
+TFS 是服务器，它支持通过 Git 与它们自定义的 VCS 来管理源代码，这被他们称为 TFVC（Team Foundation Version Control）。
+
+Git 支持 TFS（自 2013 版本起）的部分新功能，所以在那之前所有工具都将版本控制部分称为 “TFS”，即使实际上他们大部分时间都在与 TFVC 工作。
+
+有两个工具实现 Git 与 TFS 工作：git-tf 与 git-tfs。
+
+Git-tfs （https://github.com/git-tfs/git-tfs）是一个 .NET 项目，它只能运行在 Windows 上（截至文章完成时）。
+
+Git-tf （https://gittf.codeplex.com）是一个 Java 项目，因此它可以运行在任何一个有 Java 运行时环境的电脑上。
+

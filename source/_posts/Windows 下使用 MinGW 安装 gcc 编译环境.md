@@ -1,5 +1,3 @@
-# Windows 下使用 MinGW 安装 gcc 编译环境
-
 title: Windows 下使用 MinGW 安装 gcc 编译环境
 categories:
   - Windows

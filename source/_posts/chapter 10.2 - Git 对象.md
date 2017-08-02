@@ -1,11 +1,17 @@
----
-title: git 对象
-tags: git 
+# chapter 10.2 : Git 对象
+
+title: Git 对象
+categories:
+  - Git
+  - Book-ProGit
+tags:
+  - Git
+
 ---
 
 ## git 对象类型
 
-共3种类型
+共4种类型
 
 1. blob    数据对象
     内容没有固定格式

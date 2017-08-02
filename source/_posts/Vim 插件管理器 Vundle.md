@@ -1,7 +1,4 @@
-﻿# vim 安装插件管理器 vundle
-标签: AAA Vim Vundle
-
-title: Vim 安装插件管理器 Vundle
+﻿title: Vim 插件管理器 Vundle
 categories:
   - Vim
   - Vundle
@@ -10,7 +7,9 @@ tags:
   - Vundle
 ---
 
-vundle 表示 vim bundle，是一个 vim 的插件管理器
+vundle 表示 vim bundle，是一个 vim 的插件管理器。
+
+<!--more-->
 
 vundle 依赖于 git 和 curl，需要先安装它们，并且把他们的路径加入环境变量 PATH
 ```

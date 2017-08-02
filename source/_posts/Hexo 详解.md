@@ -1,5 +1,4 @@
 ﻿# Hexo 详解
-标签: AAA Hexo
 
 title: Hexo 详解
 categories: Hexo

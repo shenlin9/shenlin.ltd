@@ -1,10 +1,6 @@
-﻿# Windows PowerShell Chocolatey
-标签: AAA Windows PowerShell Chocolatey
-
-title: Windows PowerShell Chocolatey
+﻿title: Chocolatey
 categories:
   - Windows
-  - PowerShell
 tags:
   - Windows
   - PowerShell

@@ -1,8 +1,16 @@
-﻿# virtualbox
-
-标签（空格分隔）： AAA virtualbox
+﻿title: VirtualBox
+categories:
+  - Windows
+  - Virtualbox
+tags:
+  - Virtualbox
 
 ---
+
+oracle 公司的虚拟机软件 virtualbox 的基本设置和操作。
+
+<!--more-->
+
 http://blog.csdn.net/pkueecser/article/details/8836264
 
 全局设定中可以设置主机键 Host，一般为 [右Ctrl] [左Ctrl] [左Win] 键

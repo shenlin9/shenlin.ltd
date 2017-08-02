@@ -1,8 +1,30 @@
-﻿# git 高层命令
+﻿# chapter 10.1 : Git 底层命令和高层命令
 
-标签（空格分隔）： AAA Book-ProGit git
+title: Git 底层命令和高层命令
+categories:
+  - Git
+  - Book-ProGit
+tags:
+  - Git
 
 ---
+
+## 本质概述
+
+从根本上来讲 Git 是一个内容寻址（content-addressable）文件系统，并在此之上提供了一个版本控制系统的用户界面，但它同时也是一个非常强大且易用的工具。
+
+Git 是内容寻址文件系统，表示Git 的核心部分是一个简单的**键值对数据库（key-value data store）**。
+
+你可以向该数据库插入任意类型的内容，它会返回一个键值，通过该键值可以在任意时刻再次检索（retrieve）该内容。 
+
+## 底层命令和高层命令
+
+Git 最初是一套面向版本控制系统的工具集，而不是一个完整的、用户友好的版本控制系统，所以它还包含了一部分用于完成底层工作的命令。
+
+这些命令被设计成以 UNIX 命令行的风格连接在一起，抑或藉由脚本调用，来完成工作。
+
+这部分命令一般被称作“底层（plumbing）”命令，而那些更友好的命令则被称作“高层（porcelain）”命令。
+
 ## 关于名字
 
 以前有个软件叫GNU Interactive Tools，简称也是GIT，于是git就只能叫git-core了。
@@ -12,7 +34,9 @@
 ## 目录结构
 
 `git init` 时，Git 会创建一个 .git 目录。 这个目录包含了几乎所有 Git 存储和操作的对象。 如若想备份或复制一个版本库，只需把这个目录拷贝至另一处即可。
-.git 默认目录结构
+
+`.git` 默认目录结构
+
 ```
 $ ls -F1
 HEAD
@@ -23,12 +47,16 @@ info/
 objects/
 refs/
 ```
-Git 的核心组成部分
+
+Git 核心部分：
  
-    HEAD 文件
-    index 文件（尚待创建）
-    objects 目录
-    refs 目录
+> 
+HEAD 文件
+index 文件（尚待创建）
+objects 目录
+refs 目录
+
+Git 目录说明：
 
 |目录|说明|
 |-|-|

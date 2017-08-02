@@ -1,10 +1,101 @@
-﻿# Vim 基本操作
-
-title: Vim 基本操作
+﻿title: Vim 基础
 categories: Vim
 tags: Vim
 
 ---
+
+vim 的基本设置和基础操作
+
+<!--more-->
+
+## vim 环境变量
+
+//查看环境变量
+```
+:echo $HOME
+C:\Users\ssl
+
+:echo $VIM
+C:\Program Files\Vim
+
+:echo $VIMRUNTIME
+C:\Program Files\Vim\vim80
+```
+
+//查看路径
+```
+:set runtimepath
+:set rtp
+```
+
+//设置路径
+```
+:set rtp+=~/.vim/bundle/Vundle.vim
+:set rtp+=$ProgramFiles\Git\bin
+:set rtp+=$ProgramFiles\Git\mingw32\bin
+:set rtp+=$ProgramFiles\Git\mingw32\libexec\git-core
+```
+
+重新加载配置文件
+```
+//windows
+:source $VIM\_vimrc
+:so $VIM\_vimrc
+
+//linux
+:source ~\.vimrc
+:so ~\.vimrc
+```
+
+? MyDiff 已存在，要使用 ! 覆盖
+? source $VIMRUNTIME/vimrc_example.vim 作用
+? Pathogen 和 Vundle
+
+## python 环境
+
+vim 里执行命令输出如下说明支持 python 特性
+```
+:version
+...+python/dyn +python3/dyn..
+```
+
+vim 里执行命令输出如下说明已安装 python 环境
+```
+:echo has("python")
+1
+
+:echo has("python3")
+1
+```
+* 0 表示未安装 python 环境
+* 还发现个问题就是桌面上的文件使用 vim 打开，执行上述命令时返回0，其他目录则返回1
+* 未安装 python 环境，要先安装 python 再安装 vim
+* python 不要安装 3.6 版本，vim 不支持，安装 3.5 版本即开
+
+lua 等的检测是一样的
+
+## 查找和替换
+
+http://blog.csdn.net/zcube/article/details/42710141
+
+## 正则表达式
+
+http://www.cnblogs.com/RigorosLee/archive/2011/05/13/2045806.html
+
+|元字符|说明|
+|---|---|
+|.|匹配任意一个字符|
+|[abc]|匹配方括号中的任意一个字符。可以使用-表示字符范围， 如[a-z0-9]匹配小写字母和阿拉伯数字。|
+|[^abc]|在方括号内开头使用^符号，表示匹配除方括号中字符之外的任意字符。|
+|\d|匹配阿拉伯数字，等同于[0-9]。|
+|\D|匹配阿拉伯数字之外的任意字符，等同于[^0-9]。|
+|\x|匹配十六进制数字，等同于[0-9A-Fa-f]。|
+|\X|匹配十六进制数字，等同于[^0-9A-Fa-f]。|
+|\w|匹配单词字母，等同于[0-9A-Za-z_]。|
+|\W|匹配单词字母之外的任意字符，等同于[^0-9A-Za-z_]。|
+|\t|匹配<TAB>字符。|
+|\s|匹配空白字符，等同于[ \t]。|
+|\S|匹配非空白字符，等同于[^ \t]。|
 
 ## 转换大小写
 

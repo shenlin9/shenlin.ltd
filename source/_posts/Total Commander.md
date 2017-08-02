@@ -10,6 +10,10 @@ tags:
 
 ---
 
+Total Commander 是代替 Windows 资源管理器的一款软件。
+
+<!--more-->
+
 ## 快捷键
 
 F2 刷新来源窗口

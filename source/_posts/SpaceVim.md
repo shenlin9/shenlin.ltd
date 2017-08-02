@@ -1,5 +1,3 @@
-# SpaceVim
-
 title: SpaceVim
 categories:
   - Vim
@@ -11,6 +9,8 @@ tags:
 ---
 
 https://github.com/SpaceVim/SpaceVim
+
+<!--more-->
 
 ## 依赖包
 

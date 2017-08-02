@@ -236,3 +236,11 @@ git diff filename
 This time when we do a diff it will launch Meld with the right parameters and we will see our visual diff.
 
 If I just made your day a little better then thank me with a coffee:
+
+---
+
+    git bash 窗口上点鼠标右键--> options --> text --> local 设置为 zh_ch
+                                                    text 设置为 GBK
+
+重启 git bash 窗口即可
+

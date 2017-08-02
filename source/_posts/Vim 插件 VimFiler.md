@@ -1,6 +1,4 @@
-# VimFiler
-
-title: VimFiler
+title: Vim 插件 VimFiler
 categories:
   - Vim
   - VimFiler
@@ -9,6 +7,8 @@ tags:
   - VimFiler
 
 ---
+
+<!--more-->
 
 ## 配置项
 
