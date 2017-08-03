@@ -244,3 +244,22 @@ If I just made your day a little better then thank me with a coffee:
 
 重启 git bash 窗口即可
 
+-----
+
+
+    					                ________________
+    					                |
+    					                |	HEAD
+    					                |	 |
+    [working directory] 	[Index]		|	master
+    					                |	 |
+    					                |	93a378d
+    					                |	filev3
+    					                |______________
+
+---
+
+$ git ls-remote https://github.com/shenlin9/shenlin.ltd
+fatal: unable to access 'https://github.com/shenlin9/shenlin.ltd/': error setting certificate verify locations:
+  CAfile: C:/Program Files/Git/mingw32/ssl/certs/ca-bundle.crt
+  CApath: none
