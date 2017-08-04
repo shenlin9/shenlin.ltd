@@ -1,6 +1,4 @@
-# chapter 7.5 : Git 搜索
-
-title: Git 搜索
+title: chapter 7.5 - Git 搜索
 categories:
   - Git
   - Book-ProGit

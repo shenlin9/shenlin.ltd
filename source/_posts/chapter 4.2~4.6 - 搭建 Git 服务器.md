@@ -1,11 +1,14 @@
-﻿title: chapter 4.3 - 搭建 git 服务器
+﻿title: chapter 4.2,4.3 - 搭建 Git 服务器
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
+  - SSH
 
 ---
+
+<!--more-->
 
 ## 导出裸仓库
 
@@ -100,6 +103,8 @@ $ git init --bare --shared
 
 ## 设置协议
 
+https://help.github.com/articles/connecting-to-github-with-ssh/
+
 ### 配置 SSH 协议
 
 
@@ -116,7 +121,7 @@ $ git init --bare --shared
 ##### 保存位置
 
 linux 一般位于 `~/.ssh`
-windows 一般位于 `c:\users\username\.ssh`
+windows 一般位于 `$HOME\.ssh`
 
 ##### 生成公钥
 

@@ -1,6 +1,4 @@
-# chapter 8.2 : Git 属性
-
-title: Git 属性
+title: chapter 8.2 - Git 属性
 categories:
   - Git
   - Book-ProGit

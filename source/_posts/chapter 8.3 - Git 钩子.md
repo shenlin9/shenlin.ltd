@@ -1,6 +1,4 @@
-# chapter 8.3 : Git 钩子
-
-title: Git 钩子
+title: chapter 8.3 - Git 钩子
 categories:
   - Git
   - Book-ProGit

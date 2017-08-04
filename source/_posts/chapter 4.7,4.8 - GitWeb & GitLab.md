@@ -1,4 +1,4 @@
-﻿title: chapter 4.4 - gitweb & gitlab
+﻿title: chapter 4.7,4.8 - GitWeb & GitLab
 categories:
   - Git
   - Book-ProGit
@@ -6,6 +6,8 @@ tags:
   - Git
 
 ---
+
+<!--more-->
 
 ## gitweb
 

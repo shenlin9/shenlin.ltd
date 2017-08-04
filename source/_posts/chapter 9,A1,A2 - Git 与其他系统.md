@@ -1,6 +1,4 @@
-﻿# chapter 9,A1,A2 : Git 与其他系统
-
-title: Git 与其他系统
+﻿title: chapter 9,A1,A2 - Git 与其他系统
 categories:
   - Git
   - Book-ProGit

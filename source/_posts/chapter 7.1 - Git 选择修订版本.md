@@ -1,6 +1,4 @@
-﻿# chapter 7.1 : 选择修订版本
-
-title: 选择修订版本
+﻿title: chapter 7.1 - Git 选择修订版本
 categories:
   - Git
   - Book-ProGit
