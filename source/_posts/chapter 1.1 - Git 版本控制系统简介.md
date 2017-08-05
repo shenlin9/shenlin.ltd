@@ -1,6 +1,10 @@
-﻿# chapter 1.1: 版本控制系统简介
-
-标签（空格分隔）： AAA Book-ProGit git 
+﻿title: chapter 1.1 - 版本控制系统简介
+categories: 
+  - Git
+  - Book-ProGit
+tags: 
+  - Git
+  - DVCS
 
 ---
 

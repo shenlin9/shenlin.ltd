@@ -1,4 +1,4 @@
-﻿title: chapter 4.2,4.3 - 搭建 Git 服务器
+﻿title: chapter 4.2~4.6 - 搭建 Git 服务器
 categories:
   - Git
   - Book-ProGit

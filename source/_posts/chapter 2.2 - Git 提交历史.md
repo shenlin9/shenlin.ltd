@@ -1,6 +1,9 @@
-﻿# chapter 2.2: 提交历史
-
-tags ： AAA Book-ProGit git
+﻿title: chapter 2.2 - Git 提交历史
+categories:
+  - Git
+  - Book-ProGit
+tags:
+  - Git
 
 ---
 
