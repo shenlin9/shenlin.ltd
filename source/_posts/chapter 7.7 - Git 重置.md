@@ -9,6 +9,8 @@ tags:
 
 ---
 
+reset 和 checkout 都是在操作 Git 的三棵树。
+
 <!--more-->
 
 ## 三棵树
@@ -31,7 +33,7 @@ Working Directory : 工作目录
 
 ![](https://www.git-scm.com/book/en/v2/images/reset-start.png)
 
-根据选项不同，reset 的执行步骤也不同，最多 3 步：
+根据选项不同，reset 的执行步骤也不同，最多 3 步，每一步对应一棵树：
 
 `--soft` 把 HEAD 和 HEAD 指向的分支一起移动
 

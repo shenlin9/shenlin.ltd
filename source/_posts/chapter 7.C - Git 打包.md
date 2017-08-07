@@ -1,4 +1,4 @@
-title: chapter 7.12 - Git 打包
+title: chapter 7.C - Git 打包
 categories:
   - Git
   - Book-ProGit
