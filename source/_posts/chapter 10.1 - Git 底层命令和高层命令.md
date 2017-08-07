@@ -23,6 +23,63 @@ Git 最初是一套面向版本控制系统的工具集，而不是一个完整�
 
 这部分命令一般被称作“底层（plumbing）”命令，而那些更友好的命令则被称作“高层（porcelain）”命令。
 
+
+```
+$ git ls-files -s
+
+
+//查看类型
+$ git cat-file -t HEAD
+commit
+
+//查看内容
+$ git cat-file -p HEAD
+tree af8c345b595d21dc202d9673dd6d0f50c78ba4e1
+parent f1c74ad1942ec4c77a3cd1cb34585b9e833271ec
+author shenlin9 <bitbite@foxmail.com> 1501926645 +0800
+committer shenlin9 <bitbite@foxmail.com> 1501926645 +0800
+
+增加 Git打包 笔记
+
+
+//反向解析获取 HEAD 的 SHA
+$ git rev-parse HEAD
+ac5a2498d263114d59685470d89e095af011cf46
+
+//获取内容，和上面的一样
+$ git cat-file -p ac5a2498d263114d59685470d89e095af011cf46
+tree af8c345b595d21dc202d9673dd6d0f50c78ba4e1
+parent f1c74ad1942ec4c77a3cd1cb34585b9e833271ec
+author shenlin9 <bitbite@foxmail.com> 1501926645 +0800
+committer shenlin9 <bitbite@foxmail.com> 1501926645 +0800
+
+增加 Git打包 笔记
+
+
+//查看树对象的文件列表
+$ git cat-file -p af8c345b595d21dc202d9673dd6d0f50c78ba4e1
+100644 blob 063b0e4ce79bbd23403f7e8ebfb71fb7779f869a    .gitignore
+100644 blob adcee722021221c79611774c2df0b2b89548e504    .gitmodules
+100644 blob 2a7ae0322c3770cde5cc5cbd8c01bcca2ccb0ddc    README.md
+100644 blob dfb68d9133f43824e999af4b8be2a22fd304495d    _config.yml
+100644 blob ce8a1edfece3d0e0ad08c30d38b386daf5274bd5    package.json
+040000 tree fadf7ab7818d6053c708c5133a560cb3b4759281    scaffolds
+040000 tree b0b001a9959f93704a3b95f516fe892f16d271c0    source
+040000 tree 488f28d1e47c90cac01ccb1097d48b96aaf17d16    themes
+
+//更直接简单的查看方式
+$ git ls-tree HEAD
+100644 blob 063b0e4ce79bbd23403f7e8ebfb71fb7779f869a    .gitignore
+100644 blob adcee722021221c79611774c2df0b2b89548e504    .gitmodules
+100644 blob 2a7ae0322c3770cde5cc5cbd8c01bcca2ccb0ddc    README.md
+100644 blob dfb68d9133f43824e999af4b8be2a22fd304495d    _config.yml
+100644 blob ce8a1edfece3d0e0ad08c30d38b386daf5274bd5    package.json
+040000 tree fadf7ab7818d6053c708c5133a560cb3b4759281    scaffolds
+040000 tree b0b001a9959f93704a3b95f516fe892f16d271c0    source
+040000 tree 488f28d1e47c90cac01ccb1097d48b96aaf17d16    themes
+
+```
+
 ## 关于名字
 
 以前有个软件叫GNU Interactive Tools，简称也是GIT，于是git就只能叫git-core了。

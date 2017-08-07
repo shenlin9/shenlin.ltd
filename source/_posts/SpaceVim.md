@@ -314,6 +314,7 @@ Please read :help vimproc and make it.
 先使用 Mingw 安装 gcc 编译环境，具体步骤参见文章：[Windows 下使用 MinGW 安装 gcc 编译环境](Windows 下使用 MinGW 安装 gcc 编译环境.md)
 
 下载 vimproc 库，SpaceVim 已下载，省略
+
 ```
 //进入 vimproc 库目录
 cd C:\Users\ssl\.cache\vimfiles\repos\github.com\Shougo\vimproc.vim\src
