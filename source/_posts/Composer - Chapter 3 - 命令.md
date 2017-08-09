@@ -1,8 +1,16 @@
-﻿# php composer command
-
-标签（空格分隔）： AAA php composer command
+﻿title: Composer - Chapter 3 - 命令
+categories:
+  - PHP
+  - Composer
+tags:
+  - PHP
+  - Composer
 
 ---
+
+Composer 常用命令简介。
+    
+<!--more-->
 
 ### composer show [option] [vendor/package]
 
@@ -34,7 +42,7 @@ composer show --all
 
 
 ```
-composer show monolog/monologo
+composer show monolog/monolog
 ```
 列出本地已安装的monolog包的信息，版本号只显示当前版本
 

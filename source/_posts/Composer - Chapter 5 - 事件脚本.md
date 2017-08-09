@@ -1,8 +1,14 @@
-﻿# php composer scripts run-script
-
-Tags ： AAA php composer scripts run-script
+﻿title: Composer - Chapter 5 - 事件脚本
+categories:
+  - PHP
+  - Composer
+tags:
+  - PHP
+  - Composer
 
 ---
+    
+<!--more-->
 
 ## 概述
 
