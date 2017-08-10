@@ -7,10 +7,6 @@ tags:
   - Composer
 
 ---
-    
-<!--more-->
-
-## 概述
 
 root 包 composer.json 文件里的 root JSON 对象属性：scripts，可以定义一系列触发事件和对应的事件脚本，格式如下:
 ```
@@ -24,10 +20,12 @@ root 包 composer.json 文件里的 root JSON 对象属性：scripts，可以定
 
 也只有 root 包 composer.json 文件里定义的 scripts 才会执行，依赖包里定义的脚本不会被执行。
 
+<!--more-->
 
 ## 事件脚本
 
-* 可以执行 shell 命令
+### 执行 shell 命令
+
 ```
 {
     "scripts":{
@@ -35,7 +33,9 @@ root 包 composer.json 文件里的 root JSON 对象属性：scripts，可以定
     }
 }
 ```
-* 可以执行 PHP 类静态方法
+
+### 执行 PHP 类静态方法
+
 ```
 {
     "scripts":{
@@ -43,11 +43,11 @@ root 包 composer.json 文件里的 root JSON 对象属性：scripts，可以定
     }
 }
 ```
-当然前提是确保 PHP 类文件存放的位置能被 Composer 自动载入，则`autoload`属性必须是 psr-0、psr-4、classmap 定义的。
+* 当然前提是确保 PHP 类文件存放的位置能被 Composer 自动载入，则`autoload`属性必须是 psr-0、psr-4、classmap 定义的。
+* 当事件触发时，被调用的 PHP 静态方法会收到一个参数，一个 Composer\EventDispatcher\Event 对象，对象有 getName() 方法可以获取事件名称，getComposer() 方法获取当前Composer实例，getIO()方法获取当前的输入输出流。
 
-*当事件触发时，被调用的 PHP 静态方法会收到一个参数，一个 Composer\EventDispatcher\Event 对象，对象有 getName() 方法可以获取事件名称，getComposer() 方法获取当前Composer实例，getIO()方法获取当前的输入输出流。*
 
-* 单条脚本可以定义为字符串，多条脚本必须定义为数组，每个数组元素包含一条脚本；
+单条脚本可以定义为字符串，多条脚本必须定义为数组，每个数组元素包含一条脚本；
 ```
 {
     "scripts":{
@@ -58,7 +58,11 @@ root 包 composer.json 文件里的 root JSON 对象属性：scripts，可以定
     }
 }
 ```
-* composer 预定义了可触发的事件名列表（见本文下面章节），如果写的事件名不在列表中，则表示自定义命令，例如：
+
+### 执行自定义命令
+
+composer 预定义了可触发的事件名列表，如果写的事件名不在列表中，则表示自定义命令，例如：
+
 ```
 {
     "scripts":{
@@ -67,33 +71,37 @@ root 包 composer.json 文件里的 root JSON 对象属性：scripts，可以定
     }
 }
 ```
-pre-install-cmd 是系统预定义事件名，会被系统自动触发；
 
+pre-install-cmd 是系统预定义事件名，会被系统自动触发；
 custom-cmd 则是用户自定义命令，不会被系统自动触发，但可以像执行 composer 内容命令一样运行：
 
 ```
 $ composer custom-cmd
 ```
-* 也可以使用系统提供的命令 run-script ，有更丰富的功能
 
-执行命令：
+### 使用 run-script
+
+运行命令
 ```
 $ composer run-script pre-install-cmd
 $ composer run-script custom-cmd
 ```
-查看用户自定义命令列表：
+
+查看用户自定义命令列表
 ```
 $ composer run-script -l
 ```
 
->  Question:
-> 
->  什么意思？
-> 
-You can also give additional arguments to the script handler by appending -- followed by the handler arguments. e.g. composer run-script post-install-cmd -- --check will pass--check along to the script handler. Those arguments are received as CLI arg by CLI handlers, and can be retrieved as an array via $event->getArguments() by PHP handlers.
+传递参数
+```
+$ composer run-script post-install-cmd -- --check
+```
+* 参数作为数组传递给了 CLI 处理程序，通过 `$event->getArguments()` 可以读取
 
 
-* 可以使用 @ 符号复用命令：
+### 使用 @ 符号复用命令
+
+#### 使用 @ 符号复用自定义命令
 ```
 {
     "scripts":{
@@ -106,7 +114,8 @@ You can also give additional arguments to the script handler by appending -- fol
 }
 ```
 
-* 可以使用 @ 符号运行 composer 命令
+#### 使用 @ 符号运行 composer 命令
+
 ```
 {
     "scripts":{
@@ -118,7 +127,7 @@ You can also give additional arguments to the script handler by appending -- fol
 }
 ```
 
-* 可以使用 @ 符号运行 php 脚本
+#### 使用 @ 符号运行 php 脚本
 ```
 {
     "scripts":{
@@ -138,7 +147,7 @@ You can also give additional arguments to the script handler by appending -- fol
     }
 }
 ```
-test3 和 test4 都不可以
+* test3 和 test4 都不可以
 
 >  Question:
 > 

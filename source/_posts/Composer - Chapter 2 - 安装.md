@@ -18,11 +18,11 @@ php5.3.2+以上版本
 :   php的一些儿设置和编译时的选项是必须的，如启用openssl,zlib支持，有不兼容的地方时，安装程序installer会提出警告
 
 VCS:Version Control System
-:   资源库的一种形式是源码库，composer将直接对接目标库的VCS获取源码进行安装，而你也必须安装目标库对应的VCS，常见VCS软件有：git,subversion,hg,fossil
+:   资源库的一种形式是源码库，composer将直接对接目标库的 VCS 获取源码进行安装，而你也必须安装目标库对应的VCS，常见VCS软件有：git,subversion,hg,fossil
 
 ## 安装
 
-### 1. 下载安装程序：
+### 下载安装程序：
 
 ```
 $ wget https://getcomposer.org/installer
@@ -32,7 +32,7 @@ $ wget https://getcomposer.org/installer
 $ php -r "readfile('https://getcomposer.org/installer');" | php
 ```
 
-### 2. 运行安装程序：
+### 运行安装程序：
 
 installer是php文件
 
@@ -56,7 +56,7 @@ installer将会检测php的设置和编译时的选项，如是否安装并启�
 $ curl -sS https://getcomposer.org/installer | php
 ```
 
-### 3. 运行composer
+### 运行composer
 
 composer.phar是php的归档文件，可直接运行，无需php解析
 
@@ -72,26 +72,65 @@ $ composer
 ```
 
 composer运行正常的话则会返回一个可用命令的列表
-
-
-
-
-
-
-
-
-source源定义分两种：dist和source
-
-    dist 指向已经发行的稳定版本的资源库
-    source 指向开发中源代码库
-    
-
-可以直接命令行安装库：
 ```
-$ composer require mustache/mustache
+$ composer
+   ______
+  / ____/___  ____ ___  ____  ____  ________  _____
+ / /   / __ \/ __ `__ \/ __ \/ __ \/ ___/ _ \/ ___/
+/ /___/ /_/ / / / / / / /_/ / /_/ (__  )  __/ /
+\____/\____/_/ /_/ /_/ .___/\____/____/\___/_/
+                    /_/
+Composer version 1.5.1 2017-08-09 16:07:22
+
+Usage:
+  command [options] [arguments]
+
+Options:
+  -h, --help                     Display this help message
+  -q, --quiet                    Do not output any message
+  -V, --version                  Display this application version
+      --ansi                     Force ANSI output
+      --no-ansi                  Disable ANSI output
+  -n, --no-interaction           Do not ask any interactive question
+      --profile                  Display timing and memory usage information
+      --no-plugins               Whether to disable plugins.
+  -d, --working-dir=WORKING-DIR  If specified, use the given directory as working directory.
+  -v|vv|vvv, --verbose           Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+Available commands:
+  about           Shows the short information about Composer.
+  archive         Creates an archive of this composer package.
+  browse          Opens the package's repository URL or homepage in your browser.
+  clear-cache     Clears composer's internal package cache.
+  clearcache      Clears composer's internal package cache.
+  config          Sets config options.
+  create-project  Creates new project from a package into given directory.
+  depends         Shows which packages cause the given package to be installed.
+  diagnose        Diagnoses the system to identify common errors.
+  dump-autoload   Dumps the autoloader.
+  dumpautoload    Dumps the autoloader.
+  exec            Executes a vendored binary/script.
+  global          Allows running commands in the global composer dir ($COMPOSER_HOME).
+  help            Displays help for a command
+  home            Opens the package's repository URL or homepage in your browser.
+  info            Shows information about packages.
+  init            Creates a basic composer.json file in current directory.
+  install         Installs the project dependencies from the composer.lock file if present, or falls back on the composer.json.
+  licenses        Shows information about licenses of dependencies.
+  list            Lists commands
+  outdated        Shows a list of installed packages that have updates available, including their latest version.
+  prohibits       Shows which packages prevent the given package from being installed.
+  remove          Removes a package from the require or require-dev.
+  require         Adds required packages to your composer.json and installs them.
+  run-script      Runs the scripts defined in composer.json.
+  search          Searches for packages.
+  self-update     Updates composer.phar to the latest version.
+  selfupdate      Updates composer.phar to the latest version.
+  show            Shows information about packages.
+  status          Shows a list of locally modified packages.
+  suggests        Shows package suggestions.
+  update          Updates your dependencies to the latest version according to composer.json, and updates the composer.lock file.
+  validate        Validates a composer.json and composer.lock.
+  why             Shows which packages cause the given package to be installed.
+  why-not         Shows which packages prevent the given package from being installed.
 ```
-发现composer自动更改了 composer.json 和 composer.lock 文件，增加了新依赖的信息
-
-
-
-
