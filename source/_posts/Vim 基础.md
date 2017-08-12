@@ -32,6 +32,20 @@ modifiable 关闭时不允许更改缓存内容，也不允许更改 `fileformat
 :autocmd BufWinEnter * setlocal modifiable
 ```
 
+## 寄存器
+
+http://www.cnblogs.com/bwangel23/p/4421957.html
+
+显示寄存器列表
+```
+:reg
+```
+
+粘贴寄存器内容
+```
+"<n>p
+```
+
 ## 跳转
 
 http://easwy.com/blog/archives/advanced-vim-skills-advanced-move-method/

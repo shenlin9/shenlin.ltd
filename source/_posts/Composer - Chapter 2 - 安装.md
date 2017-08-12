@@ -31,48 +31,73 @@ $ wget https://getcomposer.org/installer
 ```
 $ php -r "readfile('https://getcomposer.org/installer');" | php
 ```
+* 若 readfile 有错误提示，就使用 http 链接或者在 php.ini 中开启 php_openssl.dll
 
 ### 运行安装程序：
 
-installer是php文件
+installer是php文件，将会检测php的设置和编译时的选项，如是否安装并启用openssl,zlib等，任何不兼容都会提出警告，因此不建议直接下载composer.phar
+
+检测通过后将下载composer.phar文件到当前目录
 
 ```
 $ php installer
 ```
 
-也可以指定安装目录和文件名：
+也可以指定安装目录、文件名和版本号：
 
 ```
-$ php installer --install-dir=~/myproject/ --filename=composer
+$ php installer --install-dir=bin --filename=composer  --version=1.0.0-alpha8
 ```
-
-installer将会检测php的设置和编译时的选项，如是否安装并启用openssl,zlib等，任何不兼容都会提出警告，因此不建议直接下载composer.phar
-
-检测通过后将下载composer.phar文件到当前目录
 
 上面两步也可以这样一步执行
 
 ```
-$ curl -sS https://getcomposer.org/installer | php
+$ curl -sS https://getcomposer.org/installer | php --install-dir=bin --filename=composer
 ```
+
+#### 程序里安装 Composer 
+
+验证签名并安装
+```
+#!/bin/sh
+
+EXPECTED_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig)
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+ACTUAL_SIGNATURE=$(php -r "echo hash_file('SHA384', 'composer-setup.php');")
+
+if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]
+then
+    >&2 echo 'ERROR: Invalid installer signature'
+    rm composer-setup.php
+    exit 1
+fi
+
+php composer-setup.php --quiet
+RESULT=$?
+rm composer-setup.php
+exit $RESULT
+```
+??? 为什么从官网下载的 installer 还要验证签名
 
 ### 运行composer
 
 composer.phar是php的归档文件，可直接运行，无需php解析
-
 ```
 $ ./composer
 ```
 
 将composer目录加入$PATH 或 直接移入bin目录使用更方便
-
 ```
 $ mv composer.phar /usr/local/bin/composer
+
 $ composer
 ```
 
 composer运行正常的话则会返回一个可用命令的列表
 ```
+$ composer -V
+Composer version 1.5.1 2017-08-09 16:07:22
+
 $ composer
    ______
   / ____/___  ____ ___  ____  ____  ________  _____

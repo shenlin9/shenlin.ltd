@@ -39,22 +39,31 @@ composer涉及的几个概念：
 
 包里的内容不都是以文件的形式存在的，如 metapackage，不包含任何文件不会向文件系统写入任何东西，是一个空包，包含的是依赖需求并会触发依赖的安装。
 
+### project
+
+每个 project 都是一个 package，只是 project 是一个没有名字的 package。
 
 ### composer package
 
-把一个 composer.json 文件放在目录中，那么整个目录就是一个 composer 包，composer.json 文件所在的项目根目录就是 root 包。
+composer.json 文件是项目定义所依赖的 composer 包的配置文件，把一个 composer.json 文件放在目录中，那么整个目录就是一个 composer 包，composer.json 文件所在的项目根目录称为 root 包。
 
-composer包额外包含一些儿元数据，如 source 源的定义，指明了哪里获得资源包。
+一个 composer 包可以只定义自己的依赖，也可以在定义 name 属性后被其他 composer 包依赖，后者被称为 composer 资源包。
 
-composer 包通过在 composer.json 文件中添加 require 属性定义依赖，通过添加 name 属性提供依赖给其他项目的 composer 使用， 是否提供依赖给其他项目的 composer 安装就在于有没有 name 属性，没有 name 属性则表示不提供依赖。
-???到底有没有 description
-composer.json 文件里提供了 "name","description" 属性的即为资源包
+composer 包通过在 composer.json 文件中添加 require 属性定义依赖，通过添加 name 属性使得包可以被安装，即可以提供依赖给其他项目的 composer 使用， 是否提供依赖给其他项目的 composer 安装就在于有没有 name 属性，没有 name 属性则表示不提供依赖，注意 version 不是必须的，像使用 VCS 管理的包更不能指定 version，会和 tag 冲突。
 ```
 {
-    "name":"vendor/package",
-    "description","lalalalalalaaa"
+    "name": "acme/hello-world",
+    "require": {
+        "monolog/monolog": "1.0.*"
+    }
 }
 ```
+
+因此发布一个 composer 包的步骤：
+
+    1.项目下添加 composer.json 文件
+    2.composer.json 文件里定义包名，即 name 属性
+    3.放到一个可供访问的地址
 
 ### root package
 
@@ -83,8 +92,7 @@ composer.json 文件里提供了 "name","description" 属性的即为资源包
 ```
 $ composer show --platform
 composer-plugin-api 1.1.0    The Composer Plugin API
-…………
-…………
+…… …… …… ……
 ext-xml             7.1.5    The xml PHP extension
 ext-xmlreader       7.1.5    The xmlreader PHP extension
 ext-xmlwriter       7.1.5    The xmlwriter PHP extension
@@ -110,7 +118,7 @@ php-zts             7.1.5    The PHP interpreter, with Zend Thread Safety
 
 资源库是包的来源。它是一个 `包名/版本号` 的列表。
 
-默认只有 packgist.org 是在 composer 中注册的。packagist.org 也是 Composer 的主要资源库。
+默认只有 packgist.org 是在 composer 中注册的。 使用 packagist 的好处是依赖包的用户不用每次都设置 repositories 属性。packagist.org 也是 Composer 的主要资源库。
 
 资源库的定义仅可用于“root 包”，而在你依赖的包中定义的资源库将不会被加载。
 
