@@ -590,6 +590,8 @@ $ composer config repositories.foo '{"type": "vcs", "url": "http://svn.example.o
 
 ## create-project
 
+从现有的包创建新项目
+
 默认创建 vendor/package 中的 package 文件夹
 ```
 composer create-project laravel/laravel
@@ -599,6 +601,8 @@ composer create-project laravel/laravel
 ```
 composer create-project slim/slim slim-2.6 2.6.2
 ```
+
+??? 这个和 init 有什么不同
 
 ## dump-autoload
 
