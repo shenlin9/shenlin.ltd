@@ -10,6 +10,8 @@ tags:
 
 composer update 会先删除原来安装的版本，再安装 composer.json文件指定的版本
 
+composer 在内部是将同一个包的不同版本都看做是独立不相干的包，这点对于使用 Composer 不重要，但更改 Composer 时这点儿很重要。
+
 ## 目录结构
 
 全局配置文件

@@ -1,4 +1,4 @@
-﻿title: Composer - Chapter 4 - 资源包
+﻿title: Composer - Chapter 7 - 资源包
 categories:
   - PHP
   - Composer
