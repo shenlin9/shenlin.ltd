@@ -32,6 +32,9 @@ let g:vimfiler_enable_auto_cd = 1
     N			新建文件
     r           重命名
     q			隐藏
+    L			驱动器列表
+    ~			切换到家目录
+    \			切换到根目录（/ 还是vim查找）
 
     *			<Plug>(vimfiler_toggle_mark_all_lines)
     #			<Plug>(vimfiler_mark_similar_lines)
@@ -49,9 +52,6 @@ let g:vimfiler_enable_auto_cd = 1
     x			<Plug>(vimfiler_execute_system_associated)
     X			<Plug>(vimfiler_execute_vimfiler_associated)
     h			<Plug>(vimfiler_smart_h)
-    L			<Plug>(vimfiler_switch_to_drive)
-    ~			<Plug>(vimfiler_switch_to_home_directory)
-    \			<Plug>(vimfiler_switch_to_root_directory)
     &			<Plug>(vimfiler_switch_to_project_directory)
     <C-j>			<Plug>(vimfiler_switch_to_history_directory)
     <BS>			<Plug>(vimfiler_switch_to_parent_directory)

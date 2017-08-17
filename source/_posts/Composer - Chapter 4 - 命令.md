@@ -219,6 +219,8 @@ $ cat .gitignore
 
 ## update
 
+会先删除原来安装的版本，再安装 composer.json文件指定的版本
+
 支持通配符
 
 ```

@@ -12,7 +12,23 @@ tags:
     
 <!--more-->
 
-## packages.json 的 schema
+## 资源库类型
+
+资源库有 4 种类型：composer, vcs, pear, package
+
+### composer
+
+composer 类型是资源库的主要类型，默认资源库 packagist.org 就是 composer 类型的资源库
+
+#### packages.json
+
+composer 类型资源库使用一个 `packages.json` 文件来包括包的元数据，
+
+而引用 Composer 资源库时使用 `packages.json` 文件所在目录的地址即可，
+
+如 packagist 的 `packages.json` 文件地址为 https://packagist.org/packages.json
+
+则引用 packagist 使用地址：https://packagist.org/
 
 https://packagist.org/packages.json
 ```
@@ -165,6 +181,28 @@ https://packagist.org/p/zz/zz$7fd780b8e8995f01adfc0b178202df43f85381ca8915d43ce9
 }
 ```
 
+### vcs
+
+### pear
+
+### package
+
 ## 创建自己的资源库
 
 ## 禁用 Packagist
+
+通过命令全局禁用
+```
+$ composer config -g repo.packagist false
+```
+
+通过配置文件禁用
+```
+{
+    "repositories": [
+        {
+            "packagist.org": false
+        }
+    ]
+}
+```

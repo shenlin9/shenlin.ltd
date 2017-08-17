@@ -8,8 +8,6 @@ tags:
 
 ---
 
-composer update 会先删除原来安装的版本，再安装 composer.json文件指定的版本
-
 composer 在内部是将同一个包的不同版本都看做是独立不相干的包，这点对于使用 Composer 不重要，但更改 Composer 时这点儿很重要。
 
 ## 目录结构
@@ -66,7 +64,7 @@ $ composer install --prefer-source
 $ composer install --prefer-dist
 ```
 * --prefer-dist   distribution，强制从已经发行的稳定版本资源库安装，即使是 dev 版本
-* --prefer-source 强制从开发中的源代码库安装，包含了 VCS 信息
+* --prefer-source 强制从开发中的源代码库安装，包含了 VCS 信息我们中的许多人已然忘却
 
 ## 涉及到的包
 
