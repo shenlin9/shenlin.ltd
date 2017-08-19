@@ -210,7 +210,6 @@ class Command extends BaseCommand
 ```
 * `custom-plugin-command` 现在可以使用 Composer 运行了
 
-
 ## 使用插件
 
 在运行`composer install`命令安装完毕插件之后即自动加载，
@@ -220,3 +219,5 @@ class Command extends BaseCommand
 使用 `composer global` 命令安装在 `COMPOSER_HOME` 目录中的插件会在当前项目插件之前加载。
 
 使用 `--no-plugins` 选项可以不加载已安装的插件，当有插件出错你想更新或卸载它时特别有用。
+
+## 
