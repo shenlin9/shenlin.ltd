@@ -11,12 +11,16 @@ vundle 表示 vim bundle，是一个 vim 的插件管理器。
 
 <!--more-->
 
+## 安装依赖包
+
 vundle 依赖于 git 和 curl，需要先安装它们，并且把他们的路径加入环境变量 PATH
 ```
 C:\Program Files\Git\bin;
 C:\Program Files\Git\mingw32\bin;
 C:\Program Files\Git\mingw32\libexec\git-core;
 ```
+
+## 安装 Vundle
 
 使用 git 把 vundle 库克隆到目标文件夹
 ```
@@ -27,6 +31,8 @@ git clone https://github.com/VundleVim/Vundle.vim.git %USERPROFILE%/.vim/bundle/
 //linux 安装
 $ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 ```
+
+## 增加插件配置
 
 打开配置文件
 ````
@@ -42,15 +48,15 @@ vim ~/.vimrc
 set nocompatible
 filetype off
 
-//把 vundle 路径写入 vim 的 runtimepath
+"把 vundle 路径写入 vim 的 runtimepath
 set rtp+=~/.vim/bundle/Vundle.vim
 
 call vundle#begin()
 
-//安装 vundle 本身
+"安装 vundle 本身
 Plugin 'VundleVim/Vundle.vim'
 
-//安装的一个 markdown 插件
+"安装的一个 markdown 插件
 Plugin 'iamcco/mathjax-support-for-mkdp'
 Plugin 'iamcco/markdown-preview.vim'
 
@@ -68,6 +74,8 @@ filetype plugin indent on
 
 :PluginList
 ```
+
+## 安装插件
 
 安装插件
 ```
