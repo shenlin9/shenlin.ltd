@@ -719,3 +719,282 @@ $ cpp test.c
 * 把定义的常量替换为定义的真正数值
 
 ## 编码风格
+
+代码是写给人看的，顺便给机器去执行。
+
+### 空白
+
+双目运算符两侧加空格，单目运算符和操作数之间不加空格
+```
+i = i + 1;
+i < 1
+!(i < 1)
+i++
+-x
+&a
+```
+
+后缀运算符和操作数之间不加空格
+```
+func(arg)
+arr[2]
+struct1.item1
+```
+
+关键字 if, while, for 和后面的左括号之间加空格，括号内的表达式要紧贴空格
+```
+if (i > 1)
+for (i = 1; i < 10; i++)
+while (i > 1)
+```
+
+逗号和分号之后要加空格，是英文的写作习惯
+```
+for (int i = 0; i < 10; i++)
+func(arg1, ar2)
+```
+
+为了突出优先级也可以紧凑写
+```
+for (int i=0; i<10; i++)
+```
+
+但不能误导运算符优先级
+```
+a||b && c
+```
+
+### 缩进
+
+unix 系统标准终端是 24 行 80 列，接近或超过 80 字符要折行，且折行后要使用空格对齐上面的参数会表达式
+```
+if (a > b
+    && c > d
+    && e > f)
+
+foo(sqrt(x*x + y*y),
+    a[i-1] + b[i-1] + c[i-1])
+```
+
+较长字符串写成多行
+```
+printf("this is a very long sentence,"
+       "and better make a new line."
+);
+```
+* C 编译器会自动把相邻的字符串连接在一起
+
+变量定义时使用 tab 对齐
+```
+int j;
+char str;
+double l;
+float f;
+
+//对比
+
+int     j;
+char    str;
+double  l;
+float   f;
+```
+
+### 其他
+
+带语句块的 switch, for, while, if, else 的 `{}` 要写在关键字同一行
+但是函数的'{}'要独占一行
+```
+if (i > 1) {
+
+} else if {
+
+}
+
+int getName(void)
+{
+
+}
+```
+
+switch 语句的 case, default 不缩进，标号下面的语句缩进
+```
+switch (i) {
+case 1:
+    printf("one");
+    break;
+case 2:
+    printf("two");
+    break;
+case 3:
+    printf("three");
+    break;
+default:
+    printf("others");
+}
+```
+
+goto 语句的标号始终写在行首，不论标号下的缩进多少
+```
+function test()
+{
+    if (i > 1) {
+        goto Err; 
+    }
+
+    if (i < 1) {
+        if (j > 1) {
+Err:
+            printf("err");
+        }
+    }
+}
+```
+
+代码中每个逻辑段使用一个空行隔开，如头文件、全局变量定义、函数定义之间
+```
+#include <stdio.h>
+#include <stdlib.h>
+
+int wheels  = 4;
+int doors   = 2;
+
+int main(void)
+{
+
+}
+
+int test(void)
+{
+
+}
+```
+
+函数内部，根据相关性用空行分隔，如变量定义之后、return 语句之前加空行
+```
+int test()
+{
+    int wheels  = 4;
+    int doors   = 2;
+
+    some logic here
+    some logic here
+    some logic here
+
+    another logic here
+    another logic here
+    another logic here
+
+    return 1;
+}
+```
+
+### 注释
+
+单行注释
+```
+/* 左右分别有两个空格把注释内容和界定符隔开 */
+```
+
+多行注释
+```
+/* 
+ * 第一行和最后一行不写注释内容
+ * 每一行注释内容前都有空格和注释符隔开
+ * 以米字对齐
+ */
+```
+
+注释使用场合
+```
+/* 
+ * 整个源文件的顶部注释
+ * 顶头写不缩进
+ * 包括了模块信息
+ * 作者、版本历史
+ * 等
+ */
+
+/**
+ * 函数注释
+ * 顶头写不缩进
+ * 和函数定义之间不留空行
+ * 说明函数的功能、参数、返回值、错误码等
+ */
+int rollWheels(void)
+{
+
+    /* 语句组注释：写在语句组上侧，和语句组之间不留空行，缩进和语句组相同 */
+    some code here
+    some code here
+    some code here
+    some code here
+
+    some code here
+    some code here  /* 代码行右侧简短注释，一般为单行，对当前代码行做说明，和代码之间空格隔开，最好所有右侧注释可以对齐 */
+    some code here
+}
+
+
+/*
+ * 复杂的结构体定义特别需要注释
+ * 根据说明需要，可以包括结构体本身的注释
+ * 还可以包括语句组注释，行右侧注释
+ */
+struct runqueue{
+
+    /*
+    * This is part of a global counter where only the total sum
+    * over all CPUs matters. A task can increase this counter on
+    * one CPU and if it got migrated afterwards it may decrease
+    * it on another CPU. Always updated under the runqueue lock:
+    */
+    unsigned long nr_uninterruptible;
+
+#ifdef CONFIG_SMP
+    struct sched_domain *sd;
+
+    /* For active balancing */
+    int active_balance;
+    int push_cpu;
+
+    task_t *migration_thread;
+    struct list_head migration_queue;
+    int cpu;
+#endif
+};
+
+/*
+ * 复杂的宏定义和变量声明也需要注释，举例：
+ */
+
+/* TICK_USEC_TO_NSEC is the time between ticks in nsec assuming real ACTHZ and */
+/* a value TUSEC for TICK_USEC (can be set bij adjtimex) */
+#define TICK_USEC_TO_NSEC(TUSEC) (SH_DIV (TUSEC * USER_HZ * 1000,
+ACTHZ, 8))
+
+/* some arch's have a small-data section that can be accessed register-relative
+ * but that can only take up to, say, 4-byte variables. jiffies being part of
+ * an 8-byte variable may not be correctly accessed unless we force the issue
+*/
+#define __jiffy_data __attribute__((section(".data")))
+
+/*
+ * The 64-bit value is not volatile - you MUST NOT read it
+ * without sampling the sequence number in xtime_lock.
+ * get_jiffies_64() will do this for you as appropriate.
+ */
+extern u64 __jiffy_data jiffies_64;
+extern unsigned long volatile __jiffy_data jiffies;
+```
+
+关于函数注释：
+* 函数内的语句组注释和行右侧注释要尽可能少用
+* 原因是注释是为了说明注释的代码能做什么，而不是为了说明是怎么做的
+* 代码写的清晰，怎么做一目了然，如果需要注释才能解释清楚，说明代码可读性差
+* 因此特别需要提醒注意的地方才应该用函数内注释
+
+### 标识符命名
+
+### 函数
+
+### 缩进工具
