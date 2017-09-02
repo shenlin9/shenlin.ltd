@@ -3,8 +3,9 @@ NetBios 和 SMB不可路由，即不能用在互联网上
 nmbd进程：浏览共享即查看linux服务器共享的文件
 	  计算机名称解析即通过linux服务器的名称而不是IP来访问
 
-#注释的是说明信息
-;注释的是选项
+`#`注释的是说明信息
+
+`;`注释的是选项
 
 security=指定安全模式
 	1、share  	无权限验证
@@ -36,8 +37,8 @@ writable = no 只读 yes 可读可写
 	也可写为writeable
 
 Linux两种防火墙；
-1、Netfilter/Iptables	#iptables -F
-2、SELinux		#setsebool -P use_samba_home_dirs on
+1、Netfilter/Iptables	`#iptables -F`
+2、SELinux		`#setsebool -P use_samba_home_dirs on`
 				      samba_enable_home_dirs 
 
 			 gesebool -a | grep samba

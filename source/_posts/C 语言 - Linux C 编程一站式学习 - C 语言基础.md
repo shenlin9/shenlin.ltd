@@ -1,9 +1,47 @@
----
-title: C 语言 - Linux C 编程一站式学习
-categories: C语言
-tags: C语言
+title: C 语言 - Linux C 编程一站式学习 - C 语言基础
+categories: C 语言
+tags: C 语言
 
 ---
+
+<!--more-->
+
+## 程序的基本概念
+
+
+## 常量、变量、表达式
+
+
+## 简单函数
+
+
+## 深入理解函数
+
+
+## 分支语句
+
+
+## 循环语句
+
+
+## 结构体
+
+
+## 数组
+
+
+## 编码风格
+
+
+## gdb
+
+
+## 排序和查找
+
+
+## 栈和队列
+
+-----------------------------------------------------------------------------------------------------
 
 ## 学习一门编程语言
 
@@ -28,6 +66,13 @@ Linux 平台使用最广泛的 C 函数库是 glibc，它提供了一组头文�
 使用数学函数需要包含头文件 math.h，它位于 libm.so 库文件中，编译时需要加 `-lm` 参数来告诉编译器去这个库文件中找
 
 但大部分常用的函数位于 libc.so 库文件中，但编译时无需额外参数，是因为 gcc 默认已经添加了 `-lc` 选项
+
+## char
+
+```
+printf("%d",'3');       //输出 51，是字符 3 的 ASCII 码值
+printf("%d",'3'-'0');   //输出 3，字符'3'减去字符'0k后转换为整数值 3
+```
 
 ## main 函数
 
@@ -199,6 +244,9 @@ int main(void){
 ```
 
 ## 取模和整除
+
+???取模和取余???
+https://wenku.baidu.com/view/7d796163ddccda38376baf58.html
 
 % 取模运算符，即两个数相除的余数，结果的符号总是和被除数相同
 ```
@@ -995,6 +1043,209 @@ extern unsigned long volatile __jiffy_data jiffies;
 
 ### 标识符命名
 
-### 函数
+标识符要清晰明了，可以使用完整单词和易于理解的缩写，一些儿缩写惯例：
+* count cnt
+* block blk
+* length len
+* window win
+* message msg
+* number nr
+* temporary temp tmp
+* internationalization i18n
+* trans x，如 transmit 缩写为 xmt
+
+变量、函数、类型都采用全小写加下划线，如 函数名 radix_tree_insert， 类型名 struct radix_tree_root
+
+常量、宏定义、枚举常量都采用全大写加下划线，如 RADIX_TREE_MAP_SHIFT
+
+全局变量和全局函数的命名要详细，因为在整个项目的很多源文件都要用到，可以多几个单词和下划线，如 radix_tree_insert
+
+不推荐使用大小写混合的驼峰命名法 CamelCase （以上都是 linux 内核的编码规范，所以不推荐大小写混用，多用下划线分割）
+
+匈牙利命名法：
+
+    Hungarian Notation
+
+    微软发明的一种变量命名法，在变量名中用前缀表示类型，如 iCnt 中 i 表示 int, pMsg 中 p 表示 pointer
+
+    **不**推荐使用匈牙利命名法，原因在于对于编译器毫无用处，因为编译器很清楚每个变量的类型，对于程序员加前缀说明标识符命名不够清楚
+
+对于中国程序员，禁止使用汉语拼音做标识符，因为可读性极差
+
+### 函数设计原则
+
+* 一个函数应该只为完成一个功能，做好一件事情，利于重用和维护。
+* 函数内部的缩进层次应少于 4 层，缩进层次太多说明设计过于复杂，应考虑分割成更小的函数来调用。
+* 一个函数的行数不要太长，24 行的标准终端不要超过两屏，太长则应考虑分割函数，不过对于一个概念上简单，单纯只是长度较长的函数则没关系，如一个 switch 有非常多 case
+* 执行函数就是执行一个动作，所以函数名通常应该包括动词，如 get_current, radix_tree_insert
+* 比较重要的函数上方必须加注释，说明功能、参数、返回值、错误码等
+* 一个函数内部的局部变量应限制在 5 到 10 个，再多说明函数复杂度太大，应考虑分割函数
 
 ### 缩进工具
+
+linux 自带的 indent 工具，直接修改原文件为指定的编码风格，当然各逻辑段间隔的空行还需要手动添加
+```
+$ indent -kr -i4 -nut main.c
+```
+* -kr 选项表示采用 K&R 风格
+* -i4 选项表示缩进 4 个空格
+* -nut 选项表示不使用 tab 替换 4 个空格
+
+## gdb
+
+编译时必须添加 `-g` 选项，生成的执行文件才可以使用 gdb 进行源码级调试
+```
+$ gcc -g test.c -o test
+```
+* `-g` 选项的作用是在生成的执行文件里加入源码信息，如执行文件里的第几条指令对应源代码文件第几行
+* 并不是把源代码文件嵌入进了生成的执行文件，所以调试时是需要源代码文件的，gdb 也必须能找到源代码文件
+
+启动 gdb
+```
+$ gdb
+
+$ gdb test          //启动 gdb 并开始调试 test.exe 文件
+```
+* gdb 提供了类似 shell 的命令行环境
+* gdb 环境提示符为 `(gdb)`
+
+
+帮助
+```
+(gdb) help          //显示所有命令类别
+
+(gdb) help all      //显示所有类别下的所有命令，超多
+
+(gdb) help files    //显示 files 类别下的命令
+
+(gdb) help list     //显示 list 命令的帮助
+```
+
+基本
+```
+(gdb) file test     //调试 test.exe 文件
+
+(gdb) list          //列出源代码，一次列 10 行，也可简写为 l
+
+(gdb)               //提示符下直接回车表示重复执行上一次的命令
+
+(gdb) l 3           //从第 3 行开始列出源代码，一次列 10 行
+
+(gdb) l add_range   //列出函数 add_range 相关代码，注意 add_range 必须是函数名，并不是输入变量也可以的模糊查找
+
+(gdb) quit          //退出 gdb
+```
+
+### 单步执行
+```
+(gdb) start         //启动断点调试，将进入 main 函数中，并定位到变量定义后的第一条语句，表示这是即将执行的下一条语句，等待调试指令
+
+(gdb) n             //next，一条一条的执行语句，不进入被调用的函数中
+
+(gdb) s             //step，一步步的执行语句，会进入被调用的函数中
+
+(gdb) bt            //backtrace，显示函数调用的栈帧，包括了函数的调用关系和传递的参数
+#0  add_range (from=1, to=10) at test.c:16  // add_range 位于 0 号栈帧
+#1  0x00401482 in main () at test.c:7       // main 位于 1 号栈帧
+
+(gdb) i locals      //info locals，查看函数局部变量的值
+
+(gdb) f 1           //frame，选择 1 号栈帧，即 main 函数的栈帧，这时再执行 i locals 则查看的是 main 函数的局部变量
+
+(gdb) p sum         //print，打印变量 sum 的值
+$2 = 30349          //$2 是每次执行 print 命令时 gdb 保存的数据的编号
+
+(gdb) finish        //让程序运行到从当前函数返回为止，当确认当前执行的函数没有错误则不必耗费时间一步步执行了
+
+(gdb) set var sum = 0   //修改变量 sum 的值为 0，例如发现错误可能是因为 sum 的值导致的，可以在执行中修改它的值然后查看运行结果
+
+(gdb) p sum = 0         //也可以用 print 命令给变量赋值
+```
+
+### 断点调试
+
+断点是程序执行到某一代码行时中断，有助于快速跳过没有问题的代码。
+
+```
+(gdb) display sum       //跟踪显示 sum 的值，执行每一步都把 sum 的值显示出来
+1: sum = 12123          //1 是 sum 的跟踪编号
+
+(gdb) undisplay 1       //根据编号取消跟踪显示 sum 的值
+
+(gdb) b 9               //break，在第 9 行设置断点
+
+(gdb) b 9 if sum != 0   //break if，设置条件断点：满足指定条件断点才激活
+
+(gdb) b add_range       //表示在函数 add_range 的开头设置断点
+
+(gdb) c                 //continue，连续运行而非单步执行，遇断点则停止
+
+(gdb) i breakpoints     //info，查看设置的所有断点
+
+(gdb) i b               //info，查看设置的所有断点 breakpoints 和观察点 watchpoints
+
+(gdb) delete  2        //删除 2 号断点
+
+(gdb) delete breakpoints    //删除所有断点，会询问是否确认
+
+(gdb) delete                //删除所有断点 ???需确认
+
+(gdb) disable 2             //禁用 2 号断点
+
+(gdb) enable 2              //启用 2 号断点
+
+(gdb) r                     //run，从程序开头重新开始运行
+```
+
+### 观察点
+
+观察点是当程序访问某个存储单元时中断，当不知道存储单元是在哪里被改动时使用
+
+```
+(gdb) x/7b arr              //打印指定存储单元 input 的内容，7b 是打印格式，b 表示每个字节一组，7 表示打印 7 组
+0xbfb8f0a7: 0x31 0x32 0x33 0x34 0x35 0x00 0x00  //前面的是内存地址
+
+(gdb) watch arr[3]          //设置观察点
+
+(gdb) i watchpoints         //info，查看观察点列表
+```
+
+### 段错误
+
+Segmentation fault
+
+段错误发生的一种情况：
+
+    如果函数的局部变量访问时越界了，有可能并不立即产生段错误，而是在函数返回时才发生段错误。
+
+如果程序运行时发生段错误，可以在 gdb 中使用 'r' 命令运行，则发生段错误时 gdb 会自动停下来，并显示运行到哪一行代码了
+
+```
+$ gdb test
+
+(gdb) start
+
+(gdb) r
+Program received signal SIGSEGV, Segmentation fault.
+0xb7e1404b in _IO_vfscanf () from /lib/tls/i686/cmov/libc.so.6      //段错误发生在 _IO_vfscanf 函数，这是系统函数，所以应该是我们调用它时发生了错误
+
+(gdb) bt                                                            //使用 bt 命令发现 _IO_vfscanf 函数是被我们的 scanf() 函数调用了
+#0 0xb7e1404b in _IO_vfscanf () from /lib/tls/i686/cmov/libc.so.6
+#1 0xb7e1dd2b in scanf () from /lib/tls/i686/cmov/libc.so.6         //所以是 scanf() 调用错误导致的，如第二个参数少 & 符号
+#2 0x0804839f in main () at main.c:6
+```
+
+## 排序和查找
+
+算法 Algorithm 是用来解决一类问题的，而不是具体的某一个问题
+
+
+## 栈和队列
+
+数据结构就是数据的组织方式，包含了存储方式和访问方式两层含义，且两者紧密联系，例如：
+把同一类型的数据组织成数组，每个元素一个挨着一个的存储，且大小相同，因此使用下标的方式访问。
+把同一对象的成员组织成结构体，每个成员也是一个挨着一个的存储，但大小不一样，所以使用点运算符加成员名来访问。
+
+数据的存储方式和访问方式也决定了解决问题需要的算法，同时要设计一个算法也要设计一个相应的数据结构来支持这种算法，
+所以 Pascal 语言的设计者 Niklaus Wirth 提出了：算法 + 数据结构 = 程序
+
