@@ -1,13 +1,14 @@
+---
 title: C 语言 - Linux C 编程一站式学习 - C 语言基础
 categories: C 语言
 tags: C 语言
-
 ---
 
 <!--more-->
 
 ## 程序的基本概念
 
+![FirstSector](images/FirstSector.jpg)
 
 ## 常量、变量、表达式
 
@@ -69,7 +70,7 @@ Linux 平台使用最广泛的 C 函数库是 glibc，它提供了一组头文�
 
 ## char
 
-```
+```c
 printf("%d",'3');       //输出 51，是字符 3 的 ASCII 码值
 printf("%d",'3'-'0');   //输出 3，字符'3'减去字符'0k后转换为整数值 3
 ```
@@ -79,7 +80,7 @@ printf("%d",'3'-'0');   //输出 3，字符'3'减去字符'0k后转换为整数�
 main 函数是被操作系统调用的，因此返回值也是给操作系统的。
 
 $? 表示上一条命令的退出状态
-```
+```c
 $ ./a.out
 $ echo $?
 ```
@@ -87,17 +88,17 @@ $ echo $?
 ### main 函数的写法
 
 系统在调用 main 函数时是传递参数的，它的标准形式：
-```
+```c
 int main(int argc, char *argv[])
 ```
 
 不使用系统传递的参数也可以这种写法
-```
+```c
 int main(void)
 ```
 
 最老的 old style C 的写法
-```
+```c
 main(){}
 ```
 * 默认返回 int 类型
@@ -126,121 +127,13 @@ main(){}
 只有分配了内存空间的变量声明才可以称为变量定义
 
 声明
-```
+```c
 short age;
 ```
 
 定义
-```
+```c
 short age = 12;
-```
-
-### 函数
-
-函数原型
-```
-void threeline(void)
-```
-* 编译器要根据函数原型获取函数的参数类型、参数个数、返回值等信息，然后在调用函数处才知道怎么生成指令
-
-函数声明
-```
-void threeline(void);
-
-//声明时可以不指定参数名
-void threeline(int,char);
-
-//可以在函数内部声明
-int main(void){
-
-    void test(void);
-
-    test();
-}
-
-void test(void){
-    printf("hahaah");
-}
-```
-* 函数原型后面加分号
-* 第二种方式：函数声明时可以只指定参数类型，不指定参数名
-* 第三种方式：函数声明也可以在函数内部，则其作用范围也仅为函数内部
-* 可以在函数内部声明函数，但不能在函数内部定义函数，即 C 标准不支持嵌套函数定义，但 gcc 的扩展特性允许嵌套定义
-
-函数定义
-```
-void threeline(void){}
-```
-* 函数原型加上函数体
-* 编译器见到函数定义才生成指令
-
-## 隐式声明
-
-函数没有显式声明时则编译器默认隐式声明了函数，且默认返回值为 int 类型
-
-若函数的返回值类型不是预期的 int，则警告
-
-## 函数参数
-
-old style C 的函数参数举例:
-```
-void foo(x,y,z)
-int x;
-char z;
-{
-
-}
-```
-* 参数之间使用逗号做分隔符即是从这里继承下来的
-
-## 最少例外原则
-
-rule of least surprise
-
-一个语言的语法规则设计里不应该到处是例外，而 C++ 就充满了例外，导致没人能把 C++ 的所有规则牢记于心
-
-## 形参实参
-
-形参相当于函数中定义的变量，调用函数传递参数的过程相当于定义形参的变量并且用实参的值来初始化
-
-## 局部变量、全局变量
-
-### 分配释放空间
-
-局部变量在每次函数调用时分配存储空间，在函数返回时释放存储空间
-
-全局变量在程序开始运行时分配存储空间，在程序结束时释放存储空间
-
-### 调用范围
-
-局部变量只能在函数内部调用，全局变量可任意位置调用
-
-全局变量使用方便，在各函数内部都可以访问，但也因此导致全局变量的读写顺序不好理清，易导致问题，因此要慎用，可以通过函数传参代替就不要使用全局变量
-
-### 初始化
-
-全局变量定义时不初始化其值为 0，但局部变量不初始化则其值是不确定的，所以局部变量在使用前必须先初始化。
-
-局部变量可以使用任意合法表达式初始化
-
-全局变量初始化只能使用常量表达式，因为全局变量在程序开始运行时就要被初始化，所以保存在可执行文件里的初始化值在编译时就要计算出来，而非常量表达式需要运行时才能计算出来，所以为了简化编译器的实现，C 语言规定了全局变量只能使用常量表达式初始化。
-
-### 语句块局部变量
-
-语句块的局部变量通常是为了定义比函数的局部变量更局部的变量
-
-```
-#include <stdio.h>
-int main(void){
-
-    int i = 1;
-    {
-        int i = 2;    
-        int j = 2;
-        printf("%d\n",i); //输出 2
-    }
-    //printf("%d\n",j);  这里不注释掉即出错，提示未声明变量 j
-}
 ```
 
 ## 取模和整除
@@ -249,7 +142,7 @@ int main(void){
 https://wenku.baidu.com/view/7d796163ddccda38376baf58.html
 
 % 取模运算符，即两个数相除的余数，结果的符号总是和被除数相同
-```
+```c
 #include <stdio.h>
 int main(void){
     printf("%d\n",7%-2);  //输出 1
@@ -258,7 +151,7 @@ int main(void){
 ```
 
 整数除法运算总是趋向 0
-```
+```c
 printf("%d\n",7/2); //3
 printf("%d\n",-7/2); //-3
 ```
@@ -270,7 +163,7 @@ printf("%d\n",-7/2); //-3
 ## return
 
 函数的返回值相当于定义了一个临时变量，临时变量的数据类型和函数的返回类型相同，并且用 return 后面的语句初始化这个临时变量
-```
+```c
 int i = 20;
 
 if is_even(i)
@@ -294,7 +187,7 @@ if (temp_var)               //临时变量 temp_var 使用完就释放
 * 虽然函数的返回值相当于临时变量，但不能向其赋值，如 is_even(20) = 1;
 
 返回时不用加括号
-```
+```c
 return 1;
 
 return(1);
@@ -334,7 +227,7 @@ POSIX time 或者 Epoch time
 ## 循环
 
 下面的例子中 n 忽大忽小，但最后都是 1，不会死循环，这就是著名的 3x+1 问题，目前还未被证明
-```
+```c
 n = 7;
 while (n != 1) {
 
@@ -349,7 +242,7 @@ while (n != 1) {
 ## 标号
 
 如 switch 语句中的 case,default，goto语句的
-```
+```c
 switch () {
     case 1:
         printf("1");
@@ -377,7 +270,7 @@ mark:
 
 达夫设备，一种特殊的代码写法，利用 switch 的语句块和循环语句的语句块没有本质区别，实现了巧妙的代码优化
 
-```
+```c
 #include <stdio.h>
 int main(void){
     int i = 0,j = 0;
@@ -400,142 +293,6 @@ j = 5
 ```
 http://blog.csdn.net/kingmax26/article/details/5252657
 
-## 基本类型和复合类型
-
-Primitive Type 基本类型 Compound Type 复合类型
-
-标量类型包括算术类型和指针类型，可以表示零或非零，可以参与逻辑与、逻辑或、逻辑非运算…… C 语言没有布尔类型
-
-算术类型包括整型和浮点型
-
-## 复合类型定义
-
-C99 定义了复合类型 Complex，需包括头文件
-```
-#include <complex.h>
-int main(void){
-    complex a;
-}
-```
-
-## 结构体
-
-定义了结构体数据类型
-```
-struct complex_struct {
-    double x,y;
-};
-```
-* 复合类型定义也是一种声明，因此也需要分号结尾
-* complex_struct 称为 tag
-
-声明结构体类型的变量
-```
-struct complex_struct a,b;
-```
-
-上面的两条语句可整合为
-```
-struct complex_struct {
-    double x,y;
-} a,b;
-```
-* 把从 "struct" 到 "}" 看做是个 "int" 就好理解了，`int a,b;` 就是正常的变量声明方式
-
-结构体变量可以在定义时初始化
-```
-struct complex_struct { int x,y; };
-struct complex_struct a = { 3, 4 }; //初始化的数据成员按顺序给结构体成员赋值
-int main(void){
-    printf("%d,%d",a.x,a.y);
-}
-```
-* 结构体可以定义在全局作用域中
-* 结构体变量在全局初始化时也是只能使用常量表达式
-* 数据成员比结构体成员多将报错
-* 数据成员比结构体成员末尾多一个逗号不报错
-* 数据成员比结构体成员少，则后面的结构体成员初始化为0
-
-`{}`可以初始化结构体变量，但不能用于结构体变量的赋值
-```
-struct complex_struct { int x,y; } a;
-a = {3, 4}; //这样不行
-```
-
-但可以使用下面这种赋值语法
-```
-struct complex_struct { int x,y; } a;
-a = (struct complex_struct){5,6};
-```
-
-还可以针对个别成员初始化
-```
-struct complex_struct { int x,y; };
-struct complex_struct a = { .y = 8 };
-```
-* 则 a.x = 0, a.y = 8，注意除 y 外的其他成员都被初始化为 0，而不是其他成员不作处理保留原值
-
-定义结构体时也可以没有Tag，但这个结构体不能被再次引用
-```
-struct {
-    double x,y;
-} a,b;
-```
-
-访问结构体成员使用后缀运算符点
-```
-a.x = 10;
-a.y = 12;
-```
-
-结构体可以嵌套
-```
-struct segment {
-    struct complex_struct start;
-    struct complex_struct end;
-}
-```
-
-嵌套结构体初始化
-```
-//嵌套初始化
-struct segment s = {{1.0, 2.0}, {4.0, 6.0}};
-
-//平坦初始化
-struct segment s = {1.0, 2.0, 4.0, 6.0};
-
-//成员逐一初始化
-struct segment s = {.start.x = 3.0, .end.y = 4.0};
-```
-
-访问嵌套结构体成员
-```
-s.start.x = 1.2;
-s.end.y = 3.2;
-```
-
-结构体不能进行算术运算，逻辑运算
-但可以用一个结构体初始化或赋值给另一个结构体
-```
-struct complex_struct { int x,y; };
-struct complex_struct a = { 3, 4 };
-struct complex_struct b = a;
-struct complex_struct c;
-c = a;
-```
-
-结构体可以作为函数参数
-```
-int main(void){
-    struct car {int wheeels = 4; char color = 'red';} mycar;
-    test(struct mycar);
-}
-
-void test(struct thiscar){
-    printf("%d",thiscar.wheels);
-}
-```
-
 ## 后缀运算符
 
 i++ 后缀++
@@ -546,156 +303,6 @@ func() 函数调用
 
 后缀运算符优先级最高，其次是单目运算符，如正负号、逻辑非!、前缀++、前缀--
 
-## 数组
-
-VLA : Variable Length Array 可变长度数组，C99 允许声明数组时长度使用变量
-
-数组定义：像结构体一样初始化，未赋值的元素初始化为 0
-```
-int arr[3] = {2, 4, };  //arr[2] = 0;
-```
-
-数组定义：单个元素赋值
-```
-int arr[3] = {[2] = 3};
-```
-
-数组定义：不指定长度
-```
-int arr[] = {2, 4, }; //数组只有这两个元素
-```
-
-下标越界问题
-```
-int arr[] = {'a','b','c'};
-printf("%c",arr[4]);
-```
-* 上面的代码下标越界但并没有错误
-* C 语言在编译和执行时都不检查下标越界
-* 编译时不检查是因为数组下标是否越界有时运行时才知道，如使用指针代替数组名访问数组元素时，只有运行时才知道是否越界
-* 运行时每次访问数组元素都检查是否越界对性能影响较大
-
-**数组类型有一条特殊的规则：数组类型做右值使用时，自动转换成指向数组首元素的指针**
-
-因为上面的特殊规则，所以数组和结构体不同，数组不能互相赋值和初始化
-```
-int a[3] = {1,2,3};
-int b[3];
-b = a;
-printf("%d",b[2]); // error: assignment to expression with array type
-```
-* a 作为数组在作为右值时自动转换为了指针，而作为左值的 b 仍然是数组，类型不同
-
-既然数组无法相互赋值，则自然也不能作为函数的参数或函数的返回值，因为它们都是通过局部变量赋值和临时变量赋值实现的
-
-## 多维数组
-
-多维数组也可扁平初始化
-```
-int a[3][2] = {1, 2, 3, 4, 5, 6};
-```
-* 经测试好像不行
-
-也可以嵌套初始化
-```
-int a[][2] = {
- {1, 2},
- {3, 4},
- {5, 6},
-};
-```
-* 多维数组初始化时只有第一维的长度可以省略
-
-或者 C99 的 Memberwise 初始化
-```
-int a[3][2] = {[0][1]=2, [2][0]=5};
-```
-
-上面的二维数组逻辑上为 3 行 2 列的表格，但物理存储上和一维数组一样是连续存储的，相当于把每行都拼接在一起成了一个更长的行，
-C 语言采用的这种存储方式成为 Row-major，有的语言是把列拼接起来，称为 Column-major
-
-## 字符串
-
-以 NULL 字符结尾的一串字符就是字符串，NULL 字符就是 ASCII 码为 0 的字符，为不可见字符
-
-分为字符串字面值和字符数组，字符串字面值即直接写在程序里的字符串，如"abc"
-
-### 字符串字面值
-
-字符串字面值是数组类型，每个元素是字符型
-```
-"hello,world.\n";
-```
-* 每个字符串都是以 NULL 结尾的字符串，即末尾有个 \0 字符，就是 ASCII 码为 0 的 NULL 字符，为不可见字符
-* 所以上面的字符串占用字节是 14 个
-    * "hello,world." 每个字符占用一个字节共占用 12 个
-    * "\n" 换行符占用 1 个
-    * "\0" NULL 字符占用 1 个
-
-因为字符串字面值是数组类型，所以可以通过下标的方式访问
-```
-char c = "hello,world.\n"[1];  //输出 e
-```
-
-字符串字面值是只读到，所以不能通过下标的方式更改字符串字面值
-```
-"hello,world.\n"[1] = "E";
-```
-
-字符串字面值和数组一样，做右值使用时，自动转换为指向数组首元素的指针
-```
-printf("hello,world.\n");
-```
-* printf 的第一个参数就是指针类型的，所以上面的字符串其实就是传送的指针给它
-
-### 字符数组
-
-字符数组可以通过字符串字面值来做初始化
-```
-char str[10] = "hello";
-
-//相当于
-
-char str[10] = {'h', 'e', 'l', 'l', 'o', \0, \0, \0, \0, \0"};
-```
-* 没有指定初始值的元素自动初始化为 NULL 字符
-
-使用字母值初始化字符数组时最好不指定数组长度，让编译器自己计算
-```
-//数组长度长了浪费空间，短了编译错误
-char str[4] = "hello"; //initializer-string for array of chars is too long
-
-//数组长度刚刚好字符串本身，但没有给 \0 字符留空间时也不报错 ??? 这个确实不报错，但系统是否自动添加了NULL字符还需确认
-char str[5] = "hello";
-
-//最好这种方式
-char str[] = "hello";
-```
-
-使用`%s`占位符
-```
-printf("i will say : %s",str);
-```
-* 会从字符串 str 的开头一直打印到 NULL 字符为止
-* 所以上面的刚好没有给 NULL 字符留空间的字符串可能会访问时越界
-
-### 多维字符数组
-
-```
-char dayName[8][10] = {"", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
-
-//相当于
-
-char dayName[8][10] = {
-    {''},
-    {'m', 'o', 'n', 'd', 'a', 'y'},
-    ....
-    ....
-    {'s', 'u', 'n', 'd', 'a', 'y'},
-} 
-```
-* 第二维为 10 是因为最长字符串"wednesday"为 9 位，再多留 1 位给 NULL 字符
-
 ## 数据驱动的编程
 
 data-driven programming
@@ -703,7 +310,7 @@ data-driven programming
 写代码时相对于控制流程和算法，选择正确的数据结构是更重要的
 
 举例：根据输入的数字 1~7 输出对应的星期几
-```
+```c
 void print_day(short);
 
 int main(void){
@@ -742,7 +349,7 @@ rand 然后生成随机数
 ## 常量
 
 定义常量
-```
+```c
 #define N 20;
 ```
 
@@ -755,7 +362,7 @@ preprocess
 以 # 号开头的行表示 预处理指示 Preprocessing Directive
 
 查看文件在预处理之后编译之前的内容，两条命令效果相同
-```
+```c
 $ gcc -E test.c
 
 $ cpp test.c
@@ -765,475 +372,6 @@ $ cpp test.c
 可以看到预处理将会：
 * 展开包含的头文件的代码
 * 把定义的常量替换为定义的真正数值
-
-## 编码风格
-
-代码是写给人看的，顺便给机器去执行。
-
-### 空白
-
-双目运算符两侧加空格，单目运算符和操作数之间不加空格
-```
-i = i + 1;
-i < 1
-!(i < 1)
-i++
--x
-&a
-```
-
-后缀运算符和操作数之间不加空格
-```
-func(arg)
-arr[2]
-struct1.item1
-```
-
-关键字 if, while, for 和后面的左括号之间加空格，括号内的表达式要紧贴空格
-```
-if (i > 1)
-for (i = 1; i < 10; i++)
-while (i > 1)
-```
-
-逗号和分号之后要加空格，是英文的写作习惯
-```
-for (int i = 0; i < 10; i++)
-func(arg1, ar2)
-```
-
-为了突出优先级也可以紧凑写
-```
-for (int i=0; i<10; i++)
-```
-
-但不能误导运算符优先级
-```
-a||b && c
-```
-
-### 缩进
-
-unix 系统标准终端是 24 行 80 列，接近或超过 80 字符要折行，且折行后要使用空格对齐上面的参数会表达式
-```
-if (a > b
-    && c > d
-    && e > f)
-
-foo(sqrt(x*x + y*y),
-    a[i-1] + b[i-1] + c[i-1])
-```
-
-较长字符串写成多行
-```
-printf("this is a very long sentence,"
-       "and better make a new line."
-);
-```
-* C 编译器会自动把相邻的字符串连接在一起
-
-变量定义时使用 tab 对齐
-```
-int j;
-char str;
-double l;
-float f;
-
-//对比
-
-int     j;
-char    str;
-double  l;
-float   f;
-```
-
-### 其他
-
-带语句块的 switch, for, while, if, else 的 `{}` 要写在关键字同一行
-但是函数的'{}'要独占一行
-```
-if (i > 1) {
-
-} else if {
-
-}
-
-int getName(void)
-{
-
-}
-```
-
-switch 语句的 case, default 不缩进，标号下面的语句缩进
-```
-switch (i) {
-case 1:
-    printf("one");
-    break;
-case 2:
-    printf("two");
-    break;
-case 3:
-    printf("three");
-    break;
-default:
-    printf("others");
-}
-```
-
-goto 语句的标号始终写在行首，不论标号下的缩进多少
-```
-function test()
-{
-    if (i > 1) {
-        goto Err; 
-    }
-
-    if (i < 1) {
-        if (j > 1) {
-Err:
-            printf("err");
-        }
-    }
-}
-```
-
-代码中每个逻辑段使用一个空行隔开，如头文件、全局变量定义、函数定义之间
-```
-#include <stdio.h>
-#include <stdlib.h>
-
-int wheels  = 4;
-int doors   = 2;
-
-int main(void)
-{
-
-}
-
-int test(void)
-{
-
-}
-```
-
-函数内部，根据相关性用空行分隔，如变量定义之后、return 语句之前加空行
-```
-int test()
-{
-    int wheels  = 4;
-    int doors   = 2;
-
-    some logic here
-    some logic here
-    some logic here
-
-    another logic here
-    another logic here
-    another logic here
-
-    return 1;
-}
-```
-
-### 注释
-
-单行注释
-```
-/* 左右分别有两个空格把注释内容和界定符隔开 */
-```
-
-多行注释
-```
-/* 
- * 第一行和最后一行不写注释内容
- * 每一行注释内容前都有空格和注释符隔开
- * 以米字对齐
- */
-```
-
-注释使用场合
-```
-/* 
- * 整个源文件的顶部注释
- * 顶头写不缩进
- * 包括了模块信息
- * 作者、版本历史
- * 等
- */
-
-/**
- * 函数注释
- * 顶头写不缩进
- * 和函数定义之间不留空行
- * 说明函数的功能、参数、返回值、错误码等
- */
-int rollWheels(void)
-{
-
-    /* 语句组注释：写在语句组上侧，和语句组之间不留空行，缩进和语句组相同 */
-    some code here
-    some code here
-    some code here
-    some code here
-
-    some code here
-    some code here  /* 代码行右侧简短注释，一般为单行，对当前代码行做说明，和代码之间空格隔开，最好所有右侧注释可以对齐 */
-    some code here
-}
-
-
-/*
- * 复杂的结构体定义特别需要注释
- * 根据说明需要，可以包括结构体本身的注释
- * 还可以包括语句组注释，行右侧注释
- */
-struct runqueue{
-
-    /*
-    * This is part of a global counter where only the total sum
-    * over all CPUs matters. A task can increase this counter on
-    * one CPU and if it got migrated afterwards it may decrease
-    * it on another CPU. Always updated under the runqueue lock:
-    */
-    unsigned long nr_uninterruptible;
-
-#ifdef CONFIG_SMP
-    struct sched_domain *sd;
-
-    /* For active balancing */
-    int active_balance;
-    int push_cpu;
-
-    task_t *migration_thread;
-    struct list_head migration_queue;
-    int cpu;
-#endif
-};
-
-/*
- * 复杂的宏定义和变量声明也需要注释，举例：
- */
-
-/* TICK_USEC_TO_NSEC is the time between ticks in nsec assuming real ACTHZ and */
-/* a value TUSEC for TICK_USEC (can be set bij adjtimex) */
-#define TICK_USEC_TO_NSEC(TUSEC) (SH_DIV (TUSEC * USER_HZ * 1000,
-ACTHZ, 8))
-
-/* some arch's have a small-data section that can be accessed register-relative
- * but that can only take up to, say, 4-byte variables. jiffies being part of
- * an 8-byte variable may not be correctly accessed unless we force the issue
-*/
-#define __jiffy_data __attribute__((section(".data")))
-
-/*
- * The 64-bit value is not volatile - you MUST NOT read it
- * without sampling the sequence number in xtime_lock.
- * get_jiffies_64() will do this for you as appropriate.
- */
-extern u64 __jiffy_data jiffies_64;
-extern unsigned long volatile __jiffy_data jiffies;
-```
-
-关于函数注释：
-* 函数内的语句组注释和行右侧注释要尽可能少用
-* 原因是注释是为了说明注释的代码能做什么，而不是为了说明是怎么做的
-* 代码写的清晰，怎么做一目了然，如果需要注释才能解释清楚，说明代码可读性差
-* 因此特别需要提醒注意的地方才应该用函数内注释
-
-### 标识符命名
-
-标识符要清晰明了，可以使用完整单词和易于理解的缩写，一些儿缩写惯例：
-* count cnt
-* block blk
-* length len
-* window win
-* message msg
-* number nr
-* temporary temp tmp
-* internationalization i18n
-* trans x，如 transmit 缩写为 xmt
-
-变量、函数、类型都采用全小写加下划线，如 函数名 radix_tree_insert， 类型名 struct radix_tree_root
-
-常量、宏定义、枚举常量都采用全大写加下划线，如 RADIX_TREE_MAP_SHIFT
-
-全局变量和全局函数的命名要详细，因为在整个项目的很多源文件都要用到，可以多几个单词和下划线，如 radix_tree_insert
-
-不推荐使用大小写混合的驼峰命名法 CamelCase （以上都是 linux 内核的编码规范，所以不推荐大小写混用，多用下划线分割）
-
-匈牙利命名法：
-
-    Hungarian Notation
-
-    微软发明的一种变量命名法，在变量名中用前缀表示类型，如 iCnt 中 i 表示 int, pMsg 中 p 表示 pointer
-
-    **不**推荐使用匈牙利命名法，原因在于对于编译器毫无用处，因为编译器很清楚每个变量的类型，对于程序员加前缀说明标识符命名不够清楚
-
-对于中国程序员，禁止使用汉语拼音做标识符，因为可读性极差
-
-### 函数设计原则
-
-* 一个函数应该只为完成一个功能，做好一件事情，利于重用和维护。
-* 函数内部的缩进层次应少于 4 层，缩进层次太多说明设计过于复杂，应考虑分割成更小的函数来调用。
-* 一个函数的行数不要太长，24 行的标准终端不要超过两屏，太长则应考虑分割函数，不过对于一个概念上简单，单纯只是长度较长的函数则没关系，如一个 switch 有非常多 case
-* 执行函数就是执行一个动作，所以函数名通常应该包括动词，如 get_current, radix_tree_insert
-* 比较重要的函数上方必须加注释，说明功能、参数、返回值、错误码等
-* 一个函数内部的局部变量应限制在 5 到 10 个，再多说明函数复杂度太大，应考虑分割函数
-
-### 缩进工具
-
-linux 自带的 indent 工具，直接修改原文件为指定的编码风格，当然各逻辑段间隔的空行还需要手动添加
-```
-$ indent -kr -i4 -nut main.c
-```
-* -kr 选项表示采用 K&R 风格
-* -i4 选项表示缩进 4 个空格
-* -nut 选项表示不使用 tab 替换 4 个空格
-
-## gdb
-
-编译时必须添加 `-g` 选项，生成的执行文件才可以使用 gdb 进行源码级调试
-```
-$ gcc -g test.c -o test
-```
-* `-g` 选项的作用是在生成的执行文件里加入源码信息，如执行文件里的第几条指令对应源代码文件第几行
-* 并不是把源代码文件嵌入进了生成的执行文件，所以调试时是需要源代码文件的，gdb 也必须能找到源代码文件
-
-启动 gdb
-```
-$ gdb
-
-$ gdb test          //启动 gdb 并开始调试 test.exe 文件
-```
-* gdb 提供了类似 shell 的命令行环境
-* gdb 环境提示符为 `(gdb)`
-
-
-帮助
-```
-(gdb) help          //显示所有命令类别
-
-(gdb) help all      //显示所有类别下的所有命令，超多
-
-(gdb) help files    //显示 files 类别下的命令
-
-(gdb) help list     //显示 list 命令的帮助
-```
-
-基本
-```
-(gdb) file test     //调试 test.exe 文件
-
-(gdb) list          //列出源代码，一次列 10 行，也可简写为 l
-
-(gdb)               //提示符下直接回车表示重复执行上一次的命令
-
-(gdb) l 3           //从第 3 行开始列出源代码，一次列 10 行
-
-(gdb) l add_range   //列出函数 add_range 相关代码，注意 add_range 必须是函数名，并不是输入变量也可以的模糊查找
-
-(gdb) quit          //退出 gdb
-```
-
-### 单步执行
-```
-(gdb) start         //启动断点调试，将进入 main 函数中，并定位到变量定义后的第一条语句，表示这是即将执行的下一条语句，等待调试指令
-
-(gdb) n             //next，一条一条的执行语句，不进入被调用的函数中
-
-(gdb) s             //step，一步步的执行语句，会进入被调用的函数中
-
-(gdb) bt            //backtrace，显示函数调用的栈帧，包括了函数的调用关系和传递的参数
-#0  add_range (from=1, to=10) at test.c:16  // add_range 位于 0 号栈帧
-#1  0x00401482 in main () at test.c:7       // main 位于 1 号栈帧
-
-(gdb) i locals      //info locals，查看函数局部变量的值
-
-(gdb) f 1           //frame，选择 1 号栈帧，即 main 函数的栈帧，这时再执行 i locals 则查看的是 main 函数的局部变量
-
-(gdb) p sum         //print，打印变量 sum 的值
-$2 = 30349          //$2 是每次执行 print 命令时 gdb 保存的数据的编号
-
-(gdb) finish        //让程序运行到从当前函数返回为止，当确认当前执行的函数没有错误则不必耗费时间一步步执行了
-
-(gdb) set var sum = 0   //修改变量 sum 的值为 0，例如发现错误可能是因为 sum 的值导致的，可以在执行中修改它的值然后查看运行结果
-
-(gdb) p sum = 0         //也可以用 print 命令给变量赋值
-```
-
-### 断点调试
-
-断点是程序执行到某一代码行时中断，有助于快速跳过没有问题的代码。
-
-```
-(gdb) display sum       //跟踪显示 sum 的值，执行每一步都把 sum 的值显示出来
-1: sum = 12123          //1 是 sum 的跟踪编号
-
-(gdb) undisplay 1       //根据编号取消跟踪显示 sum 的值
-
-(gdb) b 9               //break，在第 9 行设置断点
-
-(gdb) b 9 if sum != 0   //break if，设置条件断点：满足指定条件断点才激活
-
-(gdb) b add_range       //表示在函数 add_range 的开头设置断点
-
-(gdb) c                 //continue，连续运行而非单步执行，遇断点则停止
-
-(gdb) i breakpoints     //info，查看设置的所有断点
-
-(gdb) i b               //info，查看设置的所有断点 breakpoints 和观察点 watchpoints
-
-(gdb) delete  2        //删除 2 号断点
-
-(gdb) delete breakpoints    //删除所有断点，会询问是否确认
-
-(gdb) delete                //删除所有断点 ???需确认
-
-(gdb) disable 2             //禁用 2 号断点
-
-(gdb) enable 2              //启用 2 号断点
-
-(gdb) r                     //run，从程序开头重新开始运行
-```
-
-### 观察点
-
-观察点是当程序访问某个存储单元时中断，当不知道存储单元是在哪里被改动时使用
-
-```
-(gdb) x/7b arr              //打印指定存储单元 input 的内容，7b 是打印格式，b 表示每个字节一组，7 表示打印 7 组
-0xbfb8f0a7: 0x31 0x32 0x33 0x34 0x35 0x00 0x00  //前面的是内存地址
-
-(gdb) watch arr[3]          //设置观察点
-
-(gdb) i watchpoints         //info，查看观察点列表
-```
-
-### 段错误
-
-Segmentation fault
-
-段错误发生的一种情况：
-
-    如果函数的局部变量访问时越界了，有可能并不立即产生段错误，而是在函数返回时才发生段错误。
-
-如果程序运行时发生段错误，可以在 gdb 中使用 'r' 命令运行，则发生段错误时 gdb 会自动停下来，并显示运行到哪一行代码了
-
-```
-$ gdb test
-
-(gdb) start
-
-(gdb) r
-Program received signal SIGSEGV, Segmentation fault.
-0xb7e1404b in _IO_vfscanf () from /lib/tls/i686/cmov/libc.so.6      //段错误发生在 _IO_vfscanf 函数，这是系统函数，所以应该是我们调用它时发生了错误
-
-(gdb) bt                                                            //使用 bt 命令发现 _IO_vfscanf 函数是被我们的 scanf() 函数调用了
-#0 0xb7e1404b in _IO_vfscanf () from /lib/tls/i686/cmov/libc.so.6
-#1 0xb7e1dd2b in scanf () from /lib/tls/i686/cmov/libc.so.6         //所以是 scanf() 调用错误导致的，如第二个参数少 & 符号
-#2 0x0804839f in main () at main.c:6
-```
 
 ## 排序和查找
 
