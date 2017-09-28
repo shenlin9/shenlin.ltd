@@ -1,36 +1,16 @@
-﻿title: Vim 基础
+﻿---
+title: Vim 基础
 categories: Vim
 tags: Vim
-
 ---
 
 vim 的基本设置和基础操作
 
 <!--more-->
 
-## Q&amp;A
+## 快捷键
 
-### 提示 “modifiable is off”
-
-modifiable 关闭时不允许更改缓存内容，也不允许更改 `fileformat` 和 `fileencoding`
-```
-:set modifiable
-:set nomodifiable
-
-//可简写为
-:set ma
-:set noma
-```
-
-出现上述提示可能是插件或者设置错误导致的，可运行下面命令尝试找到错误原因：
-```
-:verbose setlocal modifiable?
-```
-
-使用下列命令打开
-```
-:autocmd BufWinEnter * setlocal modifiable
-```
+http://www.jianshu.com/p/8ae25a680ed7
 
 ## 寄存器
 
@@ -596,3 +576,27 @@ $value = str_replace("\xe2\x80\x8d", '', $value);
 ```
 
 https://superuser.com/questions/207207/how-can-i-delete-u200b-zero-width-space-using-sed
+
+## Q&amp;A
+
+### 提示 “modifiable is off”
+
+modifiable 关闭时不允许更改缓存内容，也不允许更改 `fileformat` 和 `fileencoding`
+```
+:set modifiable
+:set nomodifiable
+
+//可简写为
+:set ma
+:set noma
+```
+
+出现上述提示可能是插件或者设置错误导致的，可运行下面命令尝试找到错误原因：
+```
+:verbose setlocal modifiable?
+```
+
+使用下列命令打开
+```
+:autocmd BufWinEnter * setlocal modifiable
+```
