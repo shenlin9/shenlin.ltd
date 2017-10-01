@@ -100,3 +100,7 @@ BSD 协议被认为是 copycenter，即位于标准的 copyright 和 GPL 的 cop
 /log                日志文件
 /tmp                临时文件目录
 /lost+found         系统意外关机或崩溃后产生的碎片文件放到此目录，系统启动时会检查此目录的碎片文件并尝试修复摔坏的文件系统
+
+
+Linux下执行一些命令前加sudo时出现command not found的原因
+http://blog.csdn.net/poechant/article/details/7216892
