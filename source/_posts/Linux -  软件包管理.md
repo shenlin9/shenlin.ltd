@@ -170,6 +170,7 @@ rpm软件包有这么几种后缀：
     yum install [软件名]
     yum remove [软件名]	卸载软件
 
+    yum list installed   列出已安装的软件包
     yum list | grep sudo
     yum list | more       列出yum源上的所有软件包
     yum -C search xxx       在本地缓存中查找软件信息

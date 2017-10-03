@@ -4,6 +4,8 @@ categories: bash
 tags: bash
 ---
 
+shell 基本功能
+
 <!--more-->
 
 ## shebang
