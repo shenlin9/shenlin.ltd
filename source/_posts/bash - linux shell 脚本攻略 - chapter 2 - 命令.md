@@ -187,6 +187,7 @@ find 默认遍历所有深度子目录
 ```
 
 `-type` 根据文件类型搜索，类 unix 系统的文件类型有：普通文件 f、目录 d、字符设备 c、块设备 b、符号链接 l、硬链接、套接字 s、FIFO p等
+???FIFO 是否就是 pipe 管道
 ```bash
 -> find . -maxdepth 2  -type d -name "*doc*"
 ./apr-1.5.2/docs
@@ -444,6 +445,18 @@ find 命令的输出结果的定界符是无法预测的，有可能是换行符
 ./out.txt4 ./out.txt
 ```
 
+经测试不能和命令别名一起使用
+```bash
+-> find /bin -type l -print0 | xargs -0 -I {} ll {}
+xargs: ll: No such file or directory
+
+-> find /bin -type l -print0 | xargs -0 -I {} ls -l {}
+lrwxrwxrwx. 1 root root 4 Jun  3 21:30 /bin/sh -> bash
+lrwxrwxrwx. 1 root root 39 May 20 08:58 /bin/iptables-xml -> /etc/alternatives/bin-iptables-xml.i386
+lrwxrwxrwx. 1 root root 2 May 20 08:56 /bin/view -> vi
+......
+```
+
 ### 对同一个参数执行多条命令的技巧
 
 xargs 只能为一组命令提供参数，如果涉及到多组命令操作同一个参数，则无法实现，如
@@ -659,17 +672,275 @@ $ md5deep -rl directory_path > directory.md5
 
 ### crypt
 
+crypt 是一个简单的加密工具
+
+它从 stdin 接受一个文件以及口令作为输入，然后将加密数据输出到 Stdout，因此要对输入、输出文件使用重定向
+```bash
+# 加密文件会要求输入口令
+$ crypt <input_file >output_file
+Enter passphrase:
+
+# 也可以通过命令行参数来提供口令
+$ crypt PASSPHRASE <input_file >encrypted_file
+
+# 解密文件
+$ crypt PASSPHRASE -d <encrypted_file >output_file
+```
+
 ### gpg
 
+gpg 可以用来加密数据，确保数据在送达目的地之前无法被读取，也用来做签名，以证明真实性。
+
+```bash
+# 加密，生成 .gpg 文件，可以提供密码保护
+-> gpg -c 1.txt
+can't connect to `/home/ssy/.gnupg/S.gpg-agent': 没有那个文件或目录
+gpg-agent[2358]: 已创建目录‘/home/ssy/.gnupg/private-keys-v1.d’
+
+# 解密
+-> gpg 1.txt.gpg
+gpg: 3DES 加密过的数据
+can't connect to `/home/ssy/.gnupg/S.gpg-agent': 没有那个文件或目录
+gpg: 以 1 个密码加密
+文件‘1.txt’已存在。 是否覆盖？(y/N)n
+请输入新的文件名: 11.txt
+gpg: 警告：报文未受到完整的保护
+
+-> cat 11.txt
+key say hometown
+111 hi  beijing
+aaa i am shenlin    shanghai
+333 who are you tianjin
+```
+
 ### base64
+
+Base64 是一组编码方案，是，是一种基于64个可打印 ASCII 字符来表示二进制数据的方法，以可读的ASCII字符串来描述二进制数据
+```bash
+# 编码
+-> base64 1.txt
+a2V5IHNheSBob21ldG93bgoxMTEgaGkgIGJlaWppbmcKYWFhIGkgYW0gc2hlbmxpbiAgICBzaGFu
+Z2hhaQozMzMgd2hvIGFyZSB5b3UgdGlhbmppbgo=
+
+-> base64 2.txt
+a2V5IHNheSBob21ldG93bgo0NDQgcGlnZ3kgeWFuICAgaGFuZGFuCmRkZCBob3cgYXJlIHlvdSBk
+b2luZyB0b2RheT8gICAgeGluZ3RhaQoyMjIgaSBhbSBkb2luZyBnb29kLiAgICBhbnlhbmcK
+
+# 解码
+-> echo a2V5IHNheSBob21ldG93bgo0NDQgcGlnZ3kgeWFuICAgaGFuZGFuCmRkZCBob3cgYXJlIHlvdSBkb2luZyB0b2RheT8gICAgeGluZ3RhaQoyMjIgaSBhbSBkb2luZyBnb29kLiAgICBhbnlhbmcK>base64.txt
+
+-> base64 -d base64.txt
+key say hometown
+444 piggy yan   handan
+ddd how are you doing today?    xingtai
+222 i am doing good.    anyang
+```
 
 ## 散列
 
 ### md5sum sha1sum
 
-### shadow-like
+md5sum 与 sha1sum 都是单向散列算法，都无法逆推出原始数据。
 
-## 排序、唯一和重复
+通常用于验证数据完整性或为特定数据生成唯一的密钥。
+
+md5sum 生成的是 32 位十六进制数据，sha1sum 生成的是 40 位十六进制数据。
+```bash
+-> md5sum 1.txt
+f47413faafe6991feeab24054acdbbbc  1.txt
+
+-> sha1sum 1.txt
+75765c7e40d4f75071c29cbc07be67a967a5373e  1.txt
+```
+md5sum和SHA-1作为密码使用已不再安全。因为计算能力的攀升使其变得容易被破解。
+
+推荐使用 bcrypt 或 sha512sum 这类工具进行加密
+
+### shadow-like 散列
+
+密码文件使用的就是 shadow-like salt 散列
+```bash
+-> sudo cat /etc/shadow
+root:$6$F7yJ4iBQ$oEGgf0eA2zkGoyx3Ac0ChoJ7HuDiRq5td9rXsGGGybHMNN15uBh8OETOPVRlNDqnkRBWwlcqQT7n5wor0d5b21:17306:0:99999:7:::
+```
+
+使用 openssl 生成 shadow 密码
+```bash
+-> openssl passwd -1 -salt SALT_STRING PASSWORD
+$1$SALT_STR$323VkWkSLHuhbt1zkSsUG.
+```
+* shadow密码通常都是salt密码。
+* SALT_STRING 是 SALT，所谓 SALT 就是额外的一个字符串，用来起一个混淆的作用，使加密更加不易被破解。
+
+## 排序、唯一
+
+sort 用于对文本行进行排序
+
+uniq 返回唯一的文本行或找出重复的文本行，且只能处理经过排序的文本行，所以 uniq 要么接受管道数据，要么接受排序过的文件
+
+sort 和 uniq 都可以接受文件参数或 stdin
+
+```bash
+-> cat 1.txt
+key say hometown
+111 hi  beijing
+aaa i am shenlin    shanghai
+333 who are you tianjin
+
+-> cat 2.txt
+key say hometown
+444 piggy yan   handan
+ddd how are you doing today?    xingtai
+222 i am doing good.    anyang
+
+# 排序（默认按字母顺序排）
+-> sort 1.txt 2.txt
+111 hi  beijing
+222 i am doing good.    anyang
+333 who are you tianjin
+444 piggy yan   handan
+aaa i am shenlin    shanghai
+ddd how are you doing today?    xingtai
+key say hometown
+key say hometown
+
+# 按数字顺序排， sort 命令对于字母表排序和数字排序有不同的处理方式。因此，如果要采用数字顺序排序，就应该明确地给出 -n 选项
+-> sort -n 1.txt 2.txt
+aaa i am shenlin    shanghai
+ddd how are you doing today?    xingtai
+key say hometown
+key say hometown
+111 hi  beijing
+222 i am doing good.    anyang
+333 who are you tianjin
+444 piggy yan   handan
+
+# 倒序排
+-> sort -r 1.txt 2.txt
+key say hometown
+key say hometown
+ddd how are you doing today?    xingtai
+aaa i am shenlin    shanghai
+444 piggy yan   handan
+333 who are you tianjin
+222 i am doing good.    anyang
+111 hi  beijing
+
+# 验证是否排序，排序退出码为 0
+-> var=`sort -C 1.txt`;echo $?
+1
+
+-> sort 1.txt > s1.txt
+
+-> var=`sort -C s1.txt`;echo $?
+0
+
+# 按照指定的第几列排序
+-> sort 1.txt
+111 hi  beijing
+333 who are you tianjin
+aaa i am shenlin    shanghai
+key say hometown
+
+-> sort -k 2 1.txt
+111 hi  beijing
+aaa i am shenlin    shanghai
+key say hometown
+333 who are you tianjin
+
+# 重复行只显示一条
+$ cat sorted.txt
+bash
+foss
+hack
+hack
+
+$ uniq sorted.txt
+bash
+foss
+hack
+
+# 重复的行只显示一条
+-> sort 1.txt 2.txt | uniq
+111 hi  beijing
+222 i am doing good.    anyang
+333 who are you tianjin
+444 piggy yan   handan
+aaa i am shenlin    shanghai
+ddd how are you doing today?    xingtai
+key say hometown
+
+# 只把重复的行显示出来
+-> sort 1.txt 2.txt | uniq -d
+key say hometown
+
+# 只显示没有重复的行，重复的行一条也不显示
+-> sort 1.txt 2.txt | uniq -u
+111 hi  beijing
+222 i am doing good.    anyang
+333 who are you tianjin
+444 piggy yan   handan
+aaa i am shenlin    shanghai
+ddd how are you doing today?    xingtai
+
+# 统计各行显示的条数
+-> sort 1.txt 2.txt | uniq -c
+      1 111 hi  beijing
+      1 222 i am doing good.    anyang
+      1 333 who are you tianjin
+      1 444 piggy yan   handan
+      1 aaa i am shenlin    shanghai
+      1 ddd how are you doing today?    xingtai
+      2 key say hometown
+
+# 将比较排序的键设定为某个范围内的字符
+# 范围用行内的位置来标明，格式为 ： 开始位置,终止位置
+$ cat data.txt
+1010hellothis
+2189ababbba
+7464dfddfdfd
+
+$ sort -nk 2,3 data.txt
+
+# -s 跳过字符个数，-w 用于比较排序的字符数 
+-> cat data.txt
+u:01:gnu
+d:04:linux
+u:01:bash
+u:01:hack
+
+-> sort data.txt | uniq -s 2 -w 2
+d:04:linux
+u:01:bash
+
+# 去除行头的先导空白
+-> sort -b unsorted.txt
+
+# 以字典进行排序
+-> sort -d unsorted.txt
+
+# null 字符即 zero-byte 0 值字节，\0
+# 把命令输出作为 xargs 的输入时，最好为输入的各行添加 null 字符，
+# 如果没有 null 字符作终止符，则 xargs 的默认分隔符是空格，则如
+# 果 stdin 的文本行里有 "this is a tring" 会被误认为 4 个参数，
+# 有 null 字符则会以 null 字符为分隔符，有空格的文本会被正确解析
+# 所以为了保证 xargs 命令的执行安全，当 sort 或 uniq 和 xargs 一
+# 起使用时必须使用 -z 选项
+
+-> uniq -z file.txt | xargs -0 rm
+-> sort -z data.txt | xargs -0
+
+-> sort 1.txt 2.txt | uniq -z
+111 hi  beijing
+222 i am doing good.    anyang
+333 who are you tianjin
+444 piggy yan   handan
+aaa i am shenlin    shanghai
+ddd how are you doing today?    xingtai
+key say hometown
+key say hometown
+
+```
 
 ## 临时文件命名和随机数
 
