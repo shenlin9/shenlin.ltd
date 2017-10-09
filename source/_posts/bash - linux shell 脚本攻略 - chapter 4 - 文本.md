@@ -331,19 +331,111 @@ hello this is a amazing world
 
 awk 是一款用于数据流的工具，可以对行和列进行操作，并有內建的函数、数组等
 
+### 工作原理
+
 awk 脚本的结构如下：
 
-`awk ' BEGIN{ print "start" } pattern { commands } END{ print "end" } file '`
+`awk 'BEGIN{ print "start" } pattern { commands } END{ print "end" }' file`
+`echo someinput | awk 'BEGIN{ print "start" } pattern { commands } END{ print "end" }'`
+* awk 可从文件或 stdin 读入数据
+* awk 的脚本包含在**单**引号中，经测试双引号不可以
+* awk 的脚本由 BEGIN {}, pattern {}, END {} 三个语句块组成
+* BEGIN {} 和 pattern 和 END {} 都是可选的，唯一必选的部分是 pattern 后的大括号括起来的语句块，即最简形式：awk '{ some commands ... }'
+* BEGIN 和 END 必须大写，pattern 为正则表达式，如 /linux/ 匹配包含 linux 的字符串
+
+执行过程：
+
+运行过程举例
+```bash
+-> seq 5 | awk 'BEGIN{ sum=0; print "Summation:" } { print $1"+"; sum+=$1 } END { print "=="; print sum }'
+Summation:
+1+
+2+
+3+
+4+
+5+
+==
+15
+```
+
+### 特殊变量
+
+`NR` ：Number of Records，表示记录数量，在执行过程中对应于当前行号。
+`NF` ：Number of Fields，表示字段数量，在执行过程中对应于当前行的字段数。可以使用 `print $NF` 打印最后一个字段，`print ($NF-1)` 打印倒数第二个字段
+`$0` ：这个变量包含执行过程中当前行的文本内容。
+`$1` ：这个变量包含第一个字段的文本内容。
+`$2` ：这个变量包含第二个字段的文本内容。
+
+输出第 2 和第 3 个字段
+```bash
+-> awk '{print $2,$3}' s1.txt
+sAy hometown
+hi beijing
+who Are
+where Are
+i Am
+```
+
+打印文件的行数
+```bash
+-> awk 'END {print NR}' s1.txt
+5
+```
+
+综合举例
+```bash
+-> echo -e "line1 f2 f3\nline2 f4 f5\nline3 f6 f7" | awk '{print "Line no:"NR",No of fields:"NF, "$0="$0, "$1="$1,"$2="$2,"$3="$3}'
+Line no:1,No of fields:3 $0=line1 f2 f3 $1=line1 $2=f2 $3=f3
+Line no:2,No of fields:3 $0=line2 f4 f5 $1=line2 $2=f4 $3=f5
+Line no:3,No of fields:3 $0=line3 f6 f7 $1=line3 $2=f6 $3=f7
+```
+
+### 使用外部变量的值
+
+`-v` 选项使用外部变量，只能赋值一个变量
+```bash
+-> out=100; echo | awk -v var=$out '{ print "the out value is " var }'
+the out value is 100
+```
+
+另一种不使用 `-v` 选项给多个变量赋值的方式
+```bash
+-> out=100;echo | awk '{ print var,val }' var=$out val=$out
+100 100
+```
+
+从文件输入  ??? 么有测试成功，不知道要实现什么
+```bash
+-> awk '{ print v1,v2 }' v1=$var1 v2=$var2 1.txt
+```
 
 ### getline 读取行
 
+awk 默认读取文件的所有行，getline 可以读取某一行
 
+getline var 把行的内容写入 var
+```bash
+-> seq 5 | awk 'BEGIN { getline var; print "Read ahead first line", var }'
+Read ahead first line 1
+```
+
+不带参数的 getline 则可以使用 `$0 $1 $2` 访问文本行的内容
+```bash
+-> seq 5 | awk 'BEGIN { getline; print "Read ahead first line", $0 } { print $0 }'
+Read ahead first line 1
+2
+3
+4
+5
+```
 
 ### 过滤要处理的行
 
+使用 pattern 来过滤
+
 行数小于 5 的行
 ```bash
--> awk 'NR<5' /etc/passwd | awk ' BEGIN{ FS=":" } { print $1 }'
+-> awk 'BEGIN { FS=":" } NR<5 {print $1}' /etc/passwd
 root
 bin
 daemon
@@ -352,7 +444,7 @@ adm
 
 行号在 1 到 3 之间的行
 ```bash
--> awk 'NR==1,NR==3' /etc/passwd | awk ' BEGIN{ FS=":" } { print $1 }'
+-> awk 'BEGIN { FS=":" } NR==1,NR==3 {print $1}' /etc/passwd
 root
 bin
 daemon
@@ -360,13 +452,13 @@ daemon
 
 包含 mysql 和不包含 mysql 的行
 ```bash
--> awk '/mysql/' /etc/passwd | awk ' BEGIN{ FS=":" } { print }'
+-> awk 'BEGIN {} /mysql/ {print}' /etc/passwd
 mysql:x:27:27:MySQL Server:/var/lib/mysql:/bin/false
 
--> awk '!/mysql/' /etc/passwd | awk ' BEGIN{ FS=":" } { print }'
+-> awk 'BEGIN {} !/mysql/ {print}' /etc/passwd
 root:x:0:0:root:/root:/bin/bash
 bin:x:1:1:bin:/bin:/sbin/nologin
-vboxadd:x:498:1::/var/run/vboxadd:/bin/false
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
 .................................
 ```
 
