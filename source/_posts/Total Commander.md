@@ -15,7 +15,7 @@ Total Commander 是代替 Windows 资源管理器的一款软件。
 
 F2 刷新来源窗口
 
-`ctrl + \` 根目录
+`ctrl + \\` 根目录
 
 `backspace` 上级目录   
 

@@ -14,43 +14,20 @@ Hexo 是一个简洁高效的静态站点生成框架，可以基于 Markdown �
 
 hexo 依赖于 Git 和 Node.js，需先安装这两个软件包，安装过程省略。
 
-### 安装 hexo
+注意 Windows 下安装 Node.js 时，把所有组件都选择，尤其是 `Add To Path`
 
-使用 Node.js 自带的包管理工具 npm 把 hexo 作为 Node.js 的模块安装
+验证 Git 和 Node.js 安装
 ```
-$ npm install -g hexo-cli
-```
-* 将自动从 npm 服务器下载并安装
-* -g 参数表示全局安装
+$ git --version
+git version 2.14.3.windows.1
 
-### 安装 deployer
-
-部署到 git 库则安装 hexo-deployer-git
-```
-$ npm install hexo-deployer-git --save
-```
-
-部署到 Heroku 则安装 hexo-deployer-heroku
-```
-$ npm install hexo-deployer-heroku --save
-```
-
-部署到 Rsync 则安装 hexo-deployer-rsync
-```
-$ npm install hexo-deployer-rsync --save
-```
-
-### 安装 hexo-server
-
-Hexo 3.0 把服务器独立成了模块，必须先安装 hexo-server 才能使用。
-```
-$ npm install hexo-server --save
+$ node -v
+v8.9.0
 ```
 
 ### 使用淘宝 NPM 镜像
 
-NPM 国外服务器下载速度较慢，可以使用淘宝 NPM 镜像
-http://npm.taobao.org/
+NPM 国外服务器下载速度特别慢，可以使用淘宝 NPM 镜像 : http://npm.taobao.org/
 
 先安装淘宝定制的 cnpm
 ```
@@ -62,6 +39,39 @@ $ npm install -g cnpm --registry=https://registry.npm.taobao.org
 $ cnpm install [name]
 ```
 
+### 安装 hexo
+
+使用 Node.js 自带的包管理工具 npm 把 hexo 作为 Node.js 的模块安装
+```
+$ cnpm install -g hexo-cli
+```
+* 将自动从 npm 服务器下载并安装
+* -g 参数表示全局安装
+
+### 安装 deployer
+
+部署到 git 库则安装 hexo-deployer-git
+```
+$ cnpm install hexo-deployer-git --save
+```
+
+部署到 Heroku 则安装 hexo-deployer-heroku
+```
+$ cnpm install hexo-deployer-heroku --save
+```
+
+部署到 Rsync 则安装 hexo-deployer-rsync
+```
+$ cnpm install hexo-deployer-rsync --save
+```
+
+### 安装 hexo-server
+
+Hexo 3.0 把服务器独立成了模块，必须先安装 hexo-server 才能使用。
+```
+$ cnpm install hexo-server --save
+```
+
 ## 创建目录
 
 ### 初始化站点目录
@@ -69,28 +79,28 @@ $ cnpm install [name]
 ```
 $ hexo init <BlogFolder>
 ```
-* &lt;BlogFolder&gt; 非空会提示错误
+* BlogFolder 非空会提示错误
 * 建立目录结构如下
     ├── .gitignore
     ├── package.json
-    ├── _config.yml
-    ├── node_modules
+    ├── -config.yml
+    ├── node-modules
     ├── scaffolds
     ├── source
-    |   ├── _drafts
-    |   └── _posts
+    |   ├── -drafts
+    |   └── -posts
     └── themes
+
 |文件夹|保存内容|
 |---|---|
 |package.json|应用程序和已安装模块的版本信息。EJS, Stylus 和 Markdown renderer 已默认安装|
-|_config.yml|站点配置文件，每个主题也有对应得到主题配置文件，位于 themes/theme_name 目录下|
+|-config.yml|站点配置文件，每个主题也有对应得到主题配置文件，位于 themes/theme-name 目录下|
 |scaffolds|模版 文件夹。<br/>新建文章时，Hexo 会根据 scaffold 来建立文件。|
-|source|资源文件夹是存放用户资源的地方。<br/><br/><b>_posts 目录里存放的就是用户的文章，Hexo 会根据这里的文章生成静态网页，Markdown 和 HTML 文件会被解析并放到 public 文件夹，而其他文件会被拷贝过去。</b><br/><br/>_drafts 目录存放的是草稿文件。<br/><br/>除 _posts 文件夹之外，以下划线 _ 开头命名的文件或文件夹和隐藏的文件将会被忽略。|
+|source|资源文件夹是存放用户资源的地方。<br/><br/><b>-posts 目录里存放的就是用户的文章，Hexo 会根据这里的文章生成静态网页，Markdown 和 HTML 文件会被解析并放到 public 文件夹，而其他文件会被拷贝过去。</b><br/><br/>-drafts 目录存放的是草稿文件。<br/><br/>除 `-posts` 文件夹之外，以下划线开头命名的文件或文件夹和隐藏的文件将会被忽略。|
 |public|存放生成的页面|
 |themes|主题 文件夹。<br/>Hexo 会根据主题来生成静态页面。|
 |db.json|从 source 解析得到的缓存文件|
-|node_modules|hexo 插件|
-
+|node-modules|hexo 插件|
 
 ### 安装 hexo 插件
 

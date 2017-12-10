@@ -106,3 +106,7 @@ cmder 支持多种 shell，新建 Tab 时，可选择 shell 的种类：
 * 命令行里有中文字符时，就可以删除到底把提示符 `$`  都删了
 
     打开`settings --> main --> 选择Alternative font`，设置字体为黑体，Unicode ranges 为CJK，然后点击 apply
+
+* 按 TAB 命令补全时，把路径中的斜线 `/` 替换为了反斜线 `\\`，结果显示文件不存在
+
+    未解决
