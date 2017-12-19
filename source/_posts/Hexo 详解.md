@@ -1,9 +1,7 @@
-﻿# Hexo 详解
-
+﻿---
 title: Hexo 详解
 categories: Hexo
 tags: Hexo
-
 ---
 
 Hexo 是一个简洁高效的静态站点生成框架，可以基于 Markdown 文件生成纯静态博客。
@@ -104,12 +102,13 @@ $ hexo init <BlogFolder>
 
 ### 安装 hexo 插件
 
-??? 这一步貌似可以不执行，git init 时已经安装过依赖包了
+git init 时只在 node_modules 目录下建立了插件文件夹，并没有安装插件，下面将安装插件到 node_modules 目录
 
 ```
 $ cd <BlogFolder>
 
 $ npm install
+
 npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@^1.0.0 (node_modules\chokidar\node_modules\fsevents):
 
 npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.1.2: wanted `{"os":"darwin","arch":"any"}` (current: `{"os":"win32","arch":"ia32"}`)
@@ -175,21 +174,21 @@ $ hexo s
 
 ### 修改配置
 
-修改 _config.yml 配置，不同的 deployer 配置不同，git 库的配置修改如下：
-
-    deploy:
-      type: git
-      repo: <repository url>
-      branch: [branch]
-      message: [message]
-
+修改 `_config.yml` 配置，不同的 deployer 配置不同，git 库的配置修改如下：
+```
+deploy:
+  type: git
+  repo: <repository url>
+  branch: [branch]
+  message: [message]
+```
 * YAML依靠缩进来确定元素间的从属关系。因此，请确保每个同级元素的缩进长度相同，并且使用空格缩进。
 * message	自定义提交信息，默认为 `Site updated: { { now('YYYY-MM-DD HH:mm:ss') }}`
-* 使用的时间脚本是：[Moment.js](http://momentjs.com/) 
+* 使用的时间脚本是：`[Moment.js](http://momentjs.com/)`
 
 ### 远程部署
 
-//部署到远程服务器如 github
+部署到远程服务器如 github
 ```
 $ hexo d
 ```
@@ -205,11 +204,11 @@ git clone 到本地
 $ git clone https://github.com/ppoffice/hexo-theme-hueman.git themes/hueman
 ```
 
-修改根目录下的`站点配置文件` _config.yml
+修改根目录下的站点配置文件`_config.yml`
 ```
 theme: hueman
 ```
-* theme/hueman 下的`主题配置文件`原名是 _config.yml.example 改名为 _config.yml
+* theme/hueman 下的`主题配置文件`原名是 `_config.yml.example` 改名为 `_config.yml`
 
 ## 站点地图
 
@@ -285,7 +284,7 @@ Asset 提供了在文章中使用图片、JS等资源的另一种方法，特点
 
 Asset 的方法是：
 
-修改 _config.yml
+修改 `_config.yml`
 ```
 post_asset_folder: true
 ```
@@ -293,7 +292,7 @@ post_asset_folder: true
 
 ### _config.yml 配置
 
-_config.yml 使用 YAML 语言
+`_config.yml` 使用 YAML 语言
 
 #### YAML
 
@@ -308,7 +307,7 @@ YAML依靠缩进来确定元素间的从属关系。因此，请确保每个同�
 
 如果 YAML 字符串中包含冒号（:）的话，要加上引号。
 
-_config.yml 文件中所有冒号后面的空格，格式很严格，必须是只有一个半角空格。不管是多了还是少了都会报错，这是 yml 解释器所定义的语法，并且不能使用Tab。
+`_config.yml` 文件中所有冒号后面的空格，格式很严格，必须是只有一个半角空格。不管是多了还是少了都会报错，这是 yml 解释器所定义的语法，并且不能使用Tab。
 
 一些人显而易见的配置项如 title, author 等未在下面列出。
 
@@ -442,7 +441,7 @@ $ hexo version
 ```
 $ hexo --config custom.yml
 ```
-* 执行后将不再使用 _config.yml。
+* 执行后将不再使用 `_config.yml`。
 
 自定义 CWD
 ```
@@ -477,5 +476,33 @@ INFO  Start processing
 FATAL Something's wrong. Maybe you can find the solution here: http://hexo.io/docs/troubleshooting.html
 Template render error: (unknown path) [Line 13, Column 46]
 ```
-
 hexo转义时候发生的错误，文章中可能出现了连续两个`{`或一个`{`后紧跟一个`%`，经测试用反引号转义也不行，在`{`后加一个空格通过，即写成`{ {}}`，`{ %%}`的样式。
+
+2. hexo s 运行后出现 hexo 的可用命令列表，并没有运行内置服务器
+
+hexo server 和 hexo 是独立的两个模块，确认已经安装过了 hexo server 模块，
+
+则再运行下面命令安装 hexo 插件即可
+```
+$ npm install
+```
+
+3. hexo s 提示 WARN  No layout: index.html
+
+先确认 `_config.yml` 文件的 theme 设置的主题名，则对应的 themes 目录下的主题必须安装，且目录名需和 theme 的设置一致。
+
+4. 换机器后，把 hexo 的站点从 git 库 clone 到新机器上，运行 hexo 提示 hexo not found
+
+但在其他目录可以运行 hexo 命令，反而原来的 hexo 站点目录有错误提示，如下：
+```
+$ hexo
+ERROR Local hexo not found in D:\git-repo\shenlin.ltd
+ERROR Try running: 'npm install hexo --save'
+```
+原因是 hexo 的一个目录 node_modules 被加入到了 .gitignore 文件中，没有从 git 库中下载下来
+
+解决方法是进入 hexo 站点目录，按提示再运行一次安装命令即可
+```
+$ cd shenlin.ltd
+$ npm install hexo --save
+```

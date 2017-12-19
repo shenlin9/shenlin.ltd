@@ -1,5 +1,4 @@
-﻿# Hexo 主题 NexT 配置说明
-
+﻿---
 title: Hexo 主题 NexT 配置说明
 categories:
   - Hexo
@@ -7,12 +6,11 @@ categories:
 tags:
   - Hexo
   - NexT
-
 ---
 
 NexT 是 github 上最多星星的 Hexo 主题。
 
-Hexo 有两份主要的配置文件，名称都是 _config.yml。一份位于站点根目录下，主要包含 Hexo 本身的配置；另一份位于主题目录下，主要用于配置主题相关的选项，由主题作者提供。
+Hexo 有两份主要的配置文件，名称都是 `_config.yml`。一份位于站点根目录下，主要包含 Hexo 本身的配置；另一份位于主题目录下，主要用于配置主题相关的选项，由主题作者提供。
 
 <!-- more -->
 
@@ -33,7 +31,7 @@ $ git clone https://github.com/iissnan/hexo-theme-next themes/next
 
 ## 启用主题
 
-修改`站点配置文件` _config.yml
+修改站点配置文件 `_config.yml`
 ```
 theme: next
 ```
@@ -70,7 +68,7 @@ $content-desktop-large = 900px
 
 ## 主题设置
 
-下列设置都是在`主题配置文件` source/themes/next/_config.yml 中进行
+下列设置都是在主题配置文件`source/themes/next/_config.yml` 中进行
 
 ### Scheme
 
@@ -79,6 +77,7 @@ $content-desktop-large = 900px
     scheme: Muse
     #scheme: Mist
     #scheme: Pisces
+    #scheme: Gemini
 
 ### 语言
 
