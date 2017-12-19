@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Hexo 是一个简洁高效的静态站点生成框架，可以基于 Markdown 文件生成纯静态博客。">
+<meta name="keywords" content="Hexo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo 详解">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/12/19/Hexo 详解/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="Hexo 是一个简洁高效的静态站点生成框架，可以基于 Markdown 文件生成纯静态博客。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-19T11:29:53.747Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo 详解">
+<meta name="twitter:description" content="Hexo 是一个简洁高效的静态站点生成框架，可以基于 Markdown 文件生成纯静态博客。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/12/19/Hexo 详解/"/>
+
+
+
+
+
+  <title>Hexo 详解 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/12/19/Hexo 详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Hexo 详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-19T19:29:53+08:00">
+                2017-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hexo/" itemprop="url" rel="index">
+                    <span itemprop="name">Hexo</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Hexo 是一个简洁高效的静态站点生成框架，可以基于 Markdown 文件生成纯静态博客。</p>
+<a id="more"></a>
+<h2 id="安装软件"><a href="#安装软件" class="headerlink" title="安装软件"></a>安装软件</h2><p>hexo 依赖于 Git 和 Node.js，需先安装这两个软件包，安装过程省略。</p>
+<p>注意 Windows 下安装 Node.js 时，把所有组件都选择，尤其是 <code>Add To Path</code></p>
+<p>验证 Git 和 Node.js 安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git --version</span><br><span class="line">git version 2.14.3.windows.1</span><br><span class="line"></span><br><span class="line">$ node -v</span><br><span class="line">v8.9.0</span><br></pre></td></tr></table></figure></p>
+<h3 id="使用淘宝-NPM-镜像"><a href="#使用淘宝-NPM-镜像" class="headerlink" title="使用淘宝 NPM 镜像"></a>使用淘宝 NPM 镜像</h3><p>NPM 国外服务器下载速度特别慢，可以使用淘宝 NPM 镜像 : <a href="http://npm.taobao.org/" target="_blank" rel="noopener">http://npm.taobao.org/</a></p>
+<p>先安装淘宝定制的 cnpm<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure></p>
+<p>安装后就可以用 cnpm 代替 npm<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cnpm install [name]</span><br></pre></td></tr></table></figure></p>
+<h3 id="安装-hexo"><a href="#安装-hexo" class="headerlink" title="安装 hexo"></a>安装 hexo</h3><p>使用 Node.js 自带的包管理工具 npm 把 hexo 作为 Node.js 的模块安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cnpm install -g hexo-cli</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>将自动从 npm 服务器下载并安装</li>
+<li>-g 参数表示全局安装</li>
+</ul>
+<h3 id="安装-deployer"><a href="#安装-deployer" class="headerlink" title="安装 deployer"></a>安装 deployer</h3><p>部署到 git 库则安装 hexo-deployer-git<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cnpm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></p>
+<p>部署到 Heroku 则安装 hexo-deployer-heroku<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cnpm install hexo-deployer-heroku --save</span><br></pre></td></tr></table></figure></p>
+<p>部署到 Rsync 则安装 hexo-deployer-rsync<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cnpm install hexo-deployer-rsync --save</span><br></pre></td></tr></table></figure></p>
+<h3 id="安装-hexo-server"><a href="#安装-hexo-server" class="headerlink" title="安装 hexo-server"></a>安装 hexo-server</h3><p>Hexo 3.0 把服务器独立成了模块，必须先安装 hexo-server 才能使用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cnpm install hexo-server --save</span><br></pre></td></tr></table></figure></p>
+<h2 id="创建目录"><a href="#创建目录" class="headerlink" title="创建目录"></a>创建目录</h2><h3 id="初始化站点目录"><a href="#初始化站点目录" class="headerlink" title="初始化站点目录"></a>初始化站点目录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init &lt;BlogFolder&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>BlogFolder 非空会提示错误</li>
+<li>建立目录结构如下<br>  ├── .gitignore<br>  ├── package.json<br>  ├── -config.yml<br>  ├── node-modules<br>  ├── scaffolds<br>  ├── source<br>  |   ├── -drafts<br>  |   └── -posts<br>  └── themes</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>文件夹</th>
+<th>保存内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>package.json</td>
+<td>应用程序和已安装模块的版本信息。EJS, Stylus 和 Markdown renderer 已默认安装</td>
+</tr>
+<tr>
+<td>-config.yml</td>
+<td>站点配置文件，每个主题也有对应得到主题配置文件，位于 themes/theme-name 目录下</td>
+</tr>
+<tr>
+<td>scaffolds</td>
+<td>模版 文件夹。<br>新建文章时，Hexo 会根据 scaffold 来建立文件。</td>
+</tr>
+<tr>
+<td>source</td>
+<td>资源文件夹是存放用户资源的地方。<br><br><b>-posts 目录里存放的就是用户的文章，Hexo 会根据这里的文章生成静态网页，Markdown 和 HTML 文件会被解析并放到 public 文件夹，而其他文件会被拷贝过去。</b><br><br>-drafts 目录存放的是草稿文件。<br><br>除 <code>-posts</code> 文件夹之外，以下划线开头命名的文件或文件夹和隐藏的文件将会被忽略。</td>
+</tr>
+<tr>
+<td>public</td>
+<td>存放生成的页面</td>
+</tr>
+<tr>
+<td>themes</td>
+<td>主题 文件夹。<br>Hexo 会根据主题来生成静态页面。</td>
+</tr>
+<tr>
+<td>db.json</td>
+<td>从 source 解析得到的缓存文件</td>
+</tr>
+<tr>
+<td>node-modules</td>
+<td>hexo 插件</td>
+</tr>
+</tbody>
+</table>
+<h3 id="安装-hexo-插件"><a href="#安装-hexo-插件" class="headerlink" title="安装 hexo 插件"></a>安装 hexo 插件</h3><p>git init 时只在 node_modules 目录下建立了插件文件夹，并没有安装插件，下面将安装插件到 node_modules 目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ cd &lt;BlogFolder&gt;</span><br><span class="line"></span><br><span class="line">$ npm install</span><br><span class="line"></span><br><span class="line">npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@^1.0.0 (node_modules\chokidar\node_modules\fsevents):</span><br><span class="line"></span><br><span class="line">npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.1.2: wanted `&#123;&quot;os&quot;:&quot;darwin&quot;,&quot;arch&quot;:&quot;any&quot;&#125;` (current: `&#123;&quot;os&quot;:&quot;win32&quot;,&quot;arch&quot;:&quot;ia32&quot;&#125;`)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在包目录中安装时无需指定参数</li>
+<li>警告提示 <code>Unsupported platform</code> 是因为 fsevents 是用于 OS X 系统的，在 windowns 或 linux 下使用就有警告，忽略即可，或者加上 <code>--no-optional</code> 参数</li>
+</ul>
+<h3 id="创建其他目录"><a href="#创建其他目录" class="headerlink" title="创建其他目录"></a>创建其他目录</h3><p>常用目录还包括 tags、categories、archives、about 需要手动创建</p>
+<p>新建页面，命名为 tags<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new page tags</span><br><span class="line">INFO  Created: D:\git\shenlin.ltd\source\tags\index.md</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>其实是自动创建了 tags 目录 和 tags/index.md 文件</li>
+</ul>
+<p>更改文件类型<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//编辑 index.md</span><br><span class="line">$ vi tags/index.md</span><br><span class="line"></span><br><span class="line">//在最后一行 --- 上面加上这行</span><br><span class="line">type: &quot;tags&quot;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>这步是必须的，否则 index.md 就是个普通文件，但 about/index.md 不需要</li>
+<li>hexo 将自动为标签页面创建标签云</li>
+</ul>
+<p>相同的步骤创建 categories 和 archives<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new page categories</span><br><span class="line">INFO  Created: D:\git\shenlin.ltd\source\categories\index.md</span><br><span class="line"></span><br><span class="line">$ vim source/categories/index.md</span><br><span class="line">type: &quot;categories&quot;</span><br><span class="line"></span><br><span class="line">$ hexo new page archives</span><br><span class="line">INFO  Created: D:\git\shenlin.ltd\source\archives\index.md</span><br><span class="line"></span><br><span class="line">$ vim source/archives/index.md</span><br><span class="line">type: &quot;archives&quot;</span><br><span class="line"></span><br><span class="line">$ hexo new page about</span><br><span class="line">INFO  Created: D:\git\shenlin.ltd\source\about\index.md</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>about 页面无需增加 <code>type: &quot;about&quot;</code> 这行</li>
+</ul>
+<h2 id="本地运行"><a href="#本地运行" class="headerlink" title="本地运行"></a>本地运行</h2><p>经过上面的步骤，所需软件包已全部安装，目录也生成了，hexo 默认有篇名为 hello-world.md 位于 source/_posts 目录下，可以运行看效果了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//生成静态文件</span><br><span class="line">$ hexo g</span><br><span class="line"></span><br><span class="line">//启动内置服务器</span><br><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
+<p>浏览 <a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 就可以看到效果</p>
+<h2 id="远程部署"><a href="#远程部署" class="headerlink" title="远程部署"></a>远程部署</h2><h3 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h3><p>修改 <code>_config.yml</code> 配置，不同的 deployer 配置不同，git 库的配置修改如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: &lt;repository url&gt;</span><br><span class="line">  branch: [branch]</span><br><span class="line">  message: [message]</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>YAML依靠缩进来确定元素间的从属关系。因此，请确保每个同级元素的缩进长度相同，并且使用空格缩进。</li>
+<li>message    自定义提交信息，默认为 <code>Site updated: { { now(&#39;YYYY-MM-DD HH:mm:ss&#39;) }}</code></li>
+<li>使用的时间脚本是：<code>[Moment.js](http://momentjs.com/)</code></li>
+</ul>
+<h3 id="远程部署-1"><a href="#远程部署-1" class="headerlink" title="远程部署"></a>远程部署</h3><p>部署到远程服务器如 github<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure></p>
+<p>可以使用远程地址查看效果，如 <a href="http://username.github.io/project_name" target="_blank" rel="noopener">http://username.github.io/project_name</a></p>
+<h2 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h2><p>浏览并找到喜欢的 theme ：<a href="https://hexo.io/themes/" target="_blank" rel="noopener">https://hexo.io/themes/</a></p>
+<p>git clone 到本地<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https://github.com/ppoffice/hexo-theme-hueman.git themes/hueman</span><br></pre></td></tr></table></figure></p>
+<p>修改根目录下的站点配置文件<code>_config.yml</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">theme: hueman</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>theme/hueman 下的<code>主题配置文件</code>原名是 <code>_config.yml.example</code> 改名为 <code>_config.yml</code></li>
+</ul>
+<h2 id="站点地图"><a href="#站点地图" class="headerlink" title="站点地图"></a>站点地图</h2><p><a href="http://www.jianshu.com/p/ab44b916a8b6" target="_blank" rel="noopener">http://www.jianshu.com/p/ab44b916a8b6</a></p>
+<h2 id="评论系统"><a href="#评论系统" class="headerlink" title="评论系统"></a>评论系统</h2><p><a href="http://www.uyan.cc/" target="_blank" rel="noopener">http://www.uyan.cc/</a><br><a href="http://www.jianshu.com/p/4729e92fddbe" target="_blank" rel="noopener">http://www.jianshu.com/p/4729e92fddbe</a></p>
+<h2 id="更多配置"><a href="#更多配置" class="headerlink" title="更多配置"></a>更多配置</h2><h3 id="布局-Layout"><a href="#布局-Layout" class="headerlink" title="布局 Layout"></a>布局 Layout</h3><p>Hexo 有三种默认布局，使用不同布局的文章默认保存的位置也不同：</p>
+<table>
+<thead>
+<tr>
+<th>布局</th>
+<th>默认保存路径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>page</td>
+<td>source</td>
+</tr>
+<tr>
+<td>draft</td>
+<td>source/_drafts</td>
+</tr>
+<tr>
+<td>post</td>
+<td>source/_posts</td>
+</tr>
+<tr>
+<td>自定义</td>
+<td>source/_posts</td>
+</tr>
+<tr>
+<td>false</td>
+<td>文章将不被处理</td>
+</tr>
+</tbody>
+</table>
+<h3 id="模板-Scaffold"><a href="#模板-Scaffold" class="headerlink" title="模板 Scaffold"></a>模板 Scaffold</h3><p>使用 Scaffold 目录的 phpto 模板建立文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new photo &quot;My Gallery&quot;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>模板中仅可使用下列变量：layout, title, date</li>
+</ul>
+<h3 id="Front-matter"><a href="#Front-matter" class="headerlink" title="Front-matter"></a>Front-matter</h3><p>文件最上方以 — 分割的区域，用于定义当前文件的参数，可用参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>layout</td>
+<td>布局</td>
+<td></td>
+</tr>
+<tr>
+<td>title</td>
+<td>标题</td>
+<td></td>
+</tr>
+<tr>
+<td>date</td>
+<td>建立日期</td>
+<td>文件建立日期</td>
+</tr>
+<tr>
+<td>updated</td>
+<td>更新日期</td>
+<td>文件更新日期</td>
+</tr>
+<tr>
+<td>comments</td>
+<td>开启文章的评论功能</td>
+<td>true</td>
+</tr>
+<tr>
+<td>tags</td>
+<td>标签（不适用于分页）</td>
+<td></td>
+</tr>
+<tr>
+<td>categories</td>
+<td>分类（不适用于分页）</td>
+<td></td>
+</tr>
+<tr>
+<td>permalink</td>
+<td>覆盖文章网址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Hexo 中分类(categories)和标签(tags)有着明显的差别：分类具有顺序性和层次性，也就是说 Foo, Bar 不等于 Bar, Foo；而标签没有顺序和层次。</li>
+<li><p>Hexo不支持指定多个同级分类，下面的分类 Life 是 Diary 的子类</p>
+<pre><code>categories:
+- Diary
+- Life
+tags:
+- PS3
+- Games
+</code></pre></li>
+<li><p>除了 YAML 外，也可以使用 JSON 来编写 Front-matter，只要将 — 代换成 ;;; 即可</p>
+<pre><code>&quot;title&quot;: &quot;Hello World&quot;,
+&quot;date&quot;: &quot;2013/7/13 20:46:25&quot;
+;;;
+</code></pre></li>
+<li>如果不想文章被处理，可以将 Front-Matter 中的 layout: 设为 false 。</li>
+</ul>
+<h3 id="Asset-文件夹"><a href="#Asset-文件夹" class="headerlink" title="Asset 文件夹"></a>Asset 文件夹</h3><p>资源（Asset）代表 source 文件夹中除了文章以外的所有文件，例如图片、CSS、JS 文件等。</p>
+<p>Asset 提供了在文章中使用图片、JS等资源的另一种方法，特点是简单方便且更规律更组织化。</p>
+<p>比方说，如果Hexo项目中只有少量图片，那最简单的方法就是将它们放在 source/images 文件夹中。然后通过类似于 <code>![](/images/image.jpg)</code> 的方法访问它们。</p>
+<p>Asset 的方法是：</p>
+<p>修改 <code>_config.yml</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">post_asset_folder: true</span><br></pre></td></tr></table></figure></p>
+<p>上述命令启用了 Asset 文件夹，Hexo 将会在你每一次通过<code>hexo new [layout] &lt;title&gt;</code>命令创建新文章时自动创建一个文件夹。这个资源文件夹将会有与这个 markdown 文件一样的名字。将所有与你的文章有关的资源放在这个关联文件夹中之后，你可以通过相对路径来引用它们，这样你就得到了一个更简单而且方便得多的工作流。</p>
+<h3 id="config-yml-配置"><a href="#config-yml-配置" class="headerlink" title="_config.yml 配置"></a>_config.yml 配置</h3><p><code>_config.yml</code> 使用 YAML 语言</p>
+<h4 id="YAML"><a href="#YAML" class="headerlink" title="YAML"></a>YAML</h4><p>YAML: YAML Ain’t Markup Language</p>
+<p>What It Is: YAML is a human friendly data serialization standard for all programming languages.<br>对用户友好且支持所有编程语言的数据序列化标准</p>
+<p><a href="http://www.yaml.org/" target="_blank" rel="noopener">http://www.yaml.org/</a></p>
+<p>YAML依靠缩进来确定元素间的从属关系。因此，请确保每个同级元素的缩进长度相同，并且使用空格缩进。</p>
+<p>如果 YAML 字符串中包含冒号（:）的话，要加上引号。</p>
+<p><code>_config.yml</code> 文件中所有冒号后面的空格，格式很严格，必须是只有一个半角空格。不管是多了还是少了都会报错，这是 yml 解释器所定义的语法，并且不能使用Tab。</p>
+<p>一些人显而易见的配置项如 title, author 等未在下面列出。</p>
+<h4 id="配置列表"><a href="#配置列表" class="headerlink" title="配置列表"></a>配置列表</h4><table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>网站</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>description</td>
+<td>主要用于SEO，告诉搜索引擎一个关于您站点的简单描述，通常建议在其中包含您网站的关键词</td>
+</tr>
+<tr>
+<td><strong>网址</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>url</td>
+<td>网址，如果网站存放在子目录中，例如 <a href="http://yoursite.com/blog，则请将" target="_blank" rel="noopener">http://yoursite.com/blog，则请将</a> url 设为 <a href="http://yoursite.com/blog" target="_blank" rel="noopener">http://yoursite.com/blog</a> 并把 root 设为 /blog/</td>
+</tr>
+<tr>
+<td>root</td>
+<td>网站根目录</td>
+</tr>
+<tr>
+<td>permalink</td>
+<td>文章的 永久链接 格式    :year/:month/:day/:title/，注意不要漏掉最后的/</td>
+</tr>
+<tr>
+<td>permalink_defaults</td>
+<td>永久链接中各部分的默认值</td>
+</tr>
+<tr>
+<td><strong>目录</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>code_dir</td>
+<td>Include code 文件夹，默认值 downloads/code</td>
+</tr>
+<tr>
+<td>i18n_dir</td>
+<td>国际化（i18n）文件夹，默认值 :lang</td>
+</tr>
+<tr>
+<td>skip_render</td>
+<td>跳过指定文件的渲染，您可使用 glob 表达式来匹配路径。</td>
+</tr>
+<tr>
+<td><strong>文章</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>new_post_name</td>
+<td>新文章的文件名称，默认值     :title.md，表示以标题作为文件名称，设为 :year-:month-:day-:title.md 则可以方便的通过日期来管理文章，:i_month,:i_day表示没有前导0</td>
+</tr>
+<tr>
+<td>default_layout</td>
+<td>预设布局，默认值     post</td>
+</tr>
+<tr>
+<td>auto_spacing</td>
+<td>在中文和英文之间加入空格，默认值     false</td>
+</tr>
+<tr>
+<td>titlecase</td>
+<td>把标题转换为 title case，默认值     false</td>
+</tr>
+<tr>
+<td>external_link</td>
+<td>在新标签中打开链接，默认值     true</td>
+</tr>
+<tr>
+<td>filename_case</td>
+<td>把文件名称转换为 (1) 小写或 (2) 大写，默认值     0</td>
+</tr>
+<tr>
+<td>render_drafts</td>
+<td>显示草稿，默认值     false</td>
+</tr>
+<tr>
+<td>post_asset_folder</td>
+<td>启动 Asset 文件夹，默认值     false，开启后 Hexo 将会在你每一次通过<code>hexo new [layout] &lt;title&gt;</code>命令创建新文章时自动创建一个文件夹。这个资源文件夹将会有与这个 markdown 文件一样的名字。将所有与你的文章有关的资源放在这个关联文件夹中，你可以通过相对路径来引用它们</td>
+</tr>
+<tr>
+<td>relative_link</td>
+<td>把链接改为与根目录的相对位址，默认值     false<br>绝对链接是包含完整域名的，如<a href="http://shenlin.ltd/hello.html，通常建议绝对路径，但也限制死了域名，而相对路径如/index.html则可使用多个域名访问" target="_blank" rel="noopener">http://shenlin.ltd/hello.html，通常建议绝对路径，但也限制死了域名，而相对路径如/index.html则可使用多个域名访问</a></td>
+</tr>
+<tr>
+<td>future</td>
+<td>显示未来的文章，默认值     true</td>
+</tr>
+<tr>
+<td>highlight</td>
+<td>代码块的设置</td>
+</tr>
+<tr>
+<td><strong>其他</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>default_category</td>
+<td>默认分类，默认值 uncategorized</td>
+</tr>
+<tr>
+<td>category_map</td>
+<td>分类别名</td>
+</tr>
+<tr>
+<td>tag_map</td>
+<td>标签别名</td>
+</tr>
+<tr>
+<td>per_page</td>
+<td>每页显示的文章量 (0 = 关闭分页功能)，默认值10</td>
+</tr>
+<tr>
+<td>pagination_dir</td>
+<td>分页目录，默认值page</td>
+</tr>
+<tr>
+<td>theme</td>
+<td>当前主题名称。值为false时禁用主题</td>
+</tr>
+</tbody>
+</table>
+<p>deploy部分因为格式关系单独写这里<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy: </span><br><span class="line">    type: git</span><br><span class="line">    repo: git@github.com:shenlin9/shenlin.ltd</span><br><span class="line">    branch: gh-pages</span><br></pre></td></tr></table></figure></p>
+<p>可同时使用多个 deployer，Hexo 会依照顺序执行每个 deployer。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">- type: git</span><br><span class="line">  repo:</span><br><span class="line">- type: heroku</span><br><span class="line">  repo:</span><br></pre></td></tr></table></figure></p>
+<h2 id="更多命令"><a href="#更多命令" class="headerlink" title="更多命令"></a>更多命令</h2><p>新建网站<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init [folder]</span><br></pre></td></tr></table></figure></p>
+<p>新建文章<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new [layout] &lt;title&gt;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>文章有空格则使用引号括起来</li>
+</ul>
+<p>生成静态文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line">$ hexo g -d</span><br><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>-d,–deploy 文件生成后立即部署</li>
+<li>-w,–watch 监视文件变动<ul>
+<li>Hexo 能够监视文件变动并立即重新生成静态文件，在生成时会比对文件的 SHA1 checksum，只有变动的文件才会写入。</li>
+</ul>
+</li>
+</ul>
+<p>部署网站<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo d</span><br><span class="line">$ hexo d -g</span><br><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>-g, –generate    部署之前先生成静态文件</li>
+<li>部署时根目录下的 CNAME 会被删除，移动到 source 目录即可</li>
+</ul>
+<p>显示草稿<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo --draft</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>显示 source/_drafts 文件夹中的草稿文章。</li>
+</ul>
+<p>发表草稿<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo publish [layout] &lt;filename&gt;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>会把文件从草稿目录 <code>source/_drafts</code> 移动到文章目录 <code>source/_posts</code></li>
+</ul>
+<p>启动服务器<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo s</span><br><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>默认网址 <a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a></li>
+<li>服务器启动期间，Hexo 会监视文件变动并自动更新，无须重启服务器</li>
+<li>-p, –port    重设端口</li>
+<li>-l, –log     启动日记记录，使用覆盖记录格式</li>
+<li>-i            自定义IP，只能通过指定的IP访问</li>
+<li>-s, –static    静态模式，只处理 public 文件夹内的文件，不处理文件变动，常用于生产环境</li>
+</ul>
+<p>清除文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>会清除缓存文件 (db.json) 和已生成的静态文件 (public)。</li>
+<li>如果对站点的更改无论如何也不生效（如更换主题后），可以运行该命令。</li>
+</ul>
+<p>列出站点信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo list &lt;type&gt;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>&lt;type&gt;取值：page, post, route, tag, category</li>
+</ul>
+<p>显示版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo version</span><br></pre></td></tr></table></figure></p>
+<p>自定义配置文件的路径<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo --config custom.yml</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>执行后将不再使用 <code>_config.yml</code>。</li>
+</ul>
+<p>自定义 CWD<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo --cwd /path/to/cwd</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>自定义当前工作目录（Current working directory）的路径。</li>
+</ul>
+<p>渲染文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo render &lt;file1&gt; [file2] ...</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>-o, –output    设置输出路径</li>
+</ul>
+<p>从其他博客系统 迁移内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo migrate &lt;type&gt;</span><br></pre></td></tr></table></figure></p>
+<p>模式选项<br>|模式选项|说明|<br>|—|—|<br>|安全模式<br><code>$ hexo --safe</code>|在安全模式下，不会载入插件和脚本。当您在安装新插件遭遇问题时，可以尝试以安全模式重新执行。|<br>|调试模式<br><code>$ hexo --debug</code>|在终端中显示调试信息并记录到 debug.log。当您碰到问题时，可以尝试用调试模式重新执行一次，并 提交调试信息到 GitHub。|<br>|简洁模式<br><code>$ hexo --silent</code>|隐藏终端信息|</p>
+<h2 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><ol>
+<li>Template render error<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line">INFO  Start processing</span><br><span class="line">FATAL Something&apos;s wrong. Maybe you can find the solution here: http://hexo.io/docs/troubleshooting.html</span><br><span class="line">Template render error: (unknown path) [Line 13, Column 46]</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>hexo转义时候发生的错误，文章中可能出现了连续两个<code>{</code>或一个<code>{</code>后紧跟一个<code>%</code>，经测试用反引号转义也不行，在<code>{</code>后加一个空格通过，即写成<code>{ {}}</code>，<code>{ %%}</code>的样式。</p>
+<ol>
+<li>hexo s 运行后出现 hexo 的可用命令列表，并没有运行内置服务器</li>
+</ol>
+<p>hexo server 和 hexo 是独立的两个模块，确认已经安装过了 hexo server 模块，</p>
+<p>则再运行下面命令安装 hexo 插件即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>hexo s 提示 WARN  No layout: index.html</li>
+</ol>
+<p>先确认 <code>_config.yml</code> 文件的 theme 设置的主题名，则对应的 themes 目录下的主题必须安装，且目录名需和 theme 的设置一致。</p>
+<ol>
+<li>换机器后，把 hexo 的站点从 git 库 clone 到新机器上，运行 hexo 提示 hexo not found</li>
+</ol>
+<p>但在其他目录可以运行 hexo 命令，反而原来的 hexo 站点目录有错误提示，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo</span><br><span class="line">ERROR Local hexo not found in D:\git-repo\shenlin.ltd</span><br><span class="line">ERROR Try running: &apos;npm install hexo --save&apos;</span><br></pre></td></tr></table></figure></p>
+<p>原因是 hexo 的一个目录 node_modules 被加入到了 .gitignore 文件中，没有从 git 库中下载下来</p>
+<p>解决方法是进入 hexo 站点目录，按提示再运行一次安装命令即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd shenlin.ltd</span><br><span class="line">$ npm install hexo --save</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/10/Vim -  基础/" rel="next" title="Vim 基础">
+                <i class="fa fa-chevron-left"></i> Vim 基础
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/19/Hexo 主题 NexT 配置说明/" rel="prev" title="Hexo 主题 NexT 配置说明">
+                Hexo 主题 NexT 配置说明 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装软件"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;&#x8F6F;&#x4EF6;" class="headerlink" title="&#x5B89;&#x88C5;&#x8F6F;&#x4EF6;"></a>&#x5B89;&#x88C5;&#x8F6F;&#x4EF6;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用淘宝-NPM-镜像"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x4F7F;&#x7528;&#x6DD8;&#x5B9D;-NPM-&#x955C;&#x50CF;" class="headerlink" title="&#x4F7F;&#x7528;&#x6DD8;&#x5B9D; NPM &#x955C;&#x50CF;"></a>&#x4F7F;&#x7528;&#x6DD8;&#x5B9D; NPM &#x955C;&#x50CF;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-hexo"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;-hexo" class="headerlink" title="&#x5B89;&#x88C5; hexo"></a>&#x5B89;&#x88C5; hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-deployer"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;-deployer" class="headerlink" title="&#x5B89;&#x88C5; deployer"></a>&#x5B89;&#x88C5; deployer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-hexo-server"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;-hexo-server" class="headerlink" title="&#x5B89;&#x88C5; hexo-server"></a>&#x5B89;&#x88C5; hexo-server</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建目录"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;&#x76EE;&#x5F55;" class="headerlink" title="&#x521B;&#x5EFA;&#x76EE;&#x5F55;"></a>&#x521B;&#x5EFA;&#x76EE;&#x5F55;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化站点目录"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x521D;&#x59CB;&#x5316;&#x7AD9;&#x70B9;&#x76EE;&#x5F55;" class="headerlink" title="&#x521D;&#x59CB;&#x5316;&#x7AD9;&#x70B9;&#x76EE;&#x5F55;"></a>&#x521D;&#x59CB;&#x5316;&#x7AD9;&#x70B9;&#x76EE;&#x5F55;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-hexo-插件"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;-hexo-&#x63D2;&#x4EF6;" class="headerlink" title="&#x5B89;&#x88C5; hexo &#x63D2;&#x4EF6;"></a>&#x5B89;&#x88C5; hexo &#x63D2;&#x4EF6;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建其他目录"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;&#x5176;&#x4ED6;&#x76EE;&#x5F55;" class="headerlink" title="&#x521B;&#x5EFA;&#x5176;&#x4ED6;&#x76EE;&#x5F55;"></a>&#x521B;&#x5EFA;&#x5176;&#x4ED6;&#x76EE;&#x5F55;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地运行"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x672C;&#x5730;&#x8FD0;&#x884C;" class="headerlink" title="&#x672C;&#x5730;&#x8FD0;&#x884C;"></a>&#x672C;&#x5730;&#x8FD0;&#x884C;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远程部署"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x8FDC;&#x7A0B;&#x90E8;&#x7F72;" class="headerlink" title="&#x8FDC;&#x7A0B;&#x90E8;&#x7F72;"></a>&#x8FDC;&#x7A0B;&#x90E8;&#x7F72;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#修改配置"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#&#x4FEE;&#x6539;&#x914D;&#x7F6E;" class="headerlink" title="&#x4FEE;&#x6539;&#x914D;&#x7F6E;"></a>&#x4FEE;&#x6539;&#x914D;&#x7F6E;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#远程部署-1"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#&#x8FDC;&#x7A0B;&#x90E8;&#x7F72;-1" class="headerlink" title="&#x8FDC;&#x7A0B;&#x90E8;&#x7F72;"></a>&#x8FDC;&#x7A0B;&#x90E8;&#x7F72;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更换主题"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x66F4;&#x6362;&#x4E3B;&#x9898;" class="headerlink" title="&#x66F4;&#x6362;&#x4E3B;&#x9898;"></a>&#x66F4;&#x6362;&#x4E3B;&#x9898;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#站点地图"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x7AD9;&#x70B9;&#x5730;&#x56FE;" class="headerlink" title="&#x7AD9;&#x70B9;&#x5730;&#x56FE;"></a>&#x7AD9;&#x70B9;&#x5730;&#x56FE;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#评论系统"><span class="nav-number">7.</span> <span class="nav-text"><a href="#&#x8BC4;&#x8BBA;&#x7CFB;&#x7EDF;" class="headerlink" title="&#x8BC4;&#x8BBA;&#x7CFB;&#x7EDF;"></a>&#x8BC4;&#x8BBA;&#x7CFB;&#x7EDF;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更多配置"><span class="nav-number">8.</span> <span class="nav-text"><a href="#&#x66F4;&#x591A;&#x914D;&#x7F6E;" class="headerlink" title="&#x66F4;&#x591A;&#x914D;&#x7F6E;"></a>&#x66F4;&#x591A;&#x914D;&#x7F6E;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#布局-Layout"><span class="nav-number">8.1.</span> <span class="nav-text"><a href="#&#x5E03;&#x5C40;-Layout" class="headerlink" title="&#x5E03;&#x5C40; Layout"></a>&#x5E03;&#x5C40; Layout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模板-Scaffold"><span class="nav-number">8.2.</span> <span class="nav-text"><a href="#&#x6A21;&#x677F;-Scaffold" class="headerlink" title="&#x6A21;&#x677F; Scaffold"></a>&#x6A21;&#x677F; Scaffold</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Front-matter"><span class="nav-number">8.3.</span> <span class="nav-text"><a href="#Front-matter" class="headerlink" title="Front-matter"></a>Front-matter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Asset-文件夹"><span class="nav-number">8.4.</span> <span class="nav-text"><a href="#Asset-&#x6587;&#x4EF6;&#x5939;" class="headerlink" title="Asset &#x6587;&#x4EF6;&#x5939;"></a>Asset &#x6587;&#x4EF6;&#x5939;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#config-yml-配置"><span class="nav-number">8.5.</span> <span class="nav-text"><a href="#config-yml-&#x914D;&#x7F6E;" class="headerlink" title="_config.yml &#x914D;&#x7F6E;"></a>_config.yml &#x914D;&#x7F6E;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#YAML"><span class="nav-number">8.5.1.</span> <span class="nav-text"><a href="#YAML" class="headerlink" title="YAML"></a>YAML</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置列表"><span class="nav-number">8.5.2.</span> <span class="nav-text"><a href="#&#x914D;&#x7F6E;&#x5217;&#x8868;" class="headerlink" title="&#x914D;&#x7F6E;&#x5217;&#x8868;"></a>&#x914D;&#x7F6E;&#x5217;&#x8868;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更多命令"><span class="nav-number">9.</span> <span class="nav-text"><a href="#&#x66F4;&#x591A;&#x547D;&#x4EE4;" class="headerlink" title="&#x66F4;&#x591A;&#x547D;&#x4EE4;"></a>&#x66F4;&#x591A;&#x547D;&#x4EE4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-amp-A"><span class="nav-number">10.</span> <span class="nav-text"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

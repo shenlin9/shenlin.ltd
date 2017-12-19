@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="��Linux�������̡� �̼�Firmware(CMOS/BIOS)-&amp;gt;ִ��POST(Power On Self Test)�ӵ��Լ�-&amp;gt;��ȡMBR-&amp;gt;�Ծٳ���BootLoader(GRUB)-&amp;gt;�����ں�-&amp;gt;�ں�Kernel-&amp;gt;����Ӳ��">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shenlin&#39;s blog">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Linux - 引导流程解析/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="��Linux�������̡� �̼�Firmware(CMOS/BIOS)-&amp;gt;ִ��POST(Power On Self Test)�ӵ��Լ�-&amp;gt;��ȡMBR-&amp;gt;�Ծٳ���BootLoader(GRUB)-&amp;gt;�����ں�-&amp;gt;�ں�Kernel-&amp;gt;����Ӳ��">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.559Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="shenlin&#39;s blog">
+<meta name="twitter:description" content="��Linux�������̡� �̼�Firmware(CMOS/BIOS)-&amp;gt;ִ��POST(Power On Self Test)�ӵ��Լ�-&amp;gt;��ȡMBR-&amp;gt;�Ծٳ���BootLoader(GRUB)-&amp;gt;�����ں�-&amp;gt;�ں�Kernel-&amp;gt;����Ӳ��">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/Linux - 引导流程解析/"/>
+
+
+
+
+
+  <title> | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Linux - 引导流程解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>��Linux�������̡�</p>
+<pre><code>�̼�Firmware(CMOS/BIOS)-&gt;ִ��POST(Power On Self Test)�ӵ��Լ�-&gt;��ȡMBR-&gt;�Ծٳ���BootLoader(GRUB)-&gt;�����ں�-&gt;�ں�Kernel-&gt;����Ӳ��
+
+                                                                                                                      -&gt;�����init-&gt;��ȡ��ִ�������ļ�/etc/inittab
+
+
+init�Ĺ�����
+
+    init����ȡinittab�ļ���ִ��ȱʡ���м��𣬴Ӷ������������̡�
+
+    ��UNIXϵͳ�У�init�ǵ�һ�����Դ��ڵĽ��̣�����PID��Ϊ1������Ҳ������һ�����߼��Ĺ��ܸ���PIDΪ0���ں˵�������Kernel Scheduler�����Ӷ����CPUʱ�� 
+
+�ں˵��������������CPUʱ��ͽ��̼��л���
+
+���ӽ��̣�linux�У���������ֹ���ӽ���Ҳ���뱻��ֹ������̱���ֹ�����ӽ���������ԭ��û����ֹ�����ӽ��̱���Ϊ�¶����̣�linux��⵽�¶����̺󣬻Ὣ�¶����̵ĸ�����ָ��init���̣�
+
+          ���ӽ��̱���ֹ�󣬸�����û�˽⵽����Ϣ�������Ժ��ӽ���ȡ����ϵ������ӽ��̳�Ϊ��ʬ���̣�linux����Z��Zombie����ʾ��
+
+MBR��Mater Boot Record ��������¼��λ��0����0��ͷ1����
+
+     MBR��512���ֽ�
+
+         Boot Loader ��446bytes�� �Ծٳ���
+
+         Partition Table ��64bytes�� ������
+
+               partition1 
+               partition2 
+               partition3 
+               partition4 
+
+         Magic Number��2bytes�� ������־��
+
+�̼����������Ӳ��֮��
+
+�̼��ĳ������ã�
+
+    ��ȫ���ã�������BIOS����
+
+    �������Ľ����б�
+
+    ���������ʵ�����˳��
+
+    ��Դ����
+
+    ��ϸ����ʾ
+
+    ��������
+
+BIOSʱ��
+
+    Ӳ��ʱ�ӣ�linux�г�Ϊhardware clock��ʹ������hwclock�鿴
+
+    ����Ӳ��ʱ��ʱ�䣺hwclock --set --date=&quot;9/22/96 16:45:05&quot;
+
+���ʱ��
+
+    linuxϵͳ��ʱ�ӣ�ʹ��date����鿴
+
+    �������ʱ��ʱ�䣺date MMDDhhmm[[CC]YY][.ss]����ʽ�� ��������ʱʱ�ַ���������.����
+
+                      date 030821192014.30
+
+���ʱ�Ӻ�Ӳ��ʱ�ӵ�ͬ��
+
+    ����ʱ��ͬ������Ҫ��һЩ��Ӧ�ó����ڵ���ʱ��ֵʱ��ʱ�Ӳ�ͬ�����޷��������У�����ʾTime Error
+
+                        һЩ��Ӧ�ó����ʱ���кܸߵ�Ҫ�������绷����ʵ��ͬ�������籸�ݣ���ʱ��Ҫ����������������ʱ����һ�µ�
+
+    ͬ�����hwclock --hctosys         hardware clock to sys����Ӳ��ʱ��ͬ����ϵͳ
+
+              hwclock --systohc         sys clock to haredware����ϵͳʱ��ͬ����Ӳ��
+
+    NTP��Network Time Protocal�����񣬶��ں�ʵ�ʷ�����ͬ��???
+</code></pre><p>��Linux���м���</p>
+<pre><code>��/etc/inittab�����ļ�������linux�����м���init���̽���ȡinittab�����ļ�������ϵͳ�������趨�ļ����ϡ�
+
+��7������0 - halt
+                ���𣨹ػ�???�ô�???������Ҫ��Ĭ�ϵ����м�����Ϊ��ֵ
+
+           1 - Single user mode
+                ���û�ģʽ��������windows�İ�ȫģʽ��ֻ��root���Ե�¼���ô�дS��ʾ
+
+           2 - Multiuser,without NFS
+                ���û�ģʽ��û��NFS�������ʹ������ͺ�3һ��
+
+                NFS��Network File System�������ļ�ϵͳ��sun��˾�����ķ�������Unix��Linux֮����ļ������򵥵���ȫ�Բʹ�ý���
+
+           3 - Full multiuser mode
+                �����Ķ��û�ģʽ
+
+           4 - unused
+                û��ʹ�ã������Լ���������м��𣬿��Զ�������Щ������
+
+           5 - X11
+                X11��X Window�İ汾�ţ�ͼ�λ��Ķ��û�������
+
+           6 - reboot
+                �����Ҫ��Ĭ�ϵ����м�����Ϊ��ֵ
+
+           ???ϵͳ��Ĭ�ϼ���
+
+�鿴��ǰ�����м���runlevel
+
+            ��ʾN 3��N��ʾû���л������м���???
+
+            ��ʾS 3��S��ʾ�л������м���???
+
+�л����м���init [0123456Ss]
+
+              telinit [0123456Ss]
+
+              telinit��init��������
+
+��inittab�У�������Ŀ��ȡ���¸�ʽ��
+
+    id:runlevels:action:process
+
+        id����Ŀ�ı�ʶ����1��4λ�ַ�
+
+        run-levels��ָ�����м��𣬿���ָ����������Ϊ�գ����Ǳ�ʾ��ִ�У����Ǳ�ʾ��0��6ÿ�����м���Ҫִ��
+
+        action��ָ������״̬��action����ȡֵ��
+
+                    initdefault��ָ��ϵͳȱʡ������м���
+
+                    sysinit��ϵͳ��ִ��process��ָ��������
+
+                    wait��ִ��process��ָ������������������������������
+
+                    once��ִ��process��ָ����������ȴ������
+
+                    ctrlaltdel������Ctrl+Alt+Delʱִ��processָ��������
+
+                    powerfail�������ֵ�Դ����ʱִ��processָ����������ȴ������
+
+                    powerokwait������Դ�ָ�ʱִ��processָ��������
+
+                    respawn��һ��processָ����������ֹ�����������и�����
+
+        process��ָ��Ҫ���еĳ��������·��
+
+
+    �Ƚ������һ�У�������ϵͳ��ʱ��Ĭ�����м���
+
+        id:5:initdefault:
+</code></pre><p>��Linux��������</p>
+<pre><code>��ű� /etc/rc.d/rc.sysinit
+
+    /etc/inittab��Ϊsi::sysinit:/etc/rc.d/rc.sysinit        
+
+    �ɼ�����״̬Ϊ�գ�˵�������������м��𣬶���ִ��rc.sysinit�����Լ�����Ҫÿ��ϵͳ��ʱ��ִ�еĽű������Ը����ڴ��ļ����ݺ�
+
+    ���ϵͳ������������ϵͳ�����������ã�����ϵͳʱ�ӣ��������壬�������ļ�ϵͳ������ϵͳ����Ϣ��־�ļ���
+
+��ű� /etc/rc.d/rc
+
+    �ж�ϵͳ�����м������Ӧ���м���Ŀ¼�еķ�����������Ӧ���м���ĳ�ʼ������
+
+��ű� /etc/rc.d/rc[0123456].d        /etc/rc[0123456].d���������ӣ���Ϊ�˺�Unix�����ü���
+
+    �ֱ��Ŷ�Ӧ�����м���ķ������ű��ķ������ӣ����ӵ�init.dĿ¼�е���Ӧ�ű���ls -l /etc/rc.d/rc3.dִ�н��������
+
+        K35smb -&gt; ../init.d/smb
+        S55sshd - &gt; ../init.d/sshd
+
+    �ļ���ʽ��Ϊ3�����֣�
+
+        ��ͷ��ĸS��K��S��ͷ�ı�ʾ�ڴ����м���ҪStart���K��ͷ�ı�ʾKill�رգ�ע�ⶼ�Ǵ�д����S��ΪСд������������ô��ص�ر��Լ�����Ҫ�ķ������д˹��ɣ�����Сдs��ͷ�ľͿ����˽⵽ĳ����ȱʡ����ϵͳ��ģ��Լ�������Ϊ�˲���
+
+        �м������35,55��ʾ��/�رյ�˳������ԽСԽ������
+
+        ����ǽű�������
+
+
+���ܽ᣺
+
+firmware--&gt;BootLoader(λ��MBR��)--&gt;��init����--&gt;��ȡ/etc/inittab�����ļ�--&gt;�ж�ϵͳ��ȱʡ���м���initDefault--&gt;ִ�нű�/etc/rc.d/rc.sysinit��ʼ��ִ�У������м����޹أ�--&gt;ִ�нű�/etc/rc.d/rc���ж�initDefault--&gt;�������м������ӦĿ¼/etc/rc.d/rc[0123456].d�µ���S��ͷ�Ľű�--&gt;����usrename,password
+
+
+tty
+
+    ctrl+alt+[F1--F6]�����Ӧ��6���ն�
+
+    ctrl+alt+F7 �ص�X Window
+
+/etc/rc.d/init.d        /etc/init.d�Ǵ�Ŀ¼��������Ŀ¼
+
+    ��Ŀ¼�°����������м���ķ������ű�
+
+    linux��װ�ķ������ű���λ�ڴ�Ŀ¼
+
+    ֱ�����д�Ŀ¼�µĽű����ᵯ��ʹ�÷�������ʾ��Ϣ�����Դ������ֹ���͹رշ���
+
+        /etc/rc.d/init.d/sshd
+
+        Usage��/etc/rc.d/init.d/sshd {start|stop|restart|reload|condrestart|status}
+
+            reload  ��ʾ���¶�ȡ����������ļ�������Ҫ�������
+
+            condrestart ���ȼ������Ƿ������У����������������û���������κβ���
+
+�����������
+
+    ln -s
+
+        ��һ�������ű��ļ��������ӣ��ŵ���Ӧ��������Ŀ¼�£���
+
+        ln -s /etc/rc.d/init.d/msg.script /etc/rc.d/rc3.d/S100msg.script
+
+    chkconfig
+
+        chkconfig --list
+
+            ��ʾϵͳ���Ѱ�װ�ķ����ȱʡ��״̬
+
+            chkconfig --list httpd  ֻ��ʾhttpd�������Ϣ
+
+        chkconfig --levels servicename on/off
+        chkconfig --level servicename on/off
+
+            ������Ϊservicename�ķ��������м���levels����Ϊon/off��һ�����м���ʹ��ѡ��--level�����ʹ��--levels
+
+            chkconfig --levels 2345 httpd on
+
+    ntsysv
+
+        ntsysv --level 3
+
+        �趨���м���3�������ͼ�ν���
+
+    dmesg
+
+        ��������ڼ�Ĵ���
+
+        dmesg | grep hda
+
+        dmesg | grep eth0
+
+            ���û���ҵ��κ���Ϣ��˵���ں�û������������
+
+    ϵͳ��־ /var/log/messages
+
+        grep syslogd /var/log/messages
+
+            ���ϵͳ��־�����ҿ��ܱ�dmesg���Ե�Ӧ�ó������
+
+        /var/log
+
+            ��Ŀ¼��ŵ�����־�ļ�
+</code></pre><p>��GRUB������Ӧ�á�</p>
+<pre><code>GRUB��the GRand Unified Bootloader
+
+GRUB�������ļ�Ĭ��Ϊ/boot/grub/grub.conf    /etc/grub.confΪ�������ļ���������
+
+����ѡ�
+
+    default
+
+        ����ȱʡ����ϵͳ��0��ʾ��1����1��ʾ��2������ϵͳ���б���title�˵��������пɿ���
+
+    timeout
+
+        ����ȱʡ�ȴ�ʱ��
+
+    splashimage
+
+        ����GRUB����ͼƬ�����640x480�ķֱ��ʣ�ɫ��14�����ʱ�Կ�����δ���أ��߷ֱ��ʵ�ͼƬ�ᵼ�±������һƬ
+
+        λ��/boot/grub/splash.xpm.gz
+
+    hiddenmenu
+
+        ���ز˵���ɾ����ѡ������ʾ�˵���
+
+    title
+
+        ����˵�������
+
+    root
+
+        ����GRUB�ĸ��豸���ں����ڵķ���
+
+    kernel
+
+        �����ں��ļ�����λ��
+
+    initrd
+
+        ������ؾ����ļ�
+
+GRUB���
+
+    e���༭��ǰ����˵���
+
+    c������GRUB��������ģʽ
+
+    b�����ǰ�Ĳ˵���
+
+    d��ɾ����ǰ��
+
+    esc������GRUB��˵����棬ȡ���Ե�ǰ�˵����������κ��޸�
+</code></pre><p>������Ϸ���������</p>
+<pre><code>Ӧ��1��root�������룬���뵥�û�ģʽ�������룺
+
+        ��������GRUB���棬��e����༭��ģʽ
+
+                        ��ѡ��kernel�У��ٴΰ�e
+
+                        �����µĽ�������һ�е����λ������ո�����м���ı�ţ����ɽ����Ӧ�����м�����ո�1����ո�s����ʾҪ���뵥�û�ģʽ
+
+                        ���س���b������������úõ����м���
+
+                        �����뵥�û�ģʽ�ǲ���Ҫ�κ����ܵģ�����ϵͳ��passwd root��Ҳ����Ҫ�����뼴�ɸ���
+
+Ӧ��2������GRUB���룬�����κ��˿ɽ��뵥�û�ģʽ��
+
+    1��ʹ��GRUB�Դ���grub-md5-crypt ���� ��GRUB���������н�����ʹ��md5crypt�õ�MD5���ܵ������ַ�������xxx
+
+    2������GRUB�����ļ�/boot/grub/grub.conf����title��������һ�У�password --md5 xxxxxxxxxx ��xxxΪ����ʹ������õ������룩
+
+    3���������GRUBʱ�������ǰ�e���б༭��������Ҫ�Ȱ�p����������
+
+Ӧ��3�������ļ�grub.conf���ô����޸�GRUB
+
+    �����������grub���浫û�в˵���ֻʣ��һ��grub&gt;��ʾ��������취��
+
+    1���鿴grub�����õĲ������ҳ�����
+
+        grub&gt;cat /grub/grub.conf
+
+    2��ȷ�ϴ���󣬽�root,kernel,initrd 3������ʹ����ȷ�ķ�ʽִ��һ�飺
+
+        grub&gt;root(hd0,6)
+
+        grub&gt;kernel(hd0,6)/vmlinuz-2.4.18-14 ro root=LABEL=/
+
+        grub&gt;initrd(hd0,6)/initrd-2.4.18-14.img
+
+    3����
+
+        grub&gt;boot
+
+Ӧ��4��inittab�ļ��𻵻�ʧ������linux rescueģʽ
+
+        1��BIOS����Ϊ���������Linux��װ�̷ŵ�������ʹ�ù���������
+
+        2�����ְ�װ����󣬸�����ʾ��F5������linux rescueģʽ
+
+        3����boot������linux rescue�����س�
+
+        4��ʹ�ñ��ݵ�inittab.bak�޸�
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Linux - 常用命令/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Linux - 文件系统管理/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

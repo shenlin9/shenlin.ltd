@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Virtualbox," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="oracle 公司的虚拟机软件 virtualbox 的基本设置和操作。">
+<meta name="keywords" content="Virtualbox">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VirtualBox">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/VirtualBox/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="oracle 公司的虚拟机软件 virtualbox 的基本设置和操作。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.567Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="VirtualBox">
+<meta name="twitter:description" content="oracle 公司的虚拟机软件 virtualbox 的基本设置和操作。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/VirtualBox/"/>
+
+
+
+
+
+  <title>VirtualBox | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/VirtualBox/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">VirtualBox</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Windows/" itemprop="url" rel="index">
+                    <span itemprop="name">Windows</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>oracle 公司的虚拟机软件 virtualbox 的基本设置和操作。</p>
+<a id="more"></a>
+<p><a href="http://blog.csdn.net/pkueecser/article/details/8836264" target="_blank" rel="noopener">http://blog.csdn.net/pkueecser/article/details/8836264</a></p>
+<p>全局设定中可以设置主机键 Host，一般为 [右Ctrl] [左Ctrl] [左Win] 键</p>
+<p>进入“自动缩放模式”后没有菜单栏，可以使用 Host+c 键返回</p>
+<h2 id="增强功能"><a href="#增强功能" class="headerlink" title="增强功能"></a>增强功能</h2><h3 id="增强功能简介"><a href="#增强功能简介" class="headerlink" title="增强功能简介"></a>增强功能简介</h3><p>VBox 增强功能 Guest Additions，就是一系列要安装到客户机上的设备驱动和系统应用，作用就是提高客户机的性能和提升使用体验</p>
+<p>一些儿 linux 的发行版已经默认包含了此增强功能，但最好是使用 vbox 自带的版本，安装时，Guest Additions 会自动检测和替换发行版自带的版本，但最好在替换前做一个快照。</p>
+<p>在安装GuestAddition之间，需要让CentOS为编译生成外置核心模块做好准备。</p>
+<p>(Before installing the Guest Additions, you will have to prepare your guest system for building external kernel modules.)</p>
+<h4 id="安装-linux-外置核心模块"><a href="#安装-linux-外置核心模块" class="headerlink" title="安装 linux 外置核心模块"></a>安装 linux 外置核心模块</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">//查看内核版本</span><br><span class="line">$ uname -r</span><br><span class="line"></span><br><span class="line">//查看安装的内核和版本</span><br><span class="line">$ rpm -qa | grep kernel</span><br><span class="line"></span><br><span class="line">//查看服务器上 kernel-devel 版本</span><br><span class="line">//如果和上面的内核版本不一样，则需要升级内核版本</span><br><span class="line">$ yum list|grep kernel-devel</span><br><span class="line"></span><br><span class="line">//更新系统所有软件到最新版本</span><br><span class="line">//清理步骤执行到最后时耗费时间较长</span><br><span class="line">$ sudo yum update</span><br><span class="line">正在升级   : binutils-2.20.51.0.2-5.47.el6_9.1.i686  </span><br><span class="line">正在升级   : sudo-1.8.6p3-29.el6_9.i686 </span><br><span class="line">清理       : curl-7.19.7-52.el6.i686 </span><br><span class="line">清理       : libcurl-7.19.7-52.el6.i686 </span><br><span class="line">Verifying  : nss-sysinit-3.27.1-13.el6.i686</span><br><span class="line">Verifying  : sudo-1.8.6p3-27.el6.i686</span><br><span class="line">已安装:</span><br><span class="line">  kernel.i686 0:2.6.32-696.3.2.el6</span><br><span class="line">更新完毕:</span><br><span class="line">binutils.i686 0:2.20.51.0.2-5.47.el6_9.1 curl.i686 0:7.19.7-53.el6_9                       </span><br><span class="line">//安装外置核心模块</span><br><span class="line">$ sudo yum install -y kernel-devel</span><br></pre></td></tr></table></figure>
+<h4 id="安装依赖包"><a href="#安装依赖包" class="headerlink" title="安装依赖包"></a>安装依赖包</h4><p>如果 CentOS 版本早于 6，需要在 /etc/grub.conf 中添加一行 divider=10，将这个参数传递给核心以减少 idle CPU load。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//先更新是为了保证 kernel 和 kernel-devel 版本号一致</span><br><span class="line">$ yum update</span><br><span class="line">$ yum install kernel-headers</span><br><span class="line">$ yum install kernel-devel</span><br><span class="line">$ yum install gcc* </span><br><span class="line">$ yum install make</span><br></pre></td></tr></table></figure>
+<h4 id="安装增强功能"><a href="#安装增强功能" class="headerlink" title="安装增强功能"></a>安装增强功能</h4><p>挂载镜像文件 VBoxGuestAdditions.iso<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mount /dev/cdrom  /mnt/cdrom</span><br></pre></td></tr></table></figure></p>
+<p>执行安装命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd /mnt/cdrom</span><br><span class="line">$ sudo sh ./VBoxLinuxAdditions.run</span><br></pre></td></tr></table></figure></p>
+<h4 id="安装问题"><a href="#安装问题" class="headerlink" title="安装问题"></a>安装问题</h4><p>查看安装日志，有错误<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ vi /var/log/vboxadd-install.log</span><br><span class="line"></span><br><span class="line">echo &quot;  ERROR: Kernel configuration is invalid.&quot;;               \</span><br><span class="line">echo &quot;         include/linux/autoconf.h or include/config/auto.conf are missing.&quot;;      \</span><br><span class="line">echo &quot;         Run &apos;make oldconfig &amp;&amp; make prepare&apos; on kernel src to fix it.&quot;;  \</span><br></pre></td></tr></table></figure></p>
+<p>但上面所说的缺少的配置文件都存在<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; ll /usr/src/kernels/2.6.32-696.3.2.el6.i686/include/linux/autoconf.h</span><br><span class="line">-rw-r--r--. 1 root root 117016 6月  20 08:54 /usr/src/kernels/2.6.32-696.3.2.el6.i686/include/linux/autoconf.h</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt; ll /usr/src/kernels/2.6.32-696.3.2.el6.i686/include/config/auto.conf</span><br><span class="line">-rw-r--r--. 1 root root 112820 6月  20 08:54 /usr/src/kernels/2.6.32-696.3.2.el6.i686/include/config/auto.conf</span><br></pre></td></tr></table></figure></p>
+<p><strong>Question:</strong></p>
+<pre><code>上面的问题没解决，可能是要编译 linux 内核
+</code></pre><h4 id="设置共享"><a href="#设置共享" class="headerlink" title="设置共享"></a>设置共享</h4><p>(1) 设备-&gt;分配数据空间</p>
+<p>(2) 挂载/卸载命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir /mnt/share</span><br><span class="line">mount -t vboxsf myshare /mnt/share/</span><br><span class="line">umount -f /mnt/share</span><br></pre></td></tr></table></figure></p>
+<p>(3)开机自动共享<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/fstab</span><br></pre></td></tr></table></figure></p>
+<p>添加一项<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myshare /mnt/share vboxsf rw,gid=100,uid=1000,auto 0 0</span><br></pre></td></tr></table></figure></p>
+<h3 id="增强功能作用"><a href="#增强功能作用" class="headerlink" title="增强功能作用"></a>增强功能作用</h3><p>（1）在客户机上安装了一个鼠标驱动，实现了客户机和主机间鼠标无缝移动，不用再按 Host 键来释放鼠标</p>
+<p>（2）文件共享：可以把主机的一个文件夹作为共享文件夹来让客户机访问</p>
+<p>（3）安装虚拟显卡驱动，实现2D和3D视频图形加速，自动调整客户机分辨率</p>
+<p>（4）无缝窗口，客户机的窗口最大化，桌面背景不显示，将直接显示宿主机的桌面背景，使用 Host+L 键切换</p>
+<p>（5）实现了宿主机/客户机之间的交流通道，使用基于字符串的数据交换机制，可以让宿主机控制和监控客户机，也可以在宿主机启动客户机中的程序</p>
+<p>（6）更好的实现了客户机和宿主机之间的时间同步。<br>由于各种原因，宿主机和客户机直接的时间差会要求很小，但客户机可以被暂停，这时客户机的时间也将暂停流动，如果几分钟或几个小时后恢复，则主机和客户机都有时间差，当主机和客户机时间差较小时，vbox将会逐渐小幅度的调整客户机的时间，当主机和客户机的时间差较大时（几小时），vbox则会一步到位的调整好客户机时间。</p>
+<p>（7）与主机共享剪贴板的内容，也就是说直接可以在主机、客户机之间复制、粘贴（不支持文件）</p>
+<p>（8）自动登录客户机系统</p>
+<p>增强功能最好和 virtualbox 保持同步，升级时一起升级，否则增强功能版本较老时会提示升级，</p>
+<p>也可以通过设置<code>/VirtualBox/GuestAdd/CheckHostVersion  0</code> 去掉升级提示</p>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><p>查看虚拟主机<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VBoxManage list vms</span><br></pre></td></tr></table></figure></p>
+<p>查看硬盘<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VBoxManage list hdds</span><br></pre></td></tr></table></figure></p>
+<p>直接复制的硬盘会提示UUID重复，使用下面的命令重新生成UUID则可以<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VBoxManage internalcommands sethduuid &quot;D:\CentOS.vmdk&quot;</span><br></pre></td></tr></table></figure></p>
+<p>转换格式，转换时会自动压缩<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VBoxManage clonehd &quot;source.vmdk&quot; &quot;cloned.vdi&quot; --format vdi</span><br></pre></td></tr></table></figure></p>
+<p>压缩 vdi 磁盘，不支持 vmdk 磁盘压缩<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VBoxManage modifyhd mydisk.vdi --compact</span><br></pre></td></tr></table></figure></p>
+<p>调整虚拟磁盘大小为 8G，单位为 MB<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//老版本</span><br><span class="line">VBoxManage modifyhd &quot;D:\CentOS.vdi&quot; --resize 10240</span><br><span class="line"></span><br><span class="line">//新版本</span><br><span class="line">VBoxManage modifymedium &quot;D:\CentOS.vdi&quot; --resize 10240</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>virtualbox 有固定大小和动态调整两种硬盘类型</li>
+<li>固定大小的是不能再改变的，这里改动的是动态调整硬盘的大小</li>
+<li>而且只能增大，不能缩小</li>
+<li>当创建硬盘时，即使选择的是动态调整的格式，也是需要指定占用空间的上限</li>
+<li>这里修改的就是这个上限值，而且是一个逻辑值，不是真的去改动实际硬盘文件的大小</li>
+<li>即使是逻辑值，修改完之后，仍然需要使用下面的 gparted 软件把新增加的空间分配到分区</li>
+<li>现在的问题是还没到空间上限，virtualbox就不自动分配空间了为什么？</li>
+</ul>
+<p>vmware 软件可以直接调整 vmdk 格式硬盘<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmware-vdiskmanager -x 70Gb &quot;E:\Red Hat Linux\Red Hat Linux.vmdk&quot;</span><br></pre></td></tr></table></figure></p>
+<p>调整分区空间：</p>
+<pre><code>* 上述操作只是给虚拟磁盘增加了空间，但增加的空间并未分配到分区
+* 无损数据的扩展分区空间使用 GParted 软件
+（下载：http://gparted.sourceforge.net/download.php）
+* 加载gaprted.iso并设定从光盘启动
+
+
+http://www.linuxidc.com/Linux/2013-12/93995.htm
+</code></pre><p>无窗口启动虚拟机<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VBoxManage startvm &quot;CentOS&quot; --type headless</span><br></pre></td></tr></table></figure></p>
+<p>映射宿主主机端口到虚拟机端口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">VBoxManage modifyvm &quot;CentOS&quot; --natpf1 &quot;guestssh,tcp,,2222,,22&quot;</span><br><span class="line">VBoxManage modifyvm &quot;CentOS&quot; --natpf1 &quot;guesthttp,tcp,,80,,80&quot;</span><br></pre></td></tr></table></figure></p>
+<p>自带增强包：好像是为了解决分辨率太低的问题<br>windows 镜像文件路径<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Program Files\Oracle\VirtualBox\VBoxGuestAdditions.iso</span><br></pre></td></tr></table></figure></p>
+<p>linux 加载路径<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/media/username/VBoxGuestAdditions_x.xx.xx</span><br></pre></td></tr></table></figure></p>
+<p>linux 安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /media/username/VBoxGuestAdditions_x.xx.xx</span><br><span class="line">sudo sh ./VBoxLinuxAdditions.run</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Virtualbox/" rel="tag"># Virtualbox</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Vim - SpaceVim/" rel="next" title="SpaceVim">
+                <i class="fa fa-chevron-left"></i> SpaceVim
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Windows 下使用 MinGW 安装 gcc 编译环境/" rel="prev" title="Windows 下使用 MinGW 安装 gcc 编译环境">
+                Windows 下使用 MinGW 安装 gcc 编译环境 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#增强功能"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x589E;&#x5F3A;&#x529F;&#x80FD;" class="headerlink" title="&#x589E;&#x5F3A;&#x529F;&#x80FD;"></a>&#x589E;&#x5F3A;&#x529F;&#x80FD;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#增强功能简介"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x589E;&#x5F3A;&#x529F;&#x80FD;&#x7B80;&#x4ECB;" class="headerlink" title="&#x589E;&#x5F3A;&#x529F;&#x80FD;&#x7B80;&#x4ECB;"></a>&#x589E;&#x5F3A;&#x529F;&#x80FD;&#x7B80;&#x4ECB;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-linux-外置核心模块"><span class="nav-number">1.1.1.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;-linux-&#x5916;&#x7F6E;&#x6838;&#x5FC3;&#x6A21;&#x5757;" class="headerlink" title="&#x5B89;&#x88C5; linux &#x5916;&#x7F6E;&#x6838;&#x5FC3;&#x6A21;&#x5757;"></a>&#x5B89;&#x88C5; linux &#x5916;&#x7F6E;&#x6838;&#x5FC3;&#x6A21;&#x5757;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装依赖包"><span class="nav-number">1.1.2.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;&#x4F9D;&#x8D56;&#x5305;" class="headerlink" title="&#x5B89;&#x88C5;&#x4F9D;&#x8D56;&#x5305;"></a>&#x5B89;&#x88C5;&#x4F9D;&#x8D56;&#x5305;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装增强功能"><span class="nav-number">1.1.3.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;&#x589E;&#x5F3A;&#x529F;&#x80FD;" class="headerlink" title="&#x5B89;&#x88C5;&#x589E;&#x5F3A;&#x529F;&#x80FD;"></a>&#x5B89;&#x88C5;&#x589E;&#x5F3A;&#x529F;&#x80FD;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装问题"><span class="nav-number">1.1.4.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;&#x95EE;&#x9898;" class="headerlink" title="&#x5B89;&#x88C5;&#x95EE;&#x9898;"></a>&#x5B89;&#x88C5;&#x95EE;&#x9898;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置共享"><span class="nav-number">1.1.5.</span> <span class="nav-text"><a href="#&#x8BBE;&#x7F6E;&#x5171;&#x4EAB;" class="headerlink" title="&#x8BBE;&#x7F6E;&#x5171;&#x4EAB;"></a>&#x8BBE;&#x7F6E;&#x5171;&#x4EAB;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增强功能作用"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x589E;&#x5F3A;&#x529F;&#x80FD;&#x4F5C;&#x7528;" class="headerlink" title="&#x589E;&#x5F3A;&#x529F;&#x80FD;&#x4F5C;&#x7528;"></a>&#x589E;&#x5F3A;&#x529F;&#x80FD;&#x4F5C;&#x7528;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用命令"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5E38;&#x7528;&#x547D;&#x4EE4;" class="headerlink" title="&#x5E38;&#x7528;&#x547D;&#x4EE4;"></a>&#x5E38;&#x7528;&#x547D;&#x4EE4;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

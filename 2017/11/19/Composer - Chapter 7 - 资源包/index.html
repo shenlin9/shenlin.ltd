@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="PHP,Composer," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Composer 是如何确定一个资源包的版本号列表的，获取依赖的资源包时又是如何限定其版本号的？">
+<meta name="keywords" content="PHP,Composer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Composer - Chapter 7 - 资源包">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 7 - 资源包/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="Composer 是如何确定一个资源包的版本号列表的，获取依赖的资源包时又是如何限定其版本号的？">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.522Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Composer - Chapter 7 - 资源包">
+<meta name="twitter:description" content="Composer 是如何确定一个资源包的版本号列表的，获取依赖的资源包时又是如何限定其版本号的？">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 7 - 资源包/"/>
+
+
+
+
+
+  <title>Composer - Chapter 7 - 资源包 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 7 - 资源包/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Composer - Chapter 7 - 资源包</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/Composer/" itemprop="url" rel="index">
+                    <span itemprop="name">Composer</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Composer 是如何确定一个资源包的版本号列表的，获取依赖的资源包时又是如何限定其版本号的？</p>
+<a id="more"></a>
+<h2 id="包名格式"><a href="#包名格式" class="headerlink" title="包名格式"></a>包名格式</h2><pre><code>waza-ari/monolog-mysql
+</code></pre><ul>
+<li>格式为：供应商名/库名</li>
+<li>供应商名称和库名都是必填项</li>
+<li>供应商名称的存在很好的解决了命名冲突的问题</li>
+<li>使用 github 上的用户名作为供应商名称是不错的选择</li>
+<li>包名不区分大小写，但惯例是使用小写字母，并用连字符作为单词的分隔</li>
+</ul>
+<h2 id="资源包的版本号确定方式"><a href="#资源包的版本号确定方式" class="headerlink" title="资源包的版本号确定方式"></a>资源包的版本号确定方式</h2><h3 id="手工管理的代码包"><a href="#手工管理的代码包" class="headerlink" title="手工管理的代码包"></a>手工管理的代码包</h3><p>没有使用VCS，手工管理的代码发布为资源包时，版本号也需要手工指定，即再增加”version”属性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;name&quot;:&quot;vendor/package&quot;,</span><br><span class="line">    &quot;description&quot;,&quot;lalalalalalaaa&quot;,</span><br><span class="line">    &quot;version&quot;:&quot;1.0&quot;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注：版本号前<strong>不要</strong>加v，即”v1.0”是<strong>不</strong>对的</p>
+<h3 id="使用-VCS-管理的代码包"><a href="#使用-VCS-管理的代码包" class="headerlink" title="使用 VCS 管理的代码包"></a>使用 VCS 管理的代码包</h3><p>使用 VCS 管理的代码，发布为资源包时 <strong>不要</strong> 指定版本号，否则会和 tag 名冲突，因为 composer 将查找 VCS 所有的 tag 和 branch，然后把它们转化成一个内部的版本号列表供<code>require</code>属性选择。</p>
+<h4 id="根据-tag-标签创建版本号"><a href="#根据-tag-标签创建版本号" class="headerlink" title="根据 tag 标签创建版本号"></a>根据 tag 标签创建版本号</h4><p>composer 对于 VCS 每一个看起来像版本号的 tag 都会创建一个包的版本，版本号的格式如下：</p>
+<table>
+<thead>
+<tr>
+<th>格式</th>
+<th><del>v</del> X.Y.Z[-\</th>
+<th>alpha,beta,patch,p,RC][n]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v</td>
+<td>VCS 标签可能带 v，但 require 约束不允许 v 字符，所以 v 会被去除</td>
+</tr>
+<tr>
+<td>X.Y.Z</td>
+<td>主版本.次版本.修订版本 的格式</td>
+</tr>
+<tr>
+<td>-alpha…</td>
+<td>可选的连字符和后缀</td>
+</tr>
+<tr>
+<td>n</td>
+<td>可选的数字</td>
+</tr>
+</tbody>
+</table>
+<p>查看 tag 列表：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ git tag</span><br><span class="line">1.0.0</span><br><span class="line">v1.0.0</span><br><span class="line">1.10.5-RC1</span><br><span class="line">v4.4.4beta2</span><br><span class="line">v2.0.0-alpha</span><br><span class="line">v2.0.4-p1</span><br></pre></td></tr></table></figure></p>
+<p>composer 将去除前面的 v 字符，并基于这些 tag 创建一个版本列表。</p>
+<pre><code>安装依赖包时:
+composer 根据`require`约束找到匹配的所有版本中的最高版本
+</code></pre><h4 id="根据-branch-分支创建版本号"><a href="#根据-branch-分支创建版本号" class="headerlink" title="根据 branch 分支创建版本号"></a>根据 branch 分支创建版本号</h4><p>composer 对于 VCS 的每一个分支，都会创建相应的版本号，并根据分支名是否像版本号使用不同的规则来创建版本号。</p>
+<h5 id="分支名像版本号"><a href="#分支名像版本号" class="headerlink" title="分支名像版本号"></a>分支名像版本号</h5><p>将创建一个格式 <code>{分支名}.x-dev</code> 的版本号<br>.x是为了技术上识别特意加入的字符，表示是分支而不是tag<br>例如一个分支 2.0 将产生一个 2.0.x-dev 包版本<br>如果分支名本身就是2.0.x，产生的版本号还是2.0.x-dev<br>其实.x可以为随机的字符</p>
+<h5 id="分支名不像版本号"><a href="#分支名不像版本号" class="headerlink" title="分支名不像版本号"></a>分支名不像版本号</h5><p>将创建一个格式<code>dev-{分支名}</code>的版本号<br>例如 master 将产生 dev-master 版本号</p>
+<p>查看 branch 列表：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">~/my-library$ git branch</span><br><span class="line">v1</span><br><span class="line">v2</span><br><span class="line">my-feature</span><br><span class="line">nother-feature</span><br></pre></td></tr></table></figure></p>
+<pre><code>安装依赖包时：
+对应的 `require` 的版本约束应分别写为这样的形式： `2.0.x-dev` `dev-master`
+</code></pre><h4 id="tag-和-branch-的默认检出方式不同"><a href="#tag-和-branch-的默认检出方式不同" class="headerlink" title="tag 和 branch 的默认检出方式不同"></a>tag 和 branch 的默认检出方式不同</h4><p>composer 对于稳定版本的包，默认使用–prefer-dist选项</p>
+<p>检出 tag 版本时，composer 只是下载对应的 zip 归档文件并解压到 vendor 文件夹的正确位置。</p>
+<p>检出 branch 版本时，composer 会假定你要在这个分支上工作，会把 branch 所属的整个资源库都真正的克隆到你的 vendor 文件夹。</p>
+<p>下面的命令选项可以更改这种默认行为：</p>
+<ul>
+<li><p>–prefer-source<br>强制克隆源代码<br>Forces installation from package sources when possible, including VCS information.</p>
+</li>
+<li><p>–prefer-dist<br>强制使用压缩包<br>Forces installation from package dist even for dev versions.</p>
+</li>
+</ul>
+<h2 id="对依赖包的版本号限定方式"><a href="#对依赖包的版本号限定方式" class="headerlink" title="对依赖包的版本号限定方式"></a>对依赖包的版本号限定方式</h2><p>composer.json 文件中：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;require&quot;:&#123;</span><br><span class="line">        &quot;vendor/package&quot;:&quot;version&quot; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="确切的版本号"><a href="#确切的版本号" class="headerlink" title="确切的版本号"></a>确切的版本号</h3><pre><code>1.0.2
+</code></pre><p>让 composer 只安装这个版本，如果其他依赖使用的版本不同，则 composer 的 install 或 update 命令将中止运行。</p>
+<h3 id="指定版本范围"><a href="#指定版本范围" class="headerlink" title="指定版本范围"></a>指定版本范围</h3><ul>
+<li>连字符：<code>-</code></li>
+<li>运算符：<code>&gt;、&gt;=、&lt;、&lt;=、!=</code></li>
+<li>逻辑与：逗号<code>,</code>或空格<code> </code></li>
+<li>逻辑或：双管道符号 <code>||</code></li>
+<li>优先级: 逻辑与 高于 逻辑或</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1.0-2.0      表示&gt;=1.0.0 &lt;2.1，因为2.0表示2.0.*</span><br><span class="line">1.0.0-2.1.0  表示&gt;=1.0.0 &lt;=2.1.0</span><br><span class="line">&gt;=1.0</span><br><span class="line">&gt;=1.0 &lt;2.0</span><br><span class="line">&gt;=1.0,&lt;2.0</span><br><span class="line">&gt;=1.0,&lt;1.1|&gt;=1.2</span><br></pre></td></tr></table></figure>
+<h3 id="使用通配符"><a href="#使用通配符" class="headerlink" title="使用通配符 *"></a>使用通配符 *</h3><pre><code>1.0.*   表示&gt;=1.0,&lt;1.1
+</code></pre><p>注意：不要混用比较符和通配符，即 <code>&gt;=2.*</code> 这样的版本约束不明确是无效的，因为：<br><code>&gt;=2</code> 表示 <code>&gt;=2.0.0</code>，包含 3.0 及以上版本<br><code>2.*</code> 表示 <code>&gt;=2.0.0</code> 且 <code>&lt;3.0</code>，不包含 3.0 及以上版本</p>
+<h3 id="使用语义化版本-2-0-0"><a href="#使用语义化版本-2-0-0" class="headerlink" title="使用语义化版本 2.0.0"></a>使用语义化版本 2.0.0</h3><blockquote>
+<p><a href="http://semver.org/lang/zh-CN/" target="_blank" rel="noopener">语义化版本 2.0.0</a></p>
+<p>格式：x.y.z<br>表示：主版本号.次版本号.修订号</p>
+<ul>
+<li>主版本号为零（0.y.z）<br>软件处于开发初始阶段，一切都可能随时被改变。<br>这时的公共 API 不应该被视为稳定版。</li>
+<li>1.0.0 版本号<br>用于界定公共 API 的形成。<br>这一版本之后所有的版本号更新都基于公共 API 及其修改内容。</li>
+<li>主版本号&gt;0（x.y.z|x&gt;0）<br>修改了不向下兼容的公共API时更新主版本号，同时次版本号和修订号清零<br>增加了向下兼容的新功能时递增次版本号，同时修订号清零<br>没有修改公共API，只做了向下兼容的bug修正时递增修订号</li>
+</ul>
+</blockquote>
+<h4 id="波浪号"><a href="#波浪号" class="headerlink" title="波浪号~"></a>波浪号~</h4><ul>
+<li><strong>只允许最后一位递增，次版本号或修订版本号二者更新其一</strong></li>
+<li>主版本号数字对~是例外，即~2不表示主版本号可以递增，而是被视为~2.0依旧保持向后兼容性</li>
+<li><p>常用来标记依赖包的最小次要版本，如~1.2<br>  ~1.2.3  表示&gt;=1.2.3 <1.3.0 ~1.2="" 表示="">=1.2 &lt;2.0.0</1.3.0></p>
+<pre><code>注意不包括2.0.0，也不包括2.0-beta.1，
+虽然2.0-beta.1确实在2.0.0之前，但此例中只允许 .2 递增，1. 部分是固定死的
+</code></pre></li>
+</ul>
+<h4 id="插入号"><a href="#插入号" class="headerlink" title="插入号^"></a>插入号^</h4><ul>
+<li><strong>允许向后兼容的更新：次版本号和修订版本号可同时更新</strong></li>
+<li>特殊情况1.0之前的版本不更新次版本号</li>
+<li>写库代码时为了最大的互通性(interoperability)推荐使用此操作符</li>
+</ul>
+<p>^1.2.3  表示&gt;=1.2.3 <2.0.0，即主版本没有更新，不影响向后兼容 ^0.3="" 表示="">=0.3.0 &lt;0.4.0，</2.0.0，即主版本没有更新，不影响向后兼容></p>
+<h2 id="版本稳定性约束"><a href="#版本稳定性约束" class="headerlink" title="版本稳定性约束"></a>版本稳定性约束</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">~/my-library$ git tag</span><br><span class="line">v1.1-BETA</span><br><span class="line">v1.1-RC1</span><br><span class="line">v1.1-RC2</span><br><span class="line">v1.1</span><br></pre></td></tr></table></figure>
+<p>如上所见，在 v1.1 稳定版之前，有v1.1-BETA,v1.1-RC1,v1.1-RC2，要获得BETA，RC等版本，则需要明确的告诉 composer 这些包是可接受的。</p>
+<pre><code>可用的稳定性标识（按稳定性排序）：dev、alpha、beta、RC、stable。
+
+Question:
+这里的设置是不是只针对tag无关branch？
+</code></pre><h3 id="版本号后直接加稳定约束"><a href="#版本号后直接加稳定约束" class="headerlink" title="版本号后直接加稳定约束"></a>版本号后直接加稳定约束</h3><p>如果没有明确定义稳定性，composer 在<strong>内部</strong>会自动添加<code>-dev</code>或<code>-stable</code>到版本号后面，到底添加哪个由定义版本范围的操作符确定：</p>
+<table>
+<thead>
+<tr>
+<th>约束</th>
+<th>内部版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.2.3</td>
+<td>=1.2.3.0-stable</td>
+</tr>
+<tr>
+<td>>=1.2-stable</td>
+<td>>=1.2.0.0-stable</td>
+</tr>
+<tr>
+<td>>1.2</td>
+<td>>1.2.0.0-stable</td>
+</tr>
+<tr>
+<td>>=1.2</td>
+<td>>=1.2.0.0-dev</td>
+</tr>
+<tr>
+<td>&lt;1.3</td>
+<td>&lt;1.3.0.0-dev</td>
+</tr>
+<tr>
+<td>&lt;=1.3</td>
+<td>&lt;=1.3.0.0-stable</td>
+</tr>
+<tr>
+<td>1 - 2</td>
+<td>>=1.0.0.0-dev &lt;3.0.0.0-dev</td>
+</tr>
+<tr>
+<td>~1.3</td>
+<td>>=1.3.0.0-dev &lt;2.0.0.0-dev</td>
+</tr>
+<tr>
+<td>1.4.*</td>
+<td>>=1.4.0.0-dev &lt;1.5.0.0-dev</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>版本大小排序：</p>
+<p>  1.2 &lt; 1.3dev &lt; 1.3alpha &lt; 1.3beta &lt; 1.3RC &lt; 1.3[Stable]<br>  同一个版本1.3最大的是stable版，最小的是dev版</p>
+</li>
+<li><p>为保证兼容性，操作符规律：</p>
+<pre><code>&lt;   时取最小dev，即比最小版本还要小
+&gt;   时取最大stable，即比最大版还要大
+=   时取最大stable，因1.3默认就是1.3Stable
+&gt;=  时取最小dev，
+&lt;=  时取最大stable
+</code></pre><p>  Question<br>  minimum-stability没起作用吗，为什么还会后面加-stable或-dev<br>  这个后面加-dev不会和像版本号的branch冲突吗？<br>  <a href="https://getcomposer.org/doc/articles/versions.md#stability-constraints" target="_blank" rel="noopener">https://getcomposer.org/doc/articles/versions.md#stability-constraints</a></p>
+</li>
+</ul>
+<h3 id="设置全局最小稳定性对所有包进行过滤。"><a href="#设置全局最小稳定性对所有包进行过滤。" class="headerlink" title="设置全局最小稳定性对所有包进行过滤。"></a>设置全局最小稳定性对所有包进行过滤。</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;minimum-stability&quot;: &quot;stable&quot;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>仅针对“root 包”</li>
+<li>默认为 stable（稳定），即只有稳定的发行版才会被考虑在内。</li>
+<li>低于此设置值的包都会被忽略</li>
+<li></li>
+</ul>
+<h3 id="对于个别包的特殊稳定性使用稳定标志"><a href="#对于个别包的特殊稳定性使用稳定标志" class="headerlink" title="对于个别包的特殊稳定性使用稳定标志 @"></a>对于个别包的特殊稳定性使用稳定标志 @</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;require&quot;: &#123;</span><br><span class="line">        &quot;monolog/monolog&quot;: &quot;1.0.米@beta&quot;,</span><br><span class="line">        &quot;acme/foo&quot;: &quot;@dev&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>仅针对“root 包”</li>
+<li>在 require 或 require-dev 中设定 <code>稳定标志 @</code></li>
+<li>方法是在一个包的版本约束后使用它：<code>&quot;1.0.米@beta&quot;</code>（米实际为星号，vim里星号导致后面的颜色错误）</li>
+<li>也可以在一个空的版本约束内使用它:<code>&quot;@dev&quot;</code></li>
+</ul>
+<h3 id="对-dev-版本明确引用"><a href="#对-dev-版本明确引用" class="headerlink" title="对 dev 版本明确引用"></a>对 dev 版本明确引用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;require&quot;: &#123;</span><br><span class="line">        &quot;monolog/monolog&quot;: &quot;dev-master#2eb0c0978d290a1c45346a1955188929cb4e5db7&quot;,</span><br><span class="line">        &quot;acme/foo&quot;: &quot;1.0.x-dev#abc123&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>应该只是在开发时切换不到tag版本时临时用一下</strong></li>
+<li><strong>compose小组对此特性不接受bug报告</strong></li>
+<li>支持对 dev（开发）版本的明确引用</li>
+<li>会确保依赖被锁定到一个给定的状态，即使运行了更新命令。</li>
+<li>在 require 和 require-dev 中设定 <code>#&lt;ref&gt;</code> 的标识</li>
+<li>方法是在一个开发版本号后面带上 <code>#&lt;ref&gt;</code> 的标识。</li>
+<li><code>&lt;ref&gt;</code>可以是 commit 的 SHA 值</li>
+</ul>
+<h3 id="prefer-stable"><a href="#prefer-stable" class="headerlink" title="prefer-stable"></a>prefer-stable</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;prefer-stable&quot;:&quot;true&quot;</span><br></pre></td></tr></table></figure>
+<p>设为 true 后 composer 将优先选择更稳定的版本，例如当require一个dev版的包或者只有alpha版的包可用时，将授意minimum-stability接受它。</p>
+<pre><code>Question:
+这里应该是尽可能选择更稳定的版本吧，优先选择更稳定版本应该就是默认的啊
+</code></pre><h3 id="5-推荐的版本稳定性设定方案"><a href="#5-推荐的版本稳定性设定方案" class="headerlink" title="5. 推荐的版本稳定性设定方案"></a>5. 推荐的版本稳定性设定方案</h3><p>全局设置为stable，个别包使用稳定标志设置特殊的稳定性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;minimum-stability&quot;:&quot;stable&quot;,</span><br><span class="line">  &quot;require&quot;:&#123;</span><br><span class="line">        &quot;kartik-v/yii2-grid&quot;: &quot;@dev&quot; </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="版本约束测试网址"><a href="#版本约束测试网址" class="headerlink" title="版本约束测试网址"></a>版本约束测试网址</h2><p><a href="https://semver.mwl.be/" target="_blank" rel="noopener">semver.mwl.be</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PHP/" rel="tag"># PHP</a>
+          
+            <a href="/tags/Composer/" rel="tag"># Composer</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Composer - Chapter 6 - Schema/" rel="next" title="Composer - Chapter 6 - Composer.json Schema">
+                <i class="fa fa-chevron-left"></i> Composer - Chapter 6 - Composer.json Schema
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Composer - Chapter 8 - 资源库/" rel="prev" title="Composer - Chapter 8 - 资源库">
+                Composer - Chapter 8 - 资源库 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#包名格式"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5305;&#x540D;&#x683C;&#x5F0F;" class="headerlink" title="&#x5305;&#x540D;&#x683C;&#x5F0F;"></a>&#x5305;&#x540D;&#x683C;&#x5F0F;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#资源包的版本号确定方式"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x8D44;&#x6E90;&#x5305;&#x7684;&#x7248;&#x672C;&#x53F7;&#x786E;&#x5B9A;&#x65B9;&#x5F0F;" class="headerlink" title="&#x8D44;&#x6E90;&#x5305;&#x7684;&#x7248;&#x672C;&#x53F7;&#x786E;&#x5B9A;&#x65B9;&#x5F0F;"></a>&#x8D44;&#x6E90;&#x5305;&#x7684;&#x7248;&#x672C;&#x53F7;&#x786E;&#x5B9A;&#x65B9;&#x5F0F;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#手工管理的代码包"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x624B;&#x5DE5;&#x7BA1;&#x7406;&#x7684;&#x4EE3;&#x7801;&#x5305;" class="headerlink" title="&#x624B;&#x5DE5;&#x7BA1;&#x7406;&#x7684;&#x4EE3;&#x7801;&#x5305;"></a>&#x624B;&#x5DE5;&#x7BA1;&#x7406;&#x7684;&#x4EE3;&#x7801;&#x5305;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-VCS-管理的代码包"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x4F7F;&#x7528;-VCS-&#x7BA1;&#x7406;&#x7684;&#x4EE3;&#x7801;&#x5305;" class="headerlink" title="&#x4F7F;&#x7528; VCS &#x7BA1;&#x7406;&#x7684;&#x4EE3;&#x7801;&#x5305;"></a>&#x4F7F;&#x7528; VCS &#x7BA1;&#x7406;&#x7684;&#x4EE3;&#x7801;&#x5305;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#根据-tag-标签创建版本号"><span class="nav-number">2.2.1.</span> <span class="nav-text"><a href="#&#x6839;&#x636E;-tag-&#x6807;&#x7B7E;&#x521B;&#x5EFA;&#x7248;&#x672C;&#x53F7;" class="headerlink" title="&#x6839;&#x636E; tag &#x6807;&#x7B7E;&#x521B;&#x5EFA;&#x7248;&#x672C;&#x53F7;"></a>&#x6839;&#x636E; tag &#x6807;&#x7B7E;&#x521B;&#x5EFA;&#x7248;&#x672C;&#x53F7;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#根据-branch-分支创建版本号"><span class="nav-number">2.2.2.</span> <span class="nav-text"><a href="#&#x6839;&#x636E;-branch-&#x5206;&#x652F;&#x521B;&#x5EFA;&#x7248;&#x672C;&#x53F7;" class="headerlink" title="&#x6839;&#x636E; branch &#x5206;&#x652F;&#x521B;&#x5EFA;&#x7248;&#x672C;&#x53F7;"></a>&#x6839;&#x636E; branch &#x5206;&#x652F;&#x521B;&#x5EFA;&#x7248;&#x672C;&#x53F7;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#分支名像版本号"><span class="nav-number">2.2.2.1.</span> <span class="nav-text"><a href="#&#x5206;&#x652F;&#x540D;&#x50CF;&#x7248;&#x672C;&#x53F7;" class="headerlink" title="&#x5206;&#x652F;&#x540D;&#x50CF;&#x7248;&#x672C;&#x53F7;"></a>&#x5206;&#x652F;&#x540D;&#x50CF;&#x7248;&#x672C;&#x53F7;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#分支名不像版本号"><span class="nav-number">2.2.2.2.</span> <span class="nav-text"><a href="#&#x5206;&#x652F;&#x540D;&#x4E0D;&#x50CF;&#x7248;&#x672C;&#x53F7;" class="headerlink" title="&#x5206;&#x652F;&#x540D;&#x4E0D;&#x50CF;&#x7248;&#x672C;&#x53F7;"></a>&#x5206;&#x652F;&#x540D;&#x4E0D;&#x50CF;&#x7248;&#x672C;&#x53F7;</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tag-和-branch-的默认检出方式不同"><span class="nav-number">2.2.3.</span> <span class="nav-text"><a href="#tag-&#x548C;-branch-&#x7684;&#x9ED8;&#x8BA4;&#x68C0;&#x51FA;&#x65B9;&#x5F0F;&#x4E0D;&#x540C;" class="headerlink" title="tag &#x548C; branch &#x7684;&#x9ED8;&#x8BA4;&#x68C0;&#x51FA;&#x65B9;&#x5F0F;&#x4E0D;&#x540C;"></a>tag &#x548C; branch &#x7684;&#x9ED8;&#x8BA4;&#x68C0;&#x51FA;&#x65B9;&#x5F0F;&#x4E0D;&#x540C;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对依赖包的版本号限定方式"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x5BF9;&#x4F9D;&#x8D56;&#x5305;&#x7684;&#x7248;&#x672C;&#x53F7;&#x9650;&#x5B9A;&#x65B9;&#x5F0F;" class="headerlink" title="&#x5BF9;&#x4F9D;&#x8D56;&#x5305;&#x7684;&#x7248;&#x672C;&#x53F7;&#x9650;&#x5B9A;&#x65B9;&#x5F0F;"></a>&#x5BF9;&#x4F9D;&#x8D56;&#x5305;&#x7684;&#x7248;&#x672C;&#x53F7;&#x9650;&#x5B9A;&#x65B9;&#x5F0F;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#确切的版本号"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x786E;&#x5207;&#x7684;&#x7248;&#x672C;&#x53F7;" class="headerlink" title="&#x786E;&#x5207;&#x7684;&#x7248;&#x672C;&#x53F7;"></a>&#x786E;&#x5207;&#x7684;&#x7248;&#x672C;&#x53F7;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指定版本范围"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x6307;&#x5B9A;&#x7248;&#x672C;&#x8303;&#x56F4;" class="headerlink" title="&#x6307;&#x5B9A;&#x7248;&#x672C;&#x8303;&#x56F4;"></a>&#x6307;&#x5B9A;&#x7248;&#x672C;&#x8303;&#x56F4;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用通配符"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#&#x4F7F;&#x7528;&#x901A;&#x914D;&#x7B26;" class="headerlink" title="&#x4F7F;&#x7528;&#x901A;&#x914D;&#x7B26; *"></a>&#x4F7F;&#x7528;&#x901A;&#x914D;&#x7B26; *</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用语义化版本-2-0-0"><span class="nav-number">3.4.</span> <span class="nav-text"><a href="#&#x4F7F;&#x7528;&#x8BED;&#x4E49;&#x5316;&#x7248;&#x672C;-2-0-0" class="headerlink" title="&#x4F7F;&#x7528;&#x8BED;&#x4E49;&#x5316;&#x7248;&#x672C; 2.0.0"></a>&#x4F7F;&#x7528;&#x8BED;&#x4E49;&#x5316;&#x7248;&#x672C; 2.0.0</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#波浪号"><span class="nav-number">3.4.1.</span> <span class="nav-text"><a href="#&#x6CE2;&#x6D6A;&#x53F7;" class="headerlink" title="&#x6CE2;&#x6D6A;&#x53F7;~"></a>&#x6CE2;&#x6D6A;&#x53F7;~</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插入号"><span class="nav-number">3.4.2.</span> <span class="nav-text"><a href="#&#x63D2;&#x5165;&#x53F7;" class="headerlink" title="&#x63D2;&#x5165;&#x53F7;^"></a>&#x63D2;&#x5165;&#x53F7;^</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#版本稳定性约束"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x7248;&#x672C;&#x7A33;&#x5B9A;&#x6027;&#x7EA6;&#x675F;" class="headerlink" title="&#x7248;&#x672C;&#x7A33;&#x5B9A;&#x6027;&#x7EA6;&#x675F;"></a>&#x7248;&#x672C;&#x7A33;&#x5B9A;&#x6027;&#x7EA6;&#x675F;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#版本号后直接加稳定约束"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#&#x7248;&#x672C;&#x53F7;&#x540E;&#x76F4;&#x63A5;&#x52A0;&#x7A33;&#x5B9A;&#x7EA6;&#x675F;" class="headerlink" title="&#x7248;&#x672C;&#x53F7;&#x540E;&#x76F4;&#x63A5;&#x52A0;&#x7A33;&#x5B9A;&#x7EA6;&#x675F;"></a>&#x7248;&#x672C;&#x53F7;&#x540E;&#x76F4;&#x63A5;&#x52A0;&#x7A33;&#x5B9A;&#x7EA6;&#x675F;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置全局最小稳定性对所有包进行过滤。"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#&#x8BBE;&#x7F6E;&#x5168;&#x5C40;&#x6700;&#x5C0F;&#x7A33;&#x5B9A;&#x6027;&#x5BF9;&#x6240;&#x6709;&#x5305;&#x8FDB;&#x884C;&#x8FC7;&#x6EE4;&#x3002;" class="headerlink" title="&#x8BBE;&#x7F6E;&#x5168;&#x5C40;&#x6700;&#x5C0F;&#x7A33;&#x5B9A;&#x6027;&#x5BF9;&#x6240;&#x6709;&#x5305;&#x8FDB;&#x884C;&#x8FC7;&#x6EE4;&#x3002;"></a>&#x8BBE;&#x7F6E;&#x5168;&#x5C40;&#x6700;&#x5C0F;&#x7A33;&#x5B9A;&#x6027;&#x5BF9;&#x6240;&#x6709;&#x5305;&#x8FDB;&#x884C;&#x8FC7;&#x6EE4;&#x3002;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对于个别包的特殊稳定性使用稳定标志"><span class="nav-number">4.3.</span> <span class="nav-text"><a href="#&#x5BF9;&#x4E8E;&#x4E2A;&#x522B;&#x5305;&#x7684;&#x7279;&#x6B8A;&#x7A33;&#x5B9A;&#x6027;&#x4F7F;&#x7528;&#x7A33;&#x5B9A;&#x6807;&#x5FD7;" class="headerlink" title="&#x5BF9;&#x4E8E;&#x4E2A;&#x522B;&#x5305;&#x7684;&#x7279;&#x6B8A;&#x7A33;&#x5B9A;&#x6027;&#x4F7F;&#x7528;&#x7A33;&#x5B9A;&#x6807;&#x5FD7; @"></a>&#x5BF9;&#x4E8E;&#x4E2A;&#x522B;&#x5305;&#x7684;&#x7279;&#x6B8A;&#x7A33;&#x5B9A;&#x6027;&#x4F7F;&#x7528;&#x7A33;&#x5B9A;&#x6807;&#x5FD7; @</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对-dev-版本明确引用"><span class="nav-number">4.4.</span> <span class="nav-text"><a href="#&#x5BF9;-dev-&#x7248;&#x672C;&#x660E;&#x786E;&#x5F15;&#x7528;" class="headerlink" title="&#x5BF9; dev &#x7248;&#x672C;&#x660E;&#x786E;&#x5F15;&#x7528;"></a>&#x5BF9; dev &#x7248;&#x672C;&#x660E;&#x786E;&#x5F15;&#x7528;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prefer-stable"><span class="nav-number">4.5.</span> <span class="nav-text"><a href="#prefer-stable" class="headerlink" title="prefer-stable"></a>prefer-stable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-推荐的版本稳定性设定方案"><span class="nav-number">4.6.</span> <span class="nav-text"><a href="#5-&#x63A8;&#x8350;&#x7684;&#x7248;&#x672C;&#x7A33;&#x5B9A;&#x6027;&#x8BBE;&#x5B9A;&#x65B9;&#x6848;" class="headerlink" title="5. &#x63A8;&#x8350;&#x7684;&#x7248;&#x672C;&#x7A33;&#x5B9A;&#x6027;&#x8BBE;&#x5B9A;&#x65B9;&#x6848;"></a>5. &#x63A8;&#x8350;&#x7684;&#x7248;&#x672C;&#x7A33;&#x5B9A;&#x6027;&#x8BBE;&#x5B9A;&#x65B9;&#x6848;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#版本约束测试网址"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x7248;&#x672C;&#x7EA6;&#x675F;&#x6D4B;&#x8BD5;&#x7F51;&#x5740;" class="headerlink" title="&#x7248;&#x672C;&#x7EA6;&#x675F;&#x6D4B;&#x8BD5;&#x7F51;&#x5740;"></a>&#x7248;&#x672C;&#x7EA6;&#x675F;&#x6D4B;&#x8BD5;&#x7F51;&#x5740;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

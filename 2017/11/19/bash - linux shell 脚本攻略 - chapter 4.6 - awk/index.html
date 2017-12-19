@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="bash,linux,awk," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="shell awk">
+<meta name="keywords" content="bash,linux,awk">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bash - linux shell 脚本攻略 - chapter 4.6 - awk">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/bash - linux shell 脚本攻略 - chapter 4.6 - awk/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="shell awk">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.572Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="bash - linux shell 脚本攻略 - chapter 4.6 - awk">
+<meta name="twitter:description" content="shell awk">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/bash - linux shell 脚本攻略 - chapter 4.6 - awk/"/>
+
+
+
+
+
+  <title>bash - linux shell 脚本攻略 - chapter 4.6 - awk | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/bash - linux shell 脚本攻略 - chapter 4.6 - awk/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">bash - linux shell 脚本攻略 - chapter 4.6 - awk</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/bash/" itemprop="url" rel="index">
+                    <span itemprop="name">bash</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>shell awk</p>
+<a id="more"></a>
+<p>awk 是一款用于数据流的工具，可以对行和列进行操作，并有內建的函数、数组等</p>
+<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><p>awk 脚本的结构如下：</p>
+<p><code>awk &#39;BEGIN{ print &quot;start&quot; } pattern { commands } END{ print &quot;end&quot; }&#39; file</code><br><code>echo someinput | awk &#39;BEGIN{ print &quot;start&quot; } pattern { commands } END{ print &quot;end&quot; }&#39;</code></p>
+<ul>
+<li>awk 可从文件或 stdin 读入数据</li>
+<li>awk 的脚本包含在<strong>单</strong>引号中，经测试双引号不可以</li>
+<li>awk 的脚本由 BEGIN {}, pattern {}, END {} 三个语句块组成</li>
+<li>BEGIN {} 和 pattern 和 END {} 都是可选的，唯一必选的部分是 pattern 后的大括号括起来的语句块，即最简形式：awk ‘{ some commands … }’</li>
+<li>BEGIN 和 END 必须大写，pattern 为正则表达式，如 /linux/ 匹配包含 linux 的字符串</li>
+</ul>
+<p>执行过程：</p>
+<ol>
+<li>先执行 BEGIN {} 语句块</li>
+<li>然后从输入的数据流（文件或stdin）读取一行，执行 pattern {} 语句块……重复执行直到数据流末尾</li>
+<li>最后执行 END {} 语句块</li>
+</ol>
+<p>BEGIN {} 语句块常用于变量初始化、输出表格的表头等；<br>END {} 语句块常用于输出表尾，输出所有行的汇总信息等；<br>pattern {} 语句块是一个隐含的 while 循环，依次读取每一行并执行 {} 中的命令，其中 pattern 是可选的，没有 pattern 时则认为每一行都是匹配的，有 pattern 时则对每一行先测试是否匹配，匹配的才执行 {} 里面的语句块的语句</p>
+<p>运行过程举例<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; seq 5 | awk <span class="string">'BEGIN&#123; sum=0; print "Summation:" &#125; &#123; print $1"+"; sum+=$1 &#125; END &#123; print "=="; print sum &#125;'</span></span><br><span class="line">Summation:</span><br><span class="line">1+</span><br><span class="line">2+</span><br><span class="line">3+</span><br><span class="line">4+</span><br><span class="line">5+</span><br><span class="line">==</span><br><span class="line">15</span><br></pre></td></tr></table></figure></p>
+<h2 id="特殊变量"><a href="#特殊变量" class="headerlink" title="特殊变量"></a>特殊变量</h2><p><code>NR</code> ：Number of Records，表示记录数量，在执行过程中对应于当前行号。<br><code>NF</code> ：Number of Fields，表示字段数量，在执行过程中对应于当前行的字段数。可以使用 <code>print $NF</code> 打印最后一个字段，<code>print ($NF-1)</code> 打印倒数第二个字段<br><code>$0</code> ：这个变量包含执行过程中当前行的文本内容。<br><code>$1</code> ：这个变量包含第一个字段的文本内容。<br><code>$2</code> ：这个变量包含第二个字段的文本内容。</p>
+<p>输出第 2 和第 3 个字段<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; awk <span class="string">'&#123;print $2,$3&#125;'</span> s1.txt</span><br><span class="line">sAy hometown</span><br><span class="line">hi beijing</span><br><span class="line">who Are</span><br><span class="line"><span class="built_in">where</span> Are</span><br><span class="line">i Am</span><br></pre></td></tr></table></figure></p>
+<p>打印文件的行数<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; awk <span class="string">'END &#123;print NR&#125;'</span> s1.txt</span><br><span class="line">5</span><br></pre></td></tr></table></figure></p>
+<p>综合举例<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; <span class="built_in">echo</span> -e <span class="string">"line1 f2 f3\nline2 f4 f5\nline3 f6 f7"</span> | awk <span class="string">'&#123;print "Line no:"NR",No of fields:"NF, "$0="$0, "$1="$1,"$2="$2,"$3="$3&#125;'</span></span><br><span class="line">Line no:1,No of fields:3 <span class="variable">$0</span>=line1 f2 f3 <span class="variable">$1</span>=line1 <span class="variable">$2</span>=f2 <span class="variable">$3</span>=f3</span><br><span class="line">Line no:2,No of fields:3 <span class="variable">$0</span>=line2 f4 f5 <span class="variable">$1</span>=line2 <span class="variable">$2</span>=f4 <span class="variable">$3</span>=f5</span><br><span class="line">Line no:3,No of fields:3 <span class="variable">$0</span>=line3 f6 f7 <span class="variable">$1</span>=line3 <span class="variable">$2</span>=f6 <span class="variable">$3</span>=f7</span><br></pre></td></tr></table></figure></p>
+<h2 id="使用外部变量的值"><a href="#使用外部变量的值" class="headerlink" title="使用外部变量的值"></a>使用外部变量的值</h2><p><code>-v</code> 选项使用外部变量，只能赋值一个变量<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; out=100; <span class="built_in">echo</span> | awk -v var=<span class="variable">$out</span> <span class="string">'&#123; print "the out value is " var &#125;'</span></span><br><span class="line">the out value is 100</span><br></pre></td></tr></table></figure></p>
+<p>另一种不使用 <code>-v</code> 选项给多个变量赋值的方式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; out=100;<span class="built_in">echo</span> | awk <span class="string">'&#123; print var,val &#125;'</span> var=<span class="variable">$out</span> val=<span class="variable">$out</span></span><br><span class="line">100 100</span><br></pre></td></tr></table></figure></p>
+<p>从文件输入  ??? 么有测试成功，不知道要实现什么<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; awk <span class="string">'&#123; print v1,v2 &#125;'</span> v1=<span class="variable">$var1</span> v2=<span class="variable">$var2</span> 1.txt</span><br></pre></td></tr></table></figure></p>
+<h2 id="getline-读取行"><a href="#getline-读取行" class="headerlink" title="getline 读取行"></a>getline 读取行</h2><p>awk 默认读取文件的所有行，getline 可以读取某一行</p>
+<p>getline var 把行的内容写入 var<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; seq 5 | awk <span class="string">'BEGIN &#123; getline var; print "Read ahead first line", var &#125;'</span></span><br><span class="line">Read ahead first line 1</span><br></pre></td></tr></table></figure></p>
+<p>不带参数的 getline 则可以使用 <code>$0 $1 $2</code> 访问文本行的内容<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; seq 5 | awk <span class="string">'BEGIN &#123; getline; print "Read ahead first line", $0 &#125; &#123; print $0 &#125;'</span></span><br><span class="line">Read ahead first line 1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td></tr></table></figure></p>
+<h2 id="过滤要处理的行"><a href="#过滤要处理的行" class="headerlink" title="过滤要处理的行"></a>过滤要处理的行</h2><p>使用 pattern 来过滤</p>
+<p>行数小于 5 的行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; awk <span class="string">'BEGIN &#123; FS=":" &#125; NR&lt;5 &#123;print $1&#125;'</span> /etc/passwd</span><br><span class="line">root</span><br><span class="line">bin</span><br><span class="line">daemon</span><br><span class="line">adm</span><br></pre></td></tr></table></figure></p>
+<p>行号在 1 到 3 之间的行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; awk <span class="string">'BEGIN &#123; FS=":" &#125; NR==1,NR==3 &#123;print $1&#125;'</span> /etc/passwd</span><br><span class="line">root</span><br><span class="line">bin</span><br><span class="line">daemon</span><br></pre></td></tr></table></figure></p>
+<p>包含 mysql 和不包含 mysql 的行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; awk <span class="string">'BEGIN &#123;&#125; /mysql/ &#123;print&#125;'</span> /etc/passwd</span><br><span class="line">mysql:x:27:27:MySQL Server:/var/lib/mysql:/bin/<span class="literal">false</span></span><br><span class="line"></span><br><span class="line">-&gt; awk <span class="string">'BEGIN &#123;&#125; !/mysql/ &#123;print&#125;'</span> /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</span><br><span class="line">.................................</span><br></pre></td></tr></table></figure></p>
+<h2 id="设置字段定界符"><a href="#设置字段定界符" class="headerlink" title="设置字段定界符"></a>设置字段定界符</h2><p>awk 默认的字段定界符是空格，使用 <code>-F</code> 来自定义定界符<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; awk -F <span class="string">":"</span> <span class="string">'&#123; print $NF &#125;'</span> /etc/passwd</span><br><span class="line">/bin/bash</span><br><span class="line">/sbin/nologin</span><br><span class="line">/sbin/nologin</span><br><span class="line">/sbin/nologin</span><br><span class="line">/sbin/nologin</span><br><span class="line">............</span><br></pre></td></tr></table></figure></p>
+<p>或者在 BEGIN 语句块中使用 FS=”delimiter” 来设定定界符<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; awk <span class="string">'BEGIN &#123; FS=":" &#125; &#123; print $NF &#125;'</span> /etc/passwd</span><br><span class="line">/bin/bash</span><br><span class="line">/sbin/nologin</span><br><span class="line">/sbin/nologin</span><br><span class="line">/sbin/nologin</span><br><span class="line">/sbin/nologin</span><br></pre></td></tr></table></figure></p>
+<h2 id="读取命令输出"><a href="#读取命令输出" class="headerlink" title="读取命令输出"></a>读取命令输出</h2><p>把命令的输出结果读入变量 cmdout 的方法<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"command"</span> | getline cmdout;</span><br></pre></td></tr></table></figure></p>
+<p>举例<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; <span class="built_in">echo</span> | awk <span class="string">'&#123; "grep root /etc/passwd" | getline cmdout; print cmdout &#125;'</span></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line"></span><br><span class="line">-&gt; awk <span class="string">'&#123; "grep root /etc/passwd" | getline cmdout; print cmdout &#125;'</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>echo 输出一个空行，没有这个空行则 awk 缺少输入数据，结果就是不执行</li>
+<li>cmdout 包含了命令 “grep root /etc/passwd” 的输出结果，注意命令由双引号包括，换单引号也不行</li>
+</ul>
+<h2 id="使用循环"><a href="#使用循环" class="headerlink" title="使用循环"></a>使用循环</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (i=0; i&lt;10; i++) &#123; <span class="built_in">print</span> <span class="variable">$i</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (i <span class="keyword">in</span> array) &#123; <span class="built_in">print</span> array[i]; &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="內建的字符串函数"><a href="#內建的字符串函数" class="headerlink" title="內建的字符串函数"></a>內建的字符串函数</h2><p><code>length(string)</code> 返回字符串 string 长度</p>
+<p><code>index(string,search_string)</code> 返回 search_string 在字符串 string 中出现的位置</p>
+<p><code>split(string,array,delimiter)</code> 用定界符 delimiter 把字符串 string 生成数组存入数组 array</p>
+<p><code>substr(string,start_position,end_position)</code> 返回子字符串</p>
+<p><code>sub(regex, replece_str, string)</code> 把正则表达式 regex 在字符串 string 里的第一个匹配替换为 replace_str</p>
+<p><code>gsub(regex, replece_str, string)</code> 把正则表达式 regex 在字符串 string 里的所有匹配替换为 replace_str</p>
+<p><code>match(regex,string)</code> 测试正则表达式是否匹配字符串，两个特殊变量 RSTART, RLENGTH，分别表示正则表达式所匹配内容的起始位置和长度</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/bash/" rel="tag"># bash</a>
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/awk/" rel="tag"># awk</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/bash - linux shell 脚本攻略 - chapter 5 - 网站相关/" rel="next" title="bash - linux shell 脚本攻略 - chapter 5 - 网站相关">
+                <i class="fa fa-chevron-left"></i> bash - linux shell 脚本攻略 - chapter 5 - 网站相关
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/bash - linux shell 脚本攻略 - chapter 6 - 归档备份/" rel="prev" title="bash - linux shell 脚本攻略 - chapter 6 - 归档备份">
+                bash - linux shell 脚本攻略 - chapter 6 - 归档备份 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#工作原理"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5DE5;&#x4F5C;&#x539F;&#x7406;" class="headerlink" title="&#x5DE5;&#x4F5C;&#x539F;&#x7406;"></a>&#x5DE5;&#x4F5C;&#x539F;&#x7406;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特殊变量"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x7279;&#x6B8A;&#x53D8;&#x91CF;" class="headerlink" title="&#x7279;&#x6B8A;&#x53D8;&#x91CF;"></a>&#x7279;&#x6B8A;&#x53D8;&#x91CF;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用外部变量的值"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x4F7F;&#x7528;&#x5916;&#x90E8;&#x53D8;&#x91CF;&#x7684;&#x503C;" class="headerlink" title="&#x4F7F;&#x7528;&#x5916;&#x90E8;&#x53D8;&#x91CF;&#x7684;&#x503C;"></a>&#x4F7F;&#x7528;&#x5916;&#x90E8;&#x53D8;&#x91CF;&#x7684;&#x503C;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#getline-读取行"><span class="nav-number">4.</span> <span class="nav-text"><a href="#getline-&#x8BFB;&#x53D6;&#x884C;" class="headerlink" title="getline &#x8BFB;&#x53D6;&#x884C;"></a>getline &#x8BFB;&#x53D6;&#x884C;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#过滤要处理的行"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x8FC7;&#x6EE4;&#x8981;&#x5904;&#x7406;&#x7684;&#x884C;" class="headerlink" title="&#x8FC7;&#x6EE4;&#x8981;&#x5904;&#x7406;&#x7684;&#x884C;"></a>&#x8FC7;&#x6EE4;&#x8981;&#x5904;&#x7406;&#x7684;&#x884C;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置字段定界符"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x8BBE;&#x7F6E;&#x5B57;&#x6BB5;&#x5B9A;&#x754C;&#x7B26;" class="headerlink" title="&#x8BBE;&#x7F6E;&#x5B57;&#x6BB5;&#x5B9A;&#x754C;&#x7B26;"></a>&#x8BBE;&#x7F6E;&#x5B57;&#x6BB5;&#x5B9A;&#x754C;&#x7B26;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读取命令输出"><span class="nav-number">7.</span> <span class="nav-text"><a href="#&#x8BFB;&#x53D6;&#x547D;&#x4EE4;&#x8F93;&#x51FA;" class="headerlink" title="&#x8BFB;&#x53D6;&#x547D;&#x4EE4;&#x8F93;&#x51FA;"></a>&#x8BFB;&#x53D6;&#x547D;&#x4EE4;&#x8F93;&#x51FA;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用循环"><span class="nav-number">8.</span> <span class="nav-text"><a href="#&#x4F7F;&#x7528;&#x5FAA;&#x73AF;" class="headerlink" title="&#x4F7F;&#x7528;&#x5FAA;&#x73AF;"></a>&#x4F7F;&#x7528;&#x5FAA;&#x73AF;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#內建的字符串函数"><span class="nav-number">9.</span> <span class="nav-text"><a href="#&#x5167;&#x5EFA;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x51FD;&#x6570;" class="headerlink" title="&#x5167;&#x5EFA;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x51FD;&#x6570;"></a>&#x5167;&#x5EFA;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x51FD;&#x6570;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

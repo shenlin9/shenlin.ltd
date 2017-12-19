@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Git,Git-Replace," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Git 对象是不可变的，但 replace 命令可以指定一个对象 A 表面上替换另一个对象 B， 效果就是遇到对象 B 时，就去获取对象 A 。">
+<meta name="keywords" content="Git,Git-Replace">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter 7.D - Git 替换">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 7.D - 替换/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="Git 对象是不可变的，但 replace 命令可以指定一个对象 A 表面上替换另一个对象 B， 效果就是遇到对象 B 时，就去获取对象 A 。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.git-scm.com/book/en/v2/images/replace1.png">
+<meta property="og:image" content="https://www.git-scm.com/book/en/v2/images/replace2.png">
+<meta property="og:image" content="https://www.git-scm.com/book/en/v2/images/replace3.png">
+<meta property="og:image" content="https://www.git-scm.com/book/en/v2/images/replace4.png">
+<meta property="og:image" content="https://www.git-scm.com/book/en/v2/images/replace5.png">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.546Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter 7.D - Git 替换">
+<meta name="twitter:description" content="Git 对象是不可变的，但 replace 命令可以指定一个对象 A 表面上替换另一个对象 B， 效果就是遇到对象 B 时，就去获取对象 A 。">
+<meta name="twitter:image" content="https://www.git-scm.com/book/en/v2/images/replace1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 7.D - 替换/"/>
+
+
+
+
+
+  <title>chapter 7.D - Git 替换 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 7.D - 替换/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">chapter 7.D - Git 替换</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/Book-ProGit/" itemprop="url" rel="index">
+                    <span itemprop="name">Book-ProGit</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Git 对象是不可变的，但 <code>replace</code> 命令可以指定一个对象 A 表面上替换另一个对象 B，</p>
+<p>效果就是遇到对象 B 时，就去获取对象 A 。</p>
+<a id="more"></a>
+<h2 id="应用举例"><a href="#应用举例" class="headerlink" title="应用举例"></a>应用举例</h2><p>一个大型的版本库，要拆分成两个版本库，一个短的版本库记录最新的提交给新的开发者使用，一个更大更长久的版本库记录老的提交给喜欢数据挖掘的人使用。</p>
+<p>如下面的版本库，要将其拆分成两条历史。 第一个到第四个提交的作为第一个历史版本。 第四、第五个提交的作为最近的第二个历史版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git log --oneline</span><br><span class="line">ef989d8 fifth commit</span><br><span class="line">c6e1e95 fourth commit</span><br><span class="line">9c68fdc third commit</span><br><span class="line">945704c second commit</span><br><span class="line">c1822cf first commit</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.git-scm.com/book/en/v2/images/replace1.png" alt="replace1"></p>
+<h2 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h2><p>通过用新仓库中最老的提交 replace 老仓库中最新的提交来连接历史，这种方式可以把一条历史移植到其他历史上。</p>
+<h2 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h2><h3 id="创建长历史"><a href="#创建长历史" class="headerlink" title="创建长历史"></a>创建长历史</h3><p>将一个历史中的分支推送到一个新的远程仓库的 master 分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ git branch history c6e1e95</span><br><span class="line"></span><br><span class="line">$ git log --oneline --decorate</span><br><span class="line">ef989d8 (HEAD, master) fifth commit</span><br><span class="line">c6e1e95 (history) fourth commit         --&gt;创建的新分支</span><br><span class="line">9c68fdc third commit</span><br><span class="line">945704c second commit</span><br><span class="line">c1822cf first commit</span><br><span class="line"></span><br><span class="line">$ git remote add project-history https://github.com/schacon/project-history</span><br><span class="line"></span><br><span class="line">$ git push project-history history:master</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://www.git-scm.com/book/en/v2/images/replace2.png" alt="replace2"></p>
+<h3 id="创建短历史"><a href="#创建短历史" class="headerlink" title="创建短历史"></a>创建短历史</h3><h4 id="创建基础提交"><a href="#创建基础提交" class="headerlink" title="创建基础提交"></a>创建基础提交</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ echo &apos;get history from blah blah blah&apos; | git commit-tree 9c68fdc^&#123;tree&#125;</span><br><span class="line">622e88e9cbfbacfb75b5279245b9fb38dfea10cf</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.git-scm.com/book/en/v2/images/replace3.png" alt="replace3"></p>
+<h4 id="将剩余的历史变基到基础提交之上"><a href="#将剩余的历史变基到基础提交之上" class="headerlink" title="将剩余的历史变基到基础提交之上"></a>将剩余的历史变基到基础提交之上</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git rebase --onto 622e88 9c68fdc</span><br><span class="line">First, rewinding head to replay your work on top of it...</span><br><span class="line">Applying: fourth commit</span><br><span class="line">Applying: fifth commit</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.git-scm.com/book/en/v2/images/replace4.png" alt="replace4"></p>
+<h4 id="asdf"><a href="#asdf" class="headerlink" title="asdf"></a>asdf</h4><h4 id="替换提交"><a href="#替换提交" class="headerlink" title="替换提交"></a>替换提交</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ git replace 81a708d c6e1e95</span><br><span class="line"></span><br><span class="line">$ git log --oneline master</span><br><span class="line">e146b5f fifth commit</span><br><span class="line">81a708d fourth commit</span><br><span class="line">9c68fdc third commit</span><br><span class="line">945704c second commit</span><br><span class="line">c1822cf first commit</span><br></pre></td></tr></table></figure>
+<ul>
+<li>即使是使用了 c6e1e95 来替换 81a708d，它的 SHA-1 仍显示为 81a708d</li>
+<li><p>使用 cat-file 查看也是一样的结果</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ git cat-file -p 81a708d</span><br><span class="line">tree 7bc544cf438903b65ca9104a1e30345eee6c083d</span><br><span class="line">parent 9c68fdceee073230f19ebb8b5e7fc71b479c0252</span><br><span class="line">author Scott Chacon &lt;schacon@gmail.com&gt; 1268712581 -0700</span><br><span class="line">committer Scott Chacon &lt;schacon@gmail.com&gt; 1268712581 -0700</span><br><span class="line"></span><br><span class="line">fourth commit</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>81a708d 真正的父提交是 622e882 占位提交，而非呈现的 9c68fdce 提交</p>
+</li>
+</ul>
+<p><img src="https://www.git-scm.com/book/en/v2/images/replace5.png" alt="replace5"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git for-each-ref</span><br><span class="line">e146b5f14e79d4935160c0e83fb9ebe526b8da0d commit	refs/heads/master</span><br><span class="line">c6e1e95051d41771a649f3145423f8809d1a74d4 commit	refs/remotes/history/master</span><br><span class="line">e146b5f14e79d4935160c0e83fb9ebe526b8da0d commit	refs/remotes/origin/HEAD</span><br><span class="line">e146b5f14e79d4935160c0e83fb9ebe526b8da0d commit	refs/remotes/origin/master</span><br><span class="line">c6e1e95051d41771a649f3145423f8809d1a74d4 commit	refs/replace/81a708dd0e167a3f691541c7a6463343bc457040</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+            <a href="/tags/Git-Replace/" rel="tag"># Git-Replace</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 8.1 - 配置/" rel="next" title="chapter 8.1 - Git 设置">
+                <i class="fa fa-chevron-left"></i> chapter 8.1 - Git 设置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 8.2 - 属性/" rel="prev" title="chapter 8.2 - Git 属性">
+                chapter 8.2 - Git 属性 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#应用举例"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5E94;&#x7528;&#x4E3E;&#x4F8B;" class="headerlink" title="&#x5E94;&#x7528;&#x4E3E;&#x4F8B;"></a>&#x5E94;&#x7528;&#x4E3E;&#x4F8B;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现思路"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5B9E;&#x73B0;&#x601D;&#x8DEF;" class="headerlink" title="&#x5B9E;&#x73B0;&#x601D;&#x8DEF;"></a>&#x5B9E;&#x73B0;&#x601D;&#x8DEF;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现过程"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x5B9E;&#x73B0;&#x8FC7;&#x7A0B;" class="headerlink" title="&#x5B9E;&#x73B0;&#x8FC7;&#x7A0B;"></a>&#x5B9E;&#x73B0;&#x8FC7;&#x7A0B;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建长历史"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;&#x957F;&#x5386;&#x53F2;" class="headerlink" title="&#x521B;&#x5EFA;&#x957F;&#x5386;&#x53F2;"></a>&#x521B;&#x5EFA;&#x957F;&#x5386;&#x53F2;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建短历史"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;&#x77ED;&#x5386;&#x53F2;" class="headerlink" title="&#x521B;&#x5EFA;&#x77ED;&#x5386;&#x53F2;"></a>&#x521B;&#x5EFA;&#x77ED;&#x5386;&#x53F2;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建基础提交"><span class="nav-number">3.2.1.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;&#x57FA;&#x7840;&#x63D0;&#x4EA4;" class="headerlink" title="&#x521B;&#x5EFA;&#x57FA;&#x7840;&#x63D0;&#x4EA4;"></a>&#x521B;&#x5EFA;&#x57FA;&#x7840;&#x63D0;&#x4EA4;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将剩余的历史变基到基础提交之上"><span class="nav-number">3.2.2.</span> <span class="nav-text"><a href="#&#x5C06;&#x5269;&#x4F59;&#x7684;&#x5386;&#x53F2;&#x53D8;&#x57FA;&#x5230;&#x57FA;&#x7840;&#x63D0;&#x4EA4;&#x4E4B;&#x4E0A;" class="headerlink" title="&#x5C06;&#x5269;&#x4F59;&#x7684;&#x5386;&#x53F2;&#x53D8;&#x57FA;&#x5230;&#x57FA;&#x7840;&#x63D0;&#x4EA4;&#x4E4B;&#x4E0A;"></a>&#x5C06;&#x5269;&#x4F59;&#x7684;&#x5386;&#x53F2;&#x53D8;&#x57FA;&#x5230;&#x57FA;&#x7840;&#x63D0;&#x4EA4;&#x4E4B;&#x4E0A;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#asdf"><span class="nav-number">3.2.3.</span> <span class="nav-text"><a href="#asdf" class="headerlink" title="asdf"></a>asdf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#替换提交"><span class="nav-number">3.2.4.</span> <span class="nav-text"><a href="#&#x66FF;&#x6362;&#x63D0;&#x4EA4;" class="headerlink" title="&#x66FF;&#x6362;&#x63D0;&#x4EA4;"></a>&#x66FF;&#x6362;&#x63D0;&#x4EA4;</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -79,14 +79,17 @@
 
 
 
-<meta property="og:type" content="website">
+<meta name="description" content="linux 磁盘和分区tags ： AAA linux disk partition  Filesystem                      Size  Used Avail Use% Mounted on/dev/mapper/VolGroup-lv_root    3.0G  2.8G  116M  97% /tmpfs                           250M">
+<meta property="og:type" content="article">
 <meta property="og:title" content="shenlin&#39;s blog">
-<meta property="og:url" content="http://www.shenlin.ltd/404.html">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Linux -  磁盘和分区/index.html">
 <meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="linux 磁盘和分区tags ： AAA linux disk partition  Filesystem                      Size  Used Avail Use% Mounted on/dev/mapper/VolGroup-lv_root    3.0G  2.8G  116M  97% /tmpfs                           250M">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-19T07:25:35.511Z">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.552Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shenlin&#39;s blog">
+<meta name="twitter:description" content="linux 磁盘和分区tags ： AAA linux disk partition  Filesystem                      Size  Used Avail Use% Mounted on/dev/mapper/VolGroup-lv_root    3.0G  2.8G  116M  97% /tmpfs                           250M">
 
 
 
@@ -116,7 +119,7 @@
 
 
 
-  <link rel="canonical" href="http://www.shenlin.ltd/404.html"/>
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/Linux -  磁盘和分区/"/>
 
 
 
@@ -217,49 +220,161 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Linux -  磁盘和分区/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline"></h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <!DOCTYPE HTML>
-<html>
-<head>
-  <meta http-equiv="content-type" content="text/html;charset=utf-8;">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="robots" content="all">
-  <meta name="robots" content="index,follow">
-  <link rel="stylesheet" type="text/css" href="https://qzone.qq.com/gy/404/style/404style.css">
-</head>
-<body>
-  <script type="text/plain" src="http://www.qq.com/404/search_children.js" charset="utf-8" homepageurl="/" homepagename="回到我的主页">
-  </script>
-  <script src="https://qzone.qq.com/gy/404/data.js" charset="utf-8"></script>
-  <script src="https://qzone.qq.com/gy/404/page.js" charset="utf-8"></script>
-</body>
-</html>
-
+          <h1 class="post-title" itemprop="name headline"></h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h1 id="linux-磁盘和分区"><a href="#linux-磁盘和分区" class="headerlink" title="linux 磁盘和分区"></a>linux 磁盘和分区</h1><p>tags ： AAA linux disk partition</p>
+<hr>
+<p>Filesystem                      Size  Used Avail Use% Mounted on<br>/dev/mapper/VolGroup-lv_root    3.0G  2.8G  116M  97% /<br>tmpfs                           250M     0  250M   0% /dev/shm<br>/dev/sda1                       477M   26M  426M   6% /boot</p>
+<p>VBoxManage internalcommands sethduuid “D:\VirtualBox VMs\CenterOS\CenterOS 5.5.vdi”</p>
+<p><a href="http://blog.sina.com.cn/s/blog_165c04adb0102wn8x.html" target="_blank" rel="noopener">http://blog.sina.com.cn/s/blog_165c04adb0102wn8x.html</a></p>
+<p>/dev/mapper/VolGroup-lv_root</p>
+<p>分区        文件系统        挂载点<br>/dev/sda1       ext4<br>/dev/sda2       lvm2 pv     VolGroup</p>
+<p>先用virtualbox命令调整虚拟硬盘空间<br>再用gparted软件分配空间到分区<br>（上面两步都是修改的virtualbox最大可占用的空间大小，是个逻辑值，真实的磁盘空间不变）<br>最后再执行下面的命令扩大分区空间</p>
+<hr>
+<p>df -h</p>
+<p>sudo vgdisplay</p>
+<p>sudo lvextend -L +1G /dev/mapper/VolGroup-lv_root</p>
+<p>sudo resize2fs -p /dev/mapper/VolGroup-lv_root</p>
+<p>df -h</p>
+<hr>
+<p><a href="http://blog.csdn.net/cyjch/article/details/51692684" target="_blank" rel="noopener">http://blog.csdn.net/cyjch/article/details/51692684</a></p>
+<p>df -k<br>显示所有分区的可用空间和已用空间<br> 找到分区使用率将近100%的分区</p>
+<p>sudo  vgdisplay<br>这个命令显示的是有多少空间还没有被分配，如果显示vgdisplay: command not found 则需要安装lvm2, ubuntu下可以执行sudo apt-get install lvm2来进行安装<br>(Free  PE / Size       19183 / 74.93 GB         表示你可以添加74.93G)</p>
+<p>sudo lvextend -L+20G /dev/vg/home<br>这个命令会添加20G空间到home分区，这20G空间是从上面的74.93G未分配空间中取得的</p>
+<p>有100M的未分配空间</p>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Linux -  前后台任务切换/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Linux -  编译内核/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -290,8 +405,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -353,6 +477,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linux-磁盘和分区"><span class="nav-number">1.</span> <span class="nav-text"><a href="#linux-&#x78C1;&#x76D8;&#x548C;&#x5206;&#x533A;" class="headerlink" title="linux &#x78C1;&#x76D8;&#x548C;&#x5206;&#x533A;"></a>linux &#x78C1;&#x76D8;&#x548C;&#x5206;&#x533A;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Vim,NeoVim,NyaoVim," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="安装 NeoVim使用 Chocolatey 安装1cinst -y neovim NeoVim 配置文件linux 位置：$HOME\.config\nvim\init.vim Windows 位置：$LOCALAPPDATA\nvim\init.vim 123:echo $LOCALAPPDATA\nvim\init.vimC:\Users\ssl\AppData\Local\nvim\ini">
+<meta name="keywords" content="Vim,NeoVim,NyaoVim">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NeoVim NyaoVim">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Vim - NeoVim NyaoVim/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="安装 NeoVim使用 Chocolatey 安装1cinst -y neovim NeoVim 配置文件linux 位置：$HOME\.config\nvim\init.vim Windows 位置：$LOCALAPPDATA\nvim\init.vim 123:echo $LOCALAPPDATA\nvim\init.vimC:\Users\ssl\AppData\Local\nvim\ini">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.566Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NeoVim NyaoVim">
+<meta name="twitter:description" content="安装 NeoVim使用 Chocolatey 安装1cinst -y neovim NeoVim 配置文件linux 位置：$HOME\.config\nvim\init.vim Windows 位置：$LOCALAPPDATA\nvim\init.vim 123:echo $LOCALAPPDATA\nvim\init.vimC:\Users\ssl\AppData\Local\nvim\ini">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/Vim - NeoVim NyaoVim/"/>
+
+
+
+
+
+  <title>NeoVim NyaoVim | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Vim - NeoVim NyaoVim/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NeoVim NyaoVim</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vim/" itemprop="url" rel="index">
+                    <span itemprop="name">Vim</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="安装-NeoVim"><a href="#安装-NeoVim" class="headerlink" title="安装 NeoVim"></a>安装 NeoVim</h2><p>使用 Chocolatey 安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cinst -y neovim</span><br></pre></td></tr></table></figure></p>
+<h2 id="NeoVim-配置文件"><a href="#NeoVim-配置文件" class="headerlink" title="NeoVim 配置文件"></a>NeoVim 配置文件</h2><p>linux 位置：<code>$HOME\.config\nvim\init.vim</code></p>
+<p>Windows 位置：<code>$LOCALAPPDATA\nvim\init.vim</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">:echo $LOCALAPPDATA\nvim\init.vim</span><br><span class="line"></span><br><span class="line">C:\Users\ssl\AppData\Local\nvim\init.vim</span><br></pre></td></tr></table></figure>
+<h2 id="安装插件管理器-vim-plug"><a href="#安装插件管理器-vim-plug" class="headerlink" title="安装插件管理器 vim-plug"></a>安装插件管理器 vim-plug</h2><p>vim-plug 是一个单独的文件 plug.vim，</p>
+<p>从这里 <a href="https://github.com/junegunn/vim-plug" target="_blank" rel="noopener">https://github.com/junegunn/vim-plug</a> 下载，</p>
+<p>然后保存到 neovim 的 autoload 目录里即可</p>
+<p>插件的安装目录：$LOCALAPPDATA\nvim\plugged</p>
+<h2 id="给-NeoVim-安装-Markdown-预览插件"><a href="#给-NeoVim-安装-Markdown-预览插件" class="headerlink" title="给 NeoVim 安装 Markdown 预览插件"></a>给 NeoVim 安装 Markdown 预览插件</h2><p>打开 init.vim 配置文件，增加：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">call plug#begin()</span><br><span class="line">Plug &apos;rhysd/nyaovim-markdown-preview&apos;</span><br><span class="line">call plug#end()</span><br><span class="line"></span><br><span class="line">&quot;自动开始 Markdown 预览</span><br><span class="line">let g:markdown_preview_auto = 1</span><br><span class="line"></span><br><span class="line">&quot;预览 Markdown 敏感度</span><br><span class="line">let g:markdown_preview_eager = 1</span><br></pre></td></tr></table></figure></p>
+<p>在 NeoVim 里执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//查看插件列表</span><br><span class="line">:PlugStatus</span><br><span class="line"></span><br><span class="line">//安装插件</span><br><span class="line">:PlugInstall</span><br></pre></td></tr></table></figure></p>
+<p>安装成功后也可执行下列命令，需要先打开 .md 结尾的文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:StartMarkdownPreview</span><br><span class="line">:StotMarkdownPreview</span><br></pre></td></tr></table></figure></p>
+<h2 id="安装-NyaoVim"><a href="#安装-NyaoVim" class="headerlink" title="安装 NyaoVim"></a>安装 NyaoVim</h2><p>NyaoVim 基于 NeoVim 做了进一步开发，需要先安装上面的 NeoVim</p>
+<p>使用 npm 安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g nyaovim</span><br></pre></td></tr></table></figure></p>
+<p>配置文件位置：$APPDATA\NyaoVim\nyaovimrc.html<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">:ehoc $APPDATA\NyaoVim\nyaovimrc.html</span><br><span class="line"></span><br><span class="line">C:\Users\ssl\AppData\Roaming\NyaoVim\nyaovimrc.html</span><br></pre></td></tr></table></figure></p>
+<p>打开配置文件，写入 Markdown 预览插件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;dom-module id=&quot;nyaovim-app&quot;&gt;</span><br><span class="line">  &lt;template&gt;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">      /* CSS configurations here */</span><br><span class="line">      .horizontal &#123;</span><br><span class="line">        display: flex;</span><br><span class="line">        width: 100%;</span><br><span class="line">        height: 100%;</span><br><span class="line">      &#125;</span><br><span class="line">      neovim-editor &#123;</span><br><span class="line">        width: 50%;</span><br><span class="line">        height: 100%;</span><br><span class="line">      &#125;</span><br><span class="line">      markdown-preview &#123;</span><br><span class="line">        width: 50%;</span><br><span class="line">        height: 100%;</span><br><span class="line">      &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- Component tags here --&gt;</span><br><span class="line">    &lt;div class=&quot;horizontal&quot;&gt;</span><br><span class="line">      &lt;neovim-editor id=&quot;nyaovim-editor&quot; argv=&quot;[[argv]]&quot;&gt;&lt;/neovim-editor&gt;</span><br><span class="line">      &lt;!-- Put component --&gt;</span><br><span class="line">      &lt;markdown-preview editor=&quot;[[editor]]&quot;&gt;&lt;/markdown-preview&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;/template&gt;</span><br><span class="line">&lt;/dom-module&gt;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Vim/" rel="tag"># Vim</a>
+          
+            <a href="/tags/NeoVim/" rel="tag"># NeoVim</a>
+          
+            <a href="/tags/NyaoVim/" rel="tag"># NyaoVim</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Vim -  编译安装/" rel="next" title="Vim 编译安装">
+                <i class="fa fa-chevron-left"></i> Vim 编译安装
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Vim - SpaceVim/" rel="prev" title="SpaceVim">
+                SpaceVim <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-NeoVim"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;-NeoVim" class="headerlink" title="&#x5B89;&#x88C5; NeoVim"></a>&#x5B89;&#x88C5; NeoVim</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NeoVim-配置文件"><span class="nav-number">2.</span> <span class="nav-text"><a href="#NeoVim-&#x914D;&#x7F6E;&#x6587;&#x4EF6;" class="headerlink" title="NeoVim &#x914D;&#x7F6E;&#x6587;&#x4EF6;"></a>NeoVim &#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装插件管理器-vim-plug"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;&#x63D2;&#x4EF6;&#x7BA1;&#x7406;&#x5668;-vim-plug" class="headerlink" title="&#x5B89;&#x88C5;&#x63D2;&#x4EF6;&#x7BA1;&#x7406;&#x5668; vim-plug"></a>&#x5B89;&#x88C5;&#x63D2;&#x4EF6;&#x7BA1;&#x7406;&#x5668; vim-plug</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#给-NeoVim-安装-Markdown-预览插件"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x7ED9;-NeoVim-&#x5B89;&#x88C5;-Markdown-&#x9884;&#x89C8;&#x63D2;&#x4EF6;" class="headerlink" title="&#x7ED9; NeoVim &#x5B89;&#x88C5; Markdown &#x9884;&#x89C8;&#x63D2;&#x4EF6;"></a>&#x7ED9; NeoVim &#x5B89;&#x88C5; Markdown &#x9884;&#x89C8;&#x63D2;&#x4EF6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-NyaoVim"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;-NyaoVim" class="headerlink" title="&#x5B89;&#x88C5; NyaoVim"></a>&#x5B89;&#x88C5; NyaoVim</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

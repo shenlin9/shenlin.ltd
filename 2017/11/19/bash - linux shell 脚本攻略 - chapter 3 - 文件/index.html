@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="bash," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="shell 文件操作，Unix 将操作系统的一切都视为文件。">
+<meta name="keywords" content="bash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bash - linux shell 脚本攻略 - chapter 3 - 文件">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/bash - linux shell 脚本攻略 - chapter 3 - 文件/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="shell 文件操作，Unix 将操作系统的一切都视为文件。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.569Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="bash - linux shell 脚本攻略 - chapter 3 - 文件">
+<meta name="twitter:description" content="shell 文件操作，Unix 将操作系统的一切都视为文件。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/bash - linux shell 脚本攻略 - chapter 3 - 文件/"/>
+
+
+
+
+
+  <title>bash - linux shell 脚本攻略 - chapter 3 - 文件 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/bash - linux shell 脚本攻略 - chapter 3 - 文件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">bash - linux shell 脚本攻略 - chapter 3 - 文件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bash/" itemprop="url" rel="index">
+                    <span itemprop="name">bash</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>shell 文件操作，Unix 将操作系统的一切都视为文件。</p>
+<a id="more"></a>
+<h2 id="生成任意大小文件"><a href="#生成任意大小文件" class="headerlink" title="生成任意大小文件"></a>生成任意大小文件</h2><p>有时为了测试程序效率等，可能需要生成一个包含随机数据的大文件。</p>
+<p>dd 命令可以创建特定大小的文件，<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; dd <span class="keyword">if</span>=/dev/zero of=junk.data bs=1M count=1</span><br><span class="line">记录了1+0 的读入</span><br><span class="line">记录了1+0 的写出</span><br><span class="line">1048576字节(1.0 MB)已复制，0.0910078 秒，11.5 MB/秒</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>if 表示 input file，输入文件，不指定 if 参数，则默认从 stdin 读入</li>
+<li>of 表示 output file，输出文件，不指定 of 参数，则默认从 stdout 输出</li>
+<li>bs 表示 block size，块大小</li>
+<li>count 表示复制的块数</li>
+<li>/dev/zero 是一个字符设备，它会不断返回0值字节（ \0 ）</li>
+<li>dd 命令运行在底层，参数错误可能会把磁盘清空或损坏数据。</li>
+<li>所以 dd 的语法一定要检查清楚，尤其是 of 参数</li>
+<li>可以用 dd 命令传输大量数据并观察命令输出来测量内存的操作速度，如上例中的 11.5 MB/秒</li>
+</ul>
+<p>块大小的计量单位</p>
+<ul>
+<li>字节（1B）  c</li>
+<li>字（2B）  w</li>
+<li>块（512B）  b</li>
+<li>千字节（1024B）  k</li>
+<li>兆字节（1024KB）  M</li>
+<li>吉字节（1024MB）  G</li>
+</ul>
+<h2 id="文本文件的交集、差集"><a href="#文本文件的交集、差集" class="headerlink" title="文本文件的交集、差集"></a>文本文件的交集、差集</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; cat test1.txt</span><br><span class="line">aaa</span><br><span class="line">bbb</span><br><span class="line">ccc</span><br><span class="line"></span><br><span class="line">-&gt; cat test2.txt</span><br><span class="line">ccc</span><br><span class="line">ddd</span><br><span class="line">eee</span><br></pre></td></tr></table></figure>
+<p>比较两个文件差异<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; comm test1.txt test2.txt</span><br><span class="line">aaa</span><br><span class="line">bbb</span><br><span class="line">		ccc</span><br><span class="line">	ddd</span><br><span class="line">	eee</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>必须是排序过的文本行</li>
+<li>comm 输出共3列，列之间用制表符作为定界符<ul>
+<li>第1列是只在第一个文件里的行</li>
+<li>第2列是只在第二个文件里的行</li>
+<li>第3列是两个文件共有的行</li>
+</ul>
+</li>
+</ul>
+<p>删除第1列、第2列显示两个文件相同的行，即交集<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; comm test1.txt test2.txt -1 -2</span><br><span class="line">ccc</span><br></pre></td></tr></table></figure></p>
+<p>删除第1列、第3列显示第2个文件的差集（第2个文件有而其他文件没有的行）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; comm test1.txt test2.txt -1 -3</span><br><span class="line">ddd</span><br><span class="line">eee</span><br></pre></td></tr></table></figure></p>
+<p>删除第2列、第3列显示第1个文件的差集（第1个文件有而其他文件没有的行）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; comm test1.txt test2.txt -2 -3</span><br><span class="line">aaa</span><br><span class="line">bbb</span><br></pre></td></tr></table></figure></p>
+<p>删除第3列显示两个文件的不同行，即求差<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; comm test1.txt test2.txt -3</span><br><span class="line">aaa</span><br><span class="line">bbb</span><br><span class="line">	ddd</span><br><span class="line">	eee</span><br></pre></td></tr></table></figure></p>
+<p>删除空白保持整齐<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; comm test1.txt test2.txt -3 | sed <span class="string">'s/^\t//'</span></span><br><span class="line">aaa</span><br><span class="line">bbb</span><br><span class="line">ddd</span><br><span class="line">eee</span><br></pre></td></tr></table></figure></p>
+<h2 id="查找、删除重复文件"><a href="#查找、删除重复文件" class="headerlink" title="查找、删除重复文件"></a>查找、删除重复文件</h2><p>校验和是根据文件内容生成的，因此可以根据校验和删除重复文件。</p>
+<p>??? 看懂下面的 shell</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">ls -lS --time-style=long-iso | awk <span class="string">'BEGIN &#123;</span></span><br><span class="line"><span class="string">    getline; getline;</span></span><br><span class="line"><span class="string">    name1=$8; size=$5</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    name2=$8;</span></span><br><span class="line"><span class="string">    if (size==$5)</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">        "md5sum "name1 | getline; csum1=$1;</span></span><br><span class="line"><span class="string">        "md5sum "name2 | getline; csum2=$1;</span></span><br><span class="line"><span class="string">        if ( csum1==csum2 )</span></span><br><span class="line"><span class="string">        &#123;</span></span><br><span class="line"><span class="string">            print name1; print name2</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &#125;;</span></span><br><span class="line"><span class="string">    size=$5; name1=name2;</span></span><br><span class="line"><span class="string">&#125;'</span> | sort -u &gt; duplicate_files</span><br><span class="line"></span><br><span class="line">cat duplicate_files | xargs -I &#123;&#125; md5sum &#123;&#125; | sort | uniq -w 32 | awk <span class="string">'&#123; print "^"$2"$" &#125;'</span> | sort -u &gt; duplicate_sample</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> Removing..</span><br><span class="line"></span><br><span class="line">comm duplicate_files duplicate_sample -2 -3 | tee /dev/stderr | xargs rm</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> Removed duplicates files successfully.</span><br></pre></td></tr></table></figure>
+<h2 id="文件权限、所有权和粘滞位"><a href="#文件权限、所有权和粘滞位" class="headerlink" title="文件权限、所有权和粘滞位"></a>文件权限、所有权和粘滞位</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-rw-rw-r--.  1 ssy ssy       16 10月  3 05:56 out.txt</span><br><span class="line">drwxr-xr-x.  9 ssy ssy    12288 5月  22 10:05 pcre-8.40</span><br></pre></td></tr></table></figure>
+<p>文件类型：</p>
+<ul>
+<li><ul>
+<li>普通文件</li>
+</ul>
+</li>
+<li>d 目录</li>
+<li>c 字符设备</li>
+<li>b 块设备</li>
+<li>l 符号链接</li>
+<li>s 套接字</li>
+<li>p 管道</li>
+</ul>
+<p>用户类型：</p>
+<ul>
+<li>user      文件的所有者</li>
+<li>group     多个用户的集合</li>
+<li>others    除了上面两种人之外的其他人</li>
+</ul>
+<p>权限类型对目录、文件的含义：</p>
+<ul>
+<li>r<ul>
+<li>文件：</li>
+<li>目录：</li>
+</ul>
+</li>
+<li>w<ul>
+<li>文件：</li>
+<li>目录：</li>
+</ul>
+</li>
+<li>x<ul>
+<li>文件：</li>
+<li>目录：</li>
+</ul>
+</li>
+</ul>
+<p>权限类型和八进制数对应关系：</p>
+<ul>
+<li>r–   4</li>
+<li>-w-   2</li>
+<li>–x   1</li>
+</ul>
+<p>权限类型和用户类型对应关系：</p>
+<ul>
+<li>rwx——，rwS——<ul>
+<li>S setuid，允许用户以文件拥有者的权限来执行</li>
+</ul>
+</li>
+<li>—rwx—，—rwS—<ul>
+<li>S setgid，允许用户以用户组的权限来执行</li>
+</ul>
+</li>
+<li>——rwx，——rwt，——rwT<ul>
+<li>t sticky bit，粘滞位，只针对目录，只有创建了此目录的用户才能删除目录中的文件</li>
+<li>T 没有执行权限只有粘滞位使用小写 T，有执行权限和粘滞位使用大写 t<ul>
+<li>目录设置了粘滞位的典型例子 /tmp<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; ll -d /tmp</span><br><span class="line">drwxrwxrwt. 5 root root 12288 10月  5 09:31 /tmp</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>设置权限<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">-&gt; chmod u=rwx,g=rx,o= testproject/</span><br><span class="line"></span><br><span class="line">-&gt; chmod u+x,g-w,o+r testproject/</span><br><span class="line"></span><br><span class="line">-&gt; chmod a-x testproject/           <span class="comment"># a 表示 all，即用户、用户组和其他人</span></span><br><span class="line"></span><br><span class="line">-&gt; chmod o+t testproject/           <span class="comment"># 设置粘滞位，只能用小写 t，不能用大写 T</span></span><br><span class="line"></span><br><span class="line">-&gt; chmod a+t testproject/           <span class="comment"># 可以使用 u+t, g+t, o+t, a+t ，但只有后两种起作用，因为粘滞位是在其他人的权限上</span></span><br><span class="line"></span><br><span class="line">-&gt; ll -d testproject/</span><br><span class="line">drwxr----T. 4 ssy ssy 4096 10月  4 18:47 testproject/</span><br><span class="line"></span><br><span class="line">-&gt; chmod o+x testproject/           <span class="comment"># 可见只有粘滞位是大写 T，既有执行权限又有粘滞位是小写 t</span></span><br><span class="line"></span><br><span class="line">-&gt; ll -d testproject/</span><br><span class="line">drwxr----t. 4 ssy ssy 4096 10月  4 18:47 testproject/</span><br><span class="line"></span><br><span class="line">-&gt; chmod 742 testproject/</span><br><span class="line"></span><br><span class="line">-&gt; chmod -R 777 testproject/        <span class="comment"># -R 递归设置权限，包括了子目录和文件的权限     ??? 出错</span></span><br><span class="line">chmod: 更改<span class="string">"testproject/subdir"</span> 的权限: 不允许的操作</span><br><span class="line">chmod: 更改<span class="string">"testproject/subdir/3.txt"</span> 的权限: 不允许的操作</span><br></pre></td></tr></table></figure></p>
+<p>设置 setuid<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将文件的所有权替换为需要执行该文件的用户</span></span><br><span class="line">$ chown root.root executable_file</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后以该用户的身份登录</span></span><br><span class="line">$ su root</span><br><span class="line"></span><br><span class="line"><span class="comment"># 增加 setuid 权限</span></span><br><span class="line">$ chmod +s executable_file</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换会原用户</span></span><br><span class="line">$ su ssy</span><br><span class="line"></span><br><span class="line"><span class="comment"># 再执行就是以文件所有者的身份执行了</span></span><br><span class="line">$ ./executable_file</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>setuid 权限需要文件所有者才能设置???</li>
+<li>setuid 的使用不是无限制的。为了确保安全，它只能应用在 Linux ELF 格式二进制文件上，而不能用于脚本文件。 </li>
+</ul>
+<p>更改所有者和用户组???<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; chown ssl testmod</span><br><span class="line">chown: 正在更改<span class="string">"testmod"</span> 的所有者: 不允许的操作</span><br><span class="line"></span><br><span class="line">-&gt; chgrp ssl testmod</span><br><span class="line">chgrp: 正在更改<span class="string">"testmod"</span> 的所属组: 不允许的操作</span><br><span class="line"></span><br><span class="line">-&gt; chown ssl:ssl testmod</span><br><span class="line">chown: 正在更改<span class="string">"testmod"</span> 的所有者: 不允许的操作</span><br></pre></td></tr></table></figure></p>
+<p>只给目录一种权限：</p>
+<ul>
+<li>r<ul>
+<li>只可以 ll 目录下的文件名和子目录名，但仅仅显示名字，不显示类型，日期，权限等各种信息</li>
+<li>无权限直接对目录下的具体文件 ll</li>
+<li>无权限 cat 目录下文件内容</li>
+<li>无权限 cd 进入目录</li>
+<li>无权限创建子目录</li>
+<li>无权限创建文件</li>
+<li>无权限删除子目录</li>
+<li>无权限删除文件</li>
+</ul>
+</li>
+<li>w<ul>
+<li>无权限 cd 进入目录</li>
+<li>无权限 ll 目录</li>
+<li>无权限直接对具体的文件 ll</li>
+<li>无权限 cat 文件内容</li>
+<li>无权限创建子目录</li>
+<li>无权限创建文件</li>
+<li>无权限删除子目录</li>
+<li>无权限删除文件</li>
+</ul>
+</li>
+<li>x<ul>
+<li>可以 cd 进入目录</li>
+<li>无权限 ll 目录</li>
+<li>可以直接对目录下的具体文件 ll</li>
+<li>可以 cat 目录下的文件内容</li>
+<li>无权限创建子目录</li>
+<li>可以创建文件</li>
+<li>无权限删除子目录</li>
+<li>无权限删除文件</li>
+</ul>
+</li>
+</ul>
+<h2 id="创建不可修改文件"><a href="#创建不可修改文件" class="headerlink" title="创建不可修改文件"></a>创建不可修改文件</h2><p>chattr 为文件添加写保护后就无法删除</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">-&gt; chattr +i 1.txt</span><br><span class="line">chattr: Operation not permitted wh_ile setting flags on 1.txt</span><br><span class="line"></span><br><span class="line">-&gt; sudo chattr +i 1.txt</span><br><span class="line">[sudo] password <span class="keyword">for</span> ssy: </span><br><span class="line"></span><br><span class="line">-&gt; ll 1.txt</span><br><span class="line">-rwxrwxrwx. 1 ssy ssy 86 Oct  4 10:30 1.txt</span><br><span class="line"></span><br><span class="line">-&gt; rm 1.txt</span><br><span class="line">rm: remove write-protected regular file `1.txt<span class="string">'? y</span></span><br><span class="line"><span class="string">rm: cannot remove `1.txt'</span>: Operation not permitted</span><br><span class="line"></span><br><span class="line">-&gt; sudo chattr -i 1.txt</span><br><span class="line"></span><br><span class="line">-&gt; rm 1.txt</span><br></pre></td></tr></table></figure>
+<h2 id="批量创建文件"><a href="#批量创建文件" class="headerlink" title="批量创建文件"></a>批量创建文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-&gt; cat test.sh</span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> <span class="built_in">test</span>&#123;1..5&#125;.c</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$name</span></span><br><span class="line">    touch <span class="variable">$name</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">test1.c</span><br><span class="line">test2.c</span><br><span class="line">test3.c</span><br><span class="line">test4.c</span><br><span class="line">test5.c</span><br></pre></td></tr></table></figure>
+<p>当创建的文件已存在时，touch 命令会把文件的所有时间戳都更改为当前时间<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; ll s1.txt</span><br><span class="line">-rwxrwxrwx. 1 ssy ssy 86 Oct  4 10:38 s1.txt</span><br><span class="line"></span><br><span class="line">-&gt; touch s1.txt</span><br><span class="line"></span><br><span class="line">-&gt; ll s1.txt</span><br><span class="line">-rwxrwxrwx. 1 ssy ssy 86 Oct  5 13:51 s1.txt</span><br></pre></td></tr></table></figure></p>
+<p>只更改访问时间或文件内容修改时间<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 只更改文件访问时间</span></span><br><span class="line">-&gt; touch -a s1.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只更改文件内容修改时间</span></span><br><span class="line">-&gt; touch -m s1.txt</span><br></pre></td></tr></table></figure></p>
+<p>指定文件的时间戳<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; touch -d <span class="string">"2016-03-10 18:00:00"</span> s1.txt</span><br><span class="line"></span><br><span class="line">-&gt; ll s1.txt</span><br><span class="line">-rwxrwxrwx. 1 ssy ssy 86 Mar 10  2016 s1.txt</span><br></pre></td></tr></table></figure></p>
+<h2 id="符号链接"><a href="#符号链接" class="headerlink" title="符号链接"></a>符号链接</h2><p>符号链接相当于 windows 的快捷方式，删除符号链接不影响原文件。</p>
+<p>创建符号链接<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; ln -s s1.txt link.txt</span><br><span class="line"></span><br><span class="line">-&gt; ll s1.txt link.txt</span><br><span class="line">-rwxrwxrwx. 1 ssy ssy 86 Mar 10  2016 s1.txt</span><br><span class="line">lrwxrwxrwx. 1 ssy ssy  6 Oct  5 14:04 link.txt -&gt; s1.txt</span><br></pre></td></tr></table></figure></p>
+<p>输出符号链接指向的原文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; readlink link.txt</span><br><span class="line">s1.txt</span><br></pre></td></tr></table></figure></p>
+<p>列表目录下的符号链接<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; ls -l /bin | grep <span class="string">"^l"</span></span><br><span class="line">lrwxrwxrwx. 1 root root      4 May 20 08:55 awk -&gt; gawk</span><br><span class="line">lrwxrwxrwx. 1 root root      8 May 20 08:56 dnsdomainname -&gt; hostname</span><br><span class="line">lrwxrwxrwx. 1 root root      8 May 20 08:56 domainname -&gt; hostname</span><br><span class="line">lrwxrwxrwx. 1 root root      4 May 20 08:55 egrep -&gt; grep</span><br><span class="line"></span><br><span class="line">-&gt; find /bin -<span class="built_in">type</span> l -print0 | xargs -0 -I &#123;&#125; ls -l &#123;&#125;</span><br><span class="line">lrwxrwxrwx. 1 root root 4 May 20 08:55 /bin/awk -&gt; gawk</span><br><span class="line">lrwxrwxrwx. 1 root root 8 May 20 08:56 /bin/dnsdomainname -&gt; hostname</span><br><span class="line">lrwxrwxrwx. 1 root root 8 May 20 08:56 /bin/domainname -&gt; hostname</span><br><span class="line">lrwxrwxrwx. 1 root root 4 May 20 08:55 /bin/egrep -&gt; grep</span><br></pre></td></tr></table></figure></p>
+<h2 id="统计文件类型"><a href="#统计文件类型" class="headerlink" title="统计文件类型"></a>统计文件类型</h2><p>不同于 Windows 系统，Unix/Linux 系统的文件类型并不是由文件的扩展名确定的</p>
+<p>可使用 file 命令查看文件类型<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">-&gt; file s1.txt</span><br><span class="line">s1.txt: ASCII text</span><br><span class="line"></span><br><span class="line">-&gt; file link.txt</span><br><span class="line">link.txt: symbolic link to <span class="string">'s1.txt'</span></span><br><span class="line"></span><br><span class="line">-&gt; file test.sh</span><br><span class="line">test.sh: Bourne-Again shell script text executable</span><br><span class="line"></span><br><span class="line">-&gt; file subdir</span><br><span class="line">subdir: directory</span><br><span class="line"></span><br><span class="line">-&gt; file 1.txt.gpg</span><br><span class="line">1.txt.gpg: data</span><br><span class="line"></span><br><span class="line">-&gt; file junk.data</span><br><span class="line">junk.data: very short file (no magic)</span><br><span class="line"></span><br><span class="line">-&gt; file /bin/bash</span><br><span class="line">/bin/bash: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked (uses shared libs), <span class="keyword">for</span> GNU/Linux 2.6.18, stripped</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>文件类型信息包含较多的细节，由逗号分隔</li>
+</ul>
+<p>输出时不带文件名，直接输出类型<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; file -b test.sh</span><br><span class="line">Bourne-Again shell script text executable</span><br></pre></td></tr></table></figure></p>
+<p>统计目录下个文件类型数量的脚本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">-&gt; cat filestat.sh</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> -ne 1 ];</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Usage is <span class="variable">$0</span> basepath"</span>;</span><br><span class="line">    <span class="built_in">exit</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">path=<span class="variable">$1</span></span><br><span class="line"><span class="built_in">declare</span> -A statarray;</span><br><span class="line"><span class="keyword">while</span> <span class="built_in">read</span> line;</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    ftype=`file -b <span class="string">"<span class="variable">$line</span>"</span> | cut -d, -f1`</span><br><span class="line">    <span class="built_in">let</span> statarray[<span class="string">"<span class="variable">$ftype</span>"</span>]++;</span><br><span class="line"><span class="keyword">done</span> &lt; &lt;(find <span class="variable">$path</span> -<span class="built_in">type</span> f -<span class="built_in">print</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> ============ File types and counts =============</span><br><span class="line"><span class="keyword">for</span> ftype <span class="keyword">in</span> <span class="string">"<span class="variable">$&#123;!statarray[@]&#125;</span>"</span>;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$ftype</span> : <span class="variable">$&#123;statarray["$ftype"]&#125;</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">-&gt; ./filestat.sh ../testproject/</span><br><span class="line">============ File types and counts =============</span><br><span class="line">very short file (no magic) : 1</span><br><span class="line">Bourne-Again shell script text executable : 1</span><br><span class="line">VAX COFF executable not stripped : 3</span><br><span class="line">POSIX shell script text executable : 10</span><br><span class="line">data : 2</span><br><span class="line">VAX COFF executable : 1</span><br><span class="line">VAX COFF executable - version 26967 : 1</span><br><span class="line">ASCII text : 14</span><br><span class="line">empty : 1</span><br><span class="line">ASCII English text : 2</span><br></pre></td></tr></table></figure></p>
+<p>这段代码<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">done</span>&lt; &lt;(find <span class="variable">$path</span> –<span class="built_in">type</span> f –<span class="built_in">print</span>);</span><br></pre></td></tr></table></figure></p>
+<p>它的执行逻辑如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="built_in">read</span> line;</span><br><span class="line">    <span class="keyword">do</span> something</span><br><span class="line"><span class="keyword">done</span> &lt; filename</span><br></pre></td></tr></table></figure></p>
+<p>这里不用 filename ，而是用 find 命令的子进程输出来代替文件名。<br>即 <code>&lt;(find $path -type f -print)</code> 等同于文件名。<br>注意，第一个<code>&lt;</code>用于输入重定向，第二个<code>&lt;</code>用于将子进程的输出装换成文件名。在两个<code>&lt;</code>之间有一个空格，避免shell将其解释为<code>&lt;&lt;</code>操作符。</p>
+<p><code>&lt;&lt;&lt;</code> 也可以让我们将字符串作为输入文件，因此上面代码也可改为<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">done</span> &lt;&lt;&lt; <span class="string">"`find <span class="variable">$path</span> –type f –print`"</span>        <span class="comment"># 注意括号替换为了分号和反引号</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="环回文件"><a href="#环回文件" class="headerlink" title="环回文件"></a>环回文件</h2><p>通常在物理设备上创建文件系统，这些儿物理设备以设备文件的形式来使用，将设备文件挂载到一些儿称为挂载点（mount point）的目录即可使用物理设备上的文件系统。</p>
+<p>而环回文件系统是指那些在文件中而非物理设备中创建的文件系统。</p>
+<p>环回文件自身包含了文件系统，可以像物理设备一样使用 mount 挂载，使得我们可以在物理磁盘的文件中创建逻辑磁盘。</p>
+<h2 id="ISO-文件"><a href="#ISO-文件" class="headerlink" title="ISO 文件"></a>ISO 文件</h2><h2 id="比较文件差异"><a href="#比较文件差异" class="headerlink" title="比较文件差异"></a>比较文件差异</h2><p>比较文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">-&gt; diff s1.txt s2.txt</span><br><span class="line">1d0</span><br><span class="line">&lt; key say hometown</span><br><span class="line">2a2</span><br><span class="line">&gt; 787 wa ha ha</span><br><span class="line">4d3</span><br><span class="line">&lt; 444 <span class="built_in">where</span> are you from</span><br><span class="line">5a5</span><br><span class="line">&gt; key say hometown</span><br><span class="line"></span><br><span class="line">-&gt; diff -u s1.txt s2.txt</span><br><span class="line">--- s1.txt	2017-10-05 17:32:16.595863026 +0800</span><br><span class="line">+++ s2.txt	2017-10-05 17:32:41.113115076 +0800</span><br><span class="line">@@ -1,5 +1,5 @@</span><br><span class="line">-key say hometown</span><br><span class="line"> 111 hi  beijing</span><br><span class="line">+787 wa ha ha</span><br><span class="line"> 333 who are you tianjin</span><br><span class="line">-444 <span class="built_in">where</span> are you from</span><br><span class="line"> aaa i am shenlin    shanghai</span><br><span class="line">+key say hometown</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><code>&lt;</code> 表示此行在第一个文件里，<code>&gt;</code> 表示此行在第二个文件里</li>
+<li><code>-u</code> 是一体化输出，<code>-</code> 是第二个文件相对于第一个文件少的行，<code>+</code> 是第二个文件相对于第一个文件多的行</li>
+</ul>
+<p>生成补丁文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; diff -u s1.txt s2.txt &gt; s.patch</span><br></pre></td></tr></table></figure></p>
+<p>应用补丁文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">-&gt; patch -p1 s1.txt &lt; s.patch</span><br><span class="line">patching file s1.txt</span><br><span class="line"></span><br><span class="line">-&gt; diff s1.txt s2.txt</span><br><span class="line"><span class="comment"># 输出为空，两个文件一样了</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 再次应用补丁文件</span></span><br><span class="line"><span class="comment"># 或者直接使用 -R reverse 反转参数，则不会提示 `Assume -R? [n] y`</span></span><br><span class="line"><span class="comment"># -&gt; patch -p1 -R s1.txt &lt; s.patch</span></span><br><span class="line"><span class="comment"># patching file s1.txt</span></span><br><span class="line">-&gt; patch -p1 s1.txt &lt; s.patch</span><br><span class="line">patching file s1.txt</span><br><span class="line">Reversed (or previously applied) patch detected!  Assume -R? [n] y</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文件被还原</span></span><br><span class="line">-&gt; diff -u s1.txt s2.txt</span><br><span class="line">--- s1.txt	2017-10-05 18:53:42.069380116 +0800</span><br><span class="line">+++ s2.txt	2017-10-05 17:32:41.113115076 +0800</span><br><span class="line">@@ -1,5 +1,5 @@</span><br><span class="line">-key say hometown</span><br><span class="line"> 111 hi  beijing</span><br><span class="line">+787 wa ha ha</span><br><span class="line"> 333 who are you tianjin</span><br><span class="line">-444 <span class="built_in">where</span> are you from</span><br><span class="line"> aaa i am shenlin    shanghai</span><br><span class="line">+key say hometown</span><br></pre></td></tr></table></figure></p>
+<p>生成目录差异，以递归的形式对目录中的所有内容生成差异<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ diff -Naur directory1 directory2</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>-N ：将所有缺失的文件视为空文件。</li>
+<li>-a ：将所有文件视为文本文件。</li>
+<li>-u ：生成一体化输出。</li>
+<li>-r ：遍历目录下的所有文件</li>
+</ul>
+<h2 id="输出文件的前几行后几行"><a href="#输出文件的前几行后几行" class="headerlink" title="输出文件的前几行后几行"></a>输出文件的前几行后几行</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># head 默认查看头 10 行，两种方法</span></span><br><span class="line">-&gt; head multiline.txt </span><br><span class="line">-&gt; cat multiline.txt | head</span><br><span class="line">The 1 line</span><br><span class="line">The 2 line</span><br><span class="line">The 3 line</span><br><span class="line">The 4 line</span><br><span class="line">The 5 line</span><br><span class="line">The 6 line</span><br><span class="line">The 7 line</span><br><span class="line">The 8 line</span><br><span class="line">The 9 line</span><br><span class="line">The 10 line</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出前 3 行</span></span><br><span class="line">-&gt; head -n 3 multiline.txt </span><br><span class="line">The 1 line</span><br><span class="line">The 2 line</span><br><span class="line">The 3 line</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从反方向指定：输出除了最后 98 行之外的所有行</span></span><br><span class="line">-&gt; head -n -98 multiline.txt </span><br><span class="line">The 1 line</span><br><span class="line">The 2 line</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出末尾 10 行</span></span><br><span class="line">-&gt; tail multiline.txt </span><br><span class="line">-&gt; cat multiline.txt | tail</span><br><span class="line">The 91 line</span><br><span class="line">The 92 line</span><br><span class="line">The 93 line</span><br><span class="line">The 94 line</span><br><span class="line">The 95 line</span><br><span class="line">The 96 line</span><br><span class="line">The 97 line</span><br><span class="line">The 98 line</span><br><span class="line">The 99 line</span><br><span class="line">The 100 line</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出末尾 3 行</span></span><br><span class="line">-&gt; tail -n 3 multiline.txt </span><br><span class="line">The 98 line</span><br><span class="line">The 99 line</span><br><span class="line">The 100 line</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出末尾 3 行</span></span><br><span class="line">-&gt; tail -n -3 multiline.txt </span><br><span class="line">The 98 line</span><br><span class="line">The 99 line</span><br><span class="line">The 100 line</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出第 98 行开始的行</span></span><br><span class="line">-&gt; tail -n +98 multiline.txt </span><br><span class="line">The 98 line</span><br><span class="line">The 99 line</span><br><span class="line">The 100 line</span><br></pre></td></tr></table></figure>
+<p>tail 的特殊选项 <code>-f</code> 或 <code>--follow</code>，可以不间断的监视文件中新添加的内容<br>适用于监视日志文件等<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">-&gt; tail -f multiline.txt </span><br><span class="line">The 91 line</span><br><span class="line">The 92 line</span><br><span class="line">The 93 line</span><br><span class="line">The 94 line</span><br><span class="line">The 95 line</span><br><span class="line">The 96 line</span><br><span class="line">The 97 line</span><br><span class="line">The 98 line</span><br><span class="line">The 99 line</span><br><span class="line">The 100 line</span><br><span class="line">The 101 line                        <span class="comment"># &lt;-- 新追加的行会自动显示</span></span><br><span class="line"></span><br><span class="line">-&gt; sudo tail -f /var/<span class="built_in">log</span>/messages      <span class="comment"># 监控日志消息</span></span><br><span class="line">[sudo] password <span class="keyword">for</span> ssy: </span><br><span class="line">Oct  6 07:20:26 e42 kernel: 00:00:00.043406 main     OS Product: Linux</span><br><span class="line">Oct  6 07:20:26 e42 kernel: 00:00:00.050377 main     OS Release: 2.6.32-696.3.2.el6.i686</span><br><span class="line">Oct  6 07:20:26 e42 kernel: 00:00:00.053060 main     OS Version: <span class="comment">#1 SMP Tue Jun 20 00:48:23 UTC 2017</span></span><br><span class="line">Oct  6 07:20:26 e42 kernel: 00:00:00.053500 main     Executable: /opt/VBoxGuestAdditions-5.1.22/sbin/VBoxService</span><br><span class="line">Oct  6 07:20:26 e42 kernel: 00:00:00.053509 main     Process ID: 1296</span><br><span class="line">Oct  6 07:20:26 e42 kernel: 00:00:00.053516 main     Package <span class="built_in">type</span>: LINUX_32BITS_GENERIC</span><br><span class="line">Oct  6 07:20:26 e42 kernel: 00:00:00.088351 main     5.1.22 r115126 started. Verbose level = 0</span><br><span class="line">Oct  6 07:20:26 e42 vboxadd-service.sh: VirtualBox Guest Addition service started.</span><br><span class="line">Oct  6 07:20:30 e42 xinetd[1417]: xinetd Version 2.3.14 started with libwrap loadavg labeled-networking options compiled <span class="keyword">in</span>.</span><br><span class="line">Oct  6 07:20:30 e42 xinetd[1417]: Started working: 0 available services</span><br><span class="line"></span><br><span class="line">-&gt; dmesg | tail -f                  <span class="comment"># 查看内核的环形缓冲区消息，用来调试USB设备，或是查看 SCSI 磁盘 sda,sdb...</span></span><br><span class="line">All bugs added by David S. Miller &lt;davem@redhat.com&gt;</span><br><span class="line">VBoxService 5.1.22 r115126 (verbosity: 0) linux.x86 (Apr 28 2017 17:27:07) release <span class="built_in">log</span></span><br><span class="line">00:00:00.028406 main     Log opened 2017-10-05T23:20:26.170497000Z</span><br><span class="line">00:00:00.043406 main     OS Product: Linux</span><br><span class="line">00:00:00.050377 main     OS Release: 2.6.32-696.3.2.el6.i686</span><br><span class="line">00:00:00.053060 main     OS Version: <span class="comment">#1 SMP Tue Jun 20 00:48:23 UTC 2017</span></span><br><span class="line">00:00:00.053500 main     Executable: /opt/VBoxGuestAdditions-5.1.22/sbin/VBoxService</span><br><span class="line">00:00:00.053509 main     Process ID: 1296</span><br><span class="line">00:00:00.053516 main     Package <span class="built_in">type</span>: LINUX_32BITS_GENERIC</span><br><span class="line">00:00:00.088351 main     5.1.22 r115126 started. Verbose level = 0</span><br></pre></td></tr></table></figure></p>
+<p><code>-s</code> 设定睡眠间隔，相当于设置了被监控文件的更新间隔<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; sudo tail -s 3 -f /var/<span class="built_in">log</span>/messages</span><br></pre></td></tr></table></figure></p>
+<p><code>--pid</code> 设定当进程ID为几的进程结束后，tail 也会自动结束<br>例如 vim 进程一直在向文件 file 中追加数据，则 tail 可以设置根据 vim 进程是否退出来决定是否退出监视 file 文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; PID=$(pidof vim)</span><br><span class="line">-&gt; tail -f file --pid <span class="variable">$PID</span></span><br></pre></td></tr></table></figure></p>
+<p>??? 没测试成功，会根据 vim 的进程自动退出，但没有更新监控内容，确认 vim 已经写入文件了<br>??? 经测试和 vim 有关系，使用 echo &gt;&gt; file 增加的行会自动显示，但使用 vim 打开再关闭后就不会自动显示了</p>
+<h2 id="列出目录本身"><a href="#列出目录本身" class="headerlink" title="列出目录本身"></a>列出目录本身</h2><p>列出当前目录下的所有目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; ls -l | grep <span class="string">"^d"</span></span><br><span class="line">drwxr-xr-x. 28 ssy ssy     4096 5月  21 16:50 apr-1.5.2</span><br><span class="line">drwxr-xr-x. 20 ssy ssy     4096 5月  21 17:51 apr-util-1.5.4</span><br><span class="line">drwxr-xr-x. 12 ssy ssy     4096 5月  30 15:55 httpd-2.4.25</span><br></pre></td></tr></table></figure>
+<ul>
+<li>ls -l 的每行的第一个字符表示文件类型</li>
+<li>目录的字符是 d</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; ll -d */</span><br><span class="line">drwxr-xr-x. 28 ssy ssy  4096 5月  21 16:50 apr-1.5.2/</span><br><span class="line">drwxr-xr-x. 20 ssy ssy  4096 5月  21 17:51 apr-util-1.5.4/</span><br><span class="line">drwxr-xr-x. 12 ssy ssy  4096 5月  30 15:55 httpd-2.4.25/</span><br></pre></td></tr></table></figure>
+<ul>
+<li>-d 表示遇到目录时列出目录本身而非目录的文件</li>
+<li>*/ 表示以 / 结尾 ???</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; ll -F | grep <span class="string">"/$"</span></span><br><span class="line">drwxr-xr-x. 28 ssy ssy     4096 5月  21 16:50 apr-1.5.2/</span><br><span class="line">drwxr-xr-x. 20 ssy ssy     4096 5月  21 17:51 apr-util-1.5.4/</span><br><span class="line">drwxr-xr-x. 12 ssy ssy     4096 5月  30 15:55 httpd-2.4.25/</span><br></pre></td></tr></table></figure>
+<ul>
+<li>ls 的 -F 在每个输出项的后面都添加了一个表示文件类型的字符</li>
+<li>目录的字符是 /，所以目录是 / 结尾的</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find . -maxdepth 1 -<span class="built_in">type</span> d</span><br><span class="line">.</span><br><span class="line">./.pki</span><br><span class="line">./testmod</span><br><span class="line">./apr-1.5.2</span><br><span class="line">./apr-util-1.5.4</span><br></pre></td></tr></table></figure>
+<h2 id="快速切换目录"><a href="#快速切换目录" class="headerlink" title="快速切换目录"></a>快速切换目录</h2><h3 id="两个目录"><a href="#两个目录" class="headerlink" title="两个目录"></a>两个目录</h3><p><code>cd -</code> 可以在最近使用的两个目录之间快速切换</p>
+<h3 id="两个以上目录"><a href="#两个以上目录" class="headerlink" title="两个以上目录"></a>两个以上目录</h3><p>命令行下涉及到 2 个目录以上的切换时，如 <code>/var/logs</code>，<code>/usr/src</code>，<code>/home/ssy</code>，使用 pushd, popd 是一个快捷的方法</p>
+<p>pushd 和 popd 把目录的路径存储在栈中，栈是 LIFO - Last In First Out</p>
+<p>pushd 把目录入栈并自动切换到刚入栈的目录</p>
+<p>popd 弹出栈顶目录，并自动切换到最新的栈顶目录</p>
+<p>dirs 查看栈中目录列表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">-&gt; <span class="built_in">dirs</span>                                 <span class="comment"># 查看目录栈</span></span><br><span class="line">~</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix ~</span><br><span class="line">-&gt; <span class="built_in">pushd</span> /var/<span class="built_in">log</span>/                      <span class="comment"># 把目录入栈</span></span><br><span class="line">/var/<span class="built_in">log</span> ~</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix <span class="built_in">log</span>                      <span class="comment"># 则已经自动切换到了入栈的目录</span></span><br><span class="line">-&gt; <span class="built_in">pwd</span></span><br><span class="line">/var/<span class="built_in">log</span></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">-&gt; <span class="built_in">dirs</span>                                 <span class="comment"># 经过多次入栈后，栈中的目录，每个目录都有默认编号，从 0 开始</span></span><br><span class="line">/etc/cron.d /usr/<span class="built_in">local</span>/httpd-2.4.25 /var/<span class="built_in">log</span> ~</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix cron.d</span><br><span class="line">-&gt; <span class="built_in">popd</span>                                 <span class="comment"># 把目录出栈</span></span><br><span class="line">/usr/<span class="built_in">local</span>/httpd-2.4.25 /var/<span class="built_in">log</span> ~</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix httpd-2.4.25             <span class="comment"># 出栈后自动切换到新的栈顶目录</span></span><br><span class="line">-&gt; <span class="built_in">pwd</span></span><br><span class="line">/usr/<span class="built_in">local</span>/httpd-2.4.25</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix httpd-2.4.25             <span class="comment"># 根据栈中目录的编号切换到指定目录</span></span><br><span class="line">-&gt; <span class="built_in">pushd</span> +2</span><br><span class="line">~ /usr/<span class="built_in">local</span>/httpd-2.4.25 /var/<span class="built_in">log</span></span><br><span class="line"></span><br><span class="line">ssy@e42.matrix <span class="built_in">log</span>                      <span class="comment"># 可见指定编号的目录被提升到了栈顶</span></span><br><span class="line">-&gt; <span class="built_in">dirs</span></span><br><span class="line">/var/<span class="built_in">log</span> ~ /usr/<span class="built_in">local</span>/httpd-2.4.25</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix <span class="built_in">log</span></span><br><span class="line">-&gt; <span class="built_in">popd</span> +2                              <span class="comment"># 把栈中指定编号的目录出栈，这时并不自动切换目录</span></span><br><span class="line">/var/<span class="built_in">log</span> ~</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix <span class="built_in">log</span></span><br><span class="line">-&gt; <span class="built_in">dirs</span></span><br><span class="line">/var/<span class="built_in">log</span> ~</span><br></pre></td></tr></table></figure>
+<h2 id="统计文件行数、词数、字符数"><a href="#统计文件行数、词数、字符数" class="headerlink" title="统计文件行数、词数、字符数"></a>统计文件行数、词数、字符数</h2><p><code>-l</code> 行数 <code>-w</code> 词数 <code>-c</code> 字符数<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">-&gt; cat out.txt</span><br><span class="line">aaa</span><br><span class="line">bbb</span><br><span class="line">ccc</span><br><span class="line">ddd</span><br><span class="line"></span><br><span class="line">-&gt; wc out.txt           <span class="comment"># 没有选项，则分别输出行数、词数、字符数</span></span><br><span class="line"> 4  4 16 out.txt</span><br><span class="line"></span><br><span class="line">-&gt; wc -l out.txt        <span class="comment"># 行数</span></span><br><span class="line">4 out.txt</span><br><span class="line"></span><br><span class="line">-&gt; wc -w out.txt        <span class="comment"># 词数</span></span><br><span class="line">4 out.txt</span><br><span class="line"></span><br><span class="line">-&gt; wc -c out.txt        <span class="comment"># 字符数</span></span><br><span class="line">16 out.txt</span><br><span class="line"></span><br><span class="line">-&gt; cat out.txt | wc -c  <span class="comment"># 通过 stdin</span></span><br><span class="line">16</span><br><span class="line"></span><br><span class="line">-&gt; wc -L out.txt        <span class="comment"># 打印出文件最后一行的长度</span></span><br><span class="line">3 out.txt</span><br></pre></td></tr></table></figure></p>
+<h2 id="目录以树形显示"><a href="#目录以树形显示" class="headerlink" title="目录以树形显示"></a>目录以树形显示</h2><p>tree 命令可能发行版中没有包含，先安装<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; yum install -y tree</span><br></pre></td></tr></table></figure></p>
+<p>树形显示目录<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">-&gt; tree testproject/</span><br><span class="line">testproject/</span><br><span class="line">├── 11.txt</span><br><span class="line">├── 1.txt.gpg</span><br><span class="line">├── base64.txt</span><br><span class="line">├── data.txt</span><br><span class="line">├── filestat.sh</span><br><span class="line">├── junk.data</span><br><span class="line">├── link.txt -&gt; s1.txt</span><br><span class="line">├── multiline.txt</span><br><span class="line">├── s1.txt</span><br><span class="line">├── s1.txt.orig</span><br><span class="line">├── s2.txt</span><br><span class="line">├── s.patch</span><br><span class="line">├── subdir</span><br><span class="line">│   └── 3.txt</span><br><span class="line">├── test1.txt</span><br><span class="line">├── test2.txt</span><br><span class="line">└── test.sh</span><br></pre></td></tr></table></figure></p>
+<p><code>-p</code> 显示权限位<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">-&gt; tree testproject/ -p</span><br><span class="line">testproject/</span><br><span class="line">├── [-rwxrwxrwx]  11.txt</span><br><span class="line">├── [-rwxrwxrwx]  1.txt.gpg</span><br><span class="line">├── [-rwxrwxrwx]  base64.txt</span><br><span class="line">├── [-rwxrwxrwx]  data.txt</span><br><span class="line">├── [-rwxrw-r--]  filestat.sh</span><br><span class="line">├── [-rwxrwxrwx]  junk.data</span><br><span class="line">├── [lrwxrwxrwx]  link.txt -&gt; s1.txt</span><br><span class="line">├── [-rw-rw-r--]  multiline.txt</span><br><span class="line">├── [-rwxrwxrwx]  s1.txt</span><br><span class="line">├── [-rwxrwxrwx]  s1.txt.orig</span><br><span class="line">├── [-rwxrwxrwx]  s2.txt</span><br><span class="line">├── [-rw-rw-r--]  s.patch</span><br><span class="line">├── [drwxr-xr-x]  subdir</span><br><span class="line">│   └── [-rw-r--r--]  3.txt</span><br><span class="line">├── [-rwxrwxrwx]  test1.txt</span><br><span class="line">├── [-rwxrwxrwx]  test2.txt</span><br><span class="line">└── [-rwxrw-r--]  test.sh</span><br></pre></td></tr></table></figure></p>
+<p><code>-P</code> 模式匹配文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-&gt; tree testproject/ -P <span class="string">"*.sh"</span></span><br><span class="line">testproject/</span><br><span class="line">├── filestat.sh</span><br><span class="line">├── subdir</span><br><span class="line">└── test.sh</span><br><span class="line"></span><br><span class="line">1 directory, 2 files</span><br></pre></td></tr></table></figure></p>
+<p><code>-I</code> 排除模式匹配的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">-&gt; tree testproject/ -I <span class="string">"*.sh"</span></span><br><span class="line">testproject/</span><br><span class="line">├── 11.txt</span><br><span class="line">├── 1.txt.gpg</span><br><span class="line">├── base64.txt</span><br><span class="line">├── data.txt</span><br><span class="line">├── junk.data</span><br><span class="line">├── link.txt -&gt; s1.txt</span><br><span class="line">├── multiline.txt</span><br><span class="line">├── s1.txt</span><br><span class="line">├── s1.txt.orig</span><br><span class="line">├── s2.txt</span><br><span class="line">├── s.patch</span><br><span class="line">├── subdir</span><br><span class="line">│   └── 3.txt</span><br><span class="line">├── test1.txt</span><br><span class="line">└── test2.txt</span><br><span class="line"></span><br><span class="line">1 directory, 14 files</span><br></pre></td></tr></table></figure></p>
+<p><code>-h</code> 显示目录和文件大小<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">-&gt; tree -h testproject/</span><br><span class="line">testproject/</span><br><span class="line">├── [  86]  11.txt</span><br><span class="line">├── [ 121]  1.txt.gpg</span><br><span class="line">├── [ 149]  base64.txt</span><br><span class="line">├── [  39]  data.txt</span><br><span class="line">├── [ 368]  filestat.sh</span><br><span class="line">├── [   1]  junk.data</span><br><span class="line">├── [   6]  link.txt -&gt; s1.txt</span><br><span class="line">├── [1.2K]  multiline.txt</span><br><span class="line">├── [ 109]  s1.txt</span><br><span class="line">├── [  99]  s1.txt.orig</span><br><span class="line">├── [  99]  s2.txt</span><br><span class="line">├── [ 256]  s.patch</span><br><span class="line">├── [4.0K]  subdir</span><br><span class="line">│   └── [   0]  3.txt</span><br><span class="line">├── [  12]  test1.txt</span><br><span class="line">├── [  12]  test2.txt</span><br><span class="line">└── [  62]  test.sh</span><br></pre></td></tr></table></figure></p>
+<p><code>-H</code> 输出 HTML 格式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; tree testproject/ -H http://localhost -o out.html</span><br><span class="line"></span><br><span class="line">-&gt; ll out.html </span><br><span class="line">-rw-rw-r--. 1 ssy ssy 3485 10月  6 11:53 out.html</span><br></pre></td></tr></table></figure></p>
+<h2 id="tmp"><a href="#tmp" class="headerlink" title="tmp"></a>tmp</h2><p>更改 linux 语言<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">-&gt; locale</span><br><span class="line">LANG=zh_CN.UTF-8</span><br><span class="line">LC_CTYPE=<span class="string">"zh_CN.UTF-8"</span></span><br><span class="line">LC_NUMERIC=<span class="string">"zh_CN.UTF-8"</span></span><br><span class="line">LC_TIME=<span class="string">"zh_CN.UTF-8"</span></span><br><span class="line">LC_COLLATE=<span class="string">"zh_CN.UTF-8"</span></span><br><span class="line">LC_MONETARY=<span class="string">"zh_CN.UTF-8"</span></span><br><span class="line">LC_MESSAGES=<span class="string">"zh_CN.UTF-8"</span></span><br><span class="line">LC_PAPER=<span class="string">"zh_CN.UTF-8"</span></span><br><span class="line">LC_NAME=<span class="string">"zh_CN.UTF-8"</span></span><br><span class="line">LC_ADDRESS=<span class="string">"zh_CN.UTF-8"</span></span><br><span class="line">LC_TELEPHONE=<span class="string">"zh_CN.UTF-8"</span></span><br><span class="line">LC_MEASUREMENT=<span class="string">"zh_CN.UTF-8"</span></span><br><span class="line">LC_IDENTIFICATION=<span class="string">"zh_CN.UTF-8"</span></span><br><span class="line">LC_ALL=</span><br><span class="line"></span><br><span class="line">-&gt; LANG=en_US.UTF-8</span><br></pre></td></tr></table></figure></p>
+<p>递归列出当前目录下的所有子目录和文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; ls *</span><br></pre></td></tr></table></figure></p>
+<p>查找当前目录下的某个文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; ls * | grep <span class="string">"meta_ccld"</span></span><br><span class="line">meta_ccld</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/bash/" rel="tag"># bash</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/bash - linux shell 脚本攻略 - chapter 2 - 命令/" rel="next" title="bash - linux shell 脚本攻略 - chapter 2 - 命令">
+                <i class="fa fa-chevron-left"></i> bash - linux shell 脚本攻略 - chapter 2 - 命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/bash - linux shell 脚本攻略 - chapter 4.2 - regexp/" rel="prev" title="bash - linux shell 脚本攻略 - chapter 4.2 - regexp">
+                bash - linux shell 脚本攻略 - chapter 4.2 - regexp <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#生成任意大小文件"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x751F;&#x6210;&#x4EFB;&#x610F;&#x5927;&#x5C0F;&#x6587;&#x4EF6;" class="headerlink" title="&#x751F;&#x6210;&#x4EFB;&#x610F;&#x5927;&#x5C0F;&#x6587;&#x4EF6;"></a>&#x751F;&#x6210;&#x4EFB;&#x610F;&#x5927;&#x5C0F;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文本文件的交集、差集"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x6587;&#x672C;&#x6587;&#x4EF6;&#x7684;&#x4EA4;&#x96C6;&#x3001;&#x5DEE;&#x96C6;" class="headerlink" title="&#x6587;&#x672C;&#x6587;&#x4EF6;&#x7684;&#x4EA4;&#x96C6;&#x3001;&#x5DEE;&#x96C6;"></a>&#x6587;&#x672C;&#x6587;&#x4EF6;&#x7684;&#x4EA4;&#x96C6;&#x3001;&#x5DEE;&#x96C6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找、删除重复文件"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x67E5;&#x627E;&#x3001;&#x5220;&#x9664;&#x91CD;&#x590D;&#x6587;&#x4EF6;" class="headerlink" title="&#x67E5;&#x627E;&#x3001;&#x5220;&#x9664;&#x91CD;&#x590D;&#x6587;&#x4EF6;"></a>&#x67E5;&#x627E;&#x3001;&#x5220;&#x9664;&#x91CD;&#x590D;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件权限、所有权和粘滞位"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x6587;&#x4EF6;&#x6743;&#x9650;&#x3001;&#x6240;&#x6709;&#x6743;&#x548C;&#x7C98;&#x6EDE;&#x4F4D;" class="headerlink" title="&#x6587;&#x4EF6;&#x6743;&#x9650;&#x3001;&#x6240;&#x6709;&#x6743;&#x548C;&#x7C98;&#x6EDE;&#x4F4D;"></a>&#x6587;&#x4EF6;&#x6743;&#x9650;&#x3001;&#x6240;&#x6709;&#x6743;&#x548C;&#x7C98;&#x6EDE;&#x4F4D;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建不可修改文件"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;&#x4E0D;&#x53EF;&#x4FEE;&#x6539;&#x6587;&#x4EF6;" class="headerlink" title="&#x521B;&#x5EFA;&#x4E0D;&#x53EF;&#x4FEE;&#x6539;&#x6587;&#x4EF6;"></a>&#x521B;&#x5EFA;&#x4E0D;&#x53EF;&#x4FEE;&#x6539;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#批量创建文件"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x6279;&#x91CF;&#x521B;&#x5EFA;&#x6587;&#x4EF6;" class="headerlink" title="&#x6279;&#x91CF;&#x521B;&#x5EFA;&#x6587;&#x4EF6;"></a>&#x6279;&#x91CF;&#x521B;&#x5EFA;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#符号链接"><span class="nav-number">7.</span> <span class="nav-text"><a href="#&#x7B26;&#x53F7;&#x94FE;&#x63A5;" class="headerlink" title="&#x7B26;&#x53F7;&#x94FE;&#x63A5;"></a>&#x7B26;&#x53F7;&#x94FE;&#x63A5;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#统计文件类型"><span class="nav-number">8.</span> <span class="nav-text"><a href="#&#x7EDF;&#x8BA1;&#x6587;&#x4EF6;&#x7C7B;&#x578B;" class="headerlink" title="&#x7EDF;&#x8BA1;&#x6587;&#x4EF6;&#x7C7B;&#x578B;"></a>&#x7EDF;&#x8BA1;&#x6587;&#x4EF6;&#x7C7B;&#x578B;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环回文件"><span class="nav-number">9.</span> <span class="nav-text"><a href="#&#x73AF;&#x56DE;&#x6587;&#x4EF6;" class="headerlink" title="&#x73AF;&#x56DE;&#x6587;&#x4EF6;"></a>&#x73AF;&#x56DE;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ISO-文件"><span class="nav-number">10.</span> <span class="nav-text"><a href="#ISO-&#x6587;&#x4EF6;" class="headerlink" title="ISO &#x6587;&#x4EF6;"></a>ISO &#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#比较文件差异"><span class="nav-number">11.</span> <span class="nav-text"><a href="#&#x6BD4;&#x8F83;&#x6587;&#x4EF6;&#x5DEE;&#x5F02;" class="headerlink" title="&#x6BD4;&#x8F83;&#x6587;&#x4EF6;&#x5DEE;&#x5F02;"></a>&#x6BD4;&#x8F83;&#x6587;&#x4EF6;&#x5DEE;&#x5F02;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输出文件的前几行后几行"><span class="nav-number">12.</span> <span class="nav-text"><a href="#&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x7684;&#x524D;&#x51E0;&#x884C;&#x540E;&#x51E0;&#x884C;" class="headerlink" title="&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x7684;&#x524D;&#x51E0;&#x884C;&#x540E;&#x51E0;&#x884C;"></a>&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x7684;&#x524D;&#x51E0;&#x884C;&#x540E;&#x51E0;&#x884C;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列出目录本身"><span class="nav-number">13.</span> <span class="nav-text"><a href="#&#x5217;&#x51FA;&#x76EE;&#x5F55;&#x672C;&#x8EAB;" class="headerlink" title="&#x5217;&#x51FA;&#x76EE;&#x5F55;&#x672C;&#x8EAB;"></a>&#x5217;&#x51FA;&#x76EE;&#x5F55;&#x672C;&#x8EAB;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速切换目录"><span class="nav-number">14.</span> <span class="nav-text"><a href="#&#x5FEB;&#x901F;&#x5207;&#x6362;&#x76EE;&#x5F55;" class="headerlink" title="&#x5FEB;&#x901F;&#x5207;&#x6362;&#x76EE;&#x5F55;"></a>&#x5FEB;&#x901F;&#x5207;&#x6362;&#x76EE;&#x5F55;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#两个目录"><span class="nav-number">14.1.</span> <span class="nav-text"><a href="#&#x4E24;&#x4E2A;&#x76EE;&#x5F55;" class="headerlink" title="&#x4E24;&#x4E2A;&#x76EE;&#x5F55;"></a>&#x4E24;&#x4E2A;&#x76EE;&#x5F55;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两个以上目录"><span class="nav-number">14.2.</span> <span class="nav-text"><a href="#&#x4E24;&#x4E2A;&#x4EE5;&#x4E0A;&#x76EE;&#x5F55;" class="headerlink" title="&#x4E24;&#x4E2A;&#x4EE5;&#x4E0A;&#x76EE;&#x5F55;"></a>&#x4E24;&#x4E2A;&#x4EE5;&#x4E0A;&#x76EE;&#x5F55;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#统计文件行数、词数、字符数"><span class="nav-number">15.</span> <span class="nav-text"><a href="#&#x7EDF;&#x8BA1;&#x6587;&#x4EF6;&#x884C;&#x6570;&#x3001;&#x8BCD;&#x6570;&#x3001;&#x5B57;&#x7B26;&#x6570;" class="headerlink" title="&#x7EDF;&#x8BA1;&#x6587;&#x4EF6;&#x884C;&#x6570;&#x3001;&#x8BCD;&#x6570;&#x3001;&#x5B57;&#x7B26;&#x6570;"></a>&#x7EDF;&#x8BA1;&#x6587;&#x4EF6;&#x884C;&#x6570;&#x3001;&#x8BCD;&#x6570;&#x3001;&#x5B57;&#x7B26;&#x6570;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目录以树形显示"><span class="nav-number">16.</span> <span class="nav-text"><a href="#&#x76EE;&#x5F55;&#x4EE5;&#x6811;&#x5F62;&#x663E;&#x793A;" class="headerlink" title="&#x76EE;&#x5F55;&#x4EE5;&#x6811;&#x5F62;&#x663E;&#x793A;"></a>&#x76EE;&#x5F55;&#x4EE5;&#x6811;&#x5F62;&#x663E;&#x793A;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tmp"><span class="nav-number">17.</span> <span class="nav-text"><a href="#tmp" class="headerlink" title="tmp"></a>tmp</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

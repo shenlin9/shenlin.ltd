@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Git,Git-Commands," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Git 常用命令列表">
+<meta name="keywords" content="Git,Git-Commands">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git Commands List">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Git - Commands List/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="Git 常用命令列表">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.526Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git Commands List">
+<meta name="twitter:description" content="Git 常用命令列表">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/Git - Commands List/"/>
+
+
+
+
+
+  <title>Git Commands List | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Git - Commands List/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Git Commands List</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Git 常用命令列表</p>
+<a id="more"></a>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="最小化安装-git-依赖包"><a href="#最小化安装-git-依赖包" class="headerlink" title="最小化安装 git 依赖包"></a>最小化安装 git 依赖包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install curl-devel expat-devel gettext-devel \</span><br><span class="line">           openssl-devel zlib-devel</span><br></pre></td></tr></table></figure>
+<h3 id="安装文档格式（如-doc-html-info）依赖包"><a href="#安装文档格式（如-doc-html-info）依赖包" class="headerlink" title="安装文档格式（如 doc, html, info）依赖包"></a>安装文档格式（如 doc, html, info）依赖包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install asciidoc xmlto docbook2x</span><br><span class="line">$ sudo apt-get install asciidoc xmlto docbook2x</span><br></pre></td></tr></table></figure>
+<h3 id="编译安装-git"><a href="#编译安装-git" class="headerlink" title="编译安装 git"></a>编译安装 git</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ tar -zxf git-2.0.0.tar.gz</span><br><span class="line">$ cd git-2.0.0</span><br><span class="line">$ make configure</span><br><span class="line">$ ./configure --prefix=/usr</span><br><span class="line">$ make all doc info</span><br><span class="line">$ sudo make install install-doc install-html install-info</span><br></pre></td></tr></table></figure>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="设置用户名、邮箱"><a href="#设置用户名、邮箱" class="headerlink" title="设置用户名、邮箱"></a>设置用户名、邮箱</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name &quot;John Doe&quot;</span><br><span class="line">$ git config --global user.email johndoe@example.com</span><br></pre></td></tr></table></figure>
+<h3 id="设置文本编辑器"><a href="#设置文本编辑器" class="headerlink" title="设置文本编辑器"></a>设置文本编辑器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global core.editor vim</span><br></pre></td></tr></table></figure>
+<h3 id="设置命令别名"><a href="#设置命令别名" class="headerlink" title="设置命令别名"></a>设置命令别名</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global alias.unstage &apos;reset HEAD --&apos;</span><br><span class="line">$ git config --global alias.co checkout</span><br><span class="line">$ git config --global alias.br branch</span><br><span class="line">$ git config --global alias.ci commit</span><br><span class="line">$ git config --global alias.st status</span><br><span class="line">//执行外部命令，在命令前面加`!`</span><br><span class="line">$ git config --global alias.visual &apos;!gitk&apos;</span><br></pre></td></tr></table></figure>
+<h3 id="查看配置文件"><a href="#查看配置文件" class="headerlink" title="查看配置文件"></a>查看配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//系统配置文件</span><br><span class="line">$ git config --system --list</span><br><span class="line"></span><br><span class="line">//用户配置文件</span><br><span class="line">$ git config --global --list</span><br><span class="line"></span><br><span class="line">//当前库配置文件</span><br><span class="line">$ git config --local --list</span><br><span class="line"></span><br><span class="line">//所有配置信息，会有重复项目</span><br><span class="line">$ git config --list</span><br></pre></td></tr></table></figure>
+<h3 id="检查某一项设置"><a href="#检查某一项设置" class="headerlink" title="检查某一项设置"></a>检查某一项设置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config user.name</span><br></pre></td></tr></table></figure>
+<h3 id="寻求帮助"><a href="#寻求帮助" class="headerlink" title="寻求帮助"></a>寻求帮助</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//显示可用选项</span><br><span class="line">$ git config -h</span><br><span class="line"></span><br><span class="line">//打开命令手册</span><br><span class="line">$ git config --help</span><br><span class="line">$ git help config</span><br><span class="line"></span><br><span class="line">//打开man帮助文件</span><br><span class="line">$ man git-config</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+            <a href="/tags/Git-Commands/" rel="tag"># Git-Commands</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 1.1 - 版本控制系统简介/" rel="next" title="chapter 1.1 - 版本控制系统简介">
+                <i class="fa fa-chevron-left"></i> chapter 1.1 - 版本控制系统简介
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Computer Terms In English/" rel="prev" title="计算机术语">
+                计算机术语 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;" class="headerlink" title="&#x5B89;&#x88C5;"></a>&#x5B89;&#x88C5;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#最小化安装-git-依赖包"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x6700;&#x5C0F;&#x5316;&#x5B89;&#x88C5;-git-&#x4F9D;&#x8D56;&#x5305;" class="headerlink" title="&#x6700;&#x5C0F;&#x5316;&#x5B89;&#x88C5; git &#x4F9D;&#x8D56;&#x5305;"></a>&#x6700;&#x5C0F;&#x5316;&#x5B89;&#x88C5; git &#x4F9D;&#x8D56;&#x5305;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装文档格式（如-doc-html-info）依赖包"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;&#x6587;&#x6863;&#x683C;&#x5F0F;&#xFF08;&#x5982;-doc-html-info&#xFF09;&#x4F9D;&#x8D56;&#x5305;" class="headerlink" title="&#x5B89;&#x88C5;&#x6587;&#x6863;&#x683C;&#x5F0F;&#xFF08;&#x5982; doc, html, info&#xFF09;&#x4F9D;&#x8D56;&#x5305;"></a>&#x5B89;&#x88C5;&#x6587;&#x6863;&#x683C;&#x5F0F;&#xFF08;&#x5982; doc, html, info&#xFF09;&#x4F9D;&#x8D56;&#x5305;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译安装-git"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#&#x7F16;&#x8BD1;&#x5B89;&#x88C5;-git" class="headerlink" title="&#x7F16;&#x8BD1;&#x5B89;&#x88C5; git"></a>&#x7F16;&#x8BD1;&#x5B89;&#x88C5; git</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x914D;&#x7F6E;" class="headerlink" title="&#x914D;&#x7F6E;"></a>&#x914D;&#x7F6E;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设置用户名、邮箱"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x8BBE;&#x7F6E;&#x7528;&#x6237;&#x540D;&#x3001;&#x90AE;&#x7BB1;" class="headerlink" title="&#x8BBE;&#x7F6E;&#x7528;&#x6237;&#x540D;&#x3001;&#x90AE;&#x7BB1;"></a>&#x8BBE;&#x7F6E;&#x7528;&#x6237;&#x540D;&#x3001;&#x90AE;&#x7BB1;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置文本编辑器"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x8BBE;&#x7F6E;&#x6587;&#x672C;&#x7F16;&#x8F91;&#x5668;" class="headerlink" title="&#x8BBE;&#x7F6E;&#x6587;&#x672C;&#x7F16;&#x8F91;&#x5668;"></a>&#x8BBE;&#x7F6E;&#x6587;&#x672C;&#x7F16;&#x8F91;&#x5668;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置命令别名"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x8BBE;&#x7F6E;&#x547D;&#x4EE4;&#x522B;&#x540D;" class="headerlink" title="&#x8BBE;&#x7F6E;&#x547D;&#x4EE4;&#x522B;&#x540D;"></a>&#x8BBE;&#x7F6E;&#x547D;&#x4EE4;&#x522B;&#x540D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看配置文件"><span class="nav-number">2.4.</span> <span class="nav-text"><a href="#&#x67E5;&#x770B;&#x914D;&#x7F6E;&#x6587;&#x4EF6;" class="headerlink" title="&#x67E5;&#x770B;&#x914D;&#x7F6E;&#x6587;&#x4EF6;"></a>&#x67E5;&#x770B;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检查某一项设置"><span class="nav-number">2.5.</span> <span class="nav-text"><a href="#&#x68C0;&#x67E5;&#x67D0;&#x4E00;&#x9879;&#x8BBE;&#x7F6E;" class="headerlink" title="&#x68C0;&#x67E5;&#x67D0;&#x4E00;&#x9879;&#x8BBE;&#x7F6E;"></a>&#x68C0;&#x67E5;&#x67D0;&#x4E00;&#x9879;&#x8BBE;&#x7F6E;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#寻求帮助"><span class="nav-number">2.6.</span> <span class="nav-text"><a href="#&#x5BFB;&#x6C42;&#x5E2E;&#x52A9;" class="headerlink" title="&#x5BFB;&#x6C42;&#x5E2E;&#x52A9;"></a>&#x5BFB;&#x6C42;&#x5E2E;&#x52A9;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

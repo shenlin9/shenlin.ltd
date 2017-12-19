@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="tmptags ：AAA Book-ProGit  git config –global merge.tool meldgit config –global mergetool.meld.path “/c/Program Files (x86)/Meld/Meld.exe” git checkout –ours file 和 git checkout –theirs file 如果合并时发生冲突了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shenlin&#39;s blog">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/tmp/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="tmptags ：AAA Book-ProGit  git config –global merge.tool meldgit config –global mergetool.meld.path “/c/Program Files (x86)/Meld/Meld.exe” git checkout –ours file 和 git checkout –theirs file 如果合并时发生冲突了">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.575Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="shenlin&#39;s blog">
+<meta name="twitter:description" content="tmptags ：AAA Book-ProGit  git config –global merge.tool meldgit config –global mergetool.meld.path “/c/Program Files (x86)/Meld/Meld.exe” git checkout –ours file 和 git checkout –theirs file 如果合并时发生冲突了">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/tmp/"/>
+
+
+
+
+
+  <title> | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/tmp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="tmp"><a href="#tmp" class="headerlink" title="tmp"></a>tmp</h1><p>tags ：AAA Book-ProGit</p>
+<hr>
+<p>git config –global merge.tool meld<br>git config –global mergetool.meld.path “/c/Program Files (x86)/Meld/Meld.exe”</p>
+<p>git checkout –ours file 和 git checkout –theirs file</p>
+<pre><code>如果合并时发生冲突了，使用下面的命令回到合并之前的状态？
+</code></pre><p>git reset –hard</p>
+<p>$ git merge hotfix<br>fatal: You have not concluded your merge (MERGE_HEAD exists).<br>Please, commit your changes before you merge.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">git@e42.matrix git</span><br><span class="line">&gt;&gt; sudo mkdir project.git</span><br><span class="line"></span><br><span class="line">We trust you have received the usual lecture from the local System</span><br><span class="line">Administrator. It usually boils down to these three things:</span><br><span class="line"></span><br><span class="line">    #1) Respect the privacy of others.</span><br><span class="line">    #2) Think before you type.</span><br><span class="line">    #3) With great power comes great responsibility.</span><br><span class="line"></span><br><span class="line">[sudo] password for git: </span><br><span class="line">git 不在 sudoers 文件中。此事将被报告。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; git status</span><br><span class="line"># On branch master</span><br><span class="line">#</span><br><span class="line"># Initial commit</span><br><span class="line">#</span><br><span class="line"># Untracked files:</span><br><span class="line">#   (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line">#</span><br><span class="line">#	composer.json</span><br><span class="line">#	composer.lock</span><br><span class="line">#	installer</span><br><span class="line">#	slim/</span><br><span class="line">#	test.php</span><br><span class="line">#	vendor/</span><br><span class="line">nothing added to commit but untracked files present (use &quot;git add&quot; to track)</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix testdir</span><br><span class="line">&gt;&gt; git add .</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix testdir</span><br><span class="line">&gt;&gt; git status</span><br><span class="line"># On branch master</span><br><span class="line">#</span><br><span class="line"># Initial commit</span><br><span class="line">#</span><br><span class="line"># Changes to be committed:</span><br><span class="line">#   (use &quot;git rm --cached &lt;file&gt;...&quot; to unstage)</span><br><span class="line">#</span><br><span class="line">#	new file:   composer.json</span><br><span class="line">#	new file:   composer.lock</span><br><span class="line">#	new file:   installer</span><br><span class="line">#	new file:   slim</span><br><span class="line">#	new file:   test.php</span><br><span class="line">#	new file:   vendor/autoload.php</span><br><span class="line"></span><br><span class="line">&gt;&gt; git rm --cached .</span><br><span class="line">fatal: not removing &apos;.&apos; recursively without -r</span><br><span class="line"></span><br><span class="line">&gt;&gt; git rm --cached -r .</span><br><span class="line">rm &apos;composer.json&apos;</span><br><span class="line">rm &apos;composer.lock&apos;</span><br><span class="line">rm &apos;installer&apos;</span><br><span class="line">rm &apos;slim&apos;</span><br><span class="line">rm &apos;test.php&apos;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">//查看磁盘使用情况</span><br><span class="line">&gt;&gt; df -h</span><br><span class="line">Filesystem            Size  Used Avail Use% Mounted on</span><br><span class="line">/dev/mapper/VolGroup-lv_root</span><br><span class="line">                      3.0G  2.8G  115M  97% /</span><br><span class="line">tmpfs                 250M     0  250M   0% /dev/shm</span><br><span class="line">/dev/sda1             477M   26M  426M   6% /boot</span><br><span class="line"></span><br><span class="line">//查看已安装的kernel</span><br><span class="line">&gt;&gt; rpm -qa|grep kernel</span><br><span class="line">kernel-2.6.32-696.el6.i686</span><br><span class="line">kernel-headers-2.6.32-696.1.1.el6.i686</span><br><span class="line">kernel-firmware-2.6.32-696.el6.noarch</span><br><span class="line">dracut-kernel-004-409.el6_8.2.noarch</span><br><span class="line"></span><br><span class="line">//查看当前kernel</span><br><span class="line">&gt;&gt; uname -r</span><br><span class="line">2.6.32-696.el6.i686</span><br><span class="line"></span><br><span class="line">//删除多余kernel</span><br><span class="line">&gt;&gt; yum remove kernel-firmwar-2.23434</span><br><span class="line"></span><br><span class="line">//查看目录大小</span><br><span class="line">&gt;&gt; sudo du -hs /var/log</span><br><span class="line">3.4M	/var/log</span><br><span class="line"></span><br><span class="line">//查找大文件</span><br><span class="line">&gt;&gt; find / -size +1G</span><br></pre></td></tr></table></figure>
+<p>设置 meld 为默认比较工具</p>
+<ul>
+<li><p>git 提供了一个工具列表，使用在列表之外的其他比较工具会稍微麻烦些儿</p>
+</li>
+<li><p>使用列表中的 meld 步骤则如下</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git config --global diff.tool meld</span><br><span class="line">git config --global merge.tool meld</span><br><span class="line">git config --global difftool.prompt false</span><br><span class="line">git config --global difftool.prompt false //这一项不知道是否有，还需要测试，difftool 是有的</span><br><span class="line"></span><br><span class="line">git difftool</span><br><span class="line">git mergetool -y //-y参数是不询问</span><br></pre></td></tr></table></figure>
+<p>这个 external 是不是老版本被放弃了，需要搜索确认<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global diff.external meld</span><br></pre></td></tr></table></figure></p>
+<p>比较文件时，使用<code>git diff</code>和<code>git difftool</code>有区别吗？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ git difftool</span><br><span class="line"></span><br><span class="line">直接启动了 meld 比较文件，貌似没问题</span><br></pre></td></tr></table></figure>
+<p>关于 meld 多穿参数的解决方案，貌似是 ubuntu 的，不知 windows 和 redhat 是否一样</p>
+<p>看提示貌似和设置为 external 有关<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ git diff</span><br><span class="line">Usage:</span><br><span class="line">  meld                              Start with an empty window</span><br><span class="line">  meld &lt;file|folder&gt;                Start a version control comparison</span><br><span class="line">  meld &lt;file&gt; &lt;file&gt; [&lt;file&gt;]       Start a 2- or 3-way file comparison</span><br><span class="line">  meld &lt;folder&gt; &lt;folder&gt; [&lt;folder&gt;] Start a 2- or 3-way folder comparison</span><br><span class="line"></span><br><span class="line">Error: too many arguments (wanted 0-3, got 7)</span><br><span class="line"></span><br><span class="line">fatal: external diff died, stopping at source/_posts/chapter 7.11 - Git 子模块.md</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>这时，虽然Meld会被调用，但是系统会报错”Wrong number of arguments(Got 7)”。</p>
+<p>原因是GIT会送7个参数给Meld，但是Meld只需要两个参数，两个需要比较的文件名。所以不能直接用Meld，必需要做一点小修改：</p>
+<p>在自己的目录下建立一个git-meld.sh的script</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~/git-meld.sh</span><br></pre></td></tr></table></figure>
+<p>加入以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh meld $2 $5</span><br></pre></td></tr></table></figure>
+<p>更改文件的权限：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 ~/git-meld.sh</span><br></pre></td></tr></table></figure>
+<p>然后把external diff改成这个shell script：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global diff.external ~/git-meld.sh</span><br></pre></td></tr></table></figure>
+<hr>
+<p>How to: Meld for Git diffs in Ubuntu Hardy</p>
+<p>Are you using Git in Ubuntu and want to use an external visual diff viewer? It’s easy! I will be using Meld for this example but most visual diff tools should be similar. If you don’t already have Meld, then install it:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install meld</span><br></pre></td></tr></table></figure>
+<p>Ok. Now let’s begin by breaking it. Enter this into a terminal:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global diff.external meld</span><br></pre></td></tr></table></figure>
+<p>Then navigate to a Git tracked directory and enter this (with an actual filename):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff filename</span><br></pre></td></tr></table></figure>
+<p>Meld will open but it will complain about bad parameters. The problem is that Git sends its external diff viewer seven parameters when Meld only needs two of them; two filenames of files to compare. One way to fix it is to write a script to format the parameters before sending them to Meld. Let’s do that.</p>
+<p>Create a new python script in your home directory (or wherever, it doesn’t matter) and call it diff.py.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/python</span><br><span class="line"></span><br><span class="line">import sys</span><br><span class="line">import os</span><br><span class="line"></span><br><span class="line">os.system(&apos;meld &quot;%s&quot; &quot;%s&quot;&apos; % (sys.argv[2], sys.argv[5]))</span><br></pre></td></tr></table></figure>
+<p>Now we can set Git to perform it’s diff on our new script (replacing the path with yours):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global diff.external /home/nathan/diff.py</span><br><span class="line">git diff filename</span><br></pre></td></tr></table></figure>
+<p>This time when we do a diff it will launch Meld with the right parameters and we will see our visual diff.</p>
+<p>If I just made your day a little better then thank me with a coffee:</p>
+<hr>
+<pre><code>git bash 窗口上点鼠标右键--&gt; options --&gt; text --&gt; local 设置为 zh_ch
+                                                text 设置为 GBK
+</code></pre><p>重启 git bash 窗口即可</p>
+<hr>
+<pre><code>                                    ________________
+                                    |
+                                    |    HEAD
+                                    |     |
+[working directory]     [Index]        |    master
+                                    |     |
+                                    |    93a378d
+                                    |    filev3
+                                    |______________
+</code></pre><hr>
+<p>$ git ls-remote <a href="https://github.com/shenlin9/shenlin.ltd" target="_blank" rel="noopener">https://github.com/shenlin9/shenlin.ltd</a><br>fatal: unable to access ‘<a href="https://github.com/shenlin9/shenlin.ltd/" target="_blank" rel="noopener">https://github.com/shenlin9/shenlin.ltd/</a>‘: error setting certificate verify locations:<br>  CAfile: C:/Program Files/Git/mingw32/ssl/certs/ca-bundle.crt<br>  CApath: none</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/计算机基础系列：外频、倍频、FSB/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/记忆训练/" rel="prev" title="记忆训练">
+                记忆训练 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#tmp"><span class="nav-number">1.</span> <span class="nav-text"><a href="#tmp" class="headerlink" title="tmp"></a>tmp</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

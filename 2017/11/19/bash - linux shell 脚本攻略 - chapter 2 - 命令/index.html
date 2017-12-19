@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="bash," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="shell 命令">
+<meta name="keywords" content="bash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bash - linux shell 脚本攻略 - chapter 2 - 命令">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/bash - linux shell 脚本攻略 - chapter 2 - 命令/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="shell 命令">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.569Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="bash - linux shell 脚本攻略 - chapter 2 - 命令">
+<meta name="twitter:description" content="shell 命令">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/bash - linux shell 脚本攻略 - chapter 2 - 命令/"/>
+
+
+
+
+
+  <title>bash - linux shell 脚本攻略 - chapter 2 - 命令 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/bash - linux shell 脚本攻略 - chapter 2 - 命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">bash - linux shell 脚本攻略 - chapter 2 - 命令</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bash/" itemprop="url" rel="index">
+                    <span itemprop="name">bash</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>shell 命令</p>
+<a id="more"></a>
+<h2 id="cat"><a href="#cat" class="headerlink" title="cat"></a>cat</h2><p>concatenate 连接</p>
+<p>用于读取、显示、拼接文件内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-&gt; cat 1.txt 2.txt 3.txt            <span class="comment"># 读取 3 个文件的内容拼接在一起</span></span><br><span class="line">aaa</span><br><span class="line">bbb</span><br><span class="line">ccc</span><br><span class="line"></span><br><span class="line">-&gt; <span class="built_in">echo</span> aaa | cat -n                <span class="comment"># 通过管道操作符从标准输入中读取</span></span><br><span class="line">    1 aaa</span><br><span class="line"></span><br><span class="line">-&gt; <span class="built_in">echo</span> ccc | cat - out.txt         <span class="comment"># 通过管道操作符把标准输入和文件内容拼接在一起，注意必须有 - 号， - 号被作为 stdin 文本的文件名</span></span><br><span class="line">ccc</span><br><span class="line">aaa</span><br><span class="line"></span><br><span class="line">-&gt; <span class="built_in">echo</span> ccc | cat out.txt           <span class="comment"># 没有 - 号则拼接失败</span></span><br><span class="line">aaa</span><br></pre></td></tr></table></figure>
+<p>去除多余的空行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat -s multi-blank-file</span><br></pre></td></tr></table></figure></p>
+<p>把制表符显示为<code>^|</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat -T file.py</span><br></pre></td></tr></table></figure></p>
+<p>输出时显示行号，并没有修改源文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat -n file1.txt</span><br></pre></td></tr></table></figure></p>
+<h2 id="script"><a href="#script" class="headerlink" title="script"></a>script</h2><p>使用 <code>script</code> 和 <code>scriptreplay</code> 命令可以录制命令的顺序和时序，并把这些儿数据记录在文本文件中，其他人则可以利用这些儿文本文件回放查看命令的输出</p>
+<p>相对于录制视频更节省空间</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">-&gt; script -t 2&gt; timing.log -a output.session            <span class="comment"># 开始录制终端会话</span></span><br><span class="line">Script started, file is output.session</span><br><span class="line"></span><br><span class="line">-&gt; ls</span><br><span class="line">abasdf         apr-util-1.5.4         go.sh             httpd-2.4.25.tar.bz2  nginx-1.13.0.tar.gz  pcre-8.40      php-7.1.5.tar.bz2  testproject</span><br><span class="line">apr-1.5.2      apr-util-1.5.4.tar.gz  httpd-2.4.25      mysql                 output.session       pcre-8.40.zip  sudo               test.sh</span><br><span class="line">apr-1.5.2.tar  err.txt                httpd-2.4.25.tar  nginx-1.13.0          out.txt              php-7.1.5      testdir            timing.log</span><br><span class="line"></span><br><span class="line">-&gt; cat out.txt</span><br><span class="line">aaa</span><br><span class="line"></span><br><span class="line">-&gt; <span class="built_in">echo</span> bcd</span><br><span class="line">bcd</span><br><span class="line"></span><br><span class="line">-&gt; <span class="built_in">exit</span>                                                 <span class="comment"># 退出录制</span></span><br><span class="line"><span class="built_in">exit</span></span><br><span class="line">Script <span class="keyword">done</span>, file is output.session</span><br><span class="line"></span><br><span class="line">-&gt; scriptreplay timing.log output.session               <span class="comment"># 回放录制的终端会话</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>timing.log 用于存储时序信息，描述每一个命令何时运行</li>
+<li>output.session 用于存储命令的输出</li>
+<li>-a 选项表示追加输出信息到文件</li>
+<li>-t 选项用于将时序数据输出到 stderr，而 2&gt; 则用于将 stderr 重定向到timing.log</li>
+</ul>
+<h2 id="find"><a href="#find" class="headerlink" title="find"></a>find</h2><p>find 命令将沿着文件的层级结构向下遍历</p>
+<p>列出指定目录下的所有文件和文件夹<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find /home/ssy/testproject</span><br><span class="line">/home/ssy/testproject</span><br><span class="line">/home/ssy/testproject/.git</span><br><span class="line">/home/ssy/testproject/.git/index</span><br><span class="line">/home/ssy/testproject/.git/branches</span><br><span class="line">/home/ssy/testproject/.git/objects</span><br></pre></td></tr></table></figure></p>
+<p>find 默认以换行符分隔匹配文件，以 <code>\0</code> 分隔匹配的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find . -print0</span><br><span class="line">../.mysql_history./httpd-2.4.25.tar.bz2./pcre-8.40.zip./.pki./.pki/nssdb./apr-1.5.2......</span><br></pre></td></tr></table></figure></p>
+<p><code>-name</code> <code>-iname</code> 根据文件名匹配<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find . -name <span class="string">"*.txt"</span></span><br><span class="line">./apr-1.5.2/CMakeLists.txt</span><br><span class="line">./apr-1.5.2/<span class="built_in">test</span>/data/file_datafile.txt</span><br><span class="line">./apr-1.5.2/<span class="built_in">test</span>/data/mmap_datafile.txt</span><br><span class="line">./apr-util-1.5.4/xml/expat/win32/MANIFEST.txt</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>iname 不分区大小写</li>
+</ul>
+<p>和逻辑运算符 <code>-o</code> 合用<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find . ( -name <span class="string">"*.phpt"</span> -o -name <span class="string">"*.txt"</span> )</span><br><span class="line">-bash: syntax error near unexpected token `(<span class="string">'</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">-&gt; find . \( -name "*.phpt" -o -name "*.txt" \)</span></span><br><span class="line"><span class="string">./apr-1.5.2/CMakeLists.txt</span></span><br><span class="line"><span class="string">./apr-1.5.2/test/data/file_datafile.txt</span></span><br><span class="line"><span class="string">./apr-1.5.2/test/data/mmap_datafile.txt</span></span><br><span class="line"><span class="string">./apr-util-1.5.4/xml/expat/win32/MANIFEST.txt</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>() 用于把两个条件合成一个整体</li>
+</ul>
+<p><code>-path</code> 把部分路径作为整体进行匹配<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find . -path <span class="string">"*intl/tests*"</span>      <span class="comment"># 注意 * 号，否则匹配不到</span></span><br><span class="line">./php-7.1.5/ext/intl/tests</span><br><span class="line">./php-7.1.5/ext/intl/tests/timezone_countEquivalentIDs_basic.phpt</span><br><span class="line">./php-7.1.5/ext/intl/tests/locale_get_display_region2.phpt</span><br><span class="line">./php-7.1.5/ext/intl/tests/bug58756_MessageFormatter_variant2.phpt</span><br><span class="line">./php-7.1.5/ext/intl/tests/msgfmt_format_intlcalendar_variant2.phpt</span><br><span class="line">./php-7.1.5/ext/intl/tests/collator_asort_variant2.phpt</span><br><span class="line">./php-7.1.5/ext/intl/tests/calendar_setTimeZone_error2.phpt</span><br><span class="line">./php-7.1.5/ext/intl/tests/dateformat_get_set_timezone_variant5.phpt</span><br></pre></td></tr></table></figure></p>
+<p><code>-regex</code> <code>-iregex</code>正则匹配路径<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find . -regex <span class="string">".+\(\.txt\|\.phpt\)"</span></span><br><span class="line">./apr-1.5.2/CMakeLists.txt</span><br><span class="line">./apr-1.5.2/<span class="built_in">test</span>/data/file_datafile.txt</span><br><span class="line">./apr-1.5.2/<span class="built_in">test</span>/data/mmap_datafile.txt</span><br><span class="line">./apr-util-1.5.4/xml/expat/win32/MANIFEST.txt</span><br><span class="line">./apr-util-1.5.4/CMakeLists.txt</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><code>-iregex</code> 不区分大小写</li>
+</ul>
+<p><code>!</code> 否定，查找所有不以 txt 结尾的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find . ! -name <span class="string">"*.txt"</span></span><br><span class="line">.</span><br><span class="line">./.mysql_history</span><br><span class="line">./httpd-2.4.25.tar.bz2</span><br><span class="line">./pcre-8.40.zip</span><br><span class="line">./.pki</span><br><span class="line">./.pki/nssdb</span><br><span class="line">./apr-1.5.2</span><br><span class="line">./apr-1.5.2/libapr.dsp</span><br><span class="line">./apr-1.5.2/apr-config.in</span><br><span class="line">./apr-1.5.2/apr.dep</span><br></pre></td></tr></table></figure></p>
+<p>find 默认遍历所有深度子目录<br>选项 <code>-maxdepth</code> 设定最大搜索深度，设为 1 则只搜索当前目录，<br>选项 <code>-mindepth</code> 设定最小搜索深度，可以用来查找那些距离起始路径一定深度的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find . -maxdepth 1 -name <span class="string">"*.txt"</span></span><br><span class="line">./err.txt</span><br><span class="line">./out.txt</span><br><span class="line"></span><br><span class="line">-&gt; find . -maxdepth 2 -name <span class="string">"*.txt"</span></span><br><span class="line">./apr-1.5.2/CMakeLists.txt</span><br><span class="line">./pcre-8.40/makevp_l.txt</span><br><span class="line">./pcre-8.40/makevp_c.txt</span><br><span class="line">./testproject/2.txt</span><br><span class="line">./testproject/3.txt</span><br><span class="line">./testproject/1.txt</span><br><span class="line">./err.txt</span><br><span class="line">./out.txt</span><br><span class="line"></span><br><span class="line">-&gt; find . -mindepth 6 -name <span class="string">"*.txt"</span></span><br><span class="line">./httpd-2.4.25/modules/lua/<span class="built_in">test</span>/htdocs/find_me.txt</span><br><span class="line">./php-7.1.5/ext/phar/tests/bug53872/second.txt</span><br><span class="line">./php-7.1.5/ext/phar/tests/bug53872/third.txt</span><br><span class="line">./php-7.1.5/ext/phar/tests/bug53872/first.txt</span><br><span class="line">./php-7.1.5/ext/intl/tests/_files/resourcebundle.txt</span><br></pre></td></tr></table></figure></p>
+<p><code>-type</code> 根据文件类型搜索，类 unix 系统的文件类型有：普通文件 f、目录 d、字符设备 c、块设备 b、符号链接 l、硬链接、套接字 s、FIFO p等<br>???FIFO 是否就是 pipe 管道<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find . -maxdepth 2  -<span class="built_in">type</span> d -name <span class="string">"*doc*"</span></span><br><span class="line">./apr-1.5.2/docs</span><br><span class="line">./apr-util-1.5.4/docs</span><br><span class="line">./pcre-8.40/doc</span><br><span class="line">./httpd-2.4.25/docs</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>注意参数顺序导致的执行效率差异，先使用 -maxdepth 过滤层级，再使用 -type 类型过滤，最后根据名字模糊匹配</li>
+</ul>
+<p>根据时间搜索：-atime,-mtime,-ctime<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find . -mtime -1</span><br><span class="line">.</span><br><span class="line">./.lesshst</span><br><span class="line">./test.sh</span><br><span class="line">./.viminfo</span><br><span class="line">./find</span><br><span class="line">./timing.log</span><br><span class="line">./output.session</span><br><span class="line">./.bash_history</span><br><span class="line">./err.txt</span><br><span class="line">./out.txt</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>以天为单位<ul>
+<li>atime 文件最后一次被访问的时间</li>
+<li>mtime 文件内容最后一次被修改的时间</li>
+<li>ctime 文件元数据（权限、所有者等）最后一次被改变的时间</li>
+</ul>
+</li>
+<li>以分钟为单位<ul>
+<li>amin</li>
+<li>mmin</li>
+<li>cmin</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li>号分别表示大于小于，这两个符号比较重要，因为很少有刚好整天数或整分钟的文件</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>注：Unix 没有文件”创建时间”这个概念</li>
+<li>? atime 怎么算被访问了 ctime 还有什么元数据</li>
+</ul>
+<p>根据相对时间搜索：newer，如比 out.txt 更晚修改的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find . -newer out.txt</span><br><span class="line">.</span><br><span class="line">./.lesshst</span><br><span class="line">./.viminfo</span><br><span class="line">./find</span><br><span class="line">./timing.log</span><br><span class="line">./output.session</span><br><span class="line">./.bash_history</span><br><span class="line">./err.txt</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>? 是否比较的是文件内容的修改时间</li>
+</ul>
+<p>根据文件大小搜索<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find . -size +2M</span><br><span class="line">./httpd-2.4.25.tar.bz2</span><br><span class="line">./pcre-8.40.zip</span><br><span class="line">./apr-1.5.2.tar</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>文件大小单位<ul>
+<li>b 块，512 字节</li>
+<li>c 字节</li>
+<li>w 字，2 字节</li>
+<li>k 1024 字节</li>
+<li>M 1024k 字节</li>
+<li>G 1024M 字节</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li>号分别表示大于小于，这两个符号比较重要，因为很少有大小刚好的文件</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><code>-delete</code> 删除匹配的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find . -name <span class="string">"aba*"</span> -delete</span><br></pre></td></tr></table></figure></p>
+<p><code>-print</code> 输出匹配的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find . -name <span class="string">"aba*"</span> -<span class="built_in">print</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>不使用 <code>-print</code> 也一样输出</li>
+</ul>
+<p><code>-perm</code> 根据文件权限查找，如查找执行权限不当的 php 文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; find .  ! -perm 644  -name <span class="string">"*.php"</span></span><br><span class="line">./php-7.1.5/pear/fetch.php</span><br><span class="line">./php-7.1.5/win32/build/mkdist.php</span><br><span class="line">./php-7.1.5/win32/build/registersyslog.php</span><br></pre></td></tr></table></figure></p>
+<p><code>-user</code> 根据文件拥有者查找，如查找 ssy 拥有的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find . -<span class="built_in">type</span> f -user ssy</span><br><span class="line">./.mysql_history</span><br><span class="line">./httpd-2.4.25.tar.bz2</span><br><span class="line">./pcre-8.40.zip</span><br><span class="line">./apr-1.5.2/libapr.dsp</span><br></pre></td></tr></table></figure></p>
+<p><code>-prune</code> 跳过指定目录，查找链接文件，但跳过名为 <code>.git</code> 的目录<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find . \( -name <span class="string">".git"</span> -prune \) -o \( -<span class="built_in">type</span> l \)</span><br><span class="line">./apr-1.5.2/.libs/libapr-1.so.0</span><br><span class="line">./apr-1.5.2/.libs/libapr-1.so</span><br><span class="line">./apr-1.5.2/.libs/libapr-1.la</span><br><span class="line">./apr-util-1.5.4/xml/expat/.libs/libexpat.so</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>? 为什么是 -o，逻辑或？</li>
+</ul>
+<p>和 <code>-exec</code> 配合运行命令 : <code>find ... -exec ... {} \;</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找到 root 用户的文件更改所有者为 slynux</span></span><br><span class="line">-&gt; find . -<span class="built_in">type</span> f -user root -<span class="built_in">exec</span> chown slynux &#123;&#125; \;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 找到所有 .c 文件输出到一个文件 all_c_files.txt</span></span><br><span class="line">-&gt; find . -<span class="built_in">type</span> f -name <span class="string">"*.c"</span> -<span class="built_in">exec</span> cat &#123;&#125; \;&gt;all_c_files.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把 1 天内修改的 txt 文件复制到 testproject 目录</span></span><br><span class="line">-&gt; find . -<span class="built_in">type</span> f -name <span class="string">"*.txt"</span> -mtime -1 -<span class="built_in">exec</span> cp &#123;&#125; testproject/ \;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>{} 是和 exec 搭配使用的特殊字符串，对于每一个匹配的文件，{} 会被替换为相应的文件名<ul>
+<li>例如 find 找到 test1.txt 和 test2.txt ，则 <code>chown slynux {}</code> 被解析为 <code>chown slynux test1.txt</code> 和 <code>chown slynux test2.txt</code></li>
+<li>如果不希望对每个匹配文件都像上面那样执行一次命令，而希望使用文件列表作为命令参数，这样就可以少运行几次命令，则可以在 exec 中使用 <code>+</code> 来代替 <code>;</code></li>
+</ul>
+</li>
+<li>因为 find 命令的全部输出就只有一个数据流（ stdin ），所以输出到 all_c_files.txt 文件时不使用追加 <code>&gt;&gt;</code> ，只有当多个数据流被追加到单个文件中时才有必要使用 &gt;&gt;</li>
+</ul>
+<h2 id="xargs"><a href="#xargs" class="headerlink" title="xargs"></a>xargs</h2><p>管道符可以把上一个命令的标准输出重定向到下一个命令的标准输入，但有些儿命令只能通过参数的形式接受数据，而无法通过 stdin 数据流的形式接受数据，而 xargs 就擅长把 stdin 数据流转换为命令行参数。</p>
+<p>单行命令是一个命令序列，各命令之间不使用分号，而是使用管道符链接。单行命令可以更高效简洁的完成任务。 xargs 是构建单行命令的重要组件之一。</p>
+<p>xargs 还可以把单行文本变为多行，或者多行变为单行。</p>
+<p>xargs 应紧跟在管道符后面，以 stdin 数据流作为主要的源数据流，把接收到的数据重新格式化，再将其作为参数提供给其他命令。</p>
+<h3 id="多行转换为单行"><a href="#多行转换为单行" class="headerlink" title="多行转换为单行"></a>多行转换为单行</h3><p>xargs 默认把换行符 <code>\n</code> 用空格替换，实现多行变一行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; cat out.txt</span><br><span class="line">aaa</span><br><span class="line">bbb</span><br><span class="line">ccc</span><br><span class="line">ddd</span><br><span class="line"></span><br><span class="line">-&gt; cat out.txt|xargs</span><br><span class="line">aaa bbb ccc ddd</span><br></pre></td></tr></table></figure>
+<h3 id="单行转换为多行"><a href="#单行转换为多行" class="headerlink" title="单行转换为多行"></a>单行转换为多行</h3><p>使用 <code>-n</code> 参数指定每行最大的参数数量，参数默认由空格分隔</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&gt; cat err.txt</span><br><span class="line">111 222 333 444</span><br><span class="line"></span><br><span class="line">-&gt; cat err.txt|xargs -n 1</span><br><span class="line">111</span><br><span class="line">222</span><br><span class="line">333</span><br><span class="line">444</span><br><span class="line"></span><br><span class="line">-&gt; cat err.txt|xargs -n 2</span><br><span class="line">111 222</span><br><span class="line">333 444</span><br><span class="line"></span><br><span class="line">-&gt; cat err.txt|xargs -n 3</span><br><span class="line">111 222 333</span><br><span class="line">444</span><br></pre></td></tr></table></figure>
+<h3 id="自定义定界符"><a href="#自定义定界符" class="headerlink" title="自定义定界符"></a>自定义定界符</h3><p>多行和一行转换时默认的定界符是换行符和空格，而 <code>-d</code> 选项可以自定义定界符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-&gt; <span class="built_in">echo</span> <span class="string">"aaaXbbbXcccXddd"</span> | xargs -d X</span><br><span class="line">aaa bbb ccc ddd</span><br><span class="line"></span><br><span class="line">-&gt; <span class="built_in">echo</span> <span class="string">"aaaXbbbXcccXddd"</span> | xargs -d X -n 2</span><br><span class="line">aaa bbb</span><br><span class="line">ccc ddd</span><br><span class="line"></span><br><span class="line">-&gt; <span class="built_in">echo</span> -e <span class="string">"aaa\0bbb\0ccc\0ddd"</span> | xargs -d <span class="string">"\0"</span> -n 2        <span class="comment"># \0 表示 null 字符</span></span><br><span class="line">aaa bbb</span><br><span class="line">ccc ddd</span><br><span class="line"></span><br><span class="line">-&gt; <span class="built_in">echo</span> -e <span class="string">"aaa\0bbb\0ccc\0ddd"</span> | xargs -0 -n 2             <span class="comment"># null 作定界符的另一种简洁写法，只适用于 null</span></span><br><span class="line">aaa bbb</span><br><span class="line">ccc ddd</span><br></pre></td></tr></table></figure>
+<h3 id="将-stdin-数据流转换为命令行参数"><a href="#将-stdin-数据流转换为命令行参数" class="headerlink" title="将 stdin 数据流转换为命令行参数"></a>将 stdin 数据流转换为命令行参数</h3><p>举例：test.sh 为脚本文件，需要的参数保存在 args.txt 里</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">-&gt; cat test.sh                          <span class="comment"># 脚本只是输出参数，让我们可以看见执行过程</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line">-&gt; cat args.txt                         <span class="comment"># 参数文件里每行一个参数</span></span><br><span class="line">apple</span><br><span class="line">banana</span><br><span class="line">orange</span><br><span class="line"></span><br><span class="line">-&gt; cat args.txt|xargs ./test.sh         <span class="comment"># 一次性传递所有参数</span></span><br><span class="line">apple banana orange</span><br><span class="line"></span><br><span class="line">-&gt; cat args.txt|xargs -n 1 ./test.sh    <span class="comment"># 每次传递一个参数，可见每传递一次就执行一次脚本</span></span><br><span class="line">apple</span><br><span class="line">banana</span><br><span class="line">orange</span><br><span class="line"></span><br><span class="line">-&gt; cat args.txt|xargs -n 1 -I &#123;&#125; ./test.sh -p 123 -y &#123;&#125;  -l         <span class="comment"># 这种情况 ：test.sh 接受多个选项和参数，且 args.txt 里保存的只是某个选项的一个参数</span></span><br><span class="line">-p 123 -y apple -l                                                  <span class="comment"># 则要 xargs 使用 -I 选项指定替换字符串，如此例中的 &#123;&#125;，并在后面的命令中使用这个指定</span></span><br><span class="line">-p 123 -y banana -l                                                 <span class="comment"># 的替换字符串，使用 -I 时命令以循环的方式执行</span></span><br><span class="line">-p 123 -y orange -l</span><br></pre></td></tr></table></figure>
+<h3 id="和-find-结合使用"><a href="#和-find-结合使用" class="headerlink" title="和 find 结合使用"></a>和 find 结合使用</h3><p>xargs 和 find 结合使用会很方便，但注意：find 和 xargs 结合使用时，一定要使用 <code>-print0</code> 选项，即以 null 字符 <code>\0</code> 来分隔输出</p>
+<p>错误的例子：使用 find 找到文件并删除<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find . -<span class="built_in">type</span> f -name <span class="string">"*.txt"</span> -<span class="built_in">print</span> | xargs rm -f</span><br></pre></td></tr></table></figure></p>
+<p>find 命令的输出结果的定界符是无法预测的，有可能是换行符<code>\n</code>，也可能是空格，这样就很危险，有可能意想不到的文件被删除，如一个文件<br>名里包含空格<code>hello text.txt</code>，则文件里的空格可能被 xargs 误认为是定界符，删除的文件就变成了 <code>hello</code> 和 <code>text.txt</code>，所以正确方法：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find . -<span class="built_in">type</span> f -name <span class="string">"*.txt"</span> -print0 | xargs -0 rm -f</span><br></pre></td></tr></table></figure></p>
+<p>同理，统计所有 C 语言源代码的行数:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find source_dir -<span class="built_in">type</span> f -name <span class="string">"*.c"</span> -print0 | xargs -0 wc -l</span><br><span class="line"></span><br><span class="line">-&gt; find . -maxdepth 1 -<span class="built_in">type</span> f -name <span class="string">"*.txt"</span> -print0 | xargs -0 wc -l</span><br><span class="line"> 3 ./args.txt</span><br><span class="line"> 1 ./err.txt</span><br><span class="line"> 4 ./out.txt</span><br><span class="line"> 8 总用量</span><br><span class="line"></span><br><span class="line">-&gt; find . -maxdepth 1 -<span class="built_in">type</span> f -name <span class="string">"*.txt"</span> -<span class="built_in">exec</span> wc -l &#123;&#125; \;       <span class="comment"># exec 实现相同效果</span></span><br><span class="line">3 ./args.txt</span><br><span class="line">1 ./err.txt</span><br><span class="line">4 ./out.txt</span><br><span class="line"></span><br><span class="line">-&gt; find . -maxdepth 1 -<span class="built_in">type</span> f -name <span class="string">"*.txt"</span> -<span class="built_in">print</span> -<span class="built_in">exec</span> wc -l &#123;&#125; \;    <span class="comment"># 有无 print 的区别</span></span><br><span class="line">./args.txt</span><br><span class="line">3 ./args.txt</span><br><span class="line">./err.txt</span><br><span class="line">1 ./err.txt</span><br><span class="line">./out.txt</span><br><span class="line">4 ./out.txt</span><br><span class="line"></span><br><span class="line">-&gt; find . -maxdepth 1 -<span class="built_in">type</span> f -name <span class="string">"*.txt"</span> -print0 -<span class="built_in">exec</span> wc -l &#123;&#125; \;   <span class="comment"># 以 null 字符分隔的区别</span></span><br><span class="line">./args.txt3 ./args.txt</span><br><span class="line">./err.txt1 ./err.txt</span><br><span class="line">./out.txt4 ./out.txt</span><br></pre></td></tr></table></figure></p>
+<p>经测试不能和命令别名一起使用<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find /bin -<span class="built_in">type</span> l -print0 | xargs -0 -I &#123;&#125; ll &#123;&#125;</span><br><span class="line">xargs: ll: No such file or directory</span><br><span class="line"></span><br><span class="line">-&gt; find /bin -<span class="built_in">type</span> l -print0 | xargs -0 -I &#123;&#125; ls -l &#123;&#125;</span><br><span class="line">lrwxrwxrwx. 1 root root 4 Jun  3 21:30 /bin/sh -&gt; bash</span><br><span class="line">lrwxrwxrwx. 1 root root 39 May 20 08:58 /bin/iptables-xml -&gt; /etc/alternatives/bin-iptables-xml.i386</span><br><span class="line">lrwxrwxrwx. 1 root root 2 May 20 08:56 /bin/view -&gt; vi</span><br><span class="line">......</span><br></pre></td></tr></table></figure></p>
+<h3 id="对同一个参数执行多条命令的技巧"><a href="#对同一个参数执行多条命令的技巧" class="headerlink" title="对同一个参数执行多条命令的技巧"></a>对同一个参数执行多条命令的技巧</h3><p>xargs 只能为一组命令提供参数，如果涉及到多组命令操作同一个参数，则无法实现，如<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-&gt; cat args.txt | xargs -n 1 -I &#123;&#125; <span class="built_in">echo</span> &#123;&#125; &amp;&amp; <span class="built_in">echo</span> &#123;&#125;</span><br><span class="line">apple</span><br><span class="line">banana</span><br><span class="line">orange</span><br><span class="line">&#123;&#125;</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix ~</span><br><span class="line">-&gt; cat args.txt | xargs -n 1 -I &#123;&#125; <span class="built_in">echo</span> &#123;&#125;;<span class="built_in">echo</span> &#123;&#125;</span><br><span class="line">apple</span><br><span class="line">banana</span><br><span class="line">orange</span><br><span class="line">&#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以使用 while 循环和子 shell 实现多条命令处理一个参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-&gt; cat args.txt | (<span class="keyword">while</span> <span class="built_in">read</span> arg;<span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$arg</span>;<span class="built_in">echo</span> <span class="variable">$arg</span>;<span class="built_in">printf</span> <span class="string">"<span class="variable">$arg</span>\n"</span>;<span class="keyword">done</span>)</span><br><span class="line">apple</span><br><span class="line">apple</span><br><span class="line">apple</span><br><span class="line">banana</span><br><span class="line">banana</span><br><span class="line">banana</span><br><span class="line">orange</span><br><span class="line">orange</span><br><span class="line">orange</span><br></pre></td></tr></table></figure>
+<ul>
+<li>() 中的为子 shell，多个命令可作为一个整体来运行</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cmd0 | ( cmd1;cmd2;cmd3) | cmd4</span><br></pre></td></tr></table></figure>
+<p>如果 cmd1 是 <code>cd /</code> ，那么就会改变子shell工作目录，然而这种改变仅局限于子 shell 内部。 cmd4 则完全不知道工作目录发生了变化。</p>
+<h2 id="tr"><a href="#tr" class="headerlink" title="tr"></a>tr</h2><p>translate 转换</p>
+<p>tr 用于对来自标准输入的内容进行字符替换、字符删除和重复字符压缩，可以把一组字符变成另一组字符。</p>
+<p>tr 只接受 stdin，不接受命令行参数输入</p>
+<p>tr 命令格式 <code>tr [options] set1 set2</code> 将输入字符从 set1 映射到 set2，如果 set2 长度小于 set1，那么 set2 会不断重复其最后一个字 符，直到长度与 set1 相同。如果 set2 的长度大于 set1 ，那么在 set2 中超出 set1 长度的那部分字符则全部被忽略</p>
+<h3 id="基本替换"><a href="#基本替换" class="headerlink" title="基本替换"></a>基本替换</h3><p>定义集合的格式 ：不连续字符采用枚举方式，如<code>aA,.</code> 连续字符格式 <code>起始字符-终止字符</code>，如果字符不能连续则仅表示 3 个字符，分别是起始字符、终止字符和 -<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; <span class="built_in">echo</span> abcdef|tr a<span class="_">-f</span> A-F</span><br><span class="line">ABCDEF</span><br></pre></td></tr></table></figure></p>
+<p>ROT13 rotateby13places，回转 13 位，是一个简易的加密算法，把 26 个字母的前 13 位和后 13 位一一对调，文本加密和解密都使用同一个函数，<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; <span class="built_in">echo</span> <span class="string">"this is a ROT13 encoded string"</span> | tr <span class="string">"a-zA-Z"</span> <span class="string">"n-za-mN-ZA-M"</span></span><br><span class="line">guvf vf n EBG13 rapbqrq fgevat</span><br><span class="line"></span><br><span class="line">-&gt; <span class="built_in">echo</span> <span class="string">"guvf vf n EBG13 rapbqrq fgevat"</span> | tr <span class="string">"a-zA-Z"</span> <span class="string">"n-za-mN-ZA-M"</span></span><br><span class="line">this is a ROT13 encoded string</span><br></pre></td></tr></table></figure></p>
+<p>利用替换巧妙实现文件中数字列表的计算<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-&gt; cat num.txt</span><br><span class="line">42</span><br><span class="line">78</span><br><span class="line">234</span><br><span class="line">98</span><br><span class="line"></span><br><span class="line">-&gt; cat num.txt | <span class="built_in">echo</span> $[ $(tr <span class="string">'\n'</span> <span class="string">'+'</span> ) 0 ]</span><br><span class="line">452</span><br><span class="line"></span><br><span class="line">-&gt; cat num.txt | <span class="built_in">echo</span> $[ $(tr <span class="string">'\n'</span> <span class="string">'+'</span> ) ]                                      <span class="comment"># 没有多加个 0 则末尾有个多余的 + 号会出错</span></span><br><span class="line">-bash: 42+78+234+98+ : syntax error: operand expected (error token is <span class="string">"+ "</span>)</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>把换行符替换为加号，实现每行相加的效果</li>
+<li>末尾多个加号，所以再拼上一个 0，防止出错</li>
+<li><code>$[ operation ]</code> 实现数学运算</li>
+</ul>
+<h3 id="删除字符"><a href="#删除字符" class="headerlink" title="删除字符"></a>删除字符</h3><p><code>-d</code> 删除字符集合中的字符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; <span class="built_in">echo</span> <span class="string">"this is a ROT13 encoded string"</span> | tr -d <span class="string">"A-Z0-9"</span></span><br><span class="line">this is a  encoded string</span><br></pre></td></tr></table></figure>
+<h3 id="字符补集"><a href="#字符补集" class="headerlink" title="字符补集"></a>字符补集</h3><p><code>-c</code> 表示除了字符集合中指定的字符以外的所有字符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; <span class="built_in">echo</span> <span class="string">"this is a ROT13 encoded string"</span> | tr -c <span class="string">"A-Z0-9"</span> <span class="string">"+"</span>   <span class="comment"># 表示除了大写字母 A 到 Z 数字 0 到 9 外的所有字符都映射为 + 号</span></span><br><span class="line">++++++++++ROT13++++++++++++++++</span><br><span class="line"></span><br><span class="line">-&gt; <span class="built_in">echo</span> <span class="string">"this is a ROT13 encoded string"</span> | tr -d -c <span class="string">"A-Z0-9"</span>    <span class="comment"># 和 -d 选项组合，表示除了大写字母 A 到 Z 数字 0 到 9 外的所有字符都删除</span></span><br><span class="line">ROT13</span><br></pre></td></tr></table></figure>
+<h3 id="压缩连续重复字符"><a href="#压缩连续重复字符" class="headerlink" title="压缩连续重复字符"></a>压缩连续重复字符</h3><p><code>-s</code> 选项指定要压缩的字符列表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; <span class="built_in">echo</span> <span class="string">"this string    has   multile     spaces and aaa aaa aa aaaa bbb bb bbbbb"</span> | tr -s <span class="string">" ab"</span></span><br><span class="line">this string has multile spaces and a a a a b b b</span><br></pre></td></tr></table></figure>
+<h3 id="字符类"><a href="#字符类" class="headerlink" title="字符类"></a>字符类</h3><p>tr 的字符类，使用方式：<code>tr [:class:] [:class:]</code></p>
+<ul>
+<li>alpha 字母</li>
+<li>digit 数字</li>
+<li>alnum 字母和数字</li>
+<li>graph 图形字符</li>
+<li>lower 小写字母</li>
+<li>cnctrl 控制字符，不可打印</li>
+<li>print 可打印字符</li>
+<li>punct 标点符号</li>
+<li>space 空白字符</li>
+<li>upper 大写字母</li>
+<li>xdigit 十六进制字符</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; <span class="built_in">echo</span> <span class="string">"this is a ROT13 encoded string"</span> | tr <span class="string">"[:lower:]"</span> <span class="string">"[:upper:]"</span></span><br><span class="line">THIS IS A ROT13 ENCODED STRING</span><br></pre></td></tr></table></figure>
+<h2 id="校验和"><a href="#校验和" class="headerlink" title="校验和"></a>校验和</h2><p>文件可以通过网络或任何存储介质分发到不同的地点。出于多种原因，数据有可能在传输过程中丢失了若干位，从而导致文件损坏。<br>因此，我们需要采用一些测试方法来确定接收到的文件是否存在错误。<br>通过对接受到的文件进行校验和计算，再和源文件的校验和进行比较，就可以核实文件的完整性。</p>
+<p>最广泛的校验和技术是 md5 和 sha-1</p>
+<h3 id="md5sum"><a href="#md5sum" class="headerlink" title="md5sum"></a>md5sum</h3><p>md5 生成的是 32 位字符的十六进制字符串</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">-&gt; cp num.txt dig.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 一次生成多个文件的校验和</span></span><br><span class="line">-&gt; md5sum num.txt dig.txt err.txt</span><br><span class="line">0a9e3ef53c955a1952fd673906a26f74  num.txt</span><br><span class="line">0a9e3ef53c955a1952fd673906a26f74  dig.txt</span><br><span class="line">8b37ac8b627c28ade3316398eb4c8839  err.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把文件校验和存入文件，这里的文件名 num.md5,err.md5 是任意的，因为生成校验和文件里保存有文件名</span></span><br><span class="line">-&gt; md5sum num.txt &gt; num.md5</span><br><span class="line">-&gt; md5sum err.txt &gt; err.md5</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用MD5文件来验证接受到的文件</span></span><br><span class="line">-&gt; md5sum -c num.md5</span><br><span class="line">num.txt: 确定</span><br><span class="line"></span><br><span class="line">-&gt; md5sum -c *.md5</span><br><span class="line">err.txt: 确定</span><br><span class="line">num.txt: 确定</span><br></pre></td></tr></table></figure>
+<h3 id="sha1sum"><a href="#sha1sum" class="headerlink" title="sha1sum"></a>sha1sum</h3><p>SHA-1 生成的是 40 位字符的十六进制字符串</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-&gt; sha1sum out.txt &gt; out.sha1</span><br><span class="line"></span><br><span class="line">-&gt; sha1sum -c out.sha1</span><br><span class="line">out.txt: 确定</span><br></pre></td></tr></table></figure>
+<h3 id="md5deep-和-sha1deep"><a href="#md5deep-和-sha1deep" class="headerlink" title="md5deep 和 sha1deep"></a>md5deep 和 sha1deep</h3><p>对目录也可以进行校验和计算，方法是对目录中的所有文件以递归的方式进行计算</p>
+<p>可以使用 md5deep 进行计算<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ md5deep -rl directory_path &gt; directory.md5</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>-r 使用递归的方式</li>
+<li>-l 使用相对路径。默认情况下，md5deep 会输出文件的绝对路径</li>
+</ul>
+<p>也可以结合 find 来递归计算校验和：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">-&gt; find . -maxdepth 1 -<span class="built_in">type</span> f -name <span class="string">"*.txt"</span></span><br><span class="line">./num.txt</span><br><span class="line">./args.txt</span><br><span class="line">./dig.txt</span><br><span class="line">./err.txt</span><br><span class="line">./out.txt</span><br><span class="line">./asdf.txt</span><br><span class="line"></span><br><span class="line">-&gt; find . -maxdepth 1 -<span class="built_in">type</span> f -name <span class="string">"*.txt"</span> -print0 | xargs -0 md5sum &gt; total.md5</span><br><span class="line"></span><br><span class="line">-&gt; md5sum -c total.md5</span><br><span class="line">./num.txt: 确定</span><br><span class="line">./args.txt: 确定</span><br><span class="line">./dig.txt: 确定</span><br><span class="line">./err.txt: 确定</span><br><span class="line">./out.txt: 确定</span><br><span class="line">./asdf.txt: 确定</span><br></pre></td></tr></table></figure></p>
+<h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><h3 id="crypt"><a href="#crypt" class="headerlink" title="crypt"></a>crypt</h3><p>crypt 是一个简单的加密工具</p>
+<p>它从 stdin 接受一个文件以及口令作为输入，然后将加密数据输出到 Stdout，因此要对输入、输出文件使用重定向<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 加密文件会要求输入口令</span></span><br><span class="line">$ crypt &lt;input_file &gt;output_file</span><br><span class="line">Enter passphrase:</span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以通过命令行参数来提供口令</span></span><br><span class="line">$ crypt PASSPHRASE &lt;input_file &gt;encrypted_file</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解密文件</span></span><br><span class="line">$ crypt PASSPHRASE -d &lt;encrypted_file &gt;output_file</span><br></pre></td></tr></table></figure></p>
+<h3 id="gpg"><a href="#gpg" class="headerlink" title="gpg"></a>gpg</h3><p>gpg 可以用来加密数据，确保数据在送达目的地之前无法被读取，也用来做签名，以证明真实性。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 加密，生成 .gpg 文件，可以提供密码保护</span></span><br><span class="line">-&gt; gpg -c 1.txt</span><br><span class="line">can<span class="string">'t connect to `/home/ssy/.gnupg/S.gpg-agent'</span>: 没有那个文件或目录</span><br><span class="line">gpg-agent[2358]: 已创建目录‘/home/ssy/.gnupg/private-keys-v1.d’</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解密</span></span><br><span class="line">-&gt; gpg 1.txt.gpg</span><br><span class="line">gpg: 3DES 加密过的数据</span><br><span class="line">can<span class="string">'t connect to `/home/ssy/.gnupg/S.gpg-agent'</span>: 没有那个文件或目录</span><br><span class="line">gpg: 以 1 个密码加密</span><br><span class="line">文件‘1.txt’已存在。 是否覆盖？(y/N)n</span><br><span class="line">请输入新的文件名: 11.txt</span><br><span class="line">gpg: 警告：报文未受到完整的保护</span><br><span class="line"></span><br><span class="line">-&gt; cat 11.txt</span><br><span class="line">key say hometown</span><br><span class="line">111 hi  beijing</span><br><span class="line">aaa i am shenlin    shanghai</span><br><span class="line">333 who are you tianjin</span><br></pre></td></tr></table></figure>
+<h3 id="base64"><a href="#base64" class="headerlink" title="base64"></a>base64</h3><p>Base64 是一组编码方案，是，是一种基于64个可打印 ASCII 字符来表示二进制数据的方法，以可读的ASCII字符串来描述二进制数据<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编码</span></span><br><span class="line">-&gt; base64 1.txt</span><br><span class="line">a2V5IHNheSBob21ldG93bgoxMTEgaGkgIGJlaWppbmcKYWFhIGkgYW0gc2hlbmxpbiAgICBzaGFu</span><br><span class="line">Z2hhaQozMzMgd2hvIGFyZSB5b3UgdGlhbmppbgo=</span><br><span class="line"></span><br><span class="line">-&gt; base64 2.txt</span><br><span class="line">a2V5IHNheSBob21ldG93bgo0NDQgcGlnZ3kgeWFuICAgaGFuZGFuCmRkZCBob3cgYXJlIHlvdSBk</span><br><span class="line">b2luZyB0b2RheT8gICAgeGluZ3RhaQoyMjIgaSBhbSBkb2luZyBnb29kLiAgICBhbnlhbmcK</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解码</span></span><br><span class="line">-&gt; <span class="built_in">echo</span> a2V5IHNheSBob21ldG93bgo0NDQgcGlnZ3kgeWFuICAgaGFuZGFuCmRkZCBob3cgYXJlIHlvdSBkb2luZyB0b2RheT8gICAgeGluZ3RhaQoyMjIgaSBhbSBkb2luZyBnb29kLiAgICBhbnlhbmcK&gt;base64.txt</span><br><span class="line"></span><br><span class="line">-&gt; base64 -d base64.txt</span><br><span class="line">key say hometown</span><br><span class="line">444 piggy yan   handan</span><br><span class="line">ddd how are you doing today?    xingtai</span><br><span class="line">222 i am doing good.    anyang</span><br></pre></td></tr></table></figure></p>
+<h2 id="散列"><a href="#散列" class="headerlink" title="散列"></a>散列</h2><h3 id="md5sum-sha1sum"><a href="#md5sum-sha1sum" class="headerlink" title="md5sum sha1sum"></a>md5sum sha1sum</h3><p>md5sum 与 sha1sum 都是单向散列算法，都无法逆推出原始数据。</p>
+<p>通常用于验证数据完整性或为特定数据生成唯一的密钥。</p>
+<p>md5sum 生成的是 32 位十六进制数据，sha1sum 生成的是 40 位十六进制数据。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-&gt; md5sum 1.txt</span><br><span class="line">f47413faafe6991feeab24054acdbbbc  1.txt</span><br><span class="line"></span><br><span class="line">-&gt; sha1sum 1.txt</span><br><span class="line">75765c7e40d4f75071c29cbc07be67a967a5373e  1.txt</span><br></pre></td></tr></table></figure></p>
+<p>md5sum和SHA-1作为密码使用已不再安全。因为计算能力的攀升使其变得容易被破解。</p>
+<p>推荐使用 bcrypt 或 sha512sum 这类工具进行加密</p>
+<h3 id="shadow-like-散列"><a href="#shadow-like-散列" class="headerlink" title="shadow-like 散列"></a>shadow-like 散列</h3><p>密码文件使用的就是 shadow-like salt 散列<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; sudo cat /etc/shadow</span><br><span class="line">root:<span class="variable">$6</span><span class="variable">$F7yJ4iBQ</span><span class="variable">$oEGgf0eA2zkGoyx3Ac0ChoJ7HuDiRq5td9rXsGGGybHMNN15uBh8OETOPVRlNDqnkRBWwlcqQT7n5wor0d5b21</span>:17306:0:99999:7:::</span><br></pre></td></tr></table></figure></p>
+<p>使用 openssl 生成 shadow 密码<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; openssl passwd -1 -salt SALT_STRING PASSWORD</span><br><span class="line"><span class="variable">$1</span><span class="variable">$SALT_STR</span><span class="variable">$323VkWkSLHuhbt1zkSsUG</span>.</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>shadow密码通常都是salt密码。</li>
+<li>SALT_STRING 是 SALT，所谓 SALT 就是额外的一个字符串，用来起一个混淆的作用，使加密更加不易被破解。</li>
+</ul>
+<h2 id="排序、唯一"><a href="#排序、唯一" class="headerlink" title="排序、唯一"></a>排序、唯一</h2><p>sort 用于对文本行进行排序</p>
+<p>uniq 返回唯一的文本行或找出重复的文本行，且只能处理经过排序的文本行，所以 uniq 要么接受管道数据，要么接受排序过的文件</p>
+<p>sort 和 uniq 都可以接受文件参数或 stdin</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br></pre></td><td class="code"><pre><span class="line">-&gt; cat 1.txt</span><br><span class="line">key say hometown</span><br><span class="line">111 hi  beijing</span><br><span class="line">aaa i am shenlin    shanghai</span><br><span class="line">333 who are you tianjin</span><br><span class="line"></span><br><span class="line">-&gt; cat 2.txt</span><br><span class="line">key say hometown</span><br><span class="line">444 piggy yan   handan</span><br><span class="line">ddd how are you doing today?    xingtai</span><br><span class="line">222 i am doing good.    anyang</span><br><span class="line"></span><br><span class="line"><span class="comment"># 排序（默认按字母顺序排）</span></span><br><span class="line">-&gt; sort 1.txt 2.txt</span><br><span class="line">111 hi  beijing</span><br><span class="line">222 i am doing good.    anyang</span><br><span class="line">333 who are you tianjin</span><br><span class="line">444 piggy yan   handan</span><br><span class="line">aaa i am shenlin    shanghai</span><br><span class="line">ddd how are you doing today?    xingtai</span><br><span class="line">key say hometown</span><br><span class="line">key say hometown</span><br><span class="line"></span><br><span class="line"><span class="comment"># 按数字顺序排， sort 命令对于字母表排序和数字排序有不同的处理方式。因此，如果要采用数字顺序排序，就应该明确地给出 -n 选项</span></span><br><span class="line">-&gt; sort -n 1.txt 2.txt</span><br><span class="line">aaa i am shenlin    shanghai</span><br><span class="line">ddd how are you doing today?    xingtai</span><br><span class="line">key say hometown</span><br><span class="line">key say hometown</span><br><span class="line">111 hi  beijing</span><br><span class="line">222 i am doing good.    anyang</span><br><span class="line">333 who are you tianjin</span><br><span class="line">444 piggy yan   handan</span><br><span class="line"></span><br><span class="line"><span class="comment"># 倒序排</span></span><br><span class="line">-&gt; sort -r 1.txt 2.txt</span><br><span class="line">key say hometown</span><br><span class="line">key say hometown</span><br><span class="line">ddd how are you doing today?    xingtai</span><br><span class="line">aaa i am shenlin    shanghai</span><br><span class="line">444 piggy yan   handan</span><br><span class="line">333 who are you tianjin</span><br><span class="line">222 i am doing good.    anyang</span><br><span class="line">111 hi  beijing</span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证是否排序，排序退出码为 0</span></span><br><span class="line">-&gt; var=`sort -C 1.txt`;<span class="built_in">echo</span> $?</span><br><span class="line">1</span><br><span class="line"></span><br><span class="line">-&gt; sort 1.txt &gt; s1.txt</span><br><span class="line"></span><br><span class="line">-&gt; var=`sort -C s1.txt`;<span class="built_in">echo</span> $?</span><br><span class="line">0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 按照指定的第几列排序</span></span><br><span class="line">-&gt; sort 1.txt</span><br><span class="line">111 hi  beijing</span><br><span class="line">333 who are you tianjin</span><br><span class="line">aaa i am shenlin    shanghai</span><br><span class="line">key say hometown</span><br><span class="line"></span><br><span class="line">-&gt; sort -k 2 1.txt</span><br><span class="line">111 hi  beijing</span><br><span class="line">aaa i am shenlin    shanghai</span><br><span class="line">key say hometown</span><br><span class="line">333 who are you tianjin</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重复行只显示一条</span></span><br><span class="line">$ cat sorted.txt</span><br><span class="line">bash</span><br><span class="line">foss</span><br><span class="line">hack</span><br><span class="line">hack</span><br><span class="line"></span><br><span class="line">$ uniq sorted.txt</span><br><span class="line">bash</span><br><span class="line">foss</span><br><span class="line">hack</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重复的行只显示一条</span></span><br><span class="line">-&gt; sort 1.txt 2.txt | uniq</span><br><span class="line">111 hi  beijing</span><br><span class="line">222 i am doing good.    anyang</span><br><span class="line">333 who are you tianjin</span><br><span class="line">444 piggy yan   handan</span><br><span class="line">aaa i am shenlin    shanghai</span><br><span class="line">ddd how are you doing today?    xingtai</span><br><span class="line">key say hometown</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只把重复的行显示出来</span></span><br><span class="line">-&gt; sort 1.txt 2.txt | uniq -d</span><br><span class="line">key say hometown</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只显示没有重复的行，重复的行一条也不显示</span></span><br><span class="line">-&gt; sort 1.txt 2.txt | uniq -u</span><br><span class="line">111 hi  beijing</span><br><span class="line">222 i am doing good.    anyang</span><br><span class="line">333 who are you tianjin</span><br><span class="line">444 piggy yan   handan</span><br><span class="line">aaa i am shenlin    shanghai</span><br><span class="line">ddd how are you doing today?    xingtai</span><br><span class="line"></span><br><span class="line"><span class="comment"># 统计各行显示的条数</span></span><br><span class="line">-&gt; sort 1.txt 2.txt | uniq -c</span><br><span class="line">      1 111 hi  beijing</span><br><span class="line">      1 222 i am doing good.    anyang</span><br><span class="line">      1 333 who are you tianjin</span><br><span class="line">      1 444 piggy yan   handan</span><br><span class="line">      1 aaa i am shenlin    shanghai</span><br><span class="line">      1 ddd how are you doing today?    xingtai</span><br><span class="line">      2 key say hometown</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将比较排序的键设定为某个范围内的字符</span></span><br><span class="line"><span class="comment"># 范围用行内的位置来标明，格式为 ： 开始位置,终止位置</span></span><br><span class="line">$ cat data.txt</span><br><span class="line">1010hellothis</span><br><span class="line">2189ababbba</span><br><span class="line">7464dfddfdfd</span><br><span class="line"></span><br><span class="line">$ sort -nk 2,3 data.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># -s 跳过字符个数，-w 用于比较排序的字符数 </span></span><br><span class="line">-&gt; cat data.txt</span><br><span class="line">u:01:gnu</span><br><span class="line">d:04:linux</span><br><span class="line">u:01:bash</span><br><span class="line">u:01:hack</span><br><span class="line"></span><br><span class="line">-&gt; sort data.txt | uniq -s 2 -w 2</span><br><span class="line">d:04:linux</span><br><span class="line">u:01:bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># 去除行头的先导空白</span></span><br><span class="line">-&gt; sort -b unsorted.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 以字典进行排序</span></span><br><span class="line">-&gt; sort -d unsorted.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># null 字符即 zero-byte 0 值字节，\0</span></span><br><span class="line"><span class="comment"># 把命令输出作为 xargs 的输入时，最好为输入的各行添加 null 字符，</span></span><br><span class="line"><span class="comment"># 如果没有 null 字符作终止符，则 xargs 的默认分隔符是空格，则如</span></span><br><span class="line"><span class="comment"># 果 stdin 的文本行里有 "this is a tring" 会被误认为 4 个参数，</span></span><br><span class="line"><span class="comment"># 有 null 字符则会以 null 字符为分隔符，有空格的文本会被正确解析</span></span><br><span class="line"><span class="comment"># 所以为了保证 xargs 命令的执行安全，当 sort 或 uniq 和 xargs 一</span></span><br><span class="line"><span class="comment"># 起使用时必须使用 -z 选项</span></span><br><span class="line"></span><br><span class="line">-&gt; uniq -z file.txt | xargs -0 rm</span><br><span class="line">-&gt; sort -z data.txt | xargs -0</span><br><span class="line"></span><br><span class="line">-&gt; sort 1.txt 2.txt | uniq -z</span><br><span class="line">111 hi  beijing</span><br><span class="line">222 i am doing good.    anyang</span><br><span class="line">333 who are you tianjin</span><br><span class="line">444 piggy yan   handan</span><br><span class="line">aaa i am shenlin    shanghai</span><br><span class="line">ddd how are you doing today?    xingtai</span><br><span class="line">key say hometown</span><br><span class="line">key say hometown</span><br></pre></td></tr></table></figure>
+<h2 id="临时文件命名和随机数"><a href="#临时文件命名和随机数" class="headerlink" title="临时文件命名和随机数"></a>临时文件命名和随机数</h2><p>shell 脚本常用到临时文件，最适合保存临时数据的地方是 /tmp 目录，系统重启后会自动清空</p>
+<p>mktemp 命令可以创建临时文件或目录，并返回其名称</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建临时文件</span></span><br><span class="line">$ mktemp</span><br><span class="line">/tmp/tmp.0tgAPFFREN</span><br><span class="line"></span><br><span class="line">$ tmp=`mktemp`;<span class="built_in">echo</span> <span class="variable">$tmp</span>;</span><br><span class="line">/tmp/tmp.6p89BpTAwS</span><br><span class="line"></span><br><span class="line"><span class="comment"># -d 创建临时目录</span></span><br><span class="line">$ mktemp -d</span><br><span class="line">/tmp/tmp.2JY0vOspJV</span><br><span class="line"></span><br><span class="line">$ ll /tmp/tmp.2JY0vOspJV/</span><br><span class="line">total 0</span><br><span class="line"></span><br><span class="line"><span class="comment"># -u 生成临时文件名不创建文件</span></span><br><span class="line">$ mktemp -u</span><br><span class="line">/tmp/tmp.vMlpAEYFfJ</span><br><span class="line"></span><br><span class="line">$ ll /tmp/tmp.vMlpAEYFfJ</span><br><span class="line">ls: cannot access <span class="string">'/tmp/tmp.vMlpAEYFfJ'</span>: No such file or directory</span><br><span class="line"></span><br><span class="line"><span class="comment"># 根据模板生成临时文件名，模板必须至少 3 个大写 X，不能是小写 x 或其他字符</span></span><br><span class="line">$ mktemp -u tesXXXttt</span><br><span class="line">tesl8Dttt</span><br><span class="line"></span><br><span class="line">$ mktemp -u test.XXX</span><br><span class="line">test.6pw</span><br><span class="line"></span><br><span class="line">$ mktemp -u test.XX</span><br><span class="line">mktemp: too few X<span class="string">'s in template ‘test.XX’</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">$ mktemp -u test.xxx</span></span><br><span class="line"><span class="string">mktemp: too few X'</span>s <span class="keyword">in</span> template ‘test.xxx’</span><br><span class="line"></span><br><span class="line">$ mktemp -u test.AAAA</span><br><span class="line">mktemp: too few X<span class="string">'s in template ‘test.AAAA’</span></span><br></pre></td></tr></table></figure>
+<h2 id="分割文件和数据"><a href="#分割文件和数据" class="headerlink" title="分割文件和数据"></a>分割文件和数据</h2><p>早期分割文件主要是因为软盘之类的存储设备容量有限，切割为多个小文件才能分散存储到多张软盘中；<br>现在分割文件主要是为了提高可读性、生成日志或通过E-mail发送文件等</p>
+<h3 id="按数据块大小分割"><a href="#按数据块大小分割" class="headerlink" title="按数据块大小分割"></a>按数据块大小分割</h3><p>数据块单位 ：k （KB）， M （MB）、 G （GB）、 c （byte）、 w （word）</p>
+<p>??? c 和 w 测试好像不行</p>
+<p>??? 还可以分割到 n 个文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ ll</span><br><span class="line">-rw-r--r-- 1 ssl 197121  7992 十月  3 15:04 5ECC.tmp</span><br><span class="line"></span><br><span class="line">$ split -b 1000 5ECC.tmp</span><br><span class="line"></span><br><span class="line">$ ll</span><br><span class="line">-rw-r--r-- 1 ssl 197121  7992 十月  3 15:04 5ECC.tmp</span><br><span class="line">-rw-r--r-- 1 ssl 197121  1000 十月  3 18:17 xaa</span><br><span class="line">-rw-r--r-- 1 ssl 197121  1000 十月  3 18:17 xab</span><br><span class="line">-rw-r--r-- 1 ssl 197121  1000 十月  3 18:17 xac</span><br><span class="line">-rw-r--r-- 1 ssl 197121  1000 十月  3 18:17 xad</span><br><span class="line">-rw-r--r-- 1 ssl 197121  1000 十月  3 18:17 xae</span><br><span class="line">-rw-r--r-- 1 ssl 197121  1000 十月  3 18:17 xaf</span><br><span class="line">-rw-r--r-- 1 ssl 197121  1000 十月  3 18:17 xag</span><br><span class="line">-rw-r--r-- 1 ssl 197121   992 十月  3 18:17 xah</span><br></pre></td></tr></table></figure>
+<h3 id="设定分割文件前后缀"><a href="#设定分割文件前后缀" class="headerlink" title="设定分割文件前后缀"></a>设定分割文件前后缀</h3><p>分割文件的默认前缀是 x，默认后缀是字母<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ split -b 1000  5ECC.tmp -d -a 3 part                  <span class="comment"># 两条命令执行效果相同，重点是前缀必须在命令行的最后</span></span><br><span class="line">$ split -b 1000 -d -a 3 5ECC.tmp part</span><br><span class="line">-rw-r--r-- 1 ssl 197121  1000 十月  3 18:34 part000</span><br><span class="line">-rw-r--r-- 1 ssl 197121  1000 十月  3 18:34 part001</span><br><span class="line">-rw-r--r-- 1 ssl 197121  1000 十月  3 18:34 part002</span><br><span class="line">-rw-r--r-- 1 ssl 197121  1000 十月  3 18:34 part003</span><br><span class="line">-rw-r--r-- 1 ssl 197121  1000 十月  3 18:34 part004</span><br><span class="line">-rw-r--r-- 1 ssl 197121  1000 十月  3 18:34 part005</span><br><span class="line">-rw-r--r-- 1 ssl 197121  1000 十月  3 18:34 part006</span><br><span class="line">-rw-r--r-- 1 ssl 197121   992 十月  3 18:34 part007</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>-d 表示使用数字后缀，否则默认是字母</li>
+<li>-a 3 表示后缀长度是 3 位</li>
+<li>split 最后参数是前缀，必须放命令行最后，默认是 x</li>
+</ul>
+<h3 id="按行数分割文件"><a href="#按行数分割文件" class="headerlink" title="按行数分割文件"></a>按行数分割文件</h3><p><code>-l</code> 指定多少行分割成一个文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ cat text.txt</span><br><span class="line">aaa</span><br><span class="line">bbb</span><br><span class="line">ccc</span><br><span class="line">ddd</span><br><span class="line"></span><br><span class="line">$ split -l 2 -d text.txt text</span><br><span class="line"></span><br><span class="line">$ cat text00 ; <span class="built_in">echo</span> <span class="string">'----'</span> ; cat text01</span><br><span class="line">aaa</span><br><span class="line">bbb</span><br><span class="line">----</span><br><span class="line">ccc</span><br><span class="line">ddd</span><br></pre></td></tr></table></figure>
+<h3 id="按文件数分割文件"><a href="#按文件数分割文件" class="headerlink" title="按文件数分割文件"></a>按文件数分割文件</h3><p><code>-n</code> 指定分割成多少个文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ split -n 4 text.txt</span><br><span class="line"></span><br><span class="line">$ cat xaa;<span class="built_in">echo</span> <span class="string">'--'</span>;cat xab;<span class="built_in">echo</span> <span class="string">'--'</span>;cat xac;<span class="built_in">echo</span> <span class="string">'--'</span>;cat xad</span><br><span class="line">aaa</span><br><span class="line">--</span><br><span class="line">bbb</span><br><span class="line">--</span><br><span class="line">ccc</span><br><span class="line">--</span><br><span class="line">ddd</span><br></pre></td></tr></table></figure>
+<h3 id="csplit"><a href="#csplit" class="headerlink" title="csplit"></a>csplit</h3><p>能够依据指定的条件和字符串匹配选项进行分割</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ cat server.log</span><br><span class="line">SERVER-1</span><br><span class="line">[connection] 192.168.0.1 success</span><br><span class="line">[connection] 192.168.0.2 failed</span><br><span class="line">[disconnect] 192.168.0.3 pending</span><br><span class="line">[connection] 192.168.0.4 success</span><br><span class="line">SERVER-2</span><br><span class="line">[connection] 192.168.0.1 failed</span><br><span class="line">[connection] 192.168.0.2 failed</span><br><span class="line">[disconnect] 192.168.0.3 success</span><br><span class="line">[connection] 192.168.0.4 failed</span><br><span class="line">SERVER-3</span><br><span class="line">[connection] 192.168.0.1 pending</span><br><span class="line">[connection] 192.168.0.2 pending</span><br><span class="line">[disconnect] 192.168.0.3 pending</span><br><span class="line">[connection] 192.168.0.4 failed</span><br><span class="line"></span><br><span class="line">$ csplit server.log /SERVER/ -n 2 -s &#123;*&#125; -f server -b <span class="string">"%02d.log"</span> &amp;&amp; rm server00.log</span><br><span class="line">csplit: ‘&#123;339A5648-B4B7-4c06-ACAF-12C54A7C842B’&#125;: <span class="built_in">integer</span> required between <span class="string">'&#123;'</span> and <span class="string">'&#125;'</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>/SERVER/ 用来匹配某一行，分割过程即从此处开始。</li>
+<li>/[REGEX]/ 表示文本样式。包括从当前行（第一行）直到（但不包括）包含“ SERVER ”<br>的匹配行。</li>
+<li>{*} 表示根据匹配重复执行分割，直到文件末尾为止。可以用{整数}的形式来指定分割执行的次数。</li>
+<li>因为分割后的第一个文件没有任何内容（匹配的单词就位于文件的第一行中），所以我们删除了server00.log。</li>
+<li>-s 使命令进入静默模式，不打印其他信息。</li>
+<li>-n 指定分割后的文件名后缀的数字个数，例如01、02、03等。</li>
+<li>-f 指定分割后的文件名前缀（在上面的例子中，server就是前缀）。</li>
+<li>-b 指定后缀格式。例如 %02d.log ，类似于C语言中 printf 的参数格式。在这里文件名= 前缀+后缀= server + %02d.log 。</li>
+<li>??? 执行出错</li>
+</ul>
+<h2 id="切分文件名"><a href="#切分文件名" class="headerlink" title="切分文件名"></a>切分文件名</h2><p><code>${VAR%.*}</code> 和 <code>${VAR%%.*}</code></p>
+<ul>
+<li>% 和 %% 的左侧是要处理的变量，右侧是通配符</li>
+<li>通配符从右向左匹配</li>
+<li>% 是非贪婪匹配，即从右向左找到最短匹配，%% 是贪婪匹配，即从右向左找到最长匹配</li>
+<li>从变量 VAR 中删除通配结果</li>
+</ul>
+<p><code>${VAR#*.}</code> 和 <code>${VAR#*.}</code></p>
+<ul>
+<li><h1 id="和-的左侧是要处理的变量，右侧是通配符"><a href="#和-的左侧是要处理的变量，右侧是通配符" class="headerlink" title="和 ## 的左侧是要处理的变量，右侧是通配符"></a>和 ## 的左侧是要处理的变量，右侧是通配符</h1></li>
+<li>通配符从左向右匹配</li>
+<li><h1 id="是非贪婪匹配，即从左向右找到最短匹配，-是贪婪匹配，即从左向右找到最长匹配"><a href="#是非贪婪匹配，即从左向右找到最短匹配，-是贪婪匹配，即从左向右找到最长匹配" class="headerlink" title="是非贪婪匹配，即从左向右找到最短匹配，## 是贪婪匹配，即从左向右找到最长匹配"></a>是非贪婪匹配，即从左向右找到最短匹配，## 是贪婪匹配，即从左向右找到最长匹配</h1></li>
+<li>从变量 VAR 中删除匹配结果</li>
+</ul>
+<p>因为是从变量中删除匹配结果，所以为了获取扩展名时通配符是在匹配文件名，获取文件名时是在匹配扩展名</p>
+<p>文件中出现多个<code>.</code>很常见，所以 <code>##</code> 的贪婪匹配能更准确提取扩展名，而 <code>%</code> 的非贪婪模式能更准确获取文件名</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ var=<span class="string">"custome.class.jpg"</span>;<span class="built_in">echo</span> <span class="variable">$&#123;var%.*&#125;</span></span><br><span class="line">custome.class</span><br><span class="line"></span><br><span class="line">$ var=<span class="string">"custome.class.jpg"</span>;<span class="built_in">echo</span> <span class="variable">$&#123;var%%.*&#125;</span></span><br><span class="line">custome</span><br><span class="line"></span><br><span class="line">$ var=<span class="string">"custome.class.jpg"</span>;<span class="built_in">echo</span> <span class="variable">$&#123;var#*.&#125;</span></span><br><span class="line">class.jpg</span><br><span class="line"></span><br><span class="line">$ var=<span class="string">"custome.class.jpg"</span>;<span class="built_in">echo</span> <span class="variable">$&#123;var##*.&#125;</span></span><br><span class="line">jpg</span><br></pre></td></tr></table></figure>
+<h2 id="批量重命名和移动"><a href="#批量重命名和移动" class="headerlink" title="批量重命名和移动"></a>批量重命名和移动</h2><p>批量重命名 png 和 jpg 文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ cat rename.sh</span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">count=1;</span><br><span class="line"><span class="keyword">for</span> img <span class="keyword">in</span> `find . -iname <span class="string">'*.png'</span> -o -iname <span class="string">'*.jpg'</span> -<span class="built_in">type</span> f -maxdepth 1`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">new=image-<span class="variable">$count</span>.<span class="variable">$&#123;img##*.&#125;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Renaming <span class="variable">$img</span> to <span class="variable">$new</span>"</span></span><br><span class="line">mv <span class="string">"<span class="variable">$img</span>"</span> <span class="string">"<span class="variable">$new</span>"</span></span><br><span class="line"><span class="built_in">let</span> count++</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></p>
+<p>实现通用重命名???<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">将  *.JPG 更名为  *.jpg ：</span><br><span class="line">$ rename *.JPG *.jpg</span><br><span class="line"></span><br><span class="line">将文件名中的空格替换成字符“ _ ”：</span><br><span class="line"><span class="string">'s/ /_/g'</span> 用于替换文件名，而  * 是用于匹配目标文件的通配符，它也可以以  *.txt 或其他样式出现。</span><br><span class="line">$ rename <span class="string">'s/ /_/g'</span> *</span><br><span class="line"></span><br><span class="line">转换文件名的大小写：</span><br><span class="line">$ rename <span class="string">'y/A-Z/a-z/'</span> *</span><br><span class="line">$ rename <span class="string">'y/a-z/A-Z/'</span> *</span><br><span class="line"></span><br><span class="line">将所有的 .mp3文件移入给定的目录：</span><br><span class="line">$ find path -<span class="built_in">type</span> f -name <span class="string">"*.mp3"</span> -<span class="built_in">exec</span> mv &#123;&#125; target_dir \;</span><br><span class="line"></span><br><span class="line">将所有文件名中的空格替换为字符“ _ ”：</span><br><span class="line">$ find path -<span class="built_in">type</span> f -<span class="built_in">exec</span> rename <span class="string">'s/ /_/g'</span> &#123;&#125; \;</span><br></pre></td></tr></table></figure></p>
+<h2 id="词典和拼写检查"><a href="#词典和拼写检查" class="headerlink" title="词典和拼写检查 ???"></a>词典和拼写检查 ???</h2><p>/usr/share/dict 词典文件，词典文件是包含单词列表的文本文件，可以用来检查某个单词是否为词典中的单词</p>
+<p>aspell 拼写检查工具</p>
+<h2 id="自动应答交互"><a href="#自动应答交互" class="headerlink" title="自动应答交互"></a>自动应答交互</h2><p>和用户交互的例子</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-&gt; cat test.sh</span><br><span class="line"><span class="built_in">read</span> -p <span class="string">"input your name : "</span> name</span><br><span class="line"><span class="built_in">read</span> -p <span class="string">"input your age : "</span> age</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"your name is <span class="variable">$name</span> age is <span class="variable">$age</span>"</span></span><br><span class="line"></span><br><span class="line">-&gt; ./test.sh</span><br><span class="line">input your name : shenlin</span><br><span class="line">input your age : 37</span><br><span class="line">your name is shenlin age is 37</span><br></pre></td></tr></table></figure>
+<p>上面需要用户交互的脚本，也可实现自动应答<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 通过命令行</span></span><br><span class="line">-&gt; <span class="built_in">echo</span> -e <span class="string">"shenlin\n38\n"</span> | ./test.sh</span><br><span class="line">your name is shenlin age is 38</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过文件实现</span></span><br><span class="line">-&gt; <span class="built_in">echo</span> -e <span class="string">"shenlin\n38\n"</span> &gt; answer.txt</span><br><span class="line"></span><br><span class="line">-&gt; ./test.sh &lt; answer.txt</span><br><span class="line">your name is shenlin age is 38</span><br></pre></td></tr></table></figure></p>
+<p>上面的交互都是根据命令执行顺序按顺序自动的传递参数，如果有分支判断，则可能无法实现，这时可以使用 expect 命令</p>
+<p>expect 可以根据提示信息提供对应的输入<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-&gt; cat expect.sh</span><br><span class="line"><span class="comment">#!/usr/bin/expect               # &lt;---注意这里是 expect 的路径</span></span><br><span class="line">spawn ./test.sh                 <span class="comment"># spawn 指定需要自动化哪个命令或脚本</span></span><br><span class="line">expect <span class="string">"input your name : "</span>     <span class="comment"># expect 指定需要等待的消息</span></span><br><span class="line">send <span class="string">"shenlin\n"</span>                <span class="comment"># send 设置要发送的消息</span></span><br><span class="line">expect <span class="string">"input your age : "</span></span><br><span class="line">send <span class="string">"37\n"</span></span><br><span class="line">expect eof                      <span class="comment"># expect eof 表示交互结束，不可缺少</span></span><br><span class="line"></span><br><span class="line">-&gt; ./expect.sh</span><br><span class="line">spawn ./test.sh</span><br><span class="line">input your name : shenlin</span><br><span class="line">input your age : 37</span><br><span class="line">your name is shenlin age is 37</span><br></pre></td></tr></table></figure></p>
+<h2 id="并行进程"><a href="#并行进程" class="headerlink" title="并行进程"></a>并行进程</h2><p>多进程利用 CPU 的多核心加速程序执行，如 CPU 密集型的 md5sum 命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PIDARRAY=()</span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span> out.txt err.txt num.txt dig.txt pcre-8.40.zip</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    md5sum <span class="variable">$file</span> &amp;</span><br><span class="line">    PIDARRAY+=(<span class="string">"$!"</span>)</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">wait</span> <span class="variable">$&#123;PIDARRAY[@]&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>&amp;</code> 把进程放入后台执行</li>
+<li><code>$!</code> 获取最后一个进程ID放入数组</li>
+<li>使用 wait 命令等待进程结束</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/bash/" rel="tag"># bash</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/bash - linux shell 脚本攻略 - chapter 1 - 基本功能/" rel="next" title="bash - linux shell 脚本攻略 - chapter 1 - 基本功能">
+                <i class="fa fa-chevron-left"></i> bash - linux shell 脚本攻略 - chapter 1 - 基本功能
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/bash - linux shell 脚本攻略 - chapter 3 - 文件/" rel="prev" title="bash - linux shell 脚本攻略 - chapter 3 - 文件">
+                bash - linux shell 脚本攻略 - chapter 3 - 文件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#cat"><span class="nav-number">1.</span> <span class="nav-text"><a href="#cat" class="headerlink" title="cat"></a>cat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#script"><span class="nav-number">2.</span> <span class="nav-text"><a href="#script" class="headerlink" title="script"></a>script</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find"><span class="nav-number">3.</span> <span class="nav-text"><a href="#find" class="headerlink" title="find"></a>find</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xargs"><span class="nav-number">4.</span> <span class="nav-text"><a href="#xargs" class="headerlink" title="xargs"></a>xargs</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多行转换为单行"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#&#x591A;&#x884C;&#x8F6C;&#x6362;&#x4E3A;&#x5355;&#x884C;" class="headerlink" title="&#x591A;&#x884C;&#x8F6C;&#x6362;&#x4E3A;&#x5355;&#x884C;"></a>&#x591A;&#x884C;&#x8F6C;&#x6362;&#x4E3A;&#x5355;&#x884C;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单行转换为多行"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#&#x5355;&#x884C;&#x8F6C;&#x6362;&#x4E3A;&#x591A;&#x884C;" class="headerlink" title="&#x5355;&#x884C;&#x8F6C;&#x6362;&#x4E3A;&#x591A;&#x884C;"></a>&#x5355;&#x884C;&#x8F6C;&#x6362;&#x4E3A;&#x591A;&#x884C;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义定界符"><span class="nav-number">4.3.</span> <span class="nav-text"><a href="#&#x81EA;&#x5B9A;&#x4E49;&#x5B9A;&#x754C;&#x7B26;" class="headerlink" title="&#x81EA;&#x5B9A;&#x4E49;&#x5B9A;&#x754C;&#x7B26;"></a>&#x81EA;&#x5B9A;&#x4E49;&#x5B9A;&#x754C;&#x7B26;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将-stdin-数据流转换为命令行参数"><span class="nav-number">4.4.</span> <span class="nav-text"><a href="#&#x5C06;-stdin-&#x6570;&#x636E;&#x6D41;&#x8F6C;&#x6362;&#x4E3A;&#x547D;&#x4EE4;&#x884C;&#x53C2;&#x6570;" class="headerlink" title="&#x5C06; stdin &#x6570;&#x636E;&#x6D41;&#x8F6C;&#x6362;&#x4E3A;&#x547D;&#x4EE4;&#x884C;&#x53C2;&#x6570;"></a>&#x5C06; stdin &#x6570;&#x636E;&#x6D41;&#x8F6C;&#x6362;&#x4E3A;&#x547D;&#x4EE4;&#x884C;&#x53C2;&#x6570;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#和-find-结合使用"><span class="nav-number">4.5.</span> <span class="nav-text"><a href="#&#x548C;-find-&#x7ED3;&#x5408;&#x4F7F;&#x7528;" class="headerlink" title="&#x548C; find &#x7ED3;&#x5408;&#x4F7F;&#x7528;"></a>&#x548C; find &#x7ED3;&#x5408;&#x4F7F;&#x7528;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对同一个参数执行多条命令的技巧"><span class="nav-number">4.6.</span> <span class="nav-text"><a href="#&#x5BF9;&#x540C;&#x4E00;&#x4E2A;&#x53C2;&#x6570;&#x6267;&#x884C;&#x591A;&#x6761;&#x547D;&#x4EE4;&#x7684;&#x6280;&#x5DE7;" class="headerlink" title="&#x5BF9;&#x540C;&#x4E00;&#x4E2A;&#x53C2;&#x6570;&#x6267;&#x884C;&#x591A;&#x6761;&#x547D;&#x4EE4;&#x7684;&#x6280;&#x5DE7;"></a>&#x5BF9;&#x540C;&#x4E00;&#x4E2A;&#x53C2;&#x6570;&#x6267;&#x884C;&#x591A;&#x6761;&#x547D;&#x4EE4;&#x7684;&#x6280;&#x5DE7;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tr"><span class="nav-number">5.</span> <span class="nav-text"><a href="#tr" class="headerlink" title="tr"></a>tr</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本替换"><span class="nav-number">5.1.</span> <span class="nav-text"><a href="#&#x57FA;&#x672C;&#x66FF;&#x6362;" class="headerlink" title="&#x57FA;&#x672C;&#x66FF;&#x6362;"></a>&#x57FA;&#x672C;&#x66FF;&#x6362;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除字符"><span class="nav-number">5.2.</span> <span class="nav-text"><a href="#&#x5220;&#x9664;&#x5B57;&#x7B26;" class="headerlink" title="&#x5220;&#x9664;&#x5B57;&#x7B26;"></a>&#x5220;&#x9664;&#x5B57;&#x7B26;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符补集"><span class="nav-number">5.3.</span> <span class="nav-text"><a href="#&#x5B57;&#x7B26;&#x8865;&#x96C6;" class="headerlink" title="&#x5B57;&#x7B26;&#x8865;&#x96C6;"></a>&#x5B57;&#x7B26;&#x8865;&#x96C6;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#压缩连续重复字符"><span class="nav-number">5.4.</span> <span class="nav-text"><a href="#&#x538B;&#x7F29;&#x8FDE;&#x7EED;&#x91CD;&#x590D;&#x5B57;&#x7B26;" class="headerlink" title="&#x538B;&#x7F29;&#x8FDE;&#x7EED;&#x91CD;&#x590D;&#x5B57;&#x7B26;"></a>&#x538B;&#x7F29;&#x8FDE;&#x7EED;&#x91CD;&#x590D;&#x5B57;&#x7B26;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符类"><span class="nav-number">5.5.</span> <span class="nav-text"><a href="#&#x5B57;&#x7B26;&#x7C7B;" class="headerlink" title="&#x5B57;&#x7B26;&#x7C7B;"></a>&#x5B57;&#x7B26;&#x7C7B;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#校验和"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x6821;&#x9A8C;&#x548C;" class="headerlink" title="&#x6821;&#x9A8C;&#x548C;"></a>&#x6821;&#x9A8C;&#x548C;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#md5sum"><span class="nav-number">6.1.</span> <span class="nav-text"><a href="#md5sum" class="headerlink" title="md5sum"></a>md5sum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sha1sum"><span class="nav-number">6.2.</span> <span class="nav-text"><a href="#sha1sum" class="headerlink" title="sha1sum"></a>sha1sum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#md5deep-和-sha1deep"><span class="nav-number">6.3.</span> <span class="nav-text"><a href="#md5deep-&#x548C;-sha1deep" class="headerlink" title="md5deep &#x548C; sha1deep"></a>md5deep &#x548C; sha1deep</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加密"><span class="nav-number">7.</span> <span class="nav-text"><a href="#&#x52A0;&#x5BC6;" class="headerlink" title="&#x52A0;&#x5BC6;"></a>&#x52A0;&#x5BC6;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#crypt"><span class="nav-number">7.1.</span> <span class="nav-text"><a href="#crypt" class="headerlink" title="crypt"></a>crypt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gpg"><span class="nav-number">7.2.</span> <span class="nav-text"><a href="#gpg" class="headerlink" title="gpg"></a>gpg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#base64"><span class="nav-number">7.3.</span> <span class="nav-text"><a href="#base64" class="headerlink" title="base64"></a>base64</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#散列"><span class="nav-number">8.</span> <span class="nav-text"><a href="#&#x6563;&#x5217;" class="headerlink" title="&#x6563;&#x5217;"></a>&#x6563;&#x5217;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#md5sum-sha1sum"><span class="nav-number">8.1.</span> <span class="nav-text"><a href="#md5sum-sha1sum" class="headerlink" title="md5sum sha1sum"></a>md5sum sha1sum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shadow-like-散列"><span class="nav-number">8.2.</span> <span class="nav-text"><a href="#shadow-like-&#x6563;&#x5217;" class="headerlink" title="shadow-like &#x6563;&#x5217;"></a>shadow-like &#x6563;&#x5217;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排序、唯一"><span class="nav-number">9.</span> <span class="nav-text"><a href="#&#x6392;&#x5E8F;&#x3001;&#x552F;&#x4E00;" class="headerlink" title="&#x6392;&#x5E8F;&#x3001;&#x552F;&#x4E00;"></a>&#x6392;&#x5E8F;&#x3001;&#x552F;&#x4E00;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#临时文件命名和随机数"><span class="nav-number">10.</span> <span class="nav-text"><a href="#&#x4E34;&#x65F6;&#x6587;&#x4EF6;&#x547D;&#x540D;&#x548C;&#x968F;&#x673A;&#x6570;" class="headerlink" title="&#x4E34;&#x65F6;&#x6587;&#x4EF6;&#x547D;&#x540D;&#x548C;&#x968F;&#x673A;&#x6570;"></a>&#x4E34;&#x65F6;&#x6587;&#x4EF6;&#x547D;&#x540D;&#x548C;&#x968F;&#x673A;&#x6570;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分割文件和数据"><span class="nav-number">11.</span> <span class="nav-text"><a href="#&#x5206;&#x5272;&#x6587;&#x4EF6;&#x548C;&#x6570;&#x636E;" class="headerlink" title="&#x5206;&#x5272;&#x6587;&#x4EF6;&#x548C;&#x6570;&#x636E;"></a>&#x5206;&#x5272;&#x6587;&#x4EF6;&#x548C;&#x6570;&#x636E;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#按数据块大小分割"><span class="nav-number">11.1.</span> <span class="nav-text"><a href="#&#x6309;&#x6570;&#x636E;&#x5757;&#x5927;&#x5C0F;&#x5206;&#x5272;" class="headerlink" title="&#x6309;&#x6570;&#x636E;&#x5757;&#x5927;&#x5C0F;&#x5206;&#x5272;"></a>&#x6309;&#x6570;&#x636E;&#x5757;&#x5927;&#x5C0F;&#x5206;&#x5272;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设定分割文件前后缀"><span class="nav-number">11.2.</span> <span class="nav-text"><a href="#&#x8BBE;&#x5B9A;&#x5206;&#x5272;&#x6587;&#x4EF6;&#x524D;&#x540E;&#x7F00;" class="headerlink" title="&#x8BBE;&#x5B9A;&#x5206;&#x5272;&#x6587;&#x4EF6;&#x524D;&#x540E;&#x7F00;"></a>&#x8BBE;&#x5B9A;&#x5206;&#x5272;&#x6587;&#x4EF6;&#x524D;&#x540E;&#x7F00;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#按行数分割文件"><span class="nav-number">11.3.</span> <span class="nav-text"><a href="#&#x6309;&#x884C;&#x6570;&#x5206;&#x5272;&#x6587;&#x4EF6;" class="headerlink" title="&#x6309;&#x884C;&#x6570;&#x5206;&#x5272;&#x6587;&#x4EF6;"></a>&#x6309;&#x884C;&#x6570;&#x5206;&#x5272;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#按文件数分割文件"><span class="nav-number">11.4.</span> <span class="nav-text"><a href="#&#x6309;&#x6587;&#x4EF6;&#x6570;&#x5206;&#x5272;&#x6587;&#x4EF6;" class="headerlink" title="&#x6309;&#x6587;&#x4EF6;&#x6570;&#x5206;&#x5272;&#x6587;&#x4EF6;"></a>&#x6309;&#x6587;&#x4EF6;&#x6570;&#x5206;&#x5272;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#csplit"><span class="nav-number">11.5.</span> <span class="nav-text"><a href="#csplit" class="headerlink" title="csplit"></a>csplit</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#切分文件名"><span class="nav-number">12.</span> <span class="nav-text"><a href="#&#x5207;&#x5206;&#x6587;&#x4EF6;&#x540D;" class="headerlink" title="&#x5207;&#x5206;&#x6587;&#x4EF6;&#x540D;"></a>&#x5207;&#x5206;&#x6587;&#x4EF6;&#x540D;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#和-的左侧是要处理的变量，右侧是通配符"><span class="nav-number"></span> <span class="nav-text"><a href="#&#x548C;-&#x7684;&#x5DE6;&#x4FA7;&#x662F;&#x8981;&#x5904;&#x7406;&#x7684;&#x53D8;&#x91CF;&#xFF0C;&#x53F3;&#x4FA7;&#x662F;&#x901A;&#x914D;&#x7B26;" class="headerlink" title="&#x548C; ## &#x7684;&#x5DE6;&#x4FA7;&#x662F;&#x8981;&#x5904;&#x7406;&#x7684;&#x53D8;&#x91CF;&#xFF0C;&#x53F3;&#x4FA7;&#x662F;&#x901A;&#x914D;&#x7B26;"></a>&#x548C; ## &#x7684;&#x5DE6;&#x4FA7;&#x662F;&#x8981;&#x5904;&#x7406;&#x7684;&#x53D8;&#x91CF;&#xFF0C;&#x53F3;&#x4FA7;&#x662F;&#x901A;&#x914D;&#x7B26;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#是非贪婪匹配，即从左向右找到最短匹配，-是贪婪匹配，即从左向右找到最长匹配"><span class="nav-number"></span> <span class="nav-text"><a href="#&#x662F;&#x975E;&#x8D2A;&#x5A6A;&#x5339;&#x914D;&#xFF0C;&#x5373;&#x4ECE;&#x5DE6;&#x5411;&#x53F3;&#x627E;&#x5230;&#x6700;&#x77ED;&#x5339;&#x914D;&#xFF0C;-&#x662F;&#x8D2A;&#x5A6A;&#x5339;&#x914D;&#xFF0C;&#x5373;&#x4ECE;&#x5DE6;&#x5411;&#x53F3;&#x627E;&#x5230;&#x6700;&#x957F;&#x5339;&#x914D;" class="headerlink" title="&#x662F;&#x975E;&#x8D2A;&#x5A6A;&#x5339;&#x914D;&#xFF0C;&#x5373;&#x4ECE;&#x5DE6;&#x5411;&#x53F3;&#x627E;&#x5230;&#x6700;&#x77ED;&#x5339;&#x914D;&#xFF0C;## &#x662F;&#x8D2A;&#x5A6A;&#x5339;&#x914D;&#xFF0C;&#x5373;&#x4ECE;&#x5DE6;&#x5411;&#x53F3;&#x627E;&#x5230;&#x6700;&#x957F;&#x5339;&#x914D;"></a>&#x662F;&#x975E;&#x8D2A;&#x5A6A;&#x5339;&#x914D;&#xFF0C;&#x5373;&#x4ECE;&#x5DE6;&#x5411;&#x53F3;&#x627E;&#x5230;&#x6700;&#x77ED;&#x5339;&#x914D;&#xFF0C;## &#x662F;&#x8D2A;&#x5A6A;&#x5339;&#x914D;&#xFF0C;&#x5373;&#x4ECE;&#x5DE6;&#x5411;&#x53F3;&#x627E;&#x5230;&#x6700;&#x957F;&#x5339;&#x914D;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#批量重命名和移动"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x6279;&#x91CF;&#x91CD;&#x547D;&#x540D;&#x548C;&#x79FB;&#x52A8;" class="headerlink" title="&#x6279;&#x91CF;&#x91CD;&#x547D;&#x540D;&#x548C;&#x79FB;&#x52A8;"></a>&#x6279;&#x91CF;&#x91CD;&#x547D;&#x540D;&#x548C;&#x79FB;&#x52A8;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#词典和拼写检查"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x8BCD;&#x5178;&#x548C;&#x62FC;&#x5199;&#x68C0;&#x67E5;" class="headerlink" title="&#x8BCD;&#x5178;&#x548C;&#x62FC;&#x5199;&#x68C0;&#x67E5; ???"></a>&#x8BCD;&#x5178;&#x548C;&#x62FC;&#x5199;&#x68C0;&#x67E5; ???</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动应答交互"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x81EA;&#x52A8;&#x5E94;&#x7B54;&#x4EA4;&#x4E92;" class="headerlink" title="&#x81EA;&#x52A8;&#x5E94;&#x7B54;&#x4EA4;&#x4E92;"></a>&#x81EA;&#x52A8;&#x5E94;&#x7B54;&#x4EA4;&#x4E92;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并行进程"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x5E76;&#x884C;&#x8FDB;&#x7A0B;" class="headerlink" title="&#x5E76;&#x884C;&#x8FDB;&#x7A0B;"></a>&#x5E76;&#x884C;&#x8FDB;&#x7A0B;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

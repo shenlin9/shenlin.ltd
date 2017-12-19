@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="PHP,Composer," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Composer 常用命令简介。 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465$ composer   ______  / ____/___  ____ ___  ____  ____  _______">
+<meta name="keywords" content="PHP,Composer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Composer - Chapter 4 - 命令">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 4 - 命令/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="Composer 常用命令简介。 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465$ composer   ______  / ____/___  ____ ___  ____  ____  _______">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.520Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Composer - Chapter 4 - 命令">
+<meta name="twitter:description" content="Composer 常用命令简介。 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465$ composer   ______  / ____/___  ____ ___  ____  ____  _______">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 4 - 命令/"/>
+
+
+
+
+
+  <title>Composer - Chapter 4 - 命令 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 4 - 命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Composer - Chapter 4 - 命令</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/Composer/" itemprop="url" rel="index">
+                    <span itemprop="name">Composer</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Composer 常用命令简介。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">$ composer</span><br><span class="line">   ______</span><br><span class="line">  / ____/___  ____ ___  ____  ____  ________  _____</span><br><span class="line"> / /   / __ \/ __ `__ \/ __ \/ __ \/ ___/ _ \/ ___/</span><br><span class="line">/ /___/ /_/ / / / / / / /_/ / /_/ (__  )  __/ /</span><br><span class="line">\____/\____/_/ /_/ /_/ .___/\____/____/\___/_/</span><br><span class="line">                    /_/</span><br><span class="line">Composer version 1.5.1 2017-08-09 16:07:22</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  command [options] [arguments]</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  -h, --help                     Display this help message</span><br><span class="line">  -q, --quiet                    Do not output any message</span><br><span class="line">  -V, --version                  Display this application version</span><br><span class="line">      --ansi                     Force ANSI output</span><br><span class="line">      --no-ansi                  Disable ANSI output</span><br><span class="line">  -n, --no-interaction           Do not ask any interactive question</span><br><span class="line">      --profile                  Display timing and memory usage information</span><br><span class="line">      --no-plugins               Whether to disable plugins.</span><br><span class="line">  -d, --working-dir=WORKING-DIR  If specified, use the given directory as working directory.</span><br><span class="line">  -v|vv|vvv, --verbose           Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span><br><span class="line"></span><br><span class="line">Available commands:</span><br><span class="line">  about           Shows the short information about Composer.</span><br><span class="line">  help            Displays help for a command</span><br><span class="line"></span><br><span class="line">  global          Allows running commands in the global composer dir ($COMPOSER_HOME).</span><br><span class="line">  list            Lists commands</span><br><span class="line">  diagnose        Diagnoses the system to identify common errors.</span><br><span class="line">  self-update     Updates composer.phar to the latest version.</span><br><span class="line">  selfupdate      Updates composer.phar to the latest version.</span><br><span class="line">  suggests        Shows package suggestions.</span><br><span class="line">  why             Shows which packages cause the given package to be installed.</span><br><span class="line">  why-not         Shows which packages prevent the given package from being installed.</span><br><span class="line"></span><br><span class="line">  validate        Validates a composer.json and composer.lock.</span><br><span class="line">  config          Sets config options.</span><br><span class="line"></span><br><span class="line">  archive         Creates an archive of this composer package.</span><br><span class="line">  browse          Opens the package&apos;s repository URL or homepage in your browser.</span><br><span class="line">  clear-cache     Clears composer&apos;s internal package cache.</span><br><span class="line">  clearcache      Clears composer&apos;s internal package cache.</span><br><span class="line">  create-project  Creates new project from a package into given directory.</span><br><span class="line">  depends         Shows which packages cause the given package to be installed.</span><br><span class="line">  dump-autoload   Dumps the autoloader.</span><br><span class="line">  dumpautoload    Dumps the autoloader.</span><br><span class="line">  exec            Executes a vendored binary/script.</span><br><span class="line">  home            Opens the package&apos;s repository URL or homepage in your browser.</span><br><span class="line">  licenses        Shows information about licenses of dependencies.</span><br><span class="line">  outdated        Shows a list of installed packages that have updates available, including their latest version.</span><br><span class="line">  prohibits       Shows which packages prevent the given package from being installed.</span><br><span class="line"></span><br><span class="line">  init            Creates a basic composer.json file in current directory.</span><br><span class="line">  install         Installs the project dependencies from the composer.lock file if present, or falls back on the composer.json.</span><br><span class="line">  require         Adds required packages to your composer.json and installs them.</span><br><span class="line">  update          Updates your dependencies to the latest version according to composer.json, and updates the composer.lock file.</span><br><span class="line">  remove          Removes a package from the require or require-dev.</span><br><span class="line">  run-script      Runs the scripts defined in composer.json.</span><br><span class="line"></span><br><span class="line">  info            Shows information about packages.</span><br><span class="line">  show            Shows information about packages.</span><br><span class="line">  search          Searches for packages.</span><br><span class="line">  status          Shows a list of locally modified packages.</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="help"><a href="#help" class="headerlink" title="help"></a>help</h2><p>显示帮助，如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">composer show -h</span><br><span class="line">composer show --help</span><br><span class="line">composer help show</span><br></pre></td></tr></table></figure></p>
+<h2 id="global"><a href="#global" class="headerlink" title="global"></a>global</h2><p>COMPOSER_HOME 是一个<strong>全局的</strong>隐藏的<strong>多项目共享</strong>的目录 : windows 下为：<code>$HOME\AppData\Roaming\Composer</code> linux 下为 <code>~/.Composer</code></p>
+<p>COMPOSER_HOME 下的子目录 <code>vendor/bin</code> 在安装 Composer 时应该是已经添加到了 PATH 环境变量</p>
+<p>查看全局 bin-dir 路径<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ composer global config bin-dir --absolute</span><br><span class="line">Changed current directory to C:/Users/ssl/AppData/Roaming/Composer</span><br><span class="line">C:\Users\ssl\AppData\Roaming\Composer/vendor/bin</span><br></pre></td></tr></table></figure></p>
+<p>global 使得 Composer 运行命令时临时切换到 COMPOSER_HOME 目录，因此其<code>bin</code>属性定义的命令会自动安装到 <code>COMPOSER_HOME/vendor/bin</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer global require fabpot/php-cs-fixer</span><br></pre></td></tr></table></figure></p>
+<p>因此，执行上述命令后，<code>php-cs-fixer</code> 应是全局可用</p>
+<p>更新全局命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer global update</span><br></pre></td></tr></table></figure></p>
+<h2 id="init"><a href="#init" class="headerlink" title="init"></a>init</h2><p>以向导的方式在当前目录初始化一个 composer.json 文件，包括：</p>
+<ul>
+<li>定义你当前项目的名称、描述、作者、类型（library,project,metapackage,composer-plugin）</li>
+<li>定义你当前项目的依赖包、依赖的开发包</li>
+</ul>
+<p>search for a package 格式应为 <code>foo/bar:1.0.0</code>，不写版本号则取最新的稳定版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">$ composer init</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  Welcome to the Composer config generator</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">This command will guide you through creating your composer.json config.</span><br><span class="line"></span><br><span class="line">Package name (&lt;vendor&gt;/&lt;name&gt;) [ssl/gitgo.git]: shenlin/gitgo</span><br><span class="line">Description []: a git and php composer test</span><br><span class="line">Author [shenlin9 &lt;bitbite@foxmail.com&gt;, n to skip]:</span><br><span class="line">Minimum Stability []: stable</span><br><span class="line">Package Type (e.g. library, project, metapackage, composer-plugin) []: library</span><br><span class="line">License []: MIT</span><br><span class="line"></span><br><span class="line">Define your dependencies.</span><br><span class="line"></span><br><span class="line">Would you like to define your dependencies (require) interactively [yes]? y</span><br><span class="line">Search for a package: monolog/monolog</span><br><span class="line">Enter the version constraint to require (or leave blank to use the latest version):</span><br><span class="line">Using version ^1.23 for monolog/monolog</span><br><span class="line">Search for a package:</span><br><span class="line">Would you like to define your dev dependencies (require-dev) interactively [yes]? y</span><br><span class="line">Search for a package: slim/slim</span><br><span class="line">Enter the version constraint to require (or leave blank to use the latest version):</span><br><span class="line">Using version ^3.8 for slim/slim</span><br><span class="line">Search for a package:</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    &quot;name&quot;: &quot;shenlin/gitgo&quot;,</span><br><span class="line">    &quot;description&quot;: &quot;a git and php composer test&quot;,</span><br><span class="line">    &quot;type&quot;: &quot;library&quot;,</span><br><span class="line">    &quot;require&quot;: &#123;</span><br><span class="line">        &quot;monolog/monolog&quot;: &quot;^1.23&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;require-dev&quot;: &#123;</span><br><span class="line">        &quot;slim/slim&quot;: &quot;^3.8&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;license&quot;: &quot;MIT&quot;,</span><br><span class="line">    &quot;authors&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;name&quot;: &quot;shenlin9&quot;,</span><br><span class="line">            &quot;email&quot;: &quot;bitbite@foxmail.com&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;minimum-stability&quot;: &quot;stable&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Do you confirm generation [yes]? y</span><br><span class="line">Would you like the vendor directory added to your .gitignore [yes]?bcit-ci/codeigniter y</span><br><span class="line"></span><br><span class="line">$ cat .gitignore</span><br><span class="line">/vendor/</span><br></pre></td></tr></table></figure>
+<h2 id="install"><a href="#install" class="headerlink" title="install"></a>install</h2><p>有 <code>composer.lock</code> 时则读取它，解决依赖关系，把确切的版本安装到 vendor 目录，</p>
+<p>没有 <code>composer.lock</code> 时则读取 <code>composer.json</code>，解决依赖关系，创建 <code>composer.lock</code> 文件，把符合版本约束的最新版本安装到 vendor 目录，并把安装的确切版本号写入 <code>composer.lock</code></p>
+<p><code>--prefer-dist</code></p>
+<p>对于稳定版本资源包，默认从 <code>dist</code> 属性定义的位置安装，为稳定的发行版</p>
+<p>速度较快，还可以避免因为 Git 安装不当的可能出现的问题</p>
+<p><code>--prefer-source</code></p>
+<p>从 <code>dist</code> 属性定义的位置安装，为开发中的源码</p>
+<p>可以用于修正一个bug，或者获取一个依赖包版本库的克隆</p>
+<p><code>--dev</code></p>
+<p>安装 <code>require-dev</code> 属性定义的依赖包，不安装则使用 <code>--no-dev</code></p>
+<p><code>--dry-run</code></p>
+<p>模拟安装，不实际安装文件</p>
+<p><code>--no-autoloader</code></p>
+<p>不产生 <code>vendor/autoload.php</code> 文件</p>
+<p><code>--no-scripts</code></p>
+<p>不执行 <code>composer.json</code> 文件里定义的脚本</p>
+<p><code>--no-progress</code></p>
+<p>不显示进度，显示进度有时会干扰终端，或者脚本无法处理</p>
+<p><code>--no-suggest</code></p>
+<h2 id="update"><a href="#update" class="headerlink" title="update"></a>update</h2><p>会先删除原来安装的版本，再安装 composer.json文件指定的版本</p>
+<p>支持通配符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer update slim/*</span><br></pre></td></tr></table></figure>
+<h2 id="require"><a href="#require" class="headerlink" title="require"></a>require</h2><p>命令行直接安装依赖包，会把新安装的依赖包更新到 <code>composer.json</code> 文件，写入锁文件 <code>composer.lock</code>，重新生成autoload 文件</p>
+<p>互动式安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer require</span><br></pre></td></tr></table></figure></p>
+<p>直接安装指定包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ composer require phpunit/phpunit</span><br><span class="line">Using version ^6.3 for phpunit/phpunit</span><br><span class="line">./composer.json has been updated</span><br><span class="line">...............</span><br><span class="line">Writing lock file</span><br><span class="line">Generating autoload files</span><br></pre></td></tr></table></figure></p>
+<h2 id="remove"><a href="#remove" class="headerlink" title="remove"></a>remove</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer remove slim/slim</span><br></pre></td></tr></table></figure>
+<h2 id="search"><a href="#search" class="headerlink" title="search"></a>search</h2><p>search 可以模糊查找，info 和 show 只能严格按照 <code>vendor/pakcage</code> 的格式写</p>
+<h2 id="info"><a href="#info" class="headerlink" title="info"></a>info</h2><p>是 show 的别名</p>
+<h2 id="show"><a href="#show" class="headerlink" title="show"></a>show</h2><p><code>composer show [option] [vendor/package]</code></p>
+<p>默认只显示本地已安装包</p>
+<p>不加 –all options，则必须在 composer.json<br>所在目录执行，因为这时只显示本地已安装包的信息，要读取 composer.json 文件</p>
+<p>加上 –all options，则先查找当前目录下有无 composer.json 文件，<br>有则使用 composer.json 文件里定义的 repository 去联网查找包信息<br>没有 composer.json 文件则从默认注册的 packagist 站点联网查找包信息。</p>
+<p>列出本地已安装的包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer show</span><br></pre></td></tr></table></figure></p>
+<p>联网查找列出所有可安装包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer show --all</span><br></pre></td></tr></table></figure></p>
+<p>列出本地已安装的monolog包的信息，版本号只显示当前版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer show monolog/monolog</span><br></pre></td></tr></table></figure></p>
+<p>会联网到 repository 去查找<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer show --all monolog/monolog</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>输出结果和不加options –all 的唯一不同之处是版本号会显示所有的版本</li>
+</ul>
+<p>支持通配符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer show --all monolog/*</span><br></pre></td></tr></table></figure></p>
+<h3 id="options"><a href="#options" class="headerlink" title="options"></a>options</h3><p><code>--all</code><br>列出已注册的资源库和默认资源库 packagist 中的所有包，默认只列出本地已安装的包</p>
+<p><code>--platform (-p)</code><br>只列出平台包</p>
+<p><code>--self (-s)</code><br>列出 root 包，也就是当前项目</p>
+<p><code>--latest (-l)</code><br>列出本地已安装的包，并对应列出资源库中最新的版本</p>
+<p><code>--outdated (-o)</code><br>隐含 <code>--latest</code> 参数，但只显示有新版本的本地安装包</p>
+<p><code>--available (-a)</code> List available packages only.<br><code>--name-only (-N)</code> List package names only.<br><code>--path (-P)</code> List package paths.<br><code>--tree (-t)</code> List your dependencies as a tree. If you pass a package name it will show the dependency tree for that package.<br><code>--minor-only (-m)</code> Use with <code>--latest</code>. Only shows packages that have minor SemVer-compatible updates.<br><code>--direct (-D)</code> Restricts the list of packages to your direct dependencies.<br><code>--strict</code> Return a non-zero exit code when there are outdated packages.<br><code>--format (-f)</code> Lets you pick between text (default) or json output format.</p>
+<h2 id="outdated"><a href="#outdated" class="headerlink" title="outdated"></a>outdated</h2><p><code>composer show -o</code> 的别名</p>
+<p>不同的颜色表示不同的状态：<br>绿色(=) 依赖包是最新版本无需更新<br>红色(!) 根据语义化版本定义，依赖包有了和版本约束兼容的版本可以更新<br>黄色(~) 根据语义化版本定义，依赖包有了新版本但不向后兼容，如果更新可能需要调整系统</p>
+<h2 id="home"><a href="#home" class="headerlink" title="home"></a>home</h2><p>browse 的别名</p>
+<h2 id="browse"><a href="#browse" class="headerlink" title="browse"></a>browse</h2><p>显示软件包的资源库 URL<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ composer browse -s slim/slim</span><br><span class="line">https://github.com/slimphp/Slim.git</span><br></pre></td></tr></table></figure></p>
+<p>显示软件包的主页 URL<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ composer browse -sH slim/slim</span><br><span class="line">https://slimframework.com</span><br></pre></td></tr></table></figure></p>
+<p>打开软件包的资源库 URL<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer browse slim/slim</span><br></pre></td></tr></table></figure></p>
+<p>打开软件包的主页 URL<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer browse -H slim/slim</span><br></pre></td></tr></table></figure></p>
+<h3 id="options-1"><a href="#options-1" class="headerlink" title="options"></a>options</h3><p><code>--homepage (-H)</code><br>显示或打开主页，默认是资源库</p>
+<p><code>--show (-s)</code><br>只显示 URL 不使用浏览器打开</p>
+<h2 id="suggests"><a href="#suggests" class="headerlink" title="suggests"></a>suggests</h2><p>根据当前已安装的包的集合，列出推荐安装的包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ composer suggests</span><br><span class="line">aws/aws-sdk-php</span><br><span class="line">doctrine/couchdb</span><br><span class="line">ext-amqp</span><br><span class="line">ext-mongo</span><br><span class="line">ext-soap</span><br><span class="line">ext-uopz</span><br><span class="line">ext-xdebug</span><br><span class="line">graylog2/gelf-php</span><br><span class="line">mongodb/mongodb</span><br><span class="line">php-amqplib/php-amqplib</span><br><span class="line">php-console/php-console</span><br><span class="line">phpunit/php-invoker</span><br><span class="line">rollbar/rollbar</span><br><span class="line">ruflin/elastica</span><br><span class="line">sentry/sentry</span><br></pre></td></tr></table></figure></p>
+<p>或者针对特定包列出推荐<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ composer suggests phpunit/phpunit</span><br><span class="line">ext-xdebug</span><br><span class="line">phpunit/php-invoker</span><br></pre></td></tr></table></figure></p>
+<p><strong>显示推荐原因</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ composer suggests -v</span><br><span class="line">monolog/monolog suggests:</span><br><span class="line"> - aws/aws-sdk-php: Allow sending log messages to AWS services like DynamoDB</span><br><span class="line"> - doctrine/couchdb: Allow sending log messages to a CouchDB server</span><br><span class="line"> - ext-amqp: Allow sending log messages to an AMQP server (1.0+ required)</span><br><span class="line"> - ext-mongo: Allow sending log messages to a MongoDB server</span><br><span class="line"> - graylog2/gelf-php: Allow sending log messages to a GrayLog2 server</span><br><span class="line"> - mongodb/mongodb: Allow sending log messages to a MongoDB server via PHP Driver</span><br><span class="line"> - php-amqplib/php-amqplib: Allow sending log messages to an AMQP server using php-amqplib</span><br><span class="line"> - php-console/php-console: Allow sending log messages to Google Chrome</span><br><span class="line"> - rollbar/rollbar: Allow sending log messages to Rollbar</span><br><span class="line"> - ruflin/elastica: Allow sending log messages to an Elastic Search server</span><br><span class="line"> - sentry/sentry: Allow sending log messages to a Sentry server</span><br></pre></td></tr></table></figure></p>
+<h3 id="options-2"><a href="#options-2" class="headerlink" title="options"></a>options</h3><p><code>-v --verbose</code><br>显示推荐安装原因，隐含有参数<code>--by-package --by-suggestion</code></p>
+<p><code>--by-package</code><br>按包分组</p>
+<p><code>--by-suggestion</code><br>只显示包含推荐原因的安装包</p>
+<h2 id="depends"><a href="#depends" class="headerlink" title="depends"></a>depends</h2><p>显示哪些儿包在依赖指定的安装包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ composer depends slim/slim</span><br><span class="line">shenlin/gitgo  dev-feature  requires (for development)  slim/slim (^3.8)</span><br></pre></td></tr></table></figure></p>
+<h3 id="options-3"><a href="#options-3" class="headerlink" title="options"></a>options</h3><p><code>-r --recursive</code> 递归到 root 包<br><code>-t --tree</code> 显示为树的形式，隐含有<code>-r</code>options</p>
+<h2 id="prohibits"><a href="#prohibits" class="headerlink" title="prohibits"></a>prohibits</h2><p>显示哪些儿包在禁止指定的安装包安装，被禁止的原因很可能是因为版本约束<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ composer prohibits symfony/symfony 3.1</span><br><span class="line">laravel/framework v5.2.16 requires symfony/var-dumper (2.8.*|3.0.*)</span><br><span class="line"></span><br><span class="line">$ composer prohibits slim/slim:4.0</span><br><span class="line">shenlin/gitgo  dev-feature  requires (for development)  slim/slim (^3.8)</span><br></pre></td></tr></table></figure></p>
+<p>可用于查找依赖包不能升级的原因</p>
+<p>还可用于平台包，如检测PHP是否可以升级到8.0版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$ composer prohibits php:8.0</span><br><span class="line">doctrine/instantiator               1.1.0   requires  php (^7.1)</span><br><span class="line">phar-io/manifest                    1.0.1   requires  php (^5.6 || ^7.0)</span><br><span class="line">phar-io/version                     1.0.1   requires  php (^5.6 || ^7.0)</span><br><span class="line">phpdocumentor/type-resolver         0.3.0   requires  php (^5.5 || ^7.0)</span><br><span class="line">phpspec/prophecy                    v1.7.0  requires  php (^5.3|^7.0)</span><br><span class="line">phpunit/php-code-coverage           5.2.2   requires  php (^7.0)</span><br><span class="line">phpunit/php-timer                   1.0.9   requires  php (^5.3.3 || ^7.0)</span><br><span class="line">phpunit/php-token-stream            2.0.0   requires  php (^7.0)</span><br><span class="line">phpunit/phpunit                     6.3.0   requires  php (^7.0)</span><br><span class="line">phpunit/phpunit-mock-objects        4.0.4   requires  php (^7.0)</span><br><span class="line">sebastian/code-unit-reverse-lookup  1.0.1   requires  php (^5.6 || ^7.0)</span><br><span class="line">sebastian/comparator                2.0.2   requires  php (^7.0)</span><br><span class="line">sebastian/diff                      2.0.1   requires  php (^7.0)</span><br><span class="line">sebastian/environment               3.1.0   requires  php (^7.0)</span><br><span class="line">sebastian/exporter                  3.1.0   requires  php (^7.0)</span><br><span class="line">sebastian/global-state              2.0.0   requires  php (^7.0)</span><br><span class="line">sebastian/object-enumerator         3.0.3   requires  php (^7.0)</span><br><span class="line">sebastian/object-reflector          1.1.1   requires  php (^7.0)</span><br><span class="line">sebastian/recursion-context         3.0.0   requires  php (^7.0)</span><br><span class="line">theseer/tokenizer                   1.1.0   requires  php (^7.0)</span><br><span class="line">webmozart/assert                    1.2.0   requires  php (^5.3.3 || ^7.0)</span><br></pre></td></tr></table></figure></p>
+<h3 id="options-4"><a href="#options-4" class="headerlink" title="options"></a>options</h3><p><code>-r --recursive</code> 递归到 root 包<br><code>-t --tree</code> 显示为树的形式，隐含有<code>-r</code>options</p>
+<h2 id="validate"><a href="#validate" class="headerlink" title="validate"></a>validate</h2><p>验证 <code>composer.json</code> 文件的有效性<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ composer validate</span><br><span class="line">./composer.json is valid</span><br></pre></td></tr></table></figure></p>
+<p>在新增一个 tag 或提交<code>composer.json</code>前都应该验证下</p>
+<h3 id="options-5"><a href="#options-5" class="headerlink" title="options"></a>options</h3><p><code>--no-check-all</code><br>使用无边界的版本约束时不要警告</p>
+<p><code>--no-check-lock</code><br>有<code>composer.lock</code>文件但不是最新的时不产生错误</p>
+<p><code>--no-check-publish</code><br><code>composer.json</code>的配置有效但不适合发行到 Packagist 时不产生错误</p>
+<p><code>--with-dependencies</code><br>同时验证依赖包的<code>composer.json</code>文件</p>
+<p><code>--strict</code><br>有错误或警告时退出码非0</p>
+<h2 id="status"><a href="#status" class="headerlink" title="status"></a>status</h2><p>如果依赖包是从 source 源代码库安装的，而且你会修改依赖包的代码，</p>
+<p>显示是否有修改<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer status</span><br></pre></td></tr></table></figure></p>
+<p>显示修改的详细信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer status -v</span><br></pre></td></tr></table></figure></p>
+<h2 id="self-update"><a href="#self-update" class="headerlink" title="self-update"></a>self-update</h2><p>更新 composer 到最新版本</p>
+<p>默认只获取 stable 版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ composer selfupdate</span><br><span class="line">$ composer self-update</span><br></pre></td></tr></table></figure></p>
+<p>获取指定版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer self-update 1.0.0-alpha7</span><br></pre></td></tr></table></figure></p>
+<p>也可以获取 pre-release 版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer self-update --preview</span><br></pre></td></tr></table></figure></p>
+<p>或者获取 Composer 最后一次提交的快照<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer self-update --snapshot</span><br></pre></td></tr></table></figure></p>
+<h2 id="config"><a href="#config" class="headerlink" title="config"></a>config</h2><p>使用此命令操作全局配置文件<code>config.json</code>和当前项目配置文件<code>composer.json</code></p>
+<p>最简单的读取和设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ composer config name shenlin/gitgo</span><br><span class="line"></span><br><span class="line">$ composer config name</span><br><span class="line">shenlin/gitgo</span><br></pre></td></tr></table></figure></p>
+<p>section的读取设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer config repositories.foo vcs https://github.com/foo/bar</span><br></pre></td></tr></table></figure></p>
+<p>格式为：<code>&quot;extra&quot;: { &quot;foo&quot;: { &quot;bar&quot;: &quot;value&quot; } }</code> 的设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer config extra.foo.bar value</span><br></pre></td></tr></table></figure></p>
+<p>多个属性可以使用 JSON<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer config repositories.foo &apos;&#123;&quot;type&quot;: &quot;vcs&quot;, &quot;url&quot;: &quot;http://svn.example.org/my-project/&quot;, &quot;trunk-path&quot;: &quot;master&quot;&#125;&apos;</span><br></pre></td></tr></table></figure></p>
+<h3 id="options-6"><a href="#options-6" class="headerlink" title="options"></a>options</h3><p><code>-l | --list</code><br>列出当前生效的配置</p>
+<p><code>-g | --global</code><br>只针对全局配置</p>
+<p><code>--absolute</code><br>获取<code>*-dir</code>一类的属性时，把相对路径转换为绝对路径，如<code>bin-dir</code></p>
+<p><code>--unset</code><br>移除设置项</p>
+<h2 id="create-project"><a href="#create-project" class="headerlink" title="create-project"></a>create-project</h2><p>从现有的包创建新项目</p>
+<p>默认创建 vendor/package 中的 package 文件夹<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer create-project laravel/laravel</span><br></pre></td></tr></table></figure></p>
+<p>指定安装文件夹 和 要安装的版本号<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer create-project slim/slim slim-2.6 2.6.2</span><br></pre></td></tr></table></figure></p>
+<p>??? 这个和 init 有什么不同</p>
+<h2 id="dump-autoload"><a href="#dump-autoload" class="headerlink" title="dump-autoload"></a>dump-autoload</h2><p>重新生成自动加载文件<code>vendor/autoload.php</code></p>
+<p>自动加载的方案有：PSR-0,PSR-4,classmap，其中前两个开发中使用方便，但性能较差，最后一个性能较好，但开发使用不方便</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer dump-autoload -o</span><br></pre></td></tr></table></figure>
+<h3 id="options-7"><a href="#options-7" class="headerlink" title="options"></a>options</h3><p><code>--optimize (-o)</code><br>把低效率的PSR-0/4替换为classmap，对于大项目替换过很耗时间，所以目前还不是默认options，但推荐生产环境使用</p>
+<p><code>--no-scripts</code></p>
+<p><code>--classmap-authoritative (-a)</code><br>只从 classmap 加载类，隐式调用<code>--optimize</code></p>
+<p><code>--no-dev</code><br>忽略属性 <code>autoload-dev</code>的规则</p>
+<h2 id="clear-cache"><a href="#clear-cache" class="headerlink" title="clear-cache"></a>clear-cache</h2><p>清空 Composer 缓存目录的所有文件 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ composer clear-cache</span><br><span class="line">Cache directory does not exist (cache-vcs-dir):</span><br><span class="line">Clearing cache (cache-repo-dir): C:\Users\ssl\AppData\Local\Composer\repo</span><br><span class="line">Clearing cache (cache-files-dir): C:\Users\ssl\AppData\Local\Composer\files</span><br><span class="line">Clearing cache (cache-dir): C:\Users\ssl\AppData\Local\Composer</span><br><span class="line">All caches cleared.</span><br></pre></td></tr></table></figure>
+<p>???缓存目录</p>
+<h2 id="licenses"><a href="#licenses" class="headerlink" title="licenses"></a>licenses</h2><p>列出包的名字、版本、许可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Name: shenlin/gitgo</span><br><span class="line">Version: dev-feature</span><br><span class="line">Licenses: MIT</span><br><span class="line">Dependencies:</span><br><span class="line"></span><br><span class="line">Name                                 Version  License</span><br><span class="line">container-interop/container-interop  1.2.0    MIT</span><br><span class="line">doctrine/instantiator                1.1.0    MIT</span><br><span class="line">monolog/monolog                      1.23.0   MIT</span><br><span class="line">myclabs/deep-copy                    1.6.1    MIT</span><br><span class="line">nikic/fast-route                     v1.2.0   BSD-3-Clause</span><br><span class="line">phar-io/manifest                     1.0.1    BSD-3-Clause</span><br><span class="line">phar-io/version                      1.0.1    BSD-3-Clause</span><br><span class="line">phpdocumentor/reflection-common      1.0      MIT</span><br><span class="line">phpdocumentor/reflection-docblock    3.2.2    MIT</span><br><span class="line">phpdocumentor/type-resolver          0.3.0    MIT</span><br><span class="line">phpspec/prophecy                     v1.7.0   MIT</span><br><span class="line">phpunit/php-code-coverage            5.2.2    BSD-3-Clause</span><br></pre></td></tr></table></figure></p>
+<h3 id="options-8"><a href="#options-8" class="headerlink" title="options"></a>options</h3><p><code>--format</code><br>text 和 json，默认 text, json 适合程序读取</p>
+<p><code>--no-dev</code></p>
+<h2 id="run-script"><a href="#run-script" class="headerlink" title="run-script"></a>run-script</h2><p>执行</p>
+<h3 id="options-9"><a href="#options-9" class="headerlink" title="options"></a>options</h3><p><code>--timeout</code><br>脚本超时时间，以秒为单位，0 表示永不超时</p>
+<p><code>--dev</code><br>包含 dev 脚本</p>
+<p><code>--no-dev</code><br>不包含 dev 脚本</p>
+<p><code>--list (-l)</code><br>列出用户定义的脚本</p>
+<h2 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h2><p>执行<code>vendor/bin</code>目录下的脚本或命令</p>
+<p>列表查看<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ composer exec -l</span><br><span class="line">Available binaries:</span><br><span class="line">- phpunit</span><br></pre></td></tr></table></figure></p>
+<h3 id="options-10"><a href="#options-10" class="headerlink" title="options"></a>options</h3><p><code>-l | --list</code></p>
+<h2 id="diagnose"><a href="#diagnose" class="headerlink" title="diagnose"></a>diagnose</h2><p>系统诊断<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ composer diagnose</span><br><span class="line">Checking composer.json: OK</span><br><span class="line">Checking platform settings: OK</span><br><span class="line">Checking git settings: OK</span><br><span class="line">Checking http connectivity to packagist: OK</span><br><span class="line">Checking https connectivity to packagist: OK</span><br><span class="line">Checking github.com rate limit: OK</span><br><span class="line">Checking disk free space: OK</span><br><span class="line">Checking pubkeys:</span><br><span class="line">Tags Public Key Fingerprint: 57815BA2 7E54DC31 7ECC7CC5 573090D0  87719BA6 8F3BB723 4E5D42D0 84A14642</span><br><span class="line">Dev Public Key Fingerprint: 4AC45767 E5EC2265 2F0C1167 CBBB8A2B  0C708369 153E328C AD90147D AFE50952</span><br><span class="line">OK</span><br><span class="line">Checking composer version: OK</span><br></pre></td></tr></table></figure></p>
+<h2 id="archive"><a href="#archive" class="headerlink" title="archive"></a>archive</h2><p>将当前项目归档为一个文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ composer archive</span><br><span class="line">Creating the archive into &quot;.&quot;.</span><br><span class="line">Created: ./shenlin-gitgo-e69d4c53a2f3ed96cda622586f83e07e78adfdbe-df2479.tar</span><br></pre></td></tr></table></figure></p>
+<p>归档指定包的指定版本，注意：必须指定版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ composer archive slim/slim 3.8.1</span><br><span class="line">Searching for the specified package.</span><br><span class="line">Found multiple matches, selected slim/slim 3.8.1.</span><br><span class="line">Alternatives were slim/slim 3.8.1, slim/slim 3.8.1.</span><br><span class="line">Please use a more specific constraint to pick a different package.</span><br><span class="line">Creating the archive into &quot;.&quot;.</span><br><span class="line">  - Installing slim/slim (3.8.1): Loading from cache</span><br><span class="line">Created: ./slim-slim-5385302707530b2bccee1769613ad769859b826d-zip-8aa1e0.tar</span><br></pre></td></tr></table></figure></p>
+<h3 id="options-11"><a href="#options-11" class="headerlink" title="options"></a>options</h3><p><code>--format</code><br>默认 <code>tar</code> 还可选 <code>zip</code></p>
+<p><code>--dir</code><br>归档文件保存目录，默认当前目录</p>
+<p><code>--file</code><br>归档文件名</p>
+<p><a href="https://zhuanlan.zhihu.com/p/27943241" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/27943241</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PHP/" rel="tag"># PHP</a>
+          
+            <a href="/tags/Composer/" rel="tag"># Composer</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Composer - Chapter 3 - 基本用法/" rel="next" title="Composer - Chapter 3 - 基本用法">
+                <i class="fa fa-chevron-left"></i> Composer - Chapter 3 - 基本用法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Composer - Chapter 5 - 环境变量/" rel="prev" title="Composer - Chapter 5 - 环境变量">
+                Composer - Chapter 5 - 环境变量 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#help"><span class="nav-number">1.</span> <span class="nav-text"><a href="#help" class="headerlink" title="help"></a>help</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#global"><span class="nav-number">2.</span> <span class="nav-text"><a href="#global" class="headerlink" title="global"></a>global</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#init"><span class="nav-number">3.</span> <span class="nav-text"><a href="#init" class="headerlink" title="init"></a>init</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#install"><span class="nav-number">4.</span> <span class="nav-text"><a href="#install" class="headerlink" title="install"></a>install</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#update"><span class="nav-number">5.</span> <span class="nav-text"><a href="#update" class="headerlink" title="update"></a>update</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#require"><span class="nav-number">6.</span> <span class="nav-text"><a href="#require" class="headerlink" title="require"></a>require</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#remove"><span class="nav-number">7.</span> <span class="nav-text"><a href="#remove" class="headerlink" title="remove"></a>remove</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#search"><span class="nav-number">8.</span> <span class="nav-text"><a href="#search" class="headerlink" title="search"></a>search</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#info"><span class="nav-number">9.</span> <span class="nav-text"><a href="#info" class="headerlink" title="info"></a>info</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#show"><span class="nav-number">10.</span> <span class="nav-text"><a href="#show" class="headerlink" title="show"></a>show</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#options"><span class="nav-number">10.1.</span> <span class="nav-text"><a href="#options" class="headerlink" title="options"></a>options</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#outdated"><span class="nav-number">11.</span> <span class="nav-text"><a href="#outdated" class="headerlink" title="outdated"></a>outdated</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#home"><span class="nav-number">12.</span> <span class="nav-text"><a href="#home" class="headerlink" title="home"></a>home</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#browse"><span class="nav-number">13.</span> <span class="nav-text"><a href="#browse" class="headerlink" title="browse"></a>browse</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#options-1"><span class="nav-number">13.1.</span> <span class="nav-text"><a href="#options-1" class="headerlink" title="options"></a>options</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#suggests"><span class="nav-number">14.</span> <span class="nav-text"><a href="#suggests" class="headerlink" title="suggests"></a>suggests</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#options-2"><span class="nav-number">14.1.</span> <span class="nav-text"><a href="#options-2" class="headerlink" title="options"></a>options</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#depends"><span class="nav-number">15.</span> <span class="nav-text"><a href="#depends" class="headerlink" title="depends"></a>depends</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#options-3"><span class="nav-number">15.1.</span> <span class="nav-text"><a href="#options-3" class="headerlink" title="options"></a>options</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#prohibits"><span class="nav-number">16.</span> <span class="nav-text"><a href="#prohibits" class="headerlink" title="prohibits"></a>prohibits</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#options-4"><span class="nav-number">16.1.</span> <span class="nav-text"><a href="#options-4" class="headerlink" title="options"></a>options</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#validate"><span class="nav-number">17.</span> <span class="nav-text"><a href="#validate" class="headerlink" title="validate"></a>validate</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#options-5"><span class="nav-number">17.1.</span> <span class="nav-text"><a href="#options-5" class="headerlink" title="options"></a>options</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#status"><span class="nav-number">18.</span> <span class="nav-text"><a href="#status" class="headerlink" title="status"></a>status</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#self-update"><span class="nav-number">19.</span> <span class="nav-text"><a href="#self-update" class="headerlink" title="self-update"></a>self-update</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#config"><span class="nav-number">20.</span> <span class="nav-text"><a href="#config" class="headerlink" title="config"></a>config</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#options-6"><span class="nav-number">20.1.</span> <span class="nav-text"><a href="#options-6" class="headerlink" title="options"></a>options</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#create-project"><span class="nav-number">21.</span> <span class="nav-text"><a href="#create-project" class="headerlink" title="create-project"></a>create-project</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dump-autoload"><span class="nav-number">22.</span> <span class="nav-text"><a href="#dump-autoload" class="headerlink" title="dump-autoload"></a>dump-autoload</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#options-7"><span class="nav-number">22.1.</span> <span class="nav-text"><a href="#options-7" class="headerlink" title="options"></a>options</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#clear-cache"><span class="nav-number">23.</span> <span class="nav-text"><a href="#clear-cache" class="headerlink" title="clear-cache"></a>clear-cache</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#licenses"><span class="nav-number">24.</span> <span class="nav-text"><a href="#licenses" class="headerlink" title="licenses"></a>licenses</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#options-8"><span class="nav-number">24.1.</span> <span class="nav-text"><a href="#options-8" class="headerlink" title="options"></a>options</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#run-script"><span class="nav-number">25.</span> <span class="nav-text"><a href="#run-script" class="headerlink" title="run-script"></a>run-script</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#options-9"><span class="nav-number">25.1.</span> <span class="nav-text"><a href="#options-9" class="headerlink" title="options"></a>options</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exec"><span class="nav-number">26.</span> <span class="nav-text"><a href="#exec" class="headerlink" title="exec"></a>exec</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#options-10"><span class="nav-number">26.1.</span> <span class="nav-text"><a href="#options-10" class="headerlink" title="options"></a>options</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#diagnose"><span class="nav-number">27.</span> <span class="nav-text"><a href="#diagnose" class="headerlink" title="diagnose"></a>diagnose</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#archive"><span class="nav-number">28.</span> <span class="nav-text"><a href="#archive" class="headerlink" title="archive"></a>archive</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#options-11"><span class="nav-number">28.1.</span> <span class="nav-text"><a href="#options-11" class="headerlink" title="options"></a>options</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

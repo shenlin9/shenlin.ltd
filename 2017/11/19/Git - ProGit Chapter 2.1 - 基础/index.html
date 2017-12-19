@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Git," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="创建 git 库第一种是把现有项目或目录导入所有文件到 Git 中，第二种是从一个服务器克隆一个现有的 Git 仓库 现有目录中初始化仓库进入项目目录，执行1$ git init 将创建一个 git 仓库并进行初始化，.git 目录就是 git 仓库，包含了 git 仓库必须的所有文件，这时项目还没有文件被跟踪，再执行命令12$ git add -A$ git commit -m &amp;quot;cr">
+<meta name="keywords" content="Git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter 2.1 - Git 基础">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 2.1 - 基础/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="创建 git 库第一种是把现有项目或目录导入所有文件到 Git 中，第二种是从一个服务器克隆一个现有的 Git 仓库 现有目录中初始化仓库进入项目目录，执行1$ git init 将创建一个 git 仓库并进行初始化，.git 目录就是 git 仓库，包含了 git 仓库必须的所有文件，这时项目还没有文件被跟踪，再执行命令12$ git add -A$ git commit -m &amp;quot;cr">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.532Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter 2.1 - Git 基础">
+<meta name="twitter:description" content="创建 git 库第一种是把现有项目或目录导入所有文件到 Git 中，第二种是从一个服务器克隆一个现有的 Git 仓库 现有目录中初始化仓库进入项目目录，执行1$ git init 将创建一个 git 仓库并进行初始化，.git 目录就是 git 仓库，包含了 git 仓库必须的所有文件，这时项目还没有文件被跟踪，再执行命令12$ git add -A$ git commit -m &amp;quot;cr">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 2.1 - 基础/"/>
+
+
+
+
+
+  <title>chapter 2.1 - Git 基础 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 2.1 - 基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">chapter 2.1 - Git 基础</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/Book-ProGit/" itemprop="url" rel="index">
+                    <span itemprop="name">Book-ProGit</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="创建-git-库"><a href="#创建-git-库" class="headerlink" title="创建 git 库"></a>创建 git 库</h2><p>第一种是把现有项目或目录导入所有文件到 Git 中，<br>第二种是从一个服务器克隆一个现有的 Git 仓库</p>
+<h3 id="现有目录中初始化仓库"><a href="#现有目录中初始化仓库" class="headerlink" title="现有目录中初始化仓库"></a>现有目录中初始化仓库</h3><p>进入项目目录，执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git init</span><br></pre></td></tr></table></figure></p>
+<p>将创建一个 git 仓库并进行初始化，<br>.git 目录就是 git 仓库，包含了 git 仓库必须的所有文件，<br>这时项目还没有文件被跟踪，再执行命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git add -A</span><br><span class="line">$ git commit -m &quot;create project&quot;</span><br></pre></td></tr></table></figure></p>
+<p>开始跟踪项目文件</p>
+<h3 id="克隆现有的仓库"><a href="#克隆现有的仓库" class="headerlink" title="克隆现有的仓库"></a>克隆现有的仓库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git clone git@github.com:bitbite/gitgo.git</span><br><span class="line"></span><br><span class="line">//自定义本地库的名字</span><br><span class="line">$ git clone https://github.com/libgit2/libgit2 gitgo</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>将会创建目录 gitgo，并创建子目录 .git 保存项目所有文件</p>
+</li>
+<li><p>目标库的每一个文件的每一个版本都被拉取下来。</p>
+</li>
+<li><p>克隆的远程库的默认名字是 : origin</p>
+</li>
+<li><p>会自动设置本地 master 分支跟踪克隆的远程仓库的 master 分支</p>
+</li>
+</ul>
+<h2 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h2><h3 id="查看文件状态"><a href="#查看文件状态" class="headerlink" title="查看文件状态"></a>查看文件状态</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br><span class="line"></span><br><span class="line">// -s 选项输出格式更紧凑</span><br><span class="line">$ git status -s</span><br><span class="line"> M README</span><br><span class="line">MM Rakefile</span><br><span class="line">A  lib/git.rb</span><br><span class="line">M  lib/simplegit.rb</span><br><span class="line">?? LICENSE.txt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>新添加的未跟踪文件前面有 ?? 标记</li>
+<li>新添加到暂存区中的文件前面有 A 标记，</li>
+<li>修改过的文件前面有 M 标记<ul>
+<li>M 有两个可以出现的位置</li>
+<li>右边的 M 表示该文件被修改了但是还没放入暂存区，</li>
+<li>左边的 M 表示该文件被修改了并放入了暂存区</li>
+</ul>
+</li>
+</ul>
+<h3 id="查看文件修改内容"><a href="#查看文件修改内容" class="headerlink" title="查看文件修改内容"></a>查看文件修改内容</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git diff</span><br><span class="line">$ git diff --cached</span><br><span class="line">$ git diff HEAD</span><br></pre></td></tr></table></figure>
+<h3 id="跟踪新文件"><a href="#跟踪新文件" class="headerlink" title="跟踪新文件"></a>跟踪新文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add README</span><br></pre></td></tr></table></figure>
+<h3 id="暂存文件"><a href="#暂存文件" class="headerlink" title="暂存文件"></a>暂存文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add README</span><br></pre></td></tr></table></figure>
+<h3 id="忽略文件"><a href="#忽略文件" class="headerlink" title="忽略文件"></a>忽略文件</h3><p>要养成一开始就设置好 .gitignore 文件的习惯，以免将来误提交无用的文件</p>
+<h4 id="1-gitignore-的格式规范"><a href="#1-gitignore-的格式规范" class="headerlink" title="1. .gitignore 的格式规范"></a>1. .gitignore 的格式规范</h4><ul>
+<li>所有空行或者以 ＃ 开头的行都会被 Git 忽略。</li>
+<li>可以使用标准的 glob 模式匹配。</li>
+<li>匹配模式可以以（/）开头防止递归。</li>
+<li>匹配模式可以以（/）结尾指定目录。</li>
+<li>要忽略指定模式以外的文件或目录，可以在模式前加上惊叹号（!）取反。</li>
+</ul>
+<h4 id="2-glob-模式"><a href="#2-glob-模式" class="headerlink" title="2. glob 模式"></a>2. glob 模式</h4><p>glob 模式是指 shell 所使用的简化了的正则表达式 </p>
+<ul>
+<li>星号（*）匹配零个或多个任意字符；</li>
+<li>[abc] 匹配任何一个列在方括号中的字符（这个例子要么匹配一个 a，要么匹配一个 b，要么匹配一个 c）</li>
+<li>问号（?）只匹配一个任意字符；</li>
+<li>方括号中使用短划线分隔两个字符，表示所有在这两个字符范围内的都可以匹配（比如 [0-9] 表示匹配所有 0 到 9 的数字）。</li>
+<li>使用两个星号（*<em>) 表示匹配任意中间目录，比如`a/*</em>/z<code>可以匹配 a/z, a/b/z 或</code>a/b/c/z`等。</li>
+</ul>
+<p>举例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 不跟踪.a结尾文件</span><br><span class="line">*.a</span><br><span class="line"></span><br><span class="line"># 但是要跟踪lib.a结尾文件，即使有上面的规则</span><br><span class="line">!lib.a</span><br><span class="line"></span><br><span class="line"># 当前目录下的TODO文件，但不包含子目录下的TODO文件</span><br><span class="line">/TODO</span><br><span class="line"></span><br><span class="line"># build目录下的所有文件</span><br><span class="line">build/</span><br><span class="line"></span><br><span class="line"># doc目录(不包含子目录)下所有与的txt文件</span><br><span class="line">doc/*.txt</span><br><span class="line"></span><br><span class="line"># doc目录(包括子目录)下的所有pdf文件，</span><br><span class="line">doc/**/*.pdf</span><br></pre></td></tr></table></figure></p>
+<h3 id="提交更新"><a href="#提交更新" class="headerlink" title="提交更新"></a>提交更新</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//将启动编辑器让你输入提交说明</span><br><span class="line">//需要在启动的编辑器顶行输入提交说明并保存</span><br><span class="line">//所有的#开头的注释行都会被删除</span><br><span class="line">$ git commit</span><br><span class="line"></span><br><span class="line">//在启动的编辑器中显示本次的修改</span><br><span class="line">$ git commit -v </span><br><span class="line"></span><br><span class="line">//行内注释，不启动编辑器</span><br><span class="line">$ git commit -m &quot;modified&quot;</span><br><span class="line"></span><br><span class="line">//-a 选项将把**已跟踪**的文件自动加入暂存区并提交</span><br><span class="line">//   省略了&apos;git add&apos;的步骤</span><br><span class="line">$ git commit -am &quot;modified something&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="移除文件"><a href="#移除文件" class="headerlink" title="移除文件"></a>移除文件</h3><h4 id="1-移除文件"><a href="#1-移除文件" class="headerlink" title="1. 移除文件"></a>1. 移除文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rm file1</span><br></pre></td></tr></table></figure>
+<p>git 中移除文件要先从跟踪文件清单中移除然后从磁盘中移除<br><code>git rm</code>即可同时完成上面两件事<br>等价于<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rm file1</span><br><span class="line">$ git add file1</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-强制移除已修改文件"><a href="#2-强制移除已修改文件" class="headerlink" title="2. 强制移除已修改文件"></a>2. 强制移除已修改文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rm -f file1</span><br></pre></td></tr></table></figure>
+<p>删除之前已修改过或已放入暂存区，则必须要用强制删除选项 -f。 这是一种安全特性，用于防止误删还没有添加到快照的数据，这样的数据不能被 Git 恢复。</p>
+<h4 id="3-从跟踪文件清单中移除"><a href="#3-从跟踪文件清单中移除" class="headerlink" title="3. 从跟踪文件清单中移除"></a>3. 从跟踪文件清单中移除</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rm --cached file1</span><br></pre></td></tr></table></figure>
+<ul>
+<li>只从git仓库中删除，保留磁盘文件</li>
+<li>如不小心把一堆日志文件加入暂存区时</li>
+</ul>
+<h4 id="4-使用-glob-模式"><a href="#4-使用-glob-模式" class="headerlink" title="4. 使用 glob 模式"></a>4. 使用 glob 模式</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git rm log/\*.log</span><br><span class="line"></span><br><span class="line">//移除~结尾的文件</span><br><span class="line">$ git rm \*~</span><br></pre></td></tr></table></figure>
+<h3 id="移动文件"><a href="#移动文件" class="headerlink" title="移动文件"></a>移动文件</h3><p>git 并不跟踪文件移动操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git mv file_from file_to</span><br></pre></td></tr></table></figure>
+<p>相当于<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mv file_from file_to</span><br><span class="line">$ git rm file_from</span><br><span class="line">$ git add file_to</span><br></pre></td></tr></table></figure></p>
+<p>注意第一条不是 git 命令</p>
+<h2 id="撤销操作"><a href="#撤销操作" class="headerlink" title="撤销操作"></a>撤销操作</h2><p>git 中提交过的文件总是可恢复的，而未提交的可能永远丢失。</p>
+<h3 id="重新提交"><a href="#重新提交" class="headerlink" title="重新提交"></a>重新提交</h3><p>提交后发现漏了文件，或者提交注释写的不好，想要对刚做的提交进行修正，可以使用<code>--amend</code>选项再次提交，则本次的提交对象将替换上次的提交对象，若暂存区的文件没有改动，则提交对象里的文件快照不变，若暂存区文件改动过，则文件快照也改变。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//只更新提交信息，生成新的提交对象，但树对象不变</span><br><span class="line">$ git commit -m &quot;make comment right&quot; --amend</span><br><span class="line"></span><br><span class="line">//补上漏掉的文件，生成新的提交对象，同时也生成新的树对象</span><br><span class="line">$ git add index.html</span><br><span class="line">$ git commit -m &quot;make comment right&quot; --amend</span><br></pre></td></tr></table></figure>
+<h3 id="取消暂存"><a href="#取消暂存" class="headerlink" title="取消暂存"></a>取消暂存</h3><p>取消放入暂存区的文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset HEAD file1</span><br></pre></td></tr></table></figure></p>
+<h3 id="放弃修改"><a href="#放弃修改" class="headerlink" title="放弃修改"></a>放弃修改</h3><p>放弃工作目录中指定文件的修改<br>比较危险，当前修改过的文件会被从暂存区检出的文件覆盖<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -- file1</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 10.8 - 环境变量/" rel="next" title="chapter 10.8 - Git 环境变量">
+                <i class="fa fa-chevron-left"></i> chapter 10.8 - Git 环境变量
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 2.2 - 提交历史/" rel="prev" title="chapter 2.2 - Git 提交历史">
+                chapter 2.2 - Git 提交历史 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建-git-库"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;-git-&#x5E93;" class="headerlink" title="&#x521B;&#x5EFA; git &#x5E93;"></a>&#x521B;&#x5EFA; git &#x5E93;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#现有目录中初始化仓库"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x73B0;&#x6709;&#x76EE;&#x5F55;&#x4E2D;&#x521D;&#x59CB;&#x5316;&#x4ED3;&#x5E93;" class="headerlink" title="&#x73B0;&#x6709;&#x76EE;&#x5F55;&#x4E2D;&#x521D;&#x59CB;&#x5316;&#x4ED3;&#x5E93;"></a>&#x73B0;&#x6709;&#x76EE;&#x5F55;&#x4E2D;&#x521D;&#x59CB;&#x5316;&#x4ED3;&#x5E93;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#克隆现有的仓库"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x514B;&#x9686;&#x73B0;&#x6709;&#x7684;&#x4ED3;&#x5E93;" class="headerlink" title="&#x514B;&#x9686;&#x73B0;&#x6709;&#x7684;&#x4ED3;&#x5E93;"></a>&#x514B;&#x9686;&#x73B0;&#x6709;&#x7684;&#x4ED3;&#x5E93;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件操作"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x6587;&#x4EF6;&#x64CD;&#x4F5C;" class="headerlink" title="&#x6587;&#x4EF6;&#x64CD;&#x4F5C;"></a>&#x6587;&#x4EF6;&#x64CD;&#x4F5C;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看文件状态"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x67E5;&#x770B;&#x6587;&#x4EF6;&#x72B6;&#x6001;" class="headerlink" title="&#x67E5;&#x770B;&#x6587;&#x4EF6;&#x72B6;&#x6001;"></a>&#x67E5;&#x770B;&#x6587;&#x4EF6;&#x72B6;&#x6001;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看文件修改内容"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x67E5;&#x770B;&#x6587;&#x4EF6;&#x4FEE;&#x6539;&#x5185;&#x5BB9;" class="headerlink" title="&#x67E5;&#x770B;&#x6587;&#x4EF6;&#x4FEE;&#x6539;&#x5185;&#x5BB9;"></a>&#x67E5;&#x770B;&#x6587;&#x4EF6;&#x4FEE;&#x6539;&#x5185;&#x5BB9;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跟踪新文件"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x8DDF;&#x8E2A;&#x65B0;&#x6587;&#x4EF6;" class="headerlink" title="&#x8DDF;&#x8E2A;&#x65B0;&#x6587;&#x4EF6;"></a>&#x8DDF;&#x8E2A;&#x65B0;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#暂存文件"><span class="nav-number">2.4.</span> <span class="nav-text"><a href="#&#x6682;&#x5B58;&#x6587;&#x4EF6;" class="headerlink" title="&#x6682;&#x5B58;&#x6587;&#x4EF6;"></a>&#x6682;&#x5B58;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#忽略文件"><span class="nav-number">2.5.</span> <span class="nav-text"><a href="#&#x5FFD;&#x7565;&#x6587;&#x4EF6;" class="headerlink" title="&#x5FFD;&#x7565;&#x6587;&#x4EF6;"></a>&#x5FFD;&#x7565;&#x6587;&#x4EF6;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-gitignore-的格式规范"><span class="nav-number">2.5.1.</span> <span class="nav-text"><a href="#1-gitignore-&#x7684;&#x683C;&#x5F0F;&#x89C4;&#x8303;" class="headerlink" title="1. .gitignore &#x7684;&#x683C;&#x5F0F;&#x89C4;&#x8303;"></a>1. .gitignore &#x7684;&#x683C;&#x5F0F;&#x89C4;&#x8303;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-glob-模式"><span class="nav-number">2.5.2.</span> <span class="nav-text"><a href="#2-glob-&#x6A21;&#x5F0F;" class="headerlink" title="2. glob &#x6A21;&#x5F0F;"></a>2. glob &#x6A21;&#x5F0F;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提交更新"><span class="nav-number">2.6.</span> <span class="nav-text"><a href="#&#x63D0;&#x4EA4;&#x66F4;&#x65B0;" class="headerlink" title="&#x63D0;&#x4EA4;&#x66F4;&#x65B0;"></a>&#x63D0;&#x4EA4;&#x66F4;&#x65B0;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移除文件"><span class="nav-number">2.7.</span> <span class="nav-text"><a href="#&#x79FB;&#x9664;&#x6587;&#x4EF6;" class="headerlink" title="&#x79FB;&#x9664;&#x6587;&#x4EF6;"></a>&#x79FB;&#x9664;&#x6587;&#x4EF6;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-移除文件"><span class="nav-number">2.7.1.</span> <span class="nav-text"><a href="#1-&#x79FB;&#x9664;&#x6587;&#x4EF6;" class="headerlink" title="1. &#x79FB;&#x9664;&#x6587;&#x4EF6;"></a>1. &#x79FB;&#x9664;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-强制移除已修改文件"><span class="nav-number">2.7.2.</span> <span class="nav-text"><a href="#2-&#x5F3A;&#x5236;&#x79FB;&#x9664;&#x5DF2;&#x4FEE;&#x6539;&#x6587;&#x4EF6;" class="headerlink" title="2. &#x5F3A;&#x5236;&#x79FB;&#x9664;&#x5DF2;&#x4FEE;&#x6539;&#x6587;&#x4EF6;"></a>2. &#x5F3A;&#x5236;&#x79FB;&#x9664;&#x5DF2;&#x4FEE;&#x6539;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-从跟踪文件清单中移除"><span class="nav-number">2.7.3.</span> <span class="nav-text"><a href="#3-&#x4ECE;&#x8DDF;&#x8E2A;&#x6587;&#x4EF6;&#x6E05;&#x5355;&#x4E2D;&#x79FB;&#x9664;" class="headerlink" title="3. &#x4ECE;&#x8DDF;&#x8E2A;&#x6587;&#x4EF6;&#x6E05;&#x5355;&#x4E2D;&#x79FB;&#x9664;"></a>3. &#x4ECE;&#x8DDF;&#x8E2A;&#x6587;&#x4EF6;&#x6E05;&#x5355;&#x4E2D;&#x79FB;&#x9664;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-使用-glob-模式"><span class="nav-number">2.7.4.</span> <span class="nav-text"><a href="#4-&#x4F7F;&#x7528;-glob-&#x6A21;&#x5F0F;" class="headerlink" title="4. &#x4F7F;&#x7528; glob &#x6A21;&#x5F0F;"></a>4. &#x4F7F;&#x7528; glob &#x6A21;&#x5F0F;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移动文件"><span class="nav-number">2.8.</span> <span class="nav-text"><a href="#&#x79FB;&#x52A8;&#x6587;&#x4EF6;" class="headerlink" title="&#x79FB;&#x52A8;&#x6587;&#x4EF6;"></a>&#x79FB;&#x52A8;&#x6587;&#x4EF6;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#撤销操作"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x64A4;&#x9500;&#x64CD;&#x4F5C;" class="headerlink" title="&#x64A4;&#x9500;&#x64CD;&#x4F5C;"></a>&#x64A4;&#x9500;&#x64CD;&#x4F5C;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#重新提交"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x91CD;&#x65B0;&#x63D0;&#x4EA4;" class="headerlink" title="&#x91CD;&#x65B0;&#x63D0;&#x4EA4;"></a>&#x91CD;&#x65B0;&#x63D0;&#x4EA4;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#取消暂存"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x53D6;&#x6D88;&#x6682;&#x5B58;" class="headerlink" title="&#x53D6;&#x6D88;&#x6682;&#x5B58;"></a>&#x53D6;&#x6D88;&#x6682;&#x5B58;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#放弃修改"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#&#x653E;&#x5F03;&#x4FEE;&#x6539;" class="headerlink" title="&#x653E;&#x5F03;&#x4FEE;&#x6539;"></a>&#x653E;&#x5F03;&#x4FEE;&#x6539;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

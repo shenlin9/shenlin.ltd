@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Git,Git Grep," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Git 搜索用于查找方法的定义或调用，或者方法的变更历史等。">
+<meta name="keywords" content="Git,Git Grep">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter 7.5 - Git 搜索">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 7.5 - 搜索/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="Git 搜索用于查找方法的定义或调用，或者方法的变更历史等。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.543Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter 7.5 - Git 搜索">
+<meta name="twitter:description" content="Git 搜索用于查找方法的定义或调用，或者方法的变更历史等。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 7.5 - 搜索/"/>
+
+
+
+
+
+  <title>chapter 7.5 - Git 搜索 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 7.5 - 搜索/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">chapter 7.5 - Git 搜索</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/Book-ProGit/" itemprop="url" rel="index">
+                    <span itemprop="name">Book-ProGit</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Git 搜索用于查找方法的定义或调用，或者方法的变更历史等。</p>
+<a id="more"></a>
+<h2 id="Git-Grep"><a href="#Git-Grep" class="headerlink" title="Git Grep"></a>Git Grep</h2><p>git grep 用于在提交历史或工作目录中查找字符串或正则表达式 ，</p>
+<p>git grep 相对于 grep、 ack等常用搜索命令的优点：</p>
+<p>第一就是速度非常快，</p>
+<p>第二是不仅仅可以可以搜索工作目录，还可以搜索历史记录。 </p>
+<p>常用搜索选项</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git grep linux</span><br><span class="line">source/_posts/NeoVim NyaoVim.md:linux 位置：`$HOME\.config\nvim\init.vim`</span><br><span class="line">source/_posts/SpaceVim.md:linux</span><br><span class="line">source/_posts/chapter 1.2 - git 起步.md:    linux: /etc/gitconfig</span><br><span class="line">source/_posts/chapter 1.2 - git 起步.md:   linux:  ~/.gitconfig 或 ~/.config/git/config</span><br></pre></td></tr></table></figure>
+<p><code>-n</code> 参数显示行号<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git grep -n linux</span><br><span class="line">source/_posts/NeoVim NyaoVim.md:23:linux 位置：`$HOME\.config\nvim\init.vim`</span><br><span class="line">source/_posts/SpaceVim.md:29:linux</span><br><span class="line">source/_posts/chapter 1.2 - git 起步.md:117:    linux: /etc/gitconfig</span><br><span class="line">source/_posts/chapter 1.2 - git 起步.md:125:   linux:  ~/.gitconfig 或 ~/.config/git/config</span><br></pre></td></tr></table></figure></p>
+<p><code>--count</code> 显示概述信息：包含匹配的文件以及包含多少匹配<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git grep --count linux</span><br><span class="line">source/_posts/NeoVim NyaoVim.md:1</span><br><span class="line">source/_posts/SpaceVim.md:1</span><br><span class="line">source/_posts/chapter 1.2 - git 起步.md:2</span><br></pre></td></tr></table></figure></p>
+<p><code>--break</code> 在不同的文件之间加入空行分割<br><code>--heading</code> 同一个文件中的匹配行只显示一次文件名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ git grep --break --heading linux</span><br><span class="line">source/_posts/NeoVim NyaoVim.md</span><br><span class="line">linux 位置：`$HOME\.config\nvim\init.vim`</span><br><span class="line"></span><br><span class="line">source/_posts/SpaceVim.md</span><br><span class="line">linux</span><br><span class="line"></span><br><span class="line">source/_posts/chapter 1.2 - git 起步.md</span><br><span class="line">    linux: /etc/gitconfig</span><br><span class="line">   linux:  ~/.gitconfig 或 ~/.config/git/config</span><br></pre></td></tr></table></figure></p>
+<p><code>-p</code> 显示匹配的行属于哪个函数或方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git grep -p gmtime_r *.c</span><br><span class="line">date.c=static int match_multi_number(unsigned long num, char c, const char *date, char *end, struct tm *tm)</span><br><span class="line">date.c:         if (gmtime_r(&amp;now, &amp;now_tm))</span><br><span class="line">date.c=static int match_digit(const char *date, struct tm *tm, int *offset, int *tm_gmt)</span><br><span class="line">date.c:         if (gmtime_r(&amp;time, tm)) &#123;</span><br></pre></td></tr></table></figure></p>
+<p><code>-e &lt;pattern&gt;</code> 匹配正则，<code>--and</code>, <code>--or</code>, <code>--not</code>, <code>(</code> <code>)</code>都是和<code>-e</code>搭配使用</p>
+<p>搜索在旧版本 1.8.0 的 Git 代码库中定义了常量名包含 “LINK” 或者 “BUF_MAX” 这两个字符串所在的行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ git grep --break --heading -n -e &apos;#define&apos; --and \( -e LINK -e BUF_MAX \) v1.8.0</span><br><span class="line"></span><br><span class="line">v1.8.0:builtin/index-pack.c</span><br><span class="line">62:#define FLAG_LINK (1u&lt;&lt;20)</span><br><span class="line"></span><br><span class="line">v1.8.0:cache.h</span><br><span class="line">73:#define S_IFGITLINK  0160000</span><br><span class="line">74:#define S_ISGITLINK(m)       (((m) &amp; S_IFMT) == S_IFGITLINK)</span><br><span class="line"></span><br><span class="line">v1.8.0:environment.c</span><br><span class="line">54:#define OBJECT_CREATION_MODE OBJECT_CREATION_USES_HARDLINKS</span><br><span class="line"></span><br><span class="line">v1.8.0:strbuf.c</span><br><span class="line">326:#define STRBUF_MAXLINK (2*PATH_MAX)</span><br><span class="line"></span><br><span class="line">v1.8.0:symlinks.c</span><br><span class="line">53:#define FL_SYMLINK  (1 &lt;&lt; 2)</span><br></pre></td></tr></table></figure></p>
+<h2 id="日志搜索"><a href="#日志搜索" class="headerlink" title="日志搜索"></a>日志搜索</h2><p><code>-S</code> 显示新增和删除字符串的提交<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ git log -Slinux --oneline</span><br><span class="line"></span><br><span class="line">d313f45 继续写笔记</span><br><span class="line">9c789ce 增加 vim 相关文章</span><br><span class="line">f9e4a80 &apos;笔记继续更新，增加了好多文件&apos;</span><br><span class="line">ee6d6db 继续完成 hexo 相关文章</span><br><span class="line">bae99ca 添加目前所有的Markdown文件</span><br><span class="line">ad1a8e5 hexo init</span><br></pre></td></tr></table></figure></p>
+<p><code>-G</code> 正则表达式搜索<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line"></span><br><span class="line">`-L` 行日志搜索，可以展示代码中一行或者一个函数的历史</span><br><span class="line"></span><br><span class="line">如查看 `zlib.c` 文件中 `git_deflate_bound` 函数的每一次变更</span><br></pre></td></tr></table></figure></p>
+<p>$ git log -L :git_deflate_bound:zlib.c<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">也可以提供正则搜索，等价于上面的命令</span><br></pre></td></tr></table></figure></p>
+<p>git log -L ‘/unsigned long git_deflate_bound/‘,/^}/:zlib.c<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">或提供单行或者一个范围的行号来获得相同的输出</span><br></pre></td></tr></table></figure></p>
+<p>```</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+            <a href="/tags/Git-Grep/" rel="tag"># Git Grep</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 7.4 - GPG 签名/" rel="next" title="chapter 7.4 - Git GPG 签名">
+                <i class="fa fa-chevron-left"></i> chapter 7.4 - Git GPG 签名
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 7.7 - 重置/" rel="prev" title="chapter 7.7 - Git 重置">
+                chapter 7.7 - Git 重置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git-Grep"><span class="nav-number">1.</span> <span class="nav-text"><a href="#Git-Grep" class="headerlink" title="Git Grep"></a>Git Grep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志搜索"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x65E5;&#x5FD7;&#x641C;&#x7D22;" class="headerlink" title="&#x65E5;&#x5FD7;&#x641C;&#x7D22;"></a>&#x65E5;&#x5FD7;&#x641C;&#x7D22;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

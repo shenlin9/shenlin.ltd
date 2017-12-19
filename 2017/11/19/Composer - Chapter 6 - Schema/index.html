@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="PHP,Composer," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="主要介绍在 composer.json 文件中可用的字段属性。">
+<meta name="keywords" content="PHP,Composer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Composer - Chapter 6 - Composer.json Schema">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 6 - Schema/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="主要介绍在 composer.json 文件中可用的字段属性。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.521Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Composer - Chapter 6 - Composer.json Schema">
+<meta name="twitter:description" content="主要介绍在 composer.json 文件中可用的字段属性。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 6 - Schema/"/>
+
+
+
+
+
+  <title>Composer - Chapter 6 - Composer.json Schema | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 6 - Schema/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Composer - Chapter 6 - Composer.json Schema</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/Composer/" itemprop="url" rel="index">
+                    <span itemprop="name">Composer</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>主要介绍在 <code>composer.json</code> 文件中可用的字段属性。</p>
+<a id="more"></a>
+<h2 id="JSON-Schema"><a href="#JSON-Schema" class="headerlink" title="JSON Schema"></a>JSON Schema</h2><p><code>composer.json</code> 文件首先是一个 JSON 格式的文件，因此要符合JSON Schema 规范 ：<a href="http://json-schema.org/" target="_blank" rel="noopener">http://json-schema.org/</a></p>
+<p>实际上，<code>composer validate</code> 命令验证 <code>composer.json</code> 文件时使用的就是一个 JSON Schema : <a href="https://getcomposer.org/schema.json" target="_blank" rel="noopener">https://getcomposer.org/schema.json</a> </p>
+<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><h3 id="name"><a href="#name" class="headerlink" title="name"></a>name</h3><p>格式: vendor/project</p>
+<p>不区分大小写，可以使用任何字符，包括空格</p>
+<p>为方便搜索安装，建议使用小写、较短的名字，且只使用字母数字组合</p>
+<p>资源包必须</p>
+<h2 id="description"><a href="#description" class="headerlink" title="description"></a>description</h2><p>包的简单描述，通常只有一行长。</p>
+<p>资源包必须</p>
+<h2 id="version"><a href="#version" class="headerlink" title="version"></a>version</h2><p>多数情况下都应该省略</p>
+<h2 id="type"><a href="#type" class="headerlink" title="type"></a>type</h2><p>定义包的类型，包的类型决定了包的安装逻辑，如果你的包需要特殊的安装逻辑，也可以自定义类型</p>
+<p>支持 4 种类型：library, project, metapackage, composer-plugin</p>
+<p>默认为 library，建议省略 type 属性定义，使用默认就好</p>
+<h3 id="library"><a href="#library" class="headerlink" title="library"></a>library</h3><p>被其他程序调用才可以运行的公共代码，安装时只是简单的把文件复制到 vendor 目录</p>
+<h3 id="project"><a href="#project" class="headerlink" title="project"></a>project</h3><p>就是一个完整的程序以包的形式发布了，如 symfony 标准版</p>
+<h3 id="metapackage"><a href="#metapackage" class="headerlink" title="metapackage"></a>metapackage</h3><p>不包含任何文件的空包，不向文件系统写入任何东西，包括的是依赖并且会触发依赖包的安装</p>
+<h3 id="composer-plugin"><a href="#composer-plugin" class="headerlink" title="composer-plugin"></a>composer-plugin</h3><p>自定义类型包的安装程序</p>
+<h2 id="keywords"><a href="#keywords" class="headerlink" title="keywords"></a>keywords</h2><p>可选数组，可用于搜索和过滤</p>
+<h2 id="homepage"><a href="#homepage" class="headerlink" title="homepage"></a>homepage</h2><p>项目的URL</p>
+<h2 id="time"><a href="#time" class="headerlink" title="time"></a>time</h2><p>版本的发布时间，格式必须为<code>YYYY-MM-DD</code> 或 <code>YYYY-MM-DD HH:MM:SS</code></p>
+<h2 id="license"><a href="#license" class="headerlink" title="license"></a>license</h2><p>可选，但强烈推荐使用</p>
+<p>可为字符串或数组<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;license&quot;: &quot;MIT&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//多个许可</span><br><span class="line">&#123;</span><br><span class="line">    &quot;license&quot;: [</span><br><span class="line">       &quot;LGPL-2.1&quot;,</span><br><span class="line">       &quot;GPL-3.0+&quot;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//或者使用 or 写法</span><br><span class="line">&#123;</span><br><span class="line">    &quot;license&quot;: &quot;(LGPL-2.1 or GPL-3.0+)&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>闭源软件 :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;license&quot;: &quot;proprietary&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>常见许可 :</p>
+<pre><code>Apache-2.0
+BSD-2-Clause
+BSD-3-Clause
+BSD-4-Clause
+GPL-2.0
+GPL-3.0
+LGPL-2.1
+LGPL-3.0
+MIT
+</code></pre><p>更多许可列表：<a href="https://spdx.org/licenses/" target="_blank" rel="noopener">https://spdx.org/licenses/</a></p>
+<h2 id="authors"><a href="#authors" class="headerlink" title="authors"></a>authors</h2><p>可选，但强烈推荐使用</p>
+<p>对象数组，每位作者包含四个字段：name,email,homepage,role</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;authors&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;name&quot;: &quot;Nils Adermann&quot;,</span><br><span class="line">            &quot;email&quot;: &quot;naderman@naderman.de&quot;,</span><br><span class="line">            &quot;homepage&quot;: &quot;http://www.naderman.de&quot;,</span><br><span class="line">            &quot;role&quot;: &quot;Developer&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;name&quot;: &quot;Jordi Boggiano&quot;,</span><br><span class="line">            &quot;email&quot;: &quot;j.boggiano@seld.be&quot;,</span><br><span class="line">            &quot;homepage&quot;: &quot;http://seld.be&quot;,</span><br><span class="line">            &quot;role&quot;: &quot;Developer&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="support"><a href="#support" class="headerlink" title="support"></a>support</h2><p>怎样获得项目帮助支持，包括：email, issues, forum, wiki, irc, source, docs, rss</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;support&quot;: &#123;</span><br><span class="line">        &quot;email&quot;: &quot;support@example.org&quot;,</span><br><span class="line">        &quot;irc&quot;: &quot;irc://irc.freenode.org/composer&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Package-links"><a href="#Package-links" class="headerlink" title="Package links"></a>Package links</h2><p>下面的所有属性都是可选的，都是映射到一个对象，对象元素是包名到版本约束的映射，只有<code>suggest</code>例外，是包名到功能描述的映射。</p>
+<h3 id="require-和-require-dev-root-only"><a href="#require-和-require-dev-root-only" class="headerlink" title="require 和 require-dev (root-only)"></a>require 和 require-dev (root-only)</h3><p><code>require</code> 列出当前包需要的包</p>
+<p><code>require-dev</code> 列出开发或测试时才需要使用的包，注意默认是安装的，但 <code>install</code> 和 <code>update</code> 都支持<code>--no-dev</code>选项</p>
+<h4 id="稳定性标记"><a href="#稳定性标记" class="headerlink" title="稳定性标记"></a>稳定性标记</h4><p><code>require</code> 和 <code>require-dev</code> 支持稳定性标记，</p>
+<h3 id="conflict"><a href="#conflict" class="headerlink" title="conflict"></a>conflict</h3><p>列出所有和当前包有冲突的包，这些儿会产生冲突的包将不允许和当前包一起安装。</p>
+<p>注意版本约束的写法，如 <code>&lt;1.0 &gt;=1.1</code> 的逻辑操作表示 and，正确的写法应为 <code>&lt;1.0 || &gt;=1.1</code></p>
+<h3 id="replace"><a href="#replace" class="headerlink" title="replace"></a>replace</h3><p>列出所有可以被当前包替换的包。</p>
+<p>两个应用场景：</p>
+<p>1.可以 fork 一个包，使用<code>replace</code>属性标明可以替换掉原包，修改后用不同的名字和版本号发布，则当其它包安装了你的包，再请求原包时，将仍然使用你的包，而不会安装原包，因为你的包替换了原包。</p>
+<p>2.包含了子包的包，如 Symfony 的每个组件都是可独立安装的包，而 <code>symfony/symfony</code> 的 <code>replace</code> 属性包含了 Symfony 的所有组件，则如果安装了 <code>symfony/symfony</code> 包，也将满足对各个独立组件的依赖。</p>
+<h3 id="provide"><a href="#provide" class="headerlink" title="provide"></a>provide</h3><p>当前包还包含的其他包，对于公共接口来说很有用，比如当前包依赖于一个虚拟包<code>logger</code>，则任何实现了<code>logger</code>的包都应列表在这里</p>
+<h3 id="suggest"><a href="#suggest" class="headerlink" title="suggest"></a>suggest</h3><p>安装当前包完毕后，会显示一个提示信息，告诉用户还推荐安装哪些儿包，以及这些儿包的功能，这些推荐的包都不是必须的，但可提供额外增强的功能</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;suggest&quot;: &#123;</span><br><span class="line">        &quot;monolog/monolog&quot;: &quot;Allows more advanced logging of the application flow&quot;,</span><br><span class="line">        &quot;ext-xml&quot;: &quot;Needed to support XML format in class Foo&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="autoload"><a href="#autoload" class="headerlink" title="autoload"></a>autoload</h2><p>4 种自动加载的方式：PSR-4, PSR-0, Classmap, Files</p>
+<p>推荐使用 PSR-4，在添加了新的 class 后，无需重新生成 autoloader</p>
+<h3 id="PSR-4"><a href="#PSR-4" class="headerlink" title="PSR-4"></a>PSR-4</h3><h3 id="PSR-0"><a href="#PSR-0" class="headerlink" title="PSR-0"></a>PSR-0</h3><h3 id="Classmap"><a href="#Classmap" class="headerlink" title="Classmap"></a>Classmap</h3><h3 id="Files"><a href="#Files" class="headerlink" title="Files"></a>Files</h3><h3 id="Exclude-files-from-classmaps"><a href="#Exclude-files-from-classmaps" class="headerlink" title="Exclude files from classmaps"></a>Exclude files from classmaps</h3><h3 id="Optimizing-the-autoloader"><a href="#Optimizing-the-autoloader" class="headerlink" title="Optimizing the autoloader"></a>Optimizing the autoloader</h3><h2 id="autoload-dev-root-only"><a href="#autoload-dev-root-only" class="headerlink" title="autoload-dev (root-only)"></a>autoload-dev (root-only)</h2><p>定义了开发环境的自动加载，为了不影响生产环境的自动加载，所以要有专用的路径和配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;autoload&quot;: &#123;</span><br><span class="line">        &quot;psr-4&quot;: &#123; &quot;MyLibrary\\&quot;: &quot;src/&quot; &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;autoload-dev&quot;: &#123;</span><br><span class="line">        &quot;psr-4&quot;: &#123; &quot;MyLibrary\\Tests\\&quot;: &quot;tests/&quot; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="include-path"><a href="#include-path" class="headerlink" title="include-path"></a>include-path</h2><p>不赞成使用此属性</p>
+<p>新代码应该使用自动加载</p>
+<h2 id="target-dir"><a href="#target-dir" class="headerlink" title="target-dir"></a>target-dir</h2><p>不赞成使用此属性</p>
+<p>是针对 PSR-0 规范的自动加载，但现在应该都迁移到 PSR-4，PSR-4 没有这个属性</p>
+<h2 id="minimum-stability-root-only"><a href="#minimum-stability-root-only" class="headerlink" title="minimum-stability (root-only)"></a>minimum-stability (root-only)</h2><p>定义了过滤包时的稳定性约束，默认值<code>stable</code>，可选的值有：dev, alpha, beta, RC, stable</p>
+<p>针对的是当前项目，还可以针对个别包定义稳定性，通过在版本约束后面添加稳定性标记，如<code>1.0@beta</code></p>
+<h2 id="prefer-stable-root-only"><a href="#prefer-stable-root-only" class="headerlink" title="prefer-stable (root-only)"></a>prefer-stable (root-only)</h2><p><code>&quot;prefer-stable&quot;: true</code></p>
+<p>当兼容的 stable 版本可用时，总是优先使用</p>
+<h2 id="repositories-root-only"><a href="#repositories-root-only" class="headerlink" title="repositories (root-only)"></a>repositories (root-only)</h2><p>资源库不会递归执行，只有主项目 <code>composer.json</code> 文件中的资源库才会被搜索，依赖包的 <code>composer.json</code> 文件里注册的资源库会被忽略。</p>
+<p>支持 4 种类型的资源库：composer, vcs, pear, package</p>
+<p><strong>composer</strong><br>是一个通过网络访问的 <code>packages.json</code> 文件，此文件的内容是一个 <code>composer.json</code> 文件的列表，访问时使用 PHP stream，可以通过 <code>options</code> 添加额外的选项<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;repositories&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;type&quot;: &quot;composer&quot;,</span><br><span class="line">            &quot;url&quot;: &quot;https://packages.example.com&quot;,</span><br><span class="line">            &quot;options&quot;: &#123;</span><br><span class="line">                &quot;ssl&quot;: &#123;</span><br><span class="line">                    &quot;verify_peer&quot;: &quot;true&quot;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>vcs</strong><br>从 git,svn 等版本库获取资源包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;repositories&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;type&quot;: &quot;vcs&quot;,</span><br><span class="line">            &quot;url&quot;: &quot;https://github.com/Seldaek/monolog&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>pear</strong><br>从 pear 库导入资源包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;repositories&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;type&quot;: &quot;pear&quot;,</span><br><span class="line">            &quot;url&quot;: &quot;https://pear2.php.net&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>package</strong><br>如果依赖的项目对 Composer 没有任何支持，则使用内联包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;repositories&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;type&quot;: &quot;package&quot;,</span><br><span class="line">            &quot;package&quot;: &#123;</span><br><span class="line">                &quot;name&quot;: &quot;smarty/smarty&quot;,</span><br><span class="line">                &quot;version&quot;: &quot;3.1.7&quot;,</span><br><span class="line">                &quot;dist&quot;: &#123;</span><br><span class="line">                    &quot;url&quot;: &quot;http://www.smarty.net/files/Smarty-3.1.7.zip&quot;,</span><br><span class="line">                    &quot;type&quot;: &quot;zip&quot;</span><br><span class="line">                &#125;,</span><br><span class="line">                &quot;source&quot;: &#123;</span><br><span class="line">                    &quot;url&quot;: &quot;https://smarty-php.googlecode.com/svn/&quot;,</span><br><span class="line">                    &quot;type&quot;: &quot;svn&quot;,</span><br><span class="line">                    &quot;reference&quot;: &quot;tags/Smarty_3_1_7/distribution/&quot;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="config-root-only"><a href="#config-root-only" class="headerlink" title="config (root-only)"></a>config (root-only)</h2><p>只针对 Project 项目类型</p>
+<h3 id="process-timeout"><a href="#process-timeout" class="headerlink" title="process-timeout"></a>process-timeout</h3><h3 id="use-include-path"><a href="#use-include-path" class="headerlink" title="use-include-path"></a>use-include-path</h3><h3 id="preferred-install"><a href="#preferred-install" class="headerlink" title="preferred-install"></a>preferred-install</h3><h3 id="store-auths"><a href="#store-auths" class="headerlink" title="store-auths"></a>store-auths</h3><h3 id="github-protocols"><a href="#github-protocols" class="headerlink" title="github-protocols"></a>github-protocols</h3><h3 id="github-oauth"><a href="#github-oauth" class="headerlink" title="github-oauth"></a>github-oauth</h3><h3 id="gitlab-oauth"><a href="#gitlab-oauth" class="headerlink" title="gitlab-oauth"></a>gitlab-oauth</h3><h3 id="gitlab-token"><a href="#gitlab-token" class="headerlink" title="gitlab-token"></a>gitlab-token</h3><h3 id="disable-tls"><a href="#disable-tls" class="headerlink" title="disable-tls"></a>disable-tls</h3><h3 id="secure-http"><a href="#secure-http" class="headerlink" title="secure-http"></a>secure-http</h3><h3 id="bitbucket-oauth"><a href="#bitbucket-oauth" class="headerlink" title="bitbucket-oauth"></a>bitbucket-oauth</h3><h3 id="cafile"><a href="#cafile" class="headerlink" title="cafile"></a>cafile</h3><h3 id="capath"><a href="#capath" class="headerlink" title="capath"></a>capath</h3><h3 id="http-basic"><a href="#http-basic" class="headerlink" title="http-basic"></a>http-basic</h3><h3 id="platform"><a href="#platform" class="headerlink" title="platform"></a>platform</h3><h3 id="vendor-dir"><a href="#vendor-dir" class="headerlink" title="vendor-dir"></a>vendor-dir</h3><h3 id="bin-dir"><a href="#bin-dir" class="headerlink" title="bin-dir"></a>bin-dir</h3><h3 id="data-dir"><a href="#data-dir" class="headerlink" title="data-dir"></a>data-dir</h3><h3 id="cache-dir"><a href="#cache-dir" class="headerlink" title="cache-dir"></a>cache-dir</h3><h3 id="cache-files-dir"><a href="#cache-files-dir" class="headerlink" title="cache-files-dir"></a>cache-files-dir</h3><h3 id="cache-repo-dir"><a href="#cache-repo-dir" class="headerlink" title="cache-repo-dir"></a>cache-repo-dir</h3><h3 id="cache-vcs-dir"><a href="#cache-vcs-dir" class="headerlink" title="cache-vcs-dir"></a>cache-vcs-dir</h3><h3 id="cache-files-ttl"><a href="#cache-files-ttl" class="headerlink" title="cache-files-ttl"></a>cache-files-ttl</h3><h3 id="cache-files-maxsize"><a href="#cache-files-maxsize" class="headerlink" title="cache-files-maxsize"></a>cache-files-maxsize</h3><h3 id="bin-compat"><a href="#bin-compat" class="headerlink" title="bin-compat"></a>bin-compat</h3><h3 id="prepend-autoloader"><a href="#prepend-autoloader" class="headerlink" title="prepend-autoloader"></a>prepend-autoloader</h3><h3 id="autoloader-suffix"><a href="#autoloader-suffix" class="headerlink" title="autoloader-suffix"></a>autoloader-suffix</h3><h3 id="optimize-autoloader"><a href="#optimize-autoloader" class="headerlink" title="optimize-autoloader"></a>optimize-autoloader</h3><h3 id="sort-packages"><a href="#sort-packages" class="headerlink" title="sort-packages"></a>sort-packages</h3><h3 id="classmap-authoritative"><a href="#classmap-authoritative" class="headerlink" title="classmap-authoritative"></a>classmap-authoritative</h3><h3 id="apcu-autoloader"><a href="#apcu-autoloader" class="headerlink" title="apcu-autoloader"></a>apcu-autoloader</h3><h3 id="github-domains"><a href="#github-domains" class="headerlink" title="github-domains"></a>github-domains</h3><h3 id="github-expose-hostname"><a href="#github-expose-hostname" class="headerlink" title="github-expose-hostname"></a>github-expose-hostname</h3><h3 id="gitlab-domains"><a href="#gitlab-domains" class="headerlink" title="gitlab-domains"></a>gitlab-domains</h3><p>gitlab 服务器的域名列表，默认为 <code>[&quot;gitlab.com&quot;]</code></p>
+<h3 id="notify-on-install"><a href="#notify-on-install" class="headerlink" title="notify-on-install"></a>notify-on-install</h3><p>资源库可以定义一个通知 URL，当资源库里的依赖包被安装时，资源库就会收到通知</p>
+<p>默认为 true</p>
+<h3 id="discard-changes"><a href="#discard-changes" class="headerlink" title="discard-changes"></a>discard-changes</h3><p>在非互动模式下，处理 dirty update 时的默认行为，有 true, false, stash 三个值，默认 false</p>
+<p>true 表示放弃修改 vendor 目录的修改，</p>
+<p>stash 表示存起来并尝试重新应用</p>
+<h3 id="archive-format"><a href="#archive-format" class="headerlink" title="archive-format"></a>archive-format</h3><p>归档格式，默认为 tar，还可为 zip</p>
+<h3 id="archive-dir"><a href="#archive-dir" class="headerlink" title="archive-dir"></a>archive-dir</h3><p>设置归档目录，默认为当前工作目录</p>
+<h3 id="htaccess-protect"><a href="#htaccess-protect" class="headerlink" title="htaccess-protect"></a>htaccess-protect</h3><p>默认为 true，设置为 false 则不创建 <code>.htaccess</code> 文件</p>
+<h2 id="scripts-root-only"><a href="#scripts-root-only" class="headerlink" title="scripts (root-only)"></a>scripts (root-only)</h2><p>通过脚本参与到 Composer 安装包的各个环节</p>
+<p>具体参考独立章节：scripts</p>
+<h2 id="extra"><a href="#extra" class="headerlink" title="extra"></a>extra</h2><p>为上面的 <code>scripts</code> 属性准备的任意的额外数据，</p>
+<p>在一个脚本文件的事件处理程序获取方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$extra = $event-&gt;getComposer()-&gt;getPackage()-&gt;getExtra();</span><br></pre></td></tr></table></figure></p>
+<h2 id="bin"><a href="#bin" class="headerlink" title="bin"></a>bin</h2><p>应该被当做二进制文件对待，且应该通过符号链接安装到 <code>vendor/bin</code> 目录的文件</p>
+<p>具体参考独立章节：vendor bianries</p>
+<h2 id="archive"><a href="#archive" class="headerlink" title="archive"></a>archive</h2><p>包括了一些儿包归档时的选项集，主要是 <code>exclude</code> 选项，表示归档时排除的路径，语法规则和<code>.gitignore</code>文件一样<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;archive&quot;: &#123;</span><br><span class="line">        &quot;exclude&quot;: [&quot;/foo/bar&quot;, &quot;baz&quot;, &quot;/*.test&quot;, &quot;!/foo/bar/baz&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="non-feature-branches"><a href="#non-feature-branches" class="headerlink" title="non-feature-branches"></a>non-feature-branches</h2><p>是一个字符串数组</p>
+<p>当 Composer 遇到看起来不像版本号的非数字分支名时（如 <code>latest</code>, <code>current</code> 等），将会按照特性分支处理：去找它的父分支中看起来像版本号或者是名称特殊的分支（如 master），然后使用找到的父分支版本号或父分支的特殊名称当做这个分支的版本号。</p>
+<p>这个属性的设置即是为了更改上述默认处理规则，可以设置分支名的正则，匹配正则的分支都会被作为 <code>dev</code> 版本的分支。</p>
+<p>如有测试分支 <code>latest-testing</code>，不设置时默认规则显示版本：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ composer show -s</span><br><span class="line">versions : * dev-master</span><br></pre></td></tr></table></figure></p>
+<p>增加设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;non-feature-branches&quot;: [&quot;latest-.*&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>显示版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ composer show -s</span><br><span class="line">versions : * dev-latest-testing</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PHP/" rel="tag"># PHP</a>
+          
+            <a href="/tags/Composer/" rel="tag"># Composer</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Composer - Chapter 5 - 环境变量/" rel="next" title="Composer - Chapter 5 - 环境变量">
+                <i class="fa fa-chevron-left"></i> Composer - Chapter 5 - 环境变量
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Composer - Chapter 7 - 资源包/" rel="prev" title="Composer - Chapter 7 - 资源包">
+                Composer - Chapter 7 - 资源包 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JSON-Schema"><span class="nav-number">1.</span> <span class="nav-text"><a href="#JSON-Schema" class="headerlink" title="JSON Schema"></a>JSON Schema</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#属性"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5C5E;&#x6027;" class="headerlink" title="&#x5C5E;&#x6027;"></a>&#x5C5E;&#x6027;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#name"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#name" class="headerlink" title="name"></a>name</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#description"><span class="nav-number">3.</span> <span class="nav-text"><a href="#description" class="headerlink" title="description"></a>description</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#version"><span class="nav-number">4.</span> <span class="nav-text"><a href="#version" class="headerlink" title="version"></a>version</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#type"><span class="nav-number">5.</span> <span class="nav-text"><a href="#type" class="headerlink" title="type"></a>type</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#library"><span class="nav-number">5.1.</span> <span class="nav-text"><a href="#library" class="headerlink" title="library"></a>library</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#project"><span class="nav-number">5.2.</span> <span class="nav-text"><a href="#project" class="headerlink" title="project"></a>project</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#metapackage"><span class="nav-number">5.3.</span> <span class="nav-text"><a href="#metapackage" class="headerlink" title="metapackage"></a>metapackage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#composer-plugin"><span class="nav-number">5.4.</span> <span class="nav-text"><a href="#composer-plugin" class="headerlink" title="composer-plugin"></a>composer-plugin</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#keywords"><span class="nav-number">6.</span> <span class="nav-text"><a href="#keywords" class="headerlink" title="keywords"></a>keywords</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#homepage"><span class="nav-number">7.</span> <span class="nav-text"><a href="#homepage" class="headerlink" title="homepage"></a>homepage</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#time"><span class="nav-number">8.</span> <span class="nav-text"><a href="#time" class="headerlink" title="time"></a>time</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#license"><span class="nav-number">9.</span> <span class="nav-text"><a href="#license" class="headerlink" title="license"></a>license</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#authors"><span class="nav-number">10.</span> <span class="nav-text"><a href="#authors" class="headerlink" title="authors"></a>authors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#support"><span class="nav-number">11.</span> <span class="nav-text"><a href="#support" class="headerlink" title="support"></a>support</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Package-links"><span class="nav-number">12.</span> <span class="nav-text"><a href="#Package-links" class="headerlink" title="Package links"></a>Package links</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#require-和-require-dev-root-only"><span class="nav-number">12.1.</span> <span class="nav-text"><a href="#require-&#x548C;-require-dev-root-only" class="headerlink" title="require &#x548C; require-dev (root-only)"></a>require &#x548C; require-dev (root-only)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#稳定性标记"><span class="nav-number">12.1.1.</span> <span class="nav-text"><a href="#&#x7A33;&#x5B9A;&#x6027;&#x6807;&#x8BB0;" class="headerlink" title="&#x7A33;&#x5B9A;&#x6027;&#x6807;&#x8BB0;"></a>&#x7A33;&#x5B9A;&#x6027;&#x6807;&#x8BB0;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#conflict"><span class="nav-number">12.2.</span> <span class="nav-text"><a href="#conflict" class="headerlink" title="conflict"></a>conflict</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#replace"><span class="nav-number">12.3.</span> <span class="nav-text"><a href="#replace" class="headerlink" title="replace"></a>replace</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#provide"><span class="nav-number">12.4.</span> <span class="nav-text"><a href="#provide" class="headerlink" title="provide"></a>provide</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#suggest"><span class="nav-number">12.5.</span> <span class="nav-text"><a href="#suggest" class="headerlink" title="suggest"></a>suggest</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#autoload"><span class="nav-number">13.</span> <span class="nav-text"><a href="#autoload" class="headerlink" title="autoload"></a>autoload</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PSR-4"><span class="nav-number">13.1.</span> <span class="nav-text"><a href="#PSR-4" class="headerlink" title="PSR-4"></a>PSR-4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PSR-0"><span class="nav-number">13.2.</span> <span class="nav-text"><a href="#PSR-0" class="headerlink" title="PSR-0"></a>PSR-0</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Classmap"><span class="nav-number">13.3.</span> <span class="nav-text"><a href="#Classmap" class="headerlink" title="Classmap"></a>Classmap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Files"><span class="nav-number">13.4.</span> <span class="nav-text"><a href="#Files" class="headerlink" title="Files"></a>Files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Exclude-files-from-classmaps"><span class="nav-number">13.5.</span> <span class="nav-text"><a href="#Exclude-files-from-classmaps" class="headerlink" title="Exclude files from classmaps"></a>Exclude files from classmaps</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Optimizing-the-autoloader"><span class="nav-number">13.6.</span> <span class="nav-text"><a href="#Optimizing-the-autoloader" class="headerlink" title="Optimizing the autoloader"></a>Optimizing the autoloader</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#autoload-dev-root-only"><span class="nav-number">14.</span> <span class="nav-text"><a href="#autoload-dev-root-only" class="headerlink" title="autoload-dev (root-only)"></a>autoload-dev (root-only)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#include-path"><span class="nav-number">15.</span> <span class="nav-text"><a href="#include-path" class="headerlink" title="include-path"></a>include-path</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#target-dir"><span class="nav-number">16.</span> <span class="nav-text"><a href="#target-dir" class="headerlink" title="target-dir"></a>target-dir</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#minimum-stability-root-only"><span class="nav-number">17.</span> <span class="nav-text"><a href="#minimum-stability-root-only" class="headerlink" title="minimum-stability (root-only)"></a>minimum-stability (root-only)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#prefer-stable-root-only"><span class="nav-number">18.</span> <span class="nav-text"><a href="#prefer-stable-root-only" class="headerlink" title="prefer-stable (root-only)"></a>prefer-stable (root-only)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#repositories-root-only"><span class="nav-number">19.</span> <span class="nav-text"><a href="#repositories-root-only" class="headerlink" title="repositories (root-only)"></a>repositories (root-only)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#config-root-only"><span class="nav-number">20.</span> <span class="nav-text"><a href="#config-root-only" class="headerlink" title="config (root-only)"></a>config (root-only)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#process-timeout"><span class="nav-number">20.1.</span> <span class="nav-text"><a href="#process-timeout" class="headerlink" title="process-timeout"></a>process-timeout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#use-include-path"><span class="nav-number">20.2.</span> <span class="nav-text"><a href="#use-include-path" class="headerlink" title="use-include-path"></a>use-include-path</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#preferred-install"><span class="nav-number">20.3.</span> <span class="nav-text"><a href="#preferred-install" class="headerlink" title="preferred-install"></a>preferred-install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#store-auths"><span class="nav-number">20.4.</span> <span class="nav-text"><a href="#store-auths" class="headerlink" title="store-auths"></a>store-auths</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#github-protocols"><span class="nav-number">20.5.</span> <span class="nav-text"><a href="#github-protocols" class="headerlink" title="github-protocols"></a>github-protocols</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#github-oauth"><span class="nav-number">20.6.</span> <span class="nav-text"><a href="#github-oauth" class="headerlink" title="github-oauth"></a>github-oauth</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gitlab-oauth"><span class="nav-number">20.7.</span> <span class="nav-text"><a href="#gitlab-oauth" class="headerlink" title="gitlab-oauth"></a>gitlab-oauth</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gitlab-token"><span class="nav-number">20.8.</span> <span class="nav-text"><a href="#gitlab-token" class="headerlink" title="gitlab-token"></a>gitlab-token</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#disable-tls"><span class="nav-number">20.9.</span> <span class="nav-text"><a href="#disable-tls" class="headerlink" title="disable-tls"></a>disable-tls</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#secure-http"><span class="nav-number">20.10.</span> <span class="nav-text"><a href="#secure-http" class="headerlink" title="secure-http"></a>secure-http</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bitbucket-oauth"><span class="nav-number">20.11.</span> <span class="nav-text"><a href="#bitbucket-oauth" class="headerlink" title="bitbucket-oauth"></a>bitbucket-oauth</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cafile"><span class="nav-number">20.12.</span> <span class="nav-text"><a href="#cafile" class="headerlink" title="cafile"></a>cafile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#capath"><span class="nav-number">20.13.</span> <span class="nav-text"><a href="#capath" class="headerlink" title="capath"></a>capath</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#http-basic"><span class="nav-number">20.14.</span> <span class="nav-text"><a href="#http-basic" class="headerlink" title="http-basic"></a>http-basic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#platform"><span class="nav-number">20.15.</span> <span class="nav-text"><a href="#platform" class="headerlink" title="platform"></a>platform</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vendor-dir"><span class="nav-number">20.16.</span> <span class="nav-text"><a href="#vendor-dir" class="headerlink" title="vendor-dir"></a>vendor-dir</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bin-dir"><span class="nav-number">20.17.</span> <span class="nav-text"><a href="#bin-dir" class="headerlink" title="bin-dir"></a>bin-dir</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data-dir"><span class="nav-number">20.18.</span> <span class="nav-text"><a href="#data-dir" class="headerlink" title="data-dir"></a>data-dir</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cache-dir"><span class="nav-number">20.19.</span> <span class="nav-text"><a href="#cache-dir" class="headerlink" title="cache-dir"></a>cache-dir</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cache-files-dir"><span class="nav-number">20.20.</span> <span class="nav-text"><a href="#cache-files-dir" class="headerlink" title="cache-files-dir"></a>cache-files-dir</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cache-repo-dir"><span class="nav-number">20.21.</span> <span class="nav-text"><a href="#cache-repo-dir" class="headerlink" title="cache-repo-dir"></a>cache-repo-dir</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cache-vcs-dir"><span class="nav-number">20.22.</span> <span class="nav-text"><a href="#cache-vcs-dir" class="headerlink" title="cache-vcs-dir"></a>cache-vcs-dir</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cache-files-ttl"><span class="nav-number">20.23.</span> <span class="nav-text"><a href="#cache-files-ttl" class="headerlink" title="cache-files-ttl"></a>cache-files-ttl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cache-files-maxsize"><span class="nav-number">20.24.</span> <span class="nav-text"><a href="#cache-files-maxsize" class="headerlink" title="cache-files-maxsize"></a>cache-files-maxsize</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bin-compat"><span class="nav-number">20.25.</span> <span class="nav-text"><a href="#bin-compat" class="headerlink" title="bin-compat"></a>bin-compat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prepend-autoloader"><span class="nav-number">20.26.</span> <span class="nav-text"><a href="#prepend-autoloader" class="headerlink" title="prepend-autoloader"></a>prepend-autoloader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#autoloader-suffix"><span class="nav-number">20.27.</span> <span class="nav-text"><a href="#autoloader-suffix" class="headerlink" title="autoloader-suffix"></a>autoloader-suffix</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#optimize-autoloader"><span class="nav-number">20.28.</span> <span class="nav-text"><a href="#optimize-autoloader" class="headerlink" title="optimize-autoloader"></a>optimize-autoloader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sort-packages"><span class="nav-number">20.29.</span> <span class="nav-text"><a href="#sort-packages" class="headerlink" title="sort-packages"></a>sort-packages</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#classmap-authoritative"><span class="nav-number">20.30.</span> <span class="nav-text"><a href="#classmap-authoritative" class="headerlink" title="classmap-authoritative"></a>classmap-authoritative</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#apcu-autoloader"><span class="nav-number">20.31.</span> <span class="nav-text"><a href="#apcu-autoloader" class="headerlink" title="apcu-autoloader"></a>apcu-autoloader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#github-domains"><span class="nav-number">20.32.</span> <span class="nav-text"><a href="#github-domains" class="headerlink" title="github-domains"></a>github-domains</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#github-expose-hostname"><span class="nav-number">20.33.</span> <span class="nav-text"><a href="#github-expose-hostname" class="headerlink" title="github-expose-hostname"></a>github-expose-hostname</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gitlab-domains"><span class="nav-number">20.34.</span> <span class="nav-text"><a href="#gitlab-domains" class="headerlink" title="gitlab-domains"></a>gitlab-domains</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#notify-on-install"><span class="nav-number">20.35.</span> <span class="nav-text"><a href="#notify-on-install" class="headerlink" title="notify-on-install"></a>notify-on-install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#discard-changes"><span class="nav-number">20.36.</span> <span class="nav-text"><a href="#discard-changes" class="headerlink" title="discard-changes"></a>discard-changes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#archive-format"><span class="nav-number">20.37.</span> <span class="nav-text"><a href="#archive-format" class="headerlink" title="archive-format"></a>archive-format</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#archive-dir"><span class="nav-number">20.38.</span> <span class="nav-text"><a href="#archive-dir" class="headerlink" title="archive-dir"></a>archive-dir</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#htaccess-protect"><span class="nav-number">20.39.</span> <span class="nav-text"><a href="#htaccess-protect" class="headerlink" title="htaccess-protect"></a>htaccess-protect</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scripts-root-only"><span class="nav-number">21.</span> <span class="nav-text"><a href="#scripts-root-only" class="headerlink" title="scripts (root-only)"></a>scripts (root-only)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#extra"><span class="nav-number">22.</span> <span class="nav-text"><a href="#extra" class="headerlink" title="extra"></a>extra</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bin"><span class="nav-number">23.</span> <span class="nav-text"><a href="#bin" class="headerlink" title="bin"></a>bin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#archive"><span class="nav-number">24.</span> <span class="nav-text"><a href="#archive" class="headerlink" title="archive"></a>archive</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#non-feature-branches"><span class="nav-number">25.</span> <span class="nav-text"><a href="#non-feature-branches" class="headerlink" title="non-feature-branches"></a>non-feature-branches</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

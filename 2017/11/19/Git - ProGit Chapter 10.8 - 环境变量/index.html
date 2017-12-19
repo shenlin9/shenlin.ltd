@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Git," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Git 总是在一个 shell 中运行，并根据 shell 环境变量来调整运行方式。">
+<meta name="keywords" content="Git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter 10.8 - Git 环境变量">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 10.8 - 环境变量/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="Git 总是在一个 shell 中运行，并根据 shell 环境变量来调整运行方式。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.532Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter 10.8 - Git 环境变量">
+<meta name="twitter:description" content="Git 总是在一个 shell 中运行，并根据 shell 环境变量来调整运行方式。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 10.8 - 环境变量/"/>
+
+
+
+
+
+  <title>chapter 10.8 - Git 环境变量 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 10.8 - 环境变量/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">chapter 10.8 - Git 环境变量</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/Book-ProGit/" itemprop="url" rel="index">
+                    <span itemprop="name">Book-ProGit</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Git 总是在一个 shell 中运行，并根据 shell 环境变量来调整运行方式。</p>
+<a id="more"></a>
+<h2 id="全局行为"><a href="#全局行为" class="headerlink" title="全局行为"></a>全局行为</h2><p><code>GIT_EXEC_PATH</code></p>
+<p>决定 Git 到哪找它的子程序，像 git-commit, git-diff 等。</p>
+<p>可以用 <code>git --exec-path</code> 来查看当前设置.</p>
+<p><code>HOME</code></p>
+<p>HOME 变量是 Git 查找全局配置文件的地方，通常不会修改，太多其它东西都依赖它。</p>
+<p>如果需要一个包括全局配置的便携版 Git， 可以在便携版 Git 的 shell 配置中覆盖 HOME 设置。</p>
+<p><code>PREFIX</code></p>
+<p>PREFIX 是用于查找系统级别配置的地方，通常也不会修改。</p>
+<p>例如 Git 在 <code>$PREFIX/etc/</code> 查找 <code>gitconfig</code> 此文件.</p>
+<p><code>GIT_CONFIG_NOSYSTEM</code></p>
+<p>表示禁用系统级别的配置文件，当系统配置影响了你的命令，而你又无权限修改的时候很有用。</p>
+<p><code>GIT_PAGER</code></p>
+<p>控制在命令行上显示多页输出的程序。 没有设置则使用 PAGER .</p>
+<p><code>GIT_EDITOR</code></p>
+<p>当用户需要编辑一些文本（比如提交信息）时， Git 会启动这个编辑器。 没有设置则用 EDITOR 。</p>
+<h2 id="版本库位置"><a href="#版本库位置" class="headerlink" title="版本库位置"></a>版本库位置</h2><p><code>GIT_DIR</code> </p>
+<p>是 .git 目录的位置. 如果没有设置， Git 会按照目录树逐层向上查找 .git 目录，直到到达 ~ 或 /。</p>
+<p><code>GIT_CEILING_DIRECTORIES</code></p>
+<p>控制查找 .git 目录的行为。 如果访问加载很慢的目录（如那些磁带机上的或通过网络连接访问的），你可能会想让 Git 早点停止尝试，尤其是 shell 构建时调用了 Git 。</p>
+<p><code>GIT_WORK_TREE</code></p>
+<p>是非空版本库的工作目录的根路径 如果没指定，就使用 $GIT_DIR 的父目录。</p>
+<p><code>GIT_INDEX_FILE</code></p>
+<p>是索引文件的路径（只有非空版本库有）</p>
+<p><code>GIT_OBJECT_DIRECTORY</code></p>
+<p>用来指定 .git/objects 目录的位置。</p>
+<p><code>GIT_ALTERNATE_OBJECT_DIRECTORIES</code></p>
+<p>一个冒号分割的列表 (格式类似 /dir/one:/dir/two:…) 用来告诉 Git 到哪里去找不在 <code>GIT_OBJECT_DIRECTORY</code> 目录中的对象. </p>
+<p>如果很多项目有相同内容的大文件，这个可以用来避免存储过多备份。</p>
+<h2 id="路径规则"><a href="#路径规则" class="headerlink" title="路径规则"></a>路径规则</h2><p>所谓 “pathspec” 是指在 Git 中如何指定路径， 包括通配符的使用。</p>
+<p>路径和通配符会在 <code>.gitignore</code> 文件中用到，命令行里也会用到，如 <code>git add *.c</code>。</p>
+<p><code>GIT_GLOB_PATHSPECS</code></p>
+<p>设置为 1, 通配符在路径规则中默认表现为通配符（这是默认设置）; </p>
+<p><code>GIT_NOGLOB_PATHSPECS</code></p>
+<p>设置为 1,通配符在路径规则中默认仅匹配字面。意思是 <code>*.c</code> 只会匹配 文件名是 <code>*.c</code> 的文件， 而不是以 <code>.c</code> 结尾的文件。</p>
+<p>可以在各个路径规格中用 <code>:(glob)</code> 或 <code>:(literal)</code> 开头来覆盖这个配置，如 <code>:(glob)*.c</code> 。</p>
+<p><code>GIT_LITERAL_PATHSPECS</code></p>
+<p>禁用上面的两种行为；通配符将不能用，前缀覆盖也不能用。</p>
+<p><code>GIT_ICASE_PATHSPECS</code></p>
+<p>让所有的路径规格忽略大小写。</p>
+<h2 id="提交"><a href="#提交" class="headerlink" title="提交"></a>提交</h2><p>Git 提交对象的创建通常最后是由 git-commit-tree 来完成， git-commit-tree 用这些环境变量作主要的信息源。 仅当这些值不存在才回退到预置的值。</p>
+<p><code>GIT_AUTHOR_NAME</code></p>
+<p>是 “author” 字段的可读的名字。</p>
+<p><code>GIT_AUTHOR_EMAIL</code></p>
+<p>是 “author” 字段的邮件。</p>
+<p><code>GIT_AUTHOR_DATE</code></p>
+<p>是 “author” 字段的时间戳。</p>
+<p><code>GIT_COMMITTER_NAME</code></p>
+<p>是 “committer” 字段的可读的名字。</p>
+<p><code>GIT_COMMITTER_EMAIL</code></p>
+<p>是 “committer” 字段的邮件。</p>
+<p><code>GIT_COMMITTER_DATE</code></p>
+<p>是 “committer” 字段的时间戳。</p>
+<p><code>EMAIL</code></p>
+<p>如果 user.email 没有配置， 就会用到 <code>EMAIL</code> 指定的邮件地址。 如果 这个 也没有设置， Git 继续回退使用系统用户和主机名。</p>
+<h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><p><code>GIT_CURL_VERBOSE</code></p>
+<p>Git 使用 curl 库通过 HTTP来完成网络操作， 所以 <code>GIT_CURL_VERBOSE</code> 告诉 Git 显示所有由那个库产生的消息。 这跟在命令行执行 <code>curl -v</code> 差不多。</p>
+<p><code>GIT_SSL_NO_VERIFY</code></p>
+<p>告诉 Git 不用验证 SSL 证书。 这在有些时候是需要的， 例如你用一个自己签名的证书通过 HTTPS 来提供 Git 服务， 或者你正在搭建 Git 服务器，还没有安装完全的证书。</p>
+<p><code>GIT_HTTP_LOW_SPEED_LIMIT</code>,<code>GIT_HTTP_LOW_SPEED_TIME</code></p>
+<p>如果 Git 操作在网速低于 <code>GIT_HTTP_LOW_SPEED_LIMIT</code> 字节／秒，并且持续 <code>GIT_HTTP_LOW_SPEED_TIME</code> 秒以上的时间，Git 会终止那个操作。</p>
+<p>这些值会覆盖 <code>http.lowSpeedLimit</code> 和 <code>http.lowSpeedTime</code> 配置的值。</p>
+<p><code>GIT_HTTP_USER_AGENT</code></p>
+<p>设置 Git 在通过 HTTP 通讯时用到的 user-agent。 默认值类似于 git/2.0.0 。</p>
+<h2 id="比较和合并"><a href="#比较和合并" class="headerlink" title="比较和合并"></a>比较和合并</h2><p><code>GIT_DIFF_OPTS</code></p>
+<p>这个有点起错名字了 有效值仅支持 <code>-u&lt;n&gt;</code> 或 <code>--unified=&lt;n&gt;</code>，用来控制在 git diff 命令中显示的内容行数。</p>
+<p><code>GIT_EXTERNAL_DIFF</code></p>
+<p>用来覆盖 <code>diff.external</code> 配置的值。 如果设置了这个值， 当执行 <code>git diff</code> 时，Git 会调用该程序。</p>
+<p><code>GIT_DIFF_PATH_COUNTER</code></p>
+<p>对于 <code>GIT_EXTERNAL_DIFF</code> 或 <code>diff.external</code> 指定的程序有用。 前者表示在一系列文件中哪个是被比较的（从 1 开始）</p>
+<p><code>GIT_DIFF_PATH_TOTAL</code></p>
+<p>对于 <code>GIT_EXTERNAL_DIFF</code> 或 <code>diff.external</code> 指定的程序有用。 表示每批文件的总数。</p>
+<p><code>GIT_MERGE_VERBOSITY</code></p>
+<p>控制递归合并策略的输出。 允许的值有下面这些：<br>0 什么都不输出，除了可能会有一个错误信息。<br>1 只显示冲突。<br>2 还显示文件改变。<br>3 显示因为没有改变被跳过的文件。<br>4 显示处理的所有路径。<br>5 显示详细的调试信息。<br>默认值是 2.</p>
+<h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><p> Git 内置了相当完整的跟踪信息，你需要做的就是把它们打开。 这些变量的可以用的值如下：</p>
+<ul>
+<li><p>“true”, “1”, 或 “2” – 跟踪类别写到标准错误输出.</p>
+</li>
+<li><p>以 / 开头的绝对路径 – 跟踪输出会被写到那个文件。</p>
+</li>
+</ul>
+<p><code>GIT_TRACE</code><br>控制常规跟踪，它并不适用于特殊情况。 它跟踪的范围包括别名的展开和其他子程序的委托。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ GIT_TRACE=true git lga</span><br></pre></td></tr></table></figure></p>
+<p><code>GIT_TRACE_PACK_ACCESS</code><br>控制访问打包文件的跟踪信息 第一个字段是被访问的打包文件，第二个是文件的偏移量：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ GIT_TRACE_PACK_ACCESS=true git status</span><br></pre></td></tr></table></figure></p>
+<p><code>GIT_TRACE_PACKET</code><br>打开网络操作包级别的跟踪信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ GIT_TRACE_PACKET=true git ls-remote origin</span><br></pre></td></tr></table></figure></p>
+<p><code>GIT_TRACE_PERFORMANCE</code><br>控制性能数据的日志打印。 输出显示了每个 Git 命令调用花费的时间。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ GIT_TRACE_PERFORMANCE=true git gc</span><br></pre></td></tr></table></figure></p>
+<p><code>GIT_TRACE_SETUP</code><br>显示 Git 发现的关于版本库和交互环境的信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ GIT_TRACE_SETUP=true git status</span><br></pre></td></tr></table></figure></p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p><code>GIT_SSH</code></p>
+<p>如果指定了 <code>GIT_SSH</code>， Git 连接 SSH 主机时会用指定的程序代替 ssh 。 它会被用 <code>$GIT_SSH [username@]host [-p &lt;port&gt;] &lt;command&gt;</code> 的命令方式调用。</p>
+<p>这不是配置定制 ssh 调用方式的最简单的方法; 它不支持额外的命令行参数， 所以你必须写一个封装脚本然后让 GIT_SSH 指向它。 可能用 ~/.ssh/config 会更简单。</p>
+<p><code>GIT_ASKPASS</code></p>
+<p>覆盖了 <code>core.askpass</code> 配置。 这是 Git 需要向用户请求验证时用到的程序，它接受一个文本提示作为命令行参数，并在 stdout 中返回应答。 (查看 凭证存储 访问更多相关内容)</p>
+<p><code>GIT_NAMESPACE</code></p>
+<p>控制有命令空间的引用的访问，与 <code>--namespace</code> 标志是相同的. </p>
+<p>这主要在服务器端有用，如果你想在一个版本库中存储单个版本库的多个 fork, 只要保持引用是隔离的就可以。</p>
+<p><code>GIT_FLUSH</code></p>
+<p>强制 Git 在向标准输出增量写入时使用没有缓存的 I/O。</p>
+<p>设置为 1 让 Git 刷新更多， 设置为 0 则使所有的输出被缓存。</p>
+<p>默认值（若此变量未设置）是根据活动和输出模式的不同选择合适的缓存方案。</p>
+<p><code>GIT_REFLOG_ACTION</code></p>
+<p>可以指定描述性的文字写到 reflog 中，例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ GIT_REFLOG_ACTION=&quot;my action&quot; git commit --allow-empty -m &apos;my message&apos;</span><br><span class="line">[master 9e3d55a] my message</span><br><span class="line">$ git reflog -1</span><br><span class="line">9e3d55a HEAD@&#123;0&#125;: my action: my message</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 10.7 - 维护与数据恢复/" rel="next" title="chapter 10.7 - Git 维护与数据恢复">
+                <i class="fa fa-chevron-left"></i> chapter 10.7 - Git 维护与数据恢复
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 2.1 - 基础/" rel="prev" title="chapter 2.1 - Git 基础">
+                chapter 2.1 - Git 基础 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#全局行为"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5168;&#x5C40;&#x884C;&#x4E3A;" class="headerlink" title="&#x5168;&#x5C40;&#x884C;&#x4E3A;"></a>&#x5168;&#x5C40;&#x884C;&#x4E3A;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#版本库位置"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x7248;&#x672C;&#x5E93;&#x4F4D;&#x7F6E;" class="headerlink" title="&#x7248;&#x672C;&#x5E93;&#x4F4D;&#x7F6E;"></a>&#x7248;&#x672C;&#x5E93;&#x4F4D;&#x7F6E;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#路径规则"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x8DEF;&#x5F84;&#x89C4;&#x5219;" class="headerlink" title="&#x8DEF;&#x5F84;&#x89C4;&#x5219;"></a>&#x8DEF;&#x5F84;&#x89C4;&#x5219;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提交"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x63D0;&#x4EA4;" class="headerlink" title="&#x63D0;&#x4EA4;"></a>&#x63D0;&#x4EA4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x7F51;&#x7EDC;" class="headerlink" title="&#x7F51;&#x7EDC;"></a>&#x7F51;&#x7EDC;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#比较和合并"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x6BD4;&#x8F83;&#x548C;&#x5408;&#x5E76;" class="headerlink" title="&#x6BD4;&#x8F83;&#x548C;&#x5408;&#x5E76;"></a>&#x6BD4;&#x8F83;&#x548C;&#x5408;&#x5E76;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试"><span class="nav-number">7.</span> <span class="nav-text"><a href="#&#x8C03;&#x8BD5;" class="headerlink" title="&#x8C03;&#x8BD5;"></a>&#x8C03;&#x8BD5;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">8.</span> <span class="nav-text"><a href="#&#x5176;&#x4ED6;" class="headerlink" title="&#x5176;&#x4ED6;"></a>&#x5176;&#x4ED6;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

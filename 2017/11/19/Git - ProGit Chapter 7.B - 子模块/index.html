@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Git,Git-Submodule," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Git 子模块常用于当项目需要外部依赖如第三方库时。 Git 子模块可以让一个库在子目录里包含另外一个库，这两个库分别有自己独立的提交历史记录，不会互相混淆。">
+<meta name="keywords" content="Git,Git-Submodule">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter 7.11 - Git 子模块">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 7.B - 子模块/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="Git 子模块常用于当项目需要外部依赖如第三方库时。 Git 子模块可以让一个库在子目录里包含另外一个库，这两个库分别有自己独立的提交历史记录，不会互相混淆。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.545Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter 7.11 - Git 子模块">
+<meta name="twitter:description" content="Git 子模块常用于当项目需要外部依赖如第三方库时。 Git 子模块可以让一个库在子目录里包含另外一个库，这两个库分别有自己独立的提交历史记录，不会互相混淆。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 7.B - 子模块/"/>
+
+
+
+
+
+  <title>chapter 7.11 - Git 子模块 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 7.B - 子模块/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">chapter 7.11 - Git 子模块</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/Book-ProGit/" itemprop="url" rel="index">
+                    <span itemprop="name">Book-ProGit</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Git 子模块常用于当项目需要外部依赖如第三方库时。</p>
+<p>Git 子模块可以让一个库在子目录里包含另外一个库，这两个库分别有自己独立的提交历史记录，不会互相混淆。</p>
+<a id="more"></a>
+<p>为方便叙述，把两个库分别称为主库和子库，对应的项目分别称为主项目和子项目。</p>
+<p>使用 <code>git submodule</code> 命令来检验、更新和管理子模块。</p>
+<p>当<code>git clone</code>或<code>git pull</code>一个包含子模块的库时，默认情况下子库不会被检出到用户的工作目录，只会创建一个空的子库目录。</p>
+<p><code>git submodule init</code> 用来初始化子模块配置文件，和 <code>git submodule update</code> 用于抓取数据并检出子库到用户工作目录。</p>
+<p><code>git clone --recursive</code> 则会自动初始化、抓取、检出库的每一个子模块</p>
+<p>子模块的组成：主库里有一个称为<code>gitlink</code>的树条目，链接了子库中一个特殊的提交对象。<br>子模块记录是 160000 模式。 这是 Git 中的一种特殊模式，它本质上意味着你是将一次提交记作一项目录记录的，而非将它记录成一个子目录或者一个文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git ls-files -s|grep themes/next</span><br><span class="line">160000 403bbd06f7f00faf4c19fd8c12b52b5183a2807b 0       themes/next</span><br></pre></td></tr></table></figure></p>
+<p>主项目根目录下的 <code>.gitmodules</code> 文件里指定了子模块的逻辑名和从哪个URL克隆。可以通过逻辑名用本地库地址重写URL。</p>
+<p><code>.gitmodules</code> 文件也需加入 git 库被推送和拉取，这样项目其他成员才可以根据此文件获取子模块，也因此需要保证文件中的 URL 值是可以被项目成员访问到的。</p>
+<p>不要搞混了远程库 remotes 和子模块 submodules，远程库是同一个项目的另外一个库，子模块是独立于主项目的另一个完全不同的子项目，是完全独立的两个项目，所以不能在主项目内部修改子模块的内容。<br>主项目也不会跟踪子模块的内容，而是将子模块看做是主项目仓库的一个特殊提交；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ git diff</span><br><span class="line">diff --git a/themes/next b/themes/next</span><br><span class="line">--- a/themes/next</span><br><span class="line">+++ b/themes/next</span><br><span class="line">@@ -1 +1 @@</span><br><span class="line">-Subproject commit 403bbd06f7f00faf4c19fd8c12b52b5183a2807b</span><br><span class="line">+Subproject commit 403bbd06f7f00faf4c19fd8c12b52b5183a2807b-dirty</span><br></pre></td></tr></table></figure>
+<p>如果想将主项目和子项目的历史合并，把它们作为一个整体项目对待，如同时克隆和检出，则可以使用<code>git subtree merge</code>策略，。</p>
+<h2 id="子模块流程"><a href="#子模块流程" class="headerlink" title="子模块流程"></a>子模块流程</h2><h3 id="获取更新"><a href="#获取更新" class="headerlink" title="获取更新"></a>获取更新</h3><p>获取更新方法一：在子模块工作目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cd DBConnector</span><br><span class="line">$ git fetch</span><br><span class="line">$ git merge origin/master</span><br></pre></td></tr></table></figure></p>
+<p>获取更新方法二：在主项目目录获取更新时同时更新子模块，默认检出子模块的 master 分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git submodule update --remote DBConnector</span><br></pre></td></tr></table></figure></p>
+<p>设置子模块的默认检出分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git config submodule.DbConnector.branch stable</span><br><span class="line"></span><br><span class="line">$ git config -f .gitmodules submodule.DbConnector.branch stable</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>针对 git submodule update 命令</li>
+<li>-f .gitmodules 表示写入 .gitmodules 文件，否则仅对此次会话有效</li>
+</ul>
+<h3 id="显示更新"><a href="#显示更新" class="headerlink" title="显示更新"></a>显示更新</h3><p>显示子模块的更改摘要<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config status.submodulesummary 1</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>针对 git status 命令</li>
+</ul>
+<p>开启和关闭 status.submodulesummary 的效果比较<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ git config status.submodulesummary 0</span><br><span class="line"></span><br><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Your branch is up-to-date with &apos;origin/master&apos;.</span><br><span class="line">...</span><br><span class="line">no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</span><br><span class="line"></span><br><span class="line">$ git config status.submodulesummary 1</span><br><span class="line"></span><br><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Your branch is up-to-date with &apos;origin/master&apos;.</span><br><span class="line">...</span><br><span class="line">Submodules changed but not updated:</span><br><span class="line"></span><br><span class="line">* themes/hueman c88e232...aa8ab81 (1):</span><br><span class="line">  &gt; Merge remote-tracking branch &apos;origin/master&apos;</span><br><span class="line"></span><br><span class="line">no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>显示更改时同时显示子模块的更改<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git diff --submodule</span><br></pre></td></tr></table></figure></p>
+<p>设置子模块更改的显示样式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global diff.submodule log</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>针对 git diff 命令</li>
+<li>取值：log, short, diff</li>
+</ul>
+<p>日志中查看子模块更改记录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git log -p --submodule</span><br></pre></td></tr></table></figure></p>
+<h3 id="修改子模块"><a href="#修改子模块" class="headerlink" title="修改子模块"></a>修改子模块</h3><p>当运行 <code>git submodule update</code> 从子模块仓库中抓取修改时，Git 会拉取改动并 [更新] 子目录中的文件，但是会将子仓库留在一个称作 “游离的 HEAD (detached HEAD)” 的状态，即正常的 HEAD 应该是指向一个分支如 master，然后分支 master 再指向 commit 提交对象，游离的 HEAD 却直接指向了 commit 提交对象，也就是没有本地分支（例如 “master”）跟踪工作目录的改动，这意味着在本地更改了子模块后，即使提交更新到了子模块库，下次执行<code>git submodule update</code> 时也很可能丢失本地的更新。</p>
+<p>所以，对于更改过的本地子模块，需要下列步骤来实现对本地更改的跟踪：</p>
+<pre><code>1. 进入每个子模块然后检出一个分支
+
+2. 执行 `git submodule update --remote` 时使用 `--merge` 或 `--rebase` 选项
+</code></pre><p>如果忘记 –rebase 或 –merge，Git 会将子模块更新为服务器上的状态。并且会将项目重置为一个游离的 HEAD 状态。只需回到目录中再次检出你的分支（即还包含着你的工作的分支）然后手动地合并或变基 origin/master（或任何一个你想要的远程分支）就行了</p>
+<h3 id="推送子模块"><a href="#推送子模块" class="headerlink" title="推送子模块"></a>推送子模块</h3><p>当更改了子模块后，需要确保子模块的更改推送到远程库，否则其他成员获取不到新的更改会产生问题，相关命令选项</p>
+<p>在主项目推送前先检查是否所有子模块的更改都已推送，若有未推送子模块则停止推送主项目</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push --recurse-submodules=check</span><br></pre></td></tr></table></figure>
+<p>在主项目推送前先推送子模块，子模块推送失败则主项目也不推送</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push --recurse-submodules=on-demand</span><br></pre></td></tr></table></figure>
+<h3 id="合并子模块"><a href="#合并子模块" class="headerlink" title="合并子模块"></a>合并子模块</h3><h2 id="子模块技巧"><a href="#子模块技巧" class="headerlink" title="子模块技巧"></a>子模块技巧</h2><h3 id="子模块遍历"><a href="#子模块遍历" class="headerlink" title="子模块遍历"></a>子模块遍历</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git submodule foreach &apos;command&apos;</span><br></pre></td></tr></table></figure>
+<p>遍历所有子模块并执行 command，如果项目中包含了大量子模块时会非常有用</p>
+<p>例如 : 需要开发新功能或修复bug，并且涉及到子模块的修改<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//保存所有子模块工作进度</span><br><span class="line">$ git submodule foreach &apos;git stash&apos;</span><br><span class="line"></span><br><span class="line">//在所有子模块中创建并切换到新分支</span><br><span class="line">$ git submodule foreach &apos;git checkout -b featureA&apos;</span><br></pre></td></tr></table></figure></p>
+<p>例如 : 生成主项目和所有子项目的所有改动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git diff; git submodule foreach &apos;git diff&apos;</span><br></pre></td></tr></table></figure></p>
+<h3 id="子模块别名"><a href="#子模块别名" class="headerlink" title="子模块别名"></a>子模块别名</h3><p>如果 git 操作涉及到大量子模块命令，可以使用别名简化操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git config alias.sdiff &apos;!&apos;&quot;git diff &amp;&amp; git submodule foreach &apos;git diff&apos;&quot;</span><br><span class="line">$ git config alias.spush &apos;push --recurse-submodules=on-demand&apos;</span><br><span class="line">$ git config alias.supdate &apos;submodule update --remote --merge&apos;</span><br></pre></td></tr></table></figure>
+<h2 id="子模块的问题"><a href="#子模块的问题" class="headerlink" title="子模块的问题"></a>子模块的问题</h2><h3 id="切换分支"><a href="#切换分支" class="headerlink" title="切换分支"></a>切换分支</h3><p>原分支 master 没有子模块，新创建一个分支 dev，添加一个子模块 DBConnector，</p>
+<p>再切回原分支 master 时会有一个未跟踪的子模块目录 DBConnector……</p>
+<p>如果在分支 master 移除目录 DBConnector，再切换回 dev 分支时，需要重新建立</p>
+<p>和填充子模块 DBConnector，使用命令 <code>git submodule updates --init</code></p>
+<h3 id="子目录转换为子模块"><a href="#子目录转换为子模块" class="headerlink" title="子目录转换为子模块"></a>子目录转换为子模块</h3><p>原分支 master 有子目录 subdir，检出新分支 dev</p>
+<p>把分支 dev 已存在的子目录 subdir 添加为子模块时，会提示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git submodule add subdir</span><br><span class="line">&apos;subdir&apos; already exists in the index</span><br></pre></td></tr></table></figure></p>
+<p>需要先从暂存区中移除再添加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git rm -rc subdir</span><br><span class="line">$ git submodule add subdir</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>-c –cached 保留目录文件，从暂存区 index 移除</li>
+<li>-r 递归移除，没有此参数一是移除不了子目录下的文件在 index 中的条目，二是需要写完整名称，如 subdir/module.txt</li>
+</ul>
+<p>再切换回分支 master 时，subdir 是子目录，则报错<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master</span><br><span class="line">error: The following untracked working tree files would be overwritten by checkout:</span><br><span class="line">  subdir/module.txt</span><br><span class="line">  ...</span><br><span class="line">Please move or remove them before you can switch branches.</span><br><span class="line">Aborting</span><br></pre></td></tr></table></figure></p>
+<p>可以强制切换，会覆盖到 subdir 的本地修改<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -f master</span><br><span class="line">warning: unable to rmdir subdir: Directory not empty</span><br><span class="line">Switched to branch &apos;master&apos;</span><br></pre></td></tr></table></figure></p>
+<p>此时得到的是一个空的 subdir 目录，并且 <code>git submodule update</code> 也无法修复它，</p>
+<p>需要进入到子模块目录中运行 <code>git checkout</code> 来找回所有的文件。 也可以通过 <code>submodule foreach</code> 脚本来为多个子模块运行它。</p>
+<p>要特别注意的是，近来子模块会将它们的所有 Git 数据保存在顶级项目的 .git 目录中，所以不像旧版本的 Git，摧毁一个子模块目录并不会丢失任何提交或分支。</p>
+<h2 id="子模块配置文件"><a href="#子模块配置文件" class="headerlink" title="子模块配置文件"></a>子模块配置文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ cat .git/config</span><br><span class="line">[submodule &quot;themes/hueman&quot;]</span><br><span class="line">        url = git@github.com:ppoffice/hexo-theme-hueman.git</span><br><span class="line">        active = true</span><br><span class="line">[submodule &quot;themes/next&quot;]</span><br><span class="line">        url = git@github.com:iissnan/hexo-theme-next.git</span><br><span class="line">        active = true</span><br><span class="line"></span><br><span class="line">$ cat .gitmodules</span><br><span class="line">[submodule &quot;themes/hueman&quot;]</span><br><span class="line">        path = themes/hueman</span><br><span class="line">        url = git@github.com:ppoffice/hexo-theme-hueman.git</span><br><span class="line">[submodule &quot;themes/next&quot;]</span><br><span class="line">        path = themes/next</span><br><span class="line">        url = git@github.com:iissnan/hexo-theme-next.git</span><br></pre></td></tr></table></figure>
+<h2 id="子块模命令详解"><a href="#子块模命令详解" class="headerlink" title="子块模命令详解"></a>子块模命令详解</h2><h3 id="添加子模块"><a href="#添加子模块" class="headerlink" title="添加子模块"></a>添加子模块</h3><p>完整格式：</p>
+<ul>
+<li><code>git submodule add [-b &lt;branch&gt;] [-f|--force] [--name &lt;name&gt;] [--reference &lt;repository&gt;] [--depth &lt;depth&gt;] [--] &lt;repository&gt; [&lt;path&gt;]</code></li>
+</ul>
+<p>常用格式：</p>
+<ul>
+<li><code>git submodule add &lt;repo&gt; [&lt;path&gt;]</code></li>
+</ul>
+<p>把库<code>&lt;repo&gt;</code>添加为子模块，指定保存路径为<code>&lt;path&gt;</code>，并添加到暂存区准备提交，并把子模块信息写入<code>.gitmodules</code>文件和<code>.git/config</code>文件。</p>
+<p><code>&lt;repo&gt;</code></p>
+<ul>
+<li>必填</li>
+<li>应是子模块的原始库 URL</li>
+<li>可以是绝对路径或相对路径，相对路径必须以<code>./</code>或<code>../</code>开头</li>
+<li>无论相对还是绝对路径，都会写入<code>.gitmodules</code>文件，被后续用户来使用。</li>
+<li>如果是相对与主项目的相对路径，Git 会假定主项目和子项目是聚在一起的，并位于相同的相对位置，这时只需要主项目的URL，再根据<code>.gitmodules</code>文件中的相对路径就能正确的定位到子模块。</li>
+</ul>
+<p><code>&lt;repository&gt;</code> is the URL of the new submodule’s origin repository. This may be either an absolute URL, or (if it begins with ./ or ../), the location relative to the superproject’s default remote repository (Please note that to specify a repository foo.git which is located right next to a superproject bar.git, you’ll have to use ../foo.git instead of ./foo.git - as one might expect when following the rules for relative URLs - because the evaluation of relative URLs in Git is identical to that of relative directories).</p>
+<p>The default remote is the remote of the remote tracking branch of the current branch. If no such remote tracking branch exists or the HEAD is detached, “origin” is assumed to be the default remote. If the superproject doesn’t have a default remote configured the superproject is its own authoritative upstream and the current working directory is used instead.</p>
+<p><code>-b &lt;branch&gt;</code></p>
+<ul>
+<li><p>指定子模块要检出的分支，默认为 master，也可以通过修改 config 文件来设置</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config -f .gitmodules submodule.DbConnector.branch stable</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>-f .gitmodules</code> 选项表示写入 .gitmodules 文件，否则仅对当前会话起作用</li>
+</ul>
+</li>
+</ul>
+<p><code>&lt;path&gt;</code></p>
+<ul>
+<li>可选</li>
+<li>值是子模块在主项目中的相对路径</li>
+<li>也被用作子模块的逻辑名，除非使用<code>--name</code>选项指定了逻辑名</li>
+<li>没有此参数则根据<code>&lt;repo&gt;</code>参数自动生成，一般为仓库<code>&lt;repo&gt;</code>同名的目录，如”/path/to/repo.git”生成”repo”</li>
+<li>如果指定的路径已经存在且是一个有效的 git 库，则只把子模块添加到暂存区但不执行克隆，这种方法很容易从头开始创建全新子模块，创建完后需要推送到 URL 去。</li>
+</ul>
+<p>例子：添加已存在的 git 库为子模块<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//提示暂存区已有了</span><br><span class="line">$ git submodule add git@github.com:iissnan/hexo-theme-next.git themes/next</span><br><span class="line">&apos;themes/next&apos; already exists in the index</span><br><span class="line"></span><br><span class="line">//从暂存区移除</span><br><span class="line">$ git rm --cached themes/next</span><br><span class="line"></span><br><span class="line">//再次添加则成功</span><br><span class="line">$ git submodule add git@github.com:iissnan/hexo-theme-next.git themes/next</span><br><span class="line">Adding existing repo at &apos;themes/next&apos; to the index</span><br></pre></td></tr></table></figure></p>
+<h3 id="查看子模块"><a href="#查看子模块" class="headerlink" title="查看子模块"></a>查看子模块</h3><p>完整格式：<br><code>git submodule [--quiet] status [--cached] [--recursive] [--] [&lt;path&gt;…​]</code></p>
+<p>常用格式：<br><code>git submodule</code><br><code>git submodule status</code></p>
+<p>显示子模块状态，会显示每个子模块当前检出提交的 SHA-1 值，子模块路径和 Git 对 SHA-1 的描述。</p>
+<p><code>--recursive</code> 递归显示嵌套的子模块</p>
+<p>SHA-1 前缀含义：<br><code>-</code> 子模块未初始化<br><code>+</code> 子模块当前检出对应的提交对象 SHA-1 和子库暂存区里的 SHA-1 未匹配（if the currently checked out submodule commit does not match the SHA-1 found in the index of the containing repository）<br><code>U</code> 子模块合并冲突</p>
+<p>举例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git submodule</span><br><span class="line"> c88e232969ad224a1869d764b403b8ca763484c9 themes/hueman (v0.3.0-21-gc88e232)</span><br><span class="line"> f597e3149fd529e577f76ccfc485f9d9fb367182 themes/next (v5.1.1-182-gf597e31)</span><br><span class="line"> </span><br><span class="line"> $ git submodule status themes/hueman</span><br><span class="line"> c88e232969ad224a1869d764b403b8ca763484c9 themes/hueman (v0.3.0-21-gc88e232)</span><br></pre></td></tr></table></figure></p>
+<h3 id="初始化子模块"><a href="#初始化子模块" class="headerlink" title="初始化子模块"></a>初始化子模块</h3><p>完整格式：</p>
+<ul>
+<li><code>git submodule [--quiet] init [--] [&lt;path&gt;…​]</code></li>
+</ul>
+<p>常用格式：</p>
+<ul>
+<li><code>git submodule init [--] [&lt;path&gt;…​]</code></li>
+</ul>
+<p>功能描述：</p>
+<ul>
+<li>使用文件<code>.gitmodules</code>中的设置作为模板，设置<code>.git/config</code>中<code>submodule.$name.url</code>，如果 URL 是相对路径，则使用默认的远程库解析，如果没有默认的远程库，则使用当前库。</li>
+<li>此命令也会复制 <code>submodule.$name.update</code> 的值。</li>
+<li>此命令不会修改 <code>.git/config</code> 中已存在的设置</li>
+<li>可以先在 <code>.git/config</code> 文件里定义子模块的克隆 URL，然后再使用 <code>git submodule update</code>，如果不需要自定义子模块的 URL，也可以不显式的进行初始化，直接使用 <code>git submodule update --init</code>。</li>
+</ul>
+<p>参数选项：</p>
+<ul>
+<li><code>&lt;path&gt;</code><ul>
+<li>可选</li>
+<li>指定初始化的子模块</li>
+<li>没有指定此参数时，如果设置了<code>submodule.active</code>则初始化此子模块，否则初始化所有模块</li>
+</ul>
+</li>
+</ul>
+<h3 id="注销子模块"><a href="#注销子模块" class="headerlink" title="注销子模块"></a>注销子模块</h3><p>完整格式：</p>
+<ul>
+<li><code>git submodule [--quiet] deinit [-f|--force] (--all|[--] &lt;path&gt;…​)</code></li>
+</ul>
+<p>常用格式:</p>
+<ul>
+<li><code>git submodule deinit &lt;path&gt;</code></li>
+<li><code>git submodule deinit --all</code></li>
+</ul>
+<p>功能描述：</p>
+<ul>
+<li>移除子模块的工作目录，所以如果不想检出子模块工作目录时可使用此命令</li>
+<li>从<code>.git/config</code>文件中移除全部<code>submodule.$name</code>部分，再次执行命令 <code>git submodule update</code>，<code>git submodule foreach</code>，<code>git submodule sync</code> 时则忽略所有未注册的模块</li>
+<li>如果想从库中移除子模块使用命令 <code>git rm</code> </li>
+</ul>
+<p>参数选项：</p>
+<ul>
+<li><code>&lt;path&gt;</code> 缺少此参数会报错</li>
+<li><code>--all</code> 注销所有模块</li>
+<li><code>-f|--force</code> 移除子模块的工作目录，即使进行了本地修改</li>
+</ul>
+<p>例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git submodule deinit themes/hueman</span><br><span class="line">Submodule work tree &apos;themes/hueman&apos; contains a .git directory</span><br><span class="line">(use &apos;rm -rf&apos; if you really want to remove it including all of its history)</span><br></pre></td></tr></table></figure></p>
+<h3 id="更新子模块"><a href="#更新子模块" class="headerlink" title="更新子模块"></a>更新子模块</h3><p>完整格式：</p>
+<ul>
+<li><code>git submodule update [--init] [--remote] [-N|--no-fetch] [--[no-]recommend-shallow] [-f|--force] [--checkout|--rebase|--merge] [--reference &lt;repository&gt;] [--depth &lt;depth&gt;] [--recursive] [--jobs &lt;n&gt;] [--] [&lt;path&gt;…​]</code></li>
+</ul>
+<p>功能描述：</p>
+<p>更新已注册的子模块：克隆子模块库和更新子模块工作目录</p>
+<p>update 有多种执行方式，怎样执行由命令行选项和配置变量<code>submodule.&lt;name&gt;.update</code>这两项决定，命令行选项比配置变量优先级高，如果两者都没有设定，则执行<code>--checkout</code></p>
+<p>常用格式：</p>
+<ul>
+<li><p><code>git submodule update &lt;path&gt;</code></p>
+<p>  不更新子模块<br>  <br></p>
+</li>
+<li><p><code>git submodule update --remote</code></p>
+<p>  git 自动进入子模块拉取更新</p>
+<p>  ??? 需测试</p>
+</li>
+<li><p><code>git submodule update --remote --merge</code></p>
+<p>  git 自动进入子模块拉取更新并合并</p>
+<p>  ??? 需测试</p>
+</li>
+<li><p><code>git submodule update --remote --rebase</code></p>
+</li>
+</ul>
+<ul>
+<li><p><code>git submodule update --init</code></p>
+<p>  子模块未被初始化，使用文件 <code>.gitmodules</code> 中的配置初始化子模块<br>  <br></p>
+</li>
+<li><p><code>git submodule update --checkout</code></p>
+</li>
+<li><code>git submodule update --f --checkout</code></li>
+<li><p><code>git submodule update --force --checkout</code></p>
+<p>  the commit recorded in the superproject will be checked out in the submodule on a detached HEAD.</p>
+<p>  If –force is specified, the submodule will be checked out (using git checkout –force if appropriate), even if the commit specified in the index of the containing repository already matches the commit checked out in the submodule.<br>  <br></p>
+</li>
+<li><p><code>git submodule update --rebase</code></p>
+<p>  当前子模块的分支变基到主项目的提交对象<br>  the current branch of the submodule will be rebased onto the commit recorded in the superproject.<br>  <br></p>
+</li>
+<li><p><code>git submodule update --merge</code></p>
+<p>  主项目会被合并到子模块的当前分支<br>  <br></p>
+</li>
+<li><p><code>git submodule update --xxxx</code></p>
+<p>  xxxx 表示自定义命令，任何的 shell 命令都会带一个参数：主项目的提交对象的 SHA-1。</p>
+<p>  只有 <code>submodule.&lt;name&gt;.update</code> 设置为 <code>!command</code> 时，自定义命令才有效，<code>!</code>后面的 command 就是自定义命令。</p>
+</li>
+</ul>
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p><code>git submodule [--quiet] summary [--cached|--files] [(-n|--summary-limit) &lt;n&gt;] [commit] [--] [&lt;path&gt;…​]</code></p>
+<p>显示提交摘要</p>
+<p>Show commit summary between the given commit (defaults to HEAD) and working tree/index.</p>
+<p>For a submodule in question, a series of commits in the submodule between the given super project commit and the index or working tree (switched by –cached) are shown.</p>
+<p>If the option –files is given, show the series of commits in the submodule between the index of the super project and the working tree of the submodule .</p>
+<p><code>--files</code></p>
+<ul>
+<li></li>
+<li>不允许再使用<code>--cached</code>选项，不允许再显式的使用提交对象</li>
+</ul>
+<p><code>git diff --submodule=log</code> 同样的效果</p>
+<h3 id="在子模块上执行命令"><a href="#在子模块上执行命令" class="headerlink" title="在子模块上执行命令"></a>在子模块上执行命令</h3><p><code>git submodule [--quiet] foreach [--recursive] &lt;command&gt;</code></p>
+<p>在每个检出的子模块上依次执行任意的 shell 命令，没有被检出的子模块将被忽略。</p>
+<p>在任何子模块中执行命令被终端时将返回非0值，可以在命令结尾添加<code>||:</code>来覆盖</p>
+<p>shell 命令可以访问下列变量：</p>
+<ul>
+<li><code>$name</code>       是<code>.gitmodules</code>文件里的子模块名</li>
+<li><code>$path</code>       是子模块相对于主项目的路径</li>
+<li><code>$sha1</code>       是在主项目中记录的子项目的SHA1值</li>
+<li><code>$toplevel</code>   是主项目的绝对路径</li>
+</ul>
+<p><code>--quiet</code> 在执行命令之前，不输出子模块的名称，默认是输出的<br><code>--recursive</code> 递归执行</p>
+<p>举例：输出每个子模块的路径和检出对象 SHA-1<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git submodule foreach &apos;echo $path `git rev-parse HEAD`&apos;</span><br><span class="line">Entering &apos;themes/hueman&apos;</span><br><span class="line">themes/hueman c88e232969ad224a1869d764b403b8ca763484c9</span><br><span class="line">Entering &apos;themes/next&apos;</span><br><span class="line">themes/next 403bbd06f7f00faf4c19fd8c12b52b5183a2807b</span><br></pre></td></tr></table></figure></p>
+<h3 id="同步子模块的远程库URL到主项目"><a href="#同步子模块的远程库URL到主项目" class="headerlink" title="同步子模块的远程库URL到主项目"></a>同步子模块的远程库URL到主项目</h3><p>在子模块更改了自己的远程库 URL 后，主项目这时也要相应的更新<code>.gitmodules</code>文件中的设置，此命令即实现此功能。</p>
+<p>完整格式：</p>
+<ul>
+<li><code>git submodule [--quiet] sync [--recursive] [--] [&lt;path&gt;…​]</code></li>
+</ul>
+<p>功能描述：</p>
+<ul>
+<li>同步子模块的远程库 URL 设置到文件 <code>.gitmodules</code> 里，只影响那些在文件 <code>.git/config</code> 里已经有了 URL 条目的子模块。</li>
+</ul>
+<p>常用格式：</p>
+<ul>
+<li><p><code>git submodule sync</code><br>  同步所有子模块</p>
+</li>
+<li><p><code>git submodule sync --recursive</code><br>  递归同步所有子模块包括嵌套的子模块</p>
+</li>
+<li><p><code>git submodule sync -- themes/next</code><br>  只同步指定的模块<code>themes/next</code></p>
+</li>
+</ul>
+<h3 id="吸收子模块-git-目录"><a href="#吸收子模块-git-目录" class="headerlink" title="吸收子模块 git 目录"></a>吸收子模块 git 目录</h3><p><code>git submodule [--quiet] absorbgitdirs [--] [&lt;path&gt;…​]</code></p>
+<pre><code>absorb  [əb&apos;zɔːb;] 吸收
+
+把子模块 git 目录移动到主项目的`$GIT_DIR/modules`路径下，然后通过在主项目下添加指向子模块 git 目录的`.git` 文件和设置`core.worktree`变量来链接子模块的 git 目录和工作目录
+
+命令默认递归执行。
+
+If a git directory of a submodule is inside the submodule, move the git directory of the submodule into its superprojects `$GIT_DIR/modules` path and then connect the git directory and its working directory by setting the `core.worktree` and adding a .git file pointing to the git directory embedded in the superprojects git directory.
+</code></pre><h3 id="选项详解"><a href="#选项详解" class="headerlink" title="选项详解"></a>选项详解</h3><h4 id="q-quiet"><a href="#q-quiet" class="headerlink" title="-q|--quiet"></a><code>-q|--quiet</code></h4><pre><code>静默执行，只显示错误信息
+</code></pre><h4 id="all"><a href="#all" class="headerlink" title="--all"></a><code>--all</code></h4><pre><code>只对 `deinit` 命令有效
+
+表示注销所有工作目录的子模块
+</code></pre><h4 id="f-force"><a href="#f-force" class="headerlink" title="-f|--force"></a><code>-f|--force</code></h4><pre><code>此选项只对 `add`, `deinit`, `update --checkout` 命令有效
+
+执行 `add` 时表示允许添加一个原本被忽略的子模块
+执行 `deinit` 时表示即使子模块工作目录有本地修改也移除
+执行 `update --checkout` 时表示子模块切换到另一个提交时将丢弃子模块的本地修改，并且总是在子模块里执行检出操作，即使子库暂存区中提交对象列表匹配子模块检出的提交对象。
+even if the commit listed in the index of the containing repository matches the commit checked out in the submodule.
+</code></pre><h4 id="cached"><a href="#cached" class="headerlink" title="--cached"></a><code>--cached</code></h4><pre><code>只对 `status` 和 `summary` 命令有效
+
+这两个命令默认是使用 HEAD 分支的提交对象，此选项则表示使用暂存区的提交对象
+</code></pre><h4 id="files"><a href="#files" class="headerlink" title="--files"></a><code>--files</code></h4><pre><code>只对 `summary` 命令有效
+
+此选项表示比较 HEAD 分支的提交对象和暂存区的提交对象
+</code></pre><h4 id="n-summary-limit"><a href="#n-summary-limit" class="headerlink" title="-n|--summary-limit"></a><code>-n|--summary-limit</code></h4><pre><code>只对 `summary` 命令有效
+
+限制摘要里提交的数量
+0 表示不显示摘要，负数表示不限制数量（默认），限制只应用于修改的子模块
+
+The size is always limited to 1 for added/deleted/typechanged submodules.
+</code></pre><h4 id="remote"><a href="#remote" class="headerlink" title="--remote"></a><code>--remote</code></h4><pre><code>只对`update`命令有效
+</code></pre><p>Instead of using the superproject’s recorded SHA-1 to update the submodule, use the status of the submodule’s remote-tracking branch. The remote used is branch’s remote (branch.<name>.remote), defaulting to origin. The remote branch used defaults to master, but the branch name may be overridden by setting the submodule.<name>.branch option in either .gitmodules or .git/config (with .git/config taking precedence).</name></name></p>
+<p>This works for any of the supported update procedures (–checkout, –rebase, etc.). The only change is the source of the target SHA-1. For example, submodule update –remote –merge will merge upstream submodule changes into the submodules, while submodule update –merge will merge superproject gitlink changes into the submodules.</p>
+<p>In order to ensure a current tracking branch state, update –remote fetches the submodule’s remote repository before calculating the SHA-1. If you don’t want to fetch, you should use submodule update –remote –no-fetch.</p>
+<p>Use this option to integrate changes from the upstream subproject with your submodule’s current HEAD. Alternatively, you can run git pull from the submodule, which is equivalent except for the remote branch name: update –remote uses the default upstream repository and submodule.<name>.branch, while git pull uses the submodule’s branch.<name>.merge. Prefer submodule.<name>.branch if you want to distribute the default upstream branch with the superproject and branch.<name>.merge if you want a more native feel while working in the submodule itself.</name></name></name></name></p>
+<h4 id="N-no-fetch"><a href="#N-no-fetch" class="headerlink" title="-N|--no-fetch"></a><code>-N|--no-fetch</code></h4><pre><code>只对`update`命令有效
+
+表示不从远程库取回任何新对象
+</code></pre><h4 id="checkout"><a href="#checkout" class="headerlink" title="--checkout"></a><code>--checkout</code></h4><pre><code>只对`update`命令有效
+
+默认检出主项目到子模块的分离的 HEAD
+
+当 `submodule.$name.update` 的值不是 `checkout` 时，此选项主要用来覆盖其值
+
+如果 `submodule.$name.update` 没有被显式的设置或设置为`checkout`，则此选项被隐式使用
+</code></pre><h4 id="merge"><a href="#merge" class="headerlink" title="--merge"></a><code>--merge</code></h4><pre><code>只对`update`命令有效
+
+把主项目合并到子模块的当前分支，子模块的 HEAD 不会分离，如果合并失败，需自己解决冲突。
+
+如果 `submodule.$name.update` 值是 `merge`，则此选项被隐式使用
+</code></pre><h4 id="rebase"><a href="#rebase" class="headerlink" title="--rebase"></a><code>--rebase</code></h4><pre><code>只对`update`命令有效
+
+把子模块的当前分支变基到主项目，子模块的 HEAD 不会被分离，如果合并失败，需自己使用`rebase`解决.
+
+如果 `submodule.$name.update` 的值是 `rebase`，则此选项被隐式使用
+</code></pre><h4 id="init"><a href="#init" class="headerlink" title="--init"></a><code>--init</code></h4><pre><code>只对`update`命令有效
+
+更新前初始化所有没有被 `git submodule init` 调用过的子模块
+</code></pre><h4 id="name"><a href="#name" class="headerlink" title="--name"></a><code>--name</code></h4><pre><code>只对`add`命令有效
+设置子模块的名字（默认使用子模块路径作名字）
+名字的有效性规则和目录名的有效性规则是一样的，不能以/结尾
+</code></pre><h4 id="reference-lt-repository-gt"><a href="#reference-lt-repository-gt" class="headerlink" title="--reference &lt;repository&gt;"></a><code>--reference &lt;repository&gt;</code></h4><pre><code>只对`add`, `update`命令有效
+
+当上述命令需要自动克隆一个远程库时，自动把此选项传递给 `git clone` 命令
+
+注意：除非仔细阅读过 `git clone` 命令 `--reference` 和 `--shared` 选项的注意事项，否则不要使用这个选项
+</code></pre><h4 id="recursive"><a href="#recursive" class="headerlink" title="--recursive"></a><code>--recursive</code></h4><pre><code>只对 `foreach`, `update`, `status`, `sync` 命令有效
+
+表示命令不仅仅针对当前库的子模块，也针对子模块中多层嵌套的子模块
+</code></pre><h4 id="depth"><a href="#depth" class="headerlink" title="--depth"></a><code>--depth</code></h4><pre><code>只对`add`, `update`命令有效
+
+创建一个浅克隆时截止到指定的版本次数
+</code></pre><h4 id="no-recommend-shallow-recommend-shallow"><a href="#no-recommend-shallow-recommend-shallow" class="headerlink" title="--no-recommend-shallow | --recommend-shallow"></a><code>--no-recommend-shallow | --recommend-shallow</code></h4><pre><code>只对`update`命令有效
+
+默认使用由文件 `.gitmodules` 推荐的 `submodule.&lt;name&gt;.shallow` 初始化克隆的子模块，忽略推荐则使用 `--no-recommend-shallow`
+</code></pre><h4 id="j-lt-n-gt-jobs-lt-n-gt"><a href="#j-lt-n-gt-jobs-lt-n-gt" class="headerlink" title="-j &lt;n&gt;|--jobs &lt;n&gt;"></a><code>-j &lt;n&gt;|--jobs &lt;n&gt;</code></h4><pre><code>只对`update`命令有效
+
+与多个作业任务并行克隆新的子模块，是 `submodule.fetchJobs` 默认值
+</code></pre><h4 id="lt-path-gt-…"><a href="#lt-path-gt-…" class="headerlink" title="&lt;path&gt;…"></a><code>&lt;path&gt;…</code></h4><pre><code>表示子模块的路径，指定后则限制命令只能操作指定路径的子模块
+</code></pre><h2 id="子模块相关选项"><a href="#子模块相关选项" class="headerlink" title="子模块相关选项"></a>子模块相关选项</h2><p>使用 <code>git config [--system | --global | --local]</code> 设置</p>
+<p>status.submoduleSummary</p>
+<pre><code>设置 `git status` 时是否显示子模块摘要
+
+??? 这个命令貌似也影响 git diff
+??? 这个没有测试成功，子模块的的 summary 不显示，包括 git submodule 命令的 summary
+
+Defaults to false. If this is set to a non zero number or true (identical to -1 or an unlimited number), the submodule summary will be enabled and a summary of commits for modified submodules will be shown (see --summary-limit option of git-submodule(1)). Please note that the summary output command will be suppressed for all submodules when diff.ignoreSubmodules is set to all or only for those submodules where submodule.&lt;name&gt;.ignore=all. The only exception to that rule is that status and commit will show staged submodule changes. To also view the summary for ignored submodules you can either use the --ignore-submodules=dirty command-line option or the git submodule summary command, which shows a similar output but does not honor these settings.
+</code></pre><p>diff.submodule</p>
+<pre><code>设置 `git diff` 时显示子模块差异的样式
+
+Specify the format in which differences in submodules are shown. The &quot;short&quot; format just shows the names of the commits at the beginning and end of the range. The &quot;log&quot; format lists the commits in the range like git-submodule(1) summary does. The &quot;diff&quot; format shows an inline diff of the changed contents of the submodule. Defaults to &quot;short&quot;.
+</code></pre><p>diff.ignoreSubmodules</p>
+<pre><code>Sets the default value of --ignore-submodules. Note that this affects only git diff Porcelain, and not lower level diff commands such as git diff-files. git checkout also honors this setting when reporting uncommitted changes. Setting it to all disables the submodule summary normally shown by git commit and git status when status.submoduleSummary is set unless it is overridden by using the --ignore-submodules command-line option. The git submodule commands are not affected by this setting.
+</code></pre><p>fetch.recurseSubmodules</p>
+<pre><code>This option can be either set to a boolean value or to on-demand. Setting it to a boolean changes the behavior of fetch and pull to unconditionally recurse into submodules when set to true or to not recurse at all when set to false. When set to on-demand (the default value), fetch and pull will only recurse into a populated submodule when its superproject retrieves a commit that updates the submodule’s reference.
+</code></pre><p>push.recurseSubmodules</p>
+<pre><code>Make sure all submodule commits used by the revisions to be pushed are available on a remote-tracking branch. If the value is check then Git will verify that all submodule commits that changed in the revisions to be pushed are available on at least one remote of the submodule. If any commits are missing, the push will be aborted and exit with non-zero status. If the value is on-demand then all submodules that changed in the revisions to be pushed will be pushed. If on-demand was not able to push all necessary revisions it will also be aborted and exit with non-zero status. If the value is no then default behavior of ignoring submodules when pushing is retained. You may override this configuration at time of push by specifying --recurse-submodules=check|on-demand|no.
+</code></pre><p>submodule.<name>.url</name></p>
+<pre><code>The URL for a submodule. This variable is copied from the .gitmodules file to the git config via git submodule init. The user can change the configured URL before obtaining the submodule via git submodule update. If neither submodule.&lt;name&gt;.active or submodule.active are set, the presence of this variable is used as a fallback to indicate whether the submodule is of interest to git commands. See git-submodule(1) and gitmodules(5) for details.
+</code></pre><p>submodule.<name>.update</name></p>
+<pre><code>The default update procedure for a submodule. This variable is populated by git submodule init from the gitmodules(5) file. See description of update command in git-submodule(1).
+</code></pre><p>submodule.<name>.branch</name></p>
+<pre><code>The remote branch name for a submodule, used by git submodule update --remote. Set this option to override the value found in the .gitmodules file. See git-submodule(1) and gitmodules(5) for details.
+</code></pre><p>submodule.<name>.fetchRecurseSubmodules</name></p>
+<pre><code>This option can be used to control recursive fetching of this submodule. It can be overridden by using the --[no-]recurse-submodules command-line option to &quot;git fetch&quot; and &quot;git pull&quot;. This setting will override that from in the gitmodules(5) file.
+</code></pre><p>submodule.<name>.ignore</name></p>
+<pre><code>Defines under what circumstances &quot;git status&quot; and the diff family show a submodule as modified. When set to &quot;all&quot;, it will never be considered modified (but it will nonetheless show up in the output of status and commit when it has been staged), &quot;dirty&quot; will ignore all changes to the submodules work tree and takes only differences between the HEAD of the submodule and the commit recorded in the superproject into account. &quot;untracked&quot; will additionally let submodules with modified tracked files in their work tree show up. Using &quot;none&quot; (the default when this option is not set) also shows submodules that have untracked files in their work tree as changed. This setting overrides any setting made in .gitmodules for this submodule, both settings can be overridden on the command line by using the &quot;--ignore-submodules&quot; option. The git submodule commands are not affected by this setting.
+</code></pre><p>submodule.<name>.active</name></p>
+<pre><code>Boolean value indicating if the submodule is of interest to git commands. This config option takes precedence over the submodule.active config option.
+</code></pre><p>submodule.active</p>
+<pre><code>A repeated field which contains a pathspec used to match against a submodule’s path to determine if the submodule is of interest to git commands.
+</code></pre><p>submodule.fetchJobs</p>
+<pre><code>Specifies how many submodules are fetched/cloned at the same time. A positive integer allows up to that number of submodules fetched in parallel. A value of 0 will give some reasonable default. If unset, it defaults to 1.
+</code></pre><p>submodule.alternateLocation</p>
+<pre><code>Specifies how the submodules obtain alternates when submodules are cloned. Possible values are no, superproject. By default no is assumed, which doesn’t add references. When the value is set to superproject the submodule to be cloned computes its alternates location relative to the superprojects alternate.
+</code></pre><p>submodule.alternateErrorStrategy</p>
+<pre><code>Specifies how to treat errors with the alternates for a submodule as computed via submodule.alternateLocation. Possible values are ignore, info, die. Default is die.
+</code></pre><h2 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><p>有两个子模块，为啥只显示一个？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ll .git/modules</span><br><span class="line">drwxr-xr-x 1 ssl 197121 0 七月 18 10:15 hueman/</span><br></pre></td></tr></table></figure></p>
+<p>deinit 必须搭配 -f 参数吗<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git submodule deinit themes/next</span><br><span class="line">Submodule work tree &apos;themes/next&apos; contains a .git directory</span><br><span class="line">(use &apos;rm -rf&apos; if you really want to remove it including all of its history)</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://stackoverflow.com/questions/23271424/issue-with-removing-a-git-submodule" target="_blank" rel="noopener">https://stackoverflow.com/questions/23271424/issue-with-removing-a-git-submodule</a><br>貌似要先移除或改名子模块文件夹，然后再 deinit</p>
+<p><a href="https://stackoverflow.com/questions/1260748/how-do-i-remove-a-submodule" target="_blank" rel="noopener">https://stackoverflow.com/questions/1260748/how-do-i-remove-a-submodule</a></p>
+<p><a href="https://stackoverflow.com/questions/16160993/moving-a-git-working-copy-containing-submodules/16161950#16161950" target="_blank" rel="noopener">https://stackoverflow.com/questions/16160993/moving-a-git-working-copy-containing-submodules/16161950#16161950</a></p>
+<p>测试git clone 的子项目何时被添加到Index的？</p>
+<p>git subtree？</p>
+<p>下面这个网址是关于 <code>core.worktree</code></p>
+<p><a href="https://stackoverflow.com/questions/10821825/how-to-set-git-dir-git-work-tree-when-maintaining-multiple-repositories" target="_blank" rel="noopener">https://stackoverflow.com/questions/10821825/how-to-set-git-dir-git-work-tree-when-maintaining-multiple-repositories</a></p>
+<p>下面网址是关于 detached Head</p>
+<p><a href="https://stackoverflow.com/questions/3965676/why-did-my-git-repo-enter-a-detached-head-state" target="_blank" rel="noopener">https://stackoverflow.com/questions/3965676/why-did-my-git-repo-enter-a-detached-head-state</a></p>
+<p><a href="https://stackoverflow.com/questions/471300/git-switch-branch-without-detaching-head" target="_blank" rel="noopener">https://stackoverflow.com/questions/471300/git-switch-branch-without-detaching-head</a></p>
+<p><a href="https://stackoverflow.com/questions/41465194/head-detached-at-when-jenkins-run" target="_blank" rel="noopener">https://stackoverflow.com/questions/41465194/head-detached-at-when-jenkins-run</a></p>
+<hr>
+<p>changesets 是什么玩意？</p>
+<pre><code>就是提交对象的集合
+
+[other history]   [ &quot;changeset 1&quot; ]
+o - o - o - o - o ( - o - o - o - o)
+ \
+  (o - o - o - o - o)
+  [ &quot;changeset 2&quot; ]
+</code></pre><p>如何将库中现有的子项目添加为子模块？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">$ git submodule</span><br><span class="line">fatal: no submodule mapping found in .gitmodules for path &apos;themes/hueman&apos;</span><br><span class="line">fatal: no submodule mapping found in .gitmodules for path &apos;themes/next&apos;</span><br><span class="line"></span><br><span class="line">$ git submodule add git@github.com:ppoffice/hexo-theme-hueman.git ./themes/hueman</span><br><span class="line">&apos;themes/hueman&apos; already exists in the index</span><br><span class="line"></span><br><span class="line">$ cat .gitmodules</span><br><span class="line">cat: .gitmodules: No such file or directory</span><br><span class="line"></span><br><span class="line">$ git rm --cached themes/hueman</span><br><span class="line">rm &apos;themes/hueman&apos;</span><br><span class="line"></span><br><span class="line">$ git rm -r --cached themes/hueman</span><br><span class="line"></span><br><span class="line">$ git submodule add ./themes/hueman</span><br><span class="line">A git directory for &apos;hueman&apos; is found locally with remote(s):</span><br><span class="line">  origin        git@github.com:shenlin9/shenlin.ltd/themes/hueman</span><br><span class="line">If you want to reuse this local git directory instead of cloning again from</span><br><span class="line">  git@github.com:shenlin9/shenlin.ltd/themes/hueman</span><br><span class="line">use the &apos;--force&apos; option. If the local git directory is not the correct repo</span><br><span class="line">or you are unsure what this means choose another name with the &apos;--name&apos; option.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ git submodule add git@github.com:ppoffice/hexo-theme-hueman.git themes/hueman</span><br><span class="line">Adding existing repo at &apos;themes/hueman&apos; to the index</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ git ls-files -s|grep hueman</span><br><span class="line">160000 c88e232969ad224a1869d764b403b8ca763484c9 0       themes/hueman</span><br><span class="line"></span><br><span class="line">$ git submodule</span><br><span class="line"> c88e232969ad224a1869d764b403b8ca763484c9 themes/hueman (v0.3.0-21-gc88e232)</span><br><span class="line">fatal: no submodule mapping found in .gitmodules for path &apos;themes/next&apos;</span><br><span class="line"></span><br><span class="line">$ cat .gitmodules</span><br><span class="line">[submodule &quot;themes/hueman&quot;]</span><br><span class="line">        path = themes/hueman</span><br><span class="line">        url = git@github.com:ppoffice/hexo-theme-hueman.git</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+            <a href="/tags/Git-Submodule/" rel="tag"># Git-Submodule</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 7.C - 打包/" rel="next" title="chapter 7.C - Git 打包">
+                <i class="fa fa-chevron-left"></i> chapter 7.C - Git 打包
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 8.1 - 配置/" rel="prev" title="chapter 8.1 - Git 设置">
+                chapter 8.1 - Git 设置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#子模块流程"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5B50;&#x6A21;&#x5757;&#x6D41;&#x7A0B;" class="headerlink" title="&#x5B50;&#x6A21;&#x5757;&#x6D41;&#x7A0B;"></a>&#x5B50;&#x6A21;&#x5757;&#x6D41;&#x7A0B;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取更新"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x83B7;&#x53D6;&#x66F4;&#x65B0;" class="headerlink" title="&#x83B7;&#x53D6;&#x66F4;&#x65B0;"></a>&#x83B7;&#x53D6;&#x66F4;&#x65B0;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示更新"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x663E;&#x793A;&#x66F4;&#x65B0;" class="headerlink" title="&#x663E;&#x793A;&#x66F4;&#x65B0;"></a>&#x663E;&#x793A;&#x66F4;&#x65B0;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改子模块"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#&#x4FEE;&#x6539;&#x5B50;&#x6A21;&#x5757;" class="headerlink" title="&#x4FEE;&#x6539;&#x5B50;&#x6A21;&#x5757;"></a>&#x4FEE;&#x6539;&#x5B50;&#x6A21;&#x5757;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推送子模块"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#&#x63A8;&#x9001;&#x5B50;&#x6A21;&#x5757;" class="headerlink" title="&#x63A8;&#x9001;&#x5B50;&#x6A21;&#x5757;"></a>&#x63A8;&#x9001;&#x5B50;&#x6A21;&#x5757;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#合并子模块"><span class="nav-number">1.5.</span> <span class="nav-text"><a href="#&#x5408;&#x5E76;&#x5B50;&#x6A21;&#x5757;" class="headerlink" title="&#x5408;&#x5E76;&#x5B50;&#x6A21;&#x5757;"></a>&#x5408;&#x5E76;&#x5B50;&#x6A21;&#x5757;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子模块技巧"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5B50;&#x6A21;&#x5757;&#x6280;&#x5DE7;" class="headerlink" title="&#x5B50;&#x6A21;&#x5757;&#x6280;&#x5DE7;"></a>&#x5B50;&#x6A21;&#x5757;&#x6280;&#x5DE7;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#子模块遍历"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x5B50;&#x6A21;&#x5757;&#x904D;&#x5386;" class="headerlink" title="&#x5B50;&#x6A21;&#x5757;&#x904D;&#x5386;"></a>&#x5B50;&#x6A21;&#x5757;&#x904D;&#x5386;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子模块别名"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x5B50;&#x6A21;&#x5757;&#x522B;&#x540D;" class="headerlink" title="&#x5B50;&#x6A21;&#x5757;&#x522B;&#x540D;"></a>&#x5B50;&#x6A21;&#x5757;&#x522B;&#x540D;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子模块的问题"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x5B50;&#x6A21;&#x5757;&#x7684;&#x95EE;&#x9898;" class="headerlink" title="&#x5B50;&#x6A21;&#x5757;&#x7684;&#x95EE;&#x9898;"></a>&#x5B50;&#x6A21;&#x5757;&#x7684;&#x95EE;&#x9898;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#切换分支"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x5207;&#x6362;&#x5206;&#x652F;" class="headerlink" title="&#x5207;&#x6362;&#x5206;&#x652F;"></a>&#x5207;&#x6362;&#x5206;&#x652F;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子目录转换为子模块"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x5B50;&#x76EE;&#x5F55;&#x8F6C;&#x6362;&#x4E3A;&#x5B50;&#x6A21;&#x5757;" class="headerlink" title="&#x5B50;&#x76EE;&#x5F55;&#x8F6C;&#x6362;&#x4E3A;&#x5B50;&#x6A21;&#x5757;"></a>&#x5B50;&#x76EE;&#x5F55;&#x8F6C;&#x6362;&#x4E3A;&#x5B50;&#x6A21;&#x5757;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子模块配置文件"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x5B50;&#x6A21;&#x5757;&#x914D;&#x7F6E;&#x6587;&#x4EF6;" class="headerlink" title="&#x5B50;&#x6A21;&#x5757;&#x914D;&#x7F6E;&#x6587;&#x4EF6;"></a>&#x5B50;&#x6A21;&#x5757;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子块模命令详解"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x5B50;&#x5757;&#x6A21;&#x547D;&#x4EE4;&#x8BE6;&#x89E3;" class="headerlink" title="&#x5B50;&#x5757;&#x6A21;&#x547D;&#x4EE4;&#x8BE6;&#x89E3;"></a>&#x5B50;&#x5757;&#x6A21;&#x547D;&#x4EE4;&#x8BE6;&#x89E3;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加子模块"><span class="nav-number">5.1.</span> <span class="nav-text"><a href="#&#x6DFB;&#x52A0;&#x5B50;&#x6A21;&#x5757;" class="headerlink" title="&#x6DFB;&#x52A0;&#x5B50;&#x6A21;&#x5757;"></a>&#x6DFB;&#x52A0;&#x5B50;&#x6A21;&#x5757;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看子模块"><span class="nav-number">5.2.</span> <span class="nav-text"><a href="#&#x67E5;&#x770B;&#x5B50;&#x6A21;&#x5757;" class="headerlink" title="&#x67E5;&#x770B;&#x5B50;&#x6A21;&#x5757;"></a>&#x67E5;&#x770B;&#x5B50;&#x6A21;&#x5757;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化子模块"><span class="nav-number">5.3.</span> <span class="nav-text"><a href="#&#x521D;&#x59CB;&#x5316;&#x5B50;&#x6A21;&#x5757;" class="headerlink" title="&#x521D;&#x59CB;&#x5316;&#x5B50;&#x6A21;&#x5757;"></a>&#x521D;&#x59CB;&#x5316;&#x5B50;&#x6A21;&#x5757;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注销子模块"><span class="nav-number">5.4.</span> <span class="nav-text"><a href="#&#x6CE8;&#x9500;&#x5B50;&#x6A21;&#x5757;" class="headerlink" title="&#x6CE8;&#x9500;&#x5B50;&#x6A21;&#x5757;"></a>&#x6CE8;&#x9500;&#x5B50;&#x6A21;&#x5757;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新子模块"><span class="nav-number">5.5.</span> <span class="nav-text"><a href="#&#x66F4;&#x65B0;&#x5B50;&#x6A21;&#x5757;" class="headerlink" title="&#x66F4;&#x65B0;&#x5B50;&#x6A21;&#x5757;"></a>&#x66F4;&#x65B0;&#x5B50;&#x6A21;&#x5757;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#摘要"><span class="nav-number">5.6.</span> <span class="nav-text"><a href="#&#x6458;&#x8981;" class="headerlink" title="&#x6458;&#x8981;"></a>&#x6458;&#x8981;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在子模块上执行命令"><span class="nav-number">5.7.</span> <span class="nav-text"><a href="#&#x5728;&#x5B50;&#x6A21;&#x5757;&#x4E0A;&#x6267;&#x884C;&#x547D;&#x4EE4;" class="headerlink" title="&#x5728;&#x5B50;&#x6A21;&#x5757;&#x4E0A;&#x6267;&#x884C;&#x547D;&#x4EE4;"></a>&#x5728;&#x5B50;&#x6A21;&#x5757;&#x4E0A;&#x6267;&#x884C;&#x547D;&#x4EE4;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步子模块的远程库URL到主项目"><span class="nav-number">5.8.</span> <span class="nav-text"><a href="#&#x540C;&#x6B65;&#x5B50;&#x6A21;&#x5757;&#x7684;&#x8FDC;&#x7A0B;&#x5E93;URL&#x5230;&#x4E3B;&#x9879;&#x76EE;" class="headerlink" title="&#x540C;&#x6B65;&#x5B50;&#x6A21;&#x5757;&#x7684;&#x8FDC;&#x7A0B;&#x5E93;URL&#x5230;&#x4E3B;&#x9879;&#x76EE;"></a>&#x540C;&#x6B65;&#x5B50;&#x6A21;&#x5757;&#x7684;&#x8FDC;&#x7A0B;&#x5E93;URL&#x5230;&#x4E3B;&#x9879;&#x76EE;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#吸收子模块-git-目录"><span class="nav-number">5.9.</span> <span class="nav-text"><a href="#&#x5438;&#x6536;&#x5B50;&#x6A21;&#x5757;-git-&#x76EE;&#x5F55;" class="headerlink" title="&#x5438;&#x6536;&#x5B50;&#x6A21;&#x5757; git &#x76EE;&#x5F55;"></a>&#x5438;&#x6536;&#x5B50;&#x6A21;&#x5757; git &#x76EE;&#x5F55;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选项详解"><span class="nav-number">5.10.</span> <span class="nav-text"><a href="#&#x9009;&#x9879;&#x8BE6;&#x89E3;" class="headerlink" title="&#x9009;&#x9879;&#x8BE6;&#x89E3;"></a>&#x9009;&#x9879;&#x8BE6;&#x89E3;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#q-quiet"><span class="nav-number">5.10.1.</span> <span class="nav-text"><a href="#q-quiet" class="headerlink" title="-q|--quiet"></a><code>-q|--quiet</code></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#all"><span class="nav-number">5.10.2.</span> <span class="nav-text"><a href="#all" class="headerlink" title="--all"></a><code>--all</code></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#f-force"><span class="nav-number">5.10.3.</span> <span class="nav-text"><a href="#f-force" class="headerlink" title="-f|--force"></a><code>-f|--force</code></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cached"><span class="nav-number">5.10.4.</span> <span class="nav-text"><a href="#cached" class="headerlink" title="--cached"></a><code>--cached</code></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#files"><span class="nav-number">5.10.5.</span> <span class="nav-text"><a href="#files" class="headerlink" title="--files"></a><code>--files</code></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#n-summary-limit"><span class="nav-number">5.10.6.</span> <span class="nav-text"><a href="#n-summary-limit" class="headerlink" title="-n|--summary-limit"></a><code>-n|--summary-limit</code></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#remote"><span class="nav-number">5.10.7.</span> <span class="nav-text"><a href="#remote" class="headerlink" title="--remote"></a><code>--remote</code></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#N-no-fetch"><span class="nav-number">5.10.8.</span> <span class="nav-text"><a href="#N-no-fetch" class="headerlink" title="-N|--no-fetch"></a><code>-N|--no-fetch</code></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#checkout"><span class="nav-number">5.10.9.</span> <span class="nav-text"><a href="#checkout" class="headerlink" title="--checkout"></a><code>--checkout</code></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#merge"><span class="nav-number">5.10.10.</span> <span class="nav-text"><a href="#merge" class="headerlink" title="--merge"></a><code>--merge</code></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rebase"><span class="nav-number">5.10.11.</span> <span class="nav-text"><a href="#rebase" class="headerlink" title="--rebase"></a><code>--rebase</code></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#init"><span class="nav-number">5.10.12.</span> <span class="nav-text"><a href="#init" class="headerlink" title="--init"></a><code>--init</code></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#name"><span class="nav-number">5.10.13.</span> <span class="nav-text"><a href="#name" class="headerlink" title="--name"></a><code>--name</code></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reference-lt-repository-gt"><span class="nav-number">5.10.14.</span> <span class="nav-text"><a href="#reference-lt-repository-gt" class="headerlink" title="--reference &lt;repository&gt;"></a><code>--reference &lt;repository&gt;</code></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#recursive"><span class="nav-number">5.10.15.</span> <span class="nav-text"><a href="#recursive" class="headerlink" title="--recursive"></a><code>--recursive</code></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#depth"><span class="nav-number">5.10.16.</span> <span class="nav-text"><a href="#depth" class="headerlink" title="--depth"></a><code>--depth</code></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#no-recommend-shallow-recommend-shallow"><span class="nav-number">5.10.17.</span> <span class="nav-text"><a href="#no-recommend-shallow-recommend-shallow" class="headerlink" title="--no-recommend-shallow | --recommend-shallow"></a><code>--no-recommend-shallow | --recommend-shallow</code></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#j-lt-n-gt-jobs-lt-n-gt"><span class="nav-number">5.10.18.</span> <span class="nav-text"><a href="#j-lt-n-gt-jobs-lt-n-gt" class="headerlink" title="-j &lt;n&gt;|--jobs &lt;n&gt;"></a><code>-j &lt;n&gt;|--jobs &lt;n&gt;</code></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lt-path-gt-…"><span class="nav-number">5.10.19.</span> <span class="nav-text"><a href="#lt-path-gt-&#x2026;" class="headerlink" title="&lt;path&gt;&#x2026;"></a><code>&lt;path&gt;&#x2026;</code></span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子模块相关选项"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x5B50;&#x6A21;&#x5757;&#x76F8;&#x5173;&#x9009;&#x9879;" class="headerlink" title="&#x5B50;&#x6A21;&#x5757;&#x76F8;&#x5173;&#x9009;&#x9879;"></a>&#x5B50;&#x6A21;&#x5757;&#x76F8;&#x5173;&#x9009;&#x9879;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-amp-A"><span class="nav-number">7.</span> <span class="nav-text"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Git," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="git 可以使用四种协议来传输数据：本地协议（Local Protocal）HTTP协议SSH协议（Secure SHell）Git协议">
+<meta name="keywords" content="Git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter 4.1 - Git 协议">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 4.1 - 协议/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="git 可以使用四种协议来传输数据：本地协议（Local Protocal）HTTP协议SSH协议（Secure SHell）Git协议">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.536Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter 4.1 - Git 协议">
+<meta name="twitter:description" content="git 可以使用四种协议来传输数据：本地协议（Local Protocal）HTTP协议SSH协议（Secure SHell）Git协议">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 4.1 - 协议/"/>
+
+
+
+
+
+  <title>chapter 4.1 - Git 协议 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 4.1 - 协议/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">chapter 4.1 - Git 协议</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/Book-ProGit/" itemprop="url" rel="index">
+                    <span itemprop="name">Book-ProGit</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>git 可以使用四种协议来传输数据：<br>本地协议（Local Protocal）<br>HTTP协议<br>SSH协议（Secure SHell）<br>Git协议</p>
+<a id="more"></a>
+<h2 id="本地协议"><a href="#本地协议" class="headerlink" title="本地协议"></a>本地协议</h2><p>团队每一个成员都对一个共享的文件系统（如一个挂载的NFS）拥有访问权，这时远程版本库就是共享硬盘内的一个目录，使用版本库路径作为URL，例如克隆一个本地版本库：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git clone /opt/git/project.git</span><br><span class="line">$ git clone file:///opt/git/project.git</span><br></pre></td></tr></table></figure></p>
+<p>注意上面的两种写法，是否带 <code>file://</code> git 行为会不同：</p>
+<ul>
+<li>普通路径：git 会尝试使用硬链接或直接复制所需要的文件，通常这样较快。</li>
+<li>通常使用普通路径。</li>
+<li>开头明确指定 <code>file://</code> ：git 会触发用于网络传输资料的进程，通常传输效率较低。</li>
+<li>指定 <code>file://</code> 的主要目的是取得一个没有外部参考（extraneous references）或对象（object）的干净版本库副本– 通常是在从其他版本控制系统导入后或一些类似情况（参见 Git 内部原理 for maintenance tasks）需要这么做</li>
+</ul>
+<p>增加一个本地版本库到现有的 git 项目：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote add local_proj /opt/git/project.git</span><br></pre></td></tr></table></figure></p>
+<p>也可以快速从其他人的工作目录中拉取更新：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git pull /home/john/project</span><br></pre></td></tr></table></figure></p>
+<p>比推送到服务器再取回简单了多</p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
+<li>如果已经存在共享文件系统，则建立版本库比较简单，可以直接使用现有的文件系统权限和网络访问权限</li>
+</ol>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ol>
+<li>配置不方便：共享文件系统比较难配置</li>
+<li>访问不方便：相比网络连接的访问方式，不方便从多个位置访问，如果想从家里访问，必须先挂载一个远程磁盘</li>
+<li>速度相对慢：使用共享挂载的文件系统访问不一定是最快的，在同一个服务器上，如果允许 git 访问本地硬盘，通过 NFS 访问版本库比通过 SSH 访问要慢。</li>
+<li>不能避免仓库被损坏：每一个用户都有远程目录的 shell 权限，没法阻止他们删除、修改、损坏 git 内部文件和仓库</li>
+</ol>
+<h2 id="HTTP-协议"><a href="#HTTP-协议" class="headerlink" title="HTTP 协议"></a>HTTP 协议</h2><p>git 通过 HTTP 通信有两种模式：<br>git 1.6.6 之前的 dumb http（哑http）：通常是只读的<br>git 1.6.6 之后的 smart http（智能http）：可以读写，可智能的协商和传输数据</p>
+<p>两种模式，git 客户端会优先使用 smart http，如果服务器不提供，则使用dumb http，通常都是两者选一，不会两种模式混用。</p>
+<h3 id="智能（Smart）-HTTP-协议"><a href="#智能（Smart）-HTTP-协议" class="headerlink" title="智能（Smart） HTTP 协议"></a>智能（Smart） HTTP 协议</h3><ul>
+<li>运行在标准的 HTTP/S 端口上</li>
+<li>可以使用 HTTP 的验证机制，如用户名/密码的基础授权或SSL证书等，比SSH 公钥的授权验证要简单</li>
+<li>像 git:// 协议一样支持设置匿名服务</li>
+<li>像 SSH 协议一样提供传输时的加密</li>
+<li>使用起来很简单，只用一个 URL 就可以做到上述特性</li>
+</ul>
+<h3 id="哑（Dumb）-HTTP-协议"><a href="#哑（Dumb）-HTTP-协议" class="headerlink" title="哑（Dumb） HTTP 协议"></a>哑（Dumb） HTTP 协议</h3><ul>
+<li>设置起来更简单，只需要把一个裸版本库放在 HTTP 根目录，设置一个叫做 post-update 的挂钩就可以了</li>
+<li><p>web 服务器仅把裸版本库当作普通文件来对待，提供文件服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//把裸版本库放入http根目录</span><br><span class="line">$ cd /var/www/htdocs/</span><br><span class="line">$ git clone --bare /path/to/git_project gitproject.git</span><br><span class="line"></span><br><span class="line">//设置挂钩</span><br><span class="line">$ cd gitproject.git</span><br><span class="line">$ mv hooks/post-update.sample hooks/post-update</span><br><span class="line"></span><br><span class="line">//设置访问权限</span><br><span class="line">$ chmod a+x hooks/post-update</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>post-update 挂钩会默认执行合适的命令（git update-server-info），来确保通过 HTTP 的获取和克隆操作正常工作。 </p>
+</li>
+<li>在你通过 SSH 向版本库推送之后执行git update-server-info命令</li>
+<li>然后其他人通过命令克隆：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https://example.com/gitproject.git</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3><p>都是关于 smart http 的</p>
+<ul>
+<li>终端用户使用 git 很简单，只需要一个 URL</li>
+<li>用户名/密码授权比 SSH 密钥对有很大优势<ul>
+<li>无需在使用 git 之前先在本地生成 SSH 密钥对再把公钥上传到服务器</li>
+</ul>
+</li>
+<li>HTTP 协议的可用性比 SSH 更高<ul>
+<li>对非资深使用者友好</li>
+<li>对缺少 SSH 相关程序的使用者友好</li>
+<li>企业防火墙都会允许 HTTP/S 端口的数据通过</li>
+</ul>
+</li>
+<li>和 SSH 协议一样快速和高效</li>
+<li>HTTPS 可以提供只读版本库的服务</li>
+<li>HTTPS 可以在传输时加密数据</li>
+<li>可以指定客户端使用 SSL 证书</li>
+</ul>
+<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>一些儿服务器上假设 HTTP/S 的服务端会比 SSH 棘手</li>
+<li>HTTP 上使用需授权的推送管理凭证会比 SSH 秘钥认证麻烦，可以使用凭证管理器</li>
+</ul>
+<h2 id="SSH-协议"><a href="#SSH-协议" class="headerlink" title="SSH 协议"></a>SSH 协议</h2><p>SSH 协议也是一个验证授权的网络协议</p>
+<p>SSH 的 URL<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone ssh://user@server:project.git</span><br></pre></td></tr></table></figure></p>
+<p>简短的 scp 写法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone user@server:project.git</span><br></pre></td></tr></table></figure></p>
+<p>也可以不指定用户名，则 git 使用当前登录的用户名</p>
+<h3 id="优点-2"><a href="#优点-2" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>SSH 的架设相对简单<ul>
+<li>多数操作系统都包含了 SSH 及相关工具 </li>
+<li>多数管理员都有使用经验</li>
+</ul>
+</li>
+<li>SSH 的访问是安全的<ul>
+<li>所有传输数据都要经过授权和加密</li>
+</ul>
+</li>
+<li>SSH 的传输很高效<ul>
+<li>在传输前会尽量压缩数据</li>
+</ul>
+</li>
+</ul>
+<h3 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>不能实现匿名访问<ul>
+<li>即使只是读取数据，也要有相应的权限 </li>
+<li>不利于开源项目</li>
+<li>适合只在公司网络内部使用</li>
+</ul>
+</li>
+</ul>
+<h2 id="Git-协议"><a href="#Git-协议" class="headerlink" title="Git 协议"></a>Git 协议</h2><p>git 协议是包含在 git 里的一个特殊的守护进程，监听一个特定的端口9418，访问无需任何授权</p>
+<p>创建一个名为 git-daemon-export-ok 的文件放到 .git 目录下，表明该工程允许非授权访问，也是 Git 协议守护进程为这个版本库提供服务的必要条件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd /path/to/project.git</span><br><span class="line">$ touch git-daemon-export-ok</span><br></pre></td></tr></table></figure></p>
+<p>除此之外，git 协议无任何安全措施，要么谁都可以克隆这个库，要么谁都不能<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone git://</span><br></pre></td></tr></table></figure></p>
+<h3 id="优点-3"><a href="#优点-3" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>传输速度快<ul>
+<li>是 git 使用的网络传输协议中最快的</li>
+<li>使用和 SSH 相同的数据传输机制，但是省去了加密和授权的开销</li>
+<li>适合很大访问量的项目</li>
+<li>适合项目庞大但不需要为写进行用户授权的项目</li>
+</ul>
+</li>
+</ul>
+<h3 id="缺点-3"><a href="#缺点-3" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>缺乏授权机制<ul>
+<li>不适合作为版本库的唯一访问手段</li>
+<li>通常不能通过 git 协议推送，一旦开放推送操作，则所有知道项目 URL 的人都可以推送</li>
+<li>应同时提供 HTTPS 或 SSH 的访问服务，让少数开发者有推送权限，其他人通过 git:// 只有读取权限</li>
+</ul>
+</li>
+<li>最难架设<ul>
+<li>需要有自己的守护进程，要配置xinetd或其他程序</li>
+<li>需要防火墙开放9418端口，企业防火墙一般不开放非标准端口</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 3.4 - 变基/" rel="next" title="chapter 3.4 - Git 变基">
+                <i class="fa fa-chevron-left"></i> chapter 3.4 - Git 变基
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 4.7,4.8 - GitWeb & GitLab/" rel="prev" title="chapter 4.7,4.8 - GitWeb & GitLab">
+                chapter 4.7,4.8 - GitWeb & GitLab <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#本地协议"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x672C;&#x5730;&#x534F;&#x8BAE;" class="headerlink" title="&#x672C;&#x5730;&#x534F;&#x8BAE;"></a>&#x672C;&#x5730;&#x534F;&#x8BAE;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优点"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x4F18;&#x70B9;" class="headerlink" title="&#x4F18;&#x70B9;"></a>&#x4F18;&#x70B9;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缺点"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x7F3A;&#x70B9;" class="headerlink" title="&#x7F3A;&#x70B9;"></a>&#x7F3A;&#x70B9;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-协议"><span class="nav-number">2.</span> <span class="nav-text"><a href="#HTTP-&#x534F;&#x8BAE;" class="headerlink" title="HTTP &#x534F;&#x8BAE;"></a>HTTP &#x534F;&#x8BAE;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#智能（Smart）-HTTP-协议"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x667A;&#x80FD;&#xFF08;Smart&#xFF09;-HTTP-&#x534F;&#x8BAE;" class="headerlink" title="&#x667A;&#x80FD;&#xFF08;Smart&#xFF09; HTTP &#x534F;&#x8BAE;"></a>&#x667A;&#x80FD;&#xFF08;Smart&#xFF09; HTTP &#x534F;&#x8BAE;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哑（Dumb）-HTTP-协议"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x54D1;&#xFF08;Dumb&#xFF09;-HTTP-&#x534F;&#x8BAE;" class="headerlink" title="&#x54D1;&#xFF08;Dumb&#xFF09; HTTP &#x534F;&#x8BAE;"></a>&#x54D1;&#xFF08;Dumb&#xFF09; HTTP &#x534F;&#x8BAE;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优点-1"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x4F18;&#x70B9;-1" class="headerlink" title="&#x4F18;&#x70B9;"></a>&#x4F18;&#x70B9;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缺点-1"><span class="nav-number">2.4.</span> <span class="nav-text"><a href="#&#x7F3A;&#x70B9;-1" class="headerlink" title="&#x7F3A;&#x70B9;"></a>&#x7F3A;&#x70B9;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSH-协议"><span class="nav-number">3.</span> <span class="nav-text"><a href="#SSH-&#x534F;&#x8BAE;" class="headerlink" title="SSH &#x534F;&#x8BAE;"></a>SSH &#x534F;&#x8BAE;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优点-2"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x4F18;&#x70B9;-2" class="headerlink" title="&#x4F18;&#x70B9;"></a>&#x4F18;&#x70B9;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缺点-2"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x7F3A;&#x70B9;-2" class="headerlink" title="&#x7F3A;&#x70B9;"></a>&#x7F3A;&#x70B9;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git-协议"><span class="nav-number">4.</span> <span class="nav-text"><a href="#Git-&#x534F;&#x8BAE;" class="headerlink" title="Git &#x534F;&#x8BAE;"></a>Git &#x534F;&#x8BAE;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优点-3"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#&#x4F18;&#x70B9;-3" class="headerlink" title="&#x4F18;&#x70B9;"></a>&#x4F18;&#x70B9;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缺点-3"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#&#x7F3A;&#x70B9;-3" class="headerlink" title="&#x7F3A;&#x70B9;"></a>&#x7F3A;&#x70B9;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

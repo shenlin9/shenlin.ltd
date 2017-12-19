@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Git," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="维护数据恢复（找回丢失提交）目前版本库提交记录如下： 123456$ git log --pretty=onelineab1afef80fac8e34258ff41fc1b867c702daa24b modified repo a bit484a59275031909e19aadb7c92262719cfcdf19a added repo.rb1a410efbd13591db07496601eb">
+<meta name="keywords" content="Git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter 10.7 - Git 维护与数据恢复">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 10.7 - 维护与数据恢复/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="维护数据恢复（找回丢失提交）目前版本库提交记录如下： 123456$ git log --pretty=onelineab1afef80fac8e34258ff41fc1b867c702daa24b modified repo a bit484a59275031909e19aadb7c92262719cfcdf19a added repo.rb1a410efbd13591db07496601eb">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.531Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter 10.7 - Git 维护与数据恢复">
+<meta name="twitter:description" content="维护数据恢复（找回丢失提交）目前版本库提交记录如下： 123456$ git log --pretty=onelineab1afef80fac8e34258ff41fc1b867c702daa24b modified repo a bit484a59275031909e19aadb7c92262719cfcdf19a added repo.rb1a410efbd13591db07496601eb">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 10.7 - 维护与数据恢复/"/>
+
+
+
+
+
+  <title>chapter 10.7 - Git 维护与数据恢复 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 10.7 - 维护与数据恢复/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">chapter 10.7 - Git 维护与数据恢复</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <a id="more"></a>
+<h2 id="维护"><a href="#维护" class="headerlink" title="维护"></a>维护</h2><h2 id="数据恢复（找回丢失提交）"><a href="#数据恢复（找回丢失提交）" class="headerlink" title="数据恢复（找回丢失提交）"></a>数据恢复（找回丢失提交）</h2><p>目前版本库提交记录如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git log --pretty=oneline</span><br><span class="line">ab1afef80fac8e34258ff41fc1b867c702daa24b modified repo a bit</span><br><span class="line">484a59275031909e19aadb7c92262719cfcdf19a added repo.rb</span><br><span class="line">1a410efbd13591db07496601ebc7a059dd55cfe9 third commit</span><br><span class="line">cac0cab538b970a37ea1e769cbbde608743bc96d second commit</span><br><span class="line">fdf4fc3344e67ab068f836878b6c4951e3b15f3d first commit</span><br></pre></td></tr></table></figure>
+<p>如果强制删除了正在工作的分支，但是最后却发现你还需要这个分支；<br>亦或者硬重置了一个分支，放弃了想要的提交；<br>如何找回丢失的提交？</p>
+<h3 id="1-有引用日志的情况"><a href="#1-有引用日志的情况" class="headerlink" title="1. 有引用日志的情况"></a>1. 有引用日志的情况</h3><p>模拟丢失两个提交，将 master 分支硬重置到第三次提交：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --hard 1a410efbd13591db07496601ebc7a059dd55cfe9</span><br><span class="line">HEAD is now at 1a410ef third commit</span><br><span class="line"></span><br><span class="line">$ git log --pretty=oneline</span><br><span class="line">1a410efbd13591db07496601ebc7a059dd55cfe9 third commit</span><br><span class="line">cac0cab538b970a37ea1e769cbbde608743bc96d second commit</span><br><span class="line">fdf4fc3344e67ab068f836878b6c4951e3b15f3d first commit</span><br></pre></td></tr></table></figure></p>
+<p>这时没有分支指向那两个丢失的提交，办法是找出丢失的提交SHA，然后创建分支指向它们即可。</p>
+<p>每一次提交或改变分支时，HEAD值的改变都会被git记录下来，就是引用日志(reflog).</p>
+<p>查看reflog日志：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git reflog</span><br><span class="line">1a410ef HEAD@&#123;0&#125;: reset: moving to 1a410ef</span><br><span class="line">ab1afef HEAD@&#123;1&#125;: commit: modified repo.rb a bit</span><br><span class="line">484a592 HEAD@&#123;2&#125;: commit: added repo.rb</span><br></pre></td></tr></table></figure></p>
+<p>或以标准日志的格式输出引用日志<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ git log -g</span><br><span class="line">commit 1a410efbd13591db07496601ebc7a059dd55cfe9</span><br><span class="line">Reflog: HEAD@&#123;0&#125; (Scott Chacon &lt;schacon@gmail.com&gt;)</span><br><span class="line">Reflog message: updating HEAD</span><br><span class="line">Author: Scott Chacon &lt;schacon@gmail.com&gt;</span><br><span class="line">Date:   Fri May 22 18:22:37 2009 -0700</span><br><span class="line"></span><br><span class="line">		third commit</span><br><span class="line"></span><br><span class="line">commit ab1afef80fac8e34258ff41fc1b867c702daa24b</span><br><span class="line">Reflog: HEAD@&#123;1&#125; (Scott Chacon &lt;schacon@gmail.com&gt;)</span><br><span class="line">Reflog message: updating HEAD</span><br><span class="line">Author: Scott Chacon &lt;schacon@gmail.com&gt;</span><br><span class="line">Date:   Fri May 22 18:15:24 2009 -0700</span><br><span class="line"></span><br><span class="line">       modified repo.rb a bit</span><br></pre></td></tr></table></figure></p>
+<p>找到了丢失的提交，创建一个新的分支指向这个提交来恢复它<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ git branch recover-branch ab1afef</span><br><span class="line"></span><br><span class="line">$ git log --pretty=oneline recover-branch</span><br><span class="line">ab1afef80fac8e34258ff41fc1b867c702daa24b modified repo a bit</span><br><span class="line">484a59275031909e19aadb7c92262719cfcdf19a added repo.rb</span><br><span class="line">1a410efbd13591db07496601ebc7a059dd55cfe9 third commit</span><br><span class="line">cac0cab538b970a37ea1e769cbbde608743bc96d second commit</span><br><span class="line">fdf4fc3344e67ab068f836878b6c4951e3b15f3d first commit</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-没有引用日志的情况"><a href="#2-没有引用日志的情况" class="headerlink" title="2. 没有引用日志的情况"></a>2. 没有引用日志的情况</h3><p>如果分支和日志都被删除<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -D recover-branch</span><br><span class="line">$ rm -Rf .git/logs/</span><br></pre></td></tr></table></figure></p>
+<p>使用命令显示没有被其他对象指向的对象<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ git fsck --full</span><br><span class="line">Checking object directories: 100% (256/256), done.</span><br><span class="line">Checking objects: 100% (18/18), done.</span><br><span class="line">dangling blob d670460b4b4aece5915caf5c68d12f560a9fe3e4</span><br><span class="line">dangling commit ab1afef80fac8e34258ff41fc1b867c702daa24b</span><br><span class="line">dangling tree aea790b9a58f6cf6f2804eeac9f0abbe9631e4c9</span><br><span class="line">dangling blob 7108f7ecb345ee9d0084193f147cdad4d2998293</span><br></pre></td></tr></table></figure></p>
+<p>dangling commit 后面即是丢失的提交对象,找到后建立分支指向即可</p>
+<h2 id="移除对象（修改提交历史）"><a href="#移除对象（修改提交历史）" class="headerlink" title="移除对象（修改提交历史）"></a>移除对象（修改提交历史）</h2><h3 id="历史里的大文件问题"><a href="#历史里的大文件问题" class="headerlink" title="历史里的大文件问题"></a>历史里的大文件问题</h3><ol>
+<li><p>git clone 命令<br>git clone 会下载整个项目的历史，包括每个文件的每个版本，如果之前项目添加过一个大文件，即使以后大文件移除了，每次 clone 仍然要下载这个大文件，因为它在历史中存在，就会永远在那里。</p>
+</li>
+<li><p>迁移版本库<br>迁移 Subversion 或 Perforce 仓库到 Git 的时候，历史里的大文件是一个严重的问题。因为这些版本控制系统并不下载所有的历史文件，所以这种文件所带来的问题比较少。 如果你从其他的版本控制系统迁移到 Git 时发现仓库比预期的大得多，那么你就需要找到并移除这些大文件。</p>
+</li>
+</ol>
+<h3 id="警告"><a href="#警告" class="headerlink" title="警告"></a>警告</h3><p><strong>警告：这个操作对提交历史的修改是破坏性的。</strong></p>
+<p>它会从大文件引用最早的树对象开始重写每一次提交。</p>
+<p>如果你在导入仓库后，在任何人开始基于这些提交工作前执行这个操作，那么将不会有任何问题 - 否则，你必须通知所有的贡献者他们需要将他们的成果变基到你的新提交上。</p>
+<h3 id="步骤演示"><a href="#步骤演示" class="headerlink" title="步骤演示"></a>步骤演示</h3><h4 id="1-查看空间占用"><a href="#1-查看空间占用" class="headerlink" title="1. 查看空间占用"></a>1. 查看空间占用</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ git count-objects -v</span><br><span class="line">count: 7</span><br><span class="line">size: 32</span><br><span class="line">in-pack: 17</span><br><span class="line">packs: 1</span><br><span class="line">size-pack: 4868</span><br><span class="line">prune-packable: 0</span><br><span class="line">garbage: 0</span><br><span class="line">size-garbage: 0</span><br></pre></td></tr></table></figure>
+<p>size        是松散文件的大小<br>size-pack   包文件大小<br>都以 KB 为单位</p>
+<h4 id="2-找出大文件"><a href="#2-找出大文件" class="headerlink" title="2.找出大文件"></a>2.找出大文件</h4><p>执行 git gc 命令，所有的对象将被放入一个包文件中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git gc --auto</span><br></pre></td></tr></table></figure></p>
+<p>执行 git verify-pack 命令，对输出内容的第三列（文件大小）进行排序找出大文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git verify-pack -v .git/objects/pack/pack-29…69.idx \</span><br><span class="line">  | sort -k 3 -n \</span><br><span class="line">  | tail -3</span><br><span class="line">dadf7258d699da2c8d89b09ef6670edb7d5f91b4 commit 229 159 12</span><br><span class="line">033b4468fa6b2a9547a70d88d1bbe8bf3f9ed0d5 blob   22044 5792 4977696</span><br><span class="line">82c99a3e86bb1267b236a4b6eff7868d97489af1 blob   4975916 4976258 1438</span><br></pre></td></tr></table></figure></p>
+<h4 id="3-找出大文件路径"><a href="#3-找出大文件路径" class="headerlink" title="3. 找出大文件路径"></a>3. 找出大文件路径</h4><p>根据 SHA 找出具体是哪个文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git rev-list --objects --all | grep 82c99a3</span><br><span class="line">82c99a3e86bb1267b236a4b6eff7868d97489af1 git.tgz</span><br></pre></td></tr></table></figure></p>
+<h4 id="4-查看大文件最早的提交-SHA"><a href="#4-查看大文件最早的提交-SHA" class="headerlink" title="4. 查看大文件最早的提交 SHA"></a>4. 查看大文件最早的提交 SHA</h4><p>查看哪些提交对这个文件产生改动：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git log --oneline --branches -- git.tgz</span><br><span class="line">dadf725 oops - removed large tarball</span><br><span class="line">7b30847 add git tarball</span><br></pre></td></tr></table></figure></p>
+<p>是 7b30847</p>
+<h4 id="5-重写提交从历史中移除"><a href="#5-重写提交从历史中移除" class="headerlink" title="5. 重写提交从历史中移除"></a>5. 重写提交从历史中移除</h4><p>重写 7b30847 之后的所有提交，从 Git 历史中完全移除这个文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git filter-branch --index-filter \</span><br><span class="line">  &apos;git rm --ignore-unmatch --cached git.tgz&apos; -- 7b30847^..</span><br><span class="line"></span><br><span class="line">Rewrite 7b30847d080183a1ab7d18fb202473b3096e9f34 (1/2)rm &apos;git.tgz&apos;</span><br><span class="line">Rewrite dadf7258d699da2c8d89b09ef6670edb7d5f91b4 (2/2)</span><br><span class="line">Ref &apos;refs/heads/master&apos; was rewritten</span><br></pre></td></tr></table></figure></p>
+<pre><code>filter-branch
+--index-filter  修改在暂存区或索引中的文件。
+--tree-filter   修改在硬盘上检出的文件
+-- 7b30847^..   重写自 7b30847 提交以来的历史，否则命令会从最旧的提交开始，会花费许多不必要的时间
+
+git rm
+必须使用 git rm --cached 命令来从索引中移除文件，
+而不是通过类似 rm file 的命令从磁盘中移除文件，
+从索引中移除速度会非常快，因为在运行过滤器之前，没必要检出每个修订版本到磁盘中。
+
+??（慢）??也可以通过 --tree-filter 选项来完成同样的任务。
+
+--ignore-unmatch 选项告诉命令：如果尝试删除的模式不存在时，不提示错误。
+</code></pre><h4 id="6-移除包含指向旧提交的指针文件"><a href="#6-移除包含指向旧提交的指针文件" class="headerlink" title="6. 移除包含指向旧提交的指针文件"></a>6. 移除包含指向旧提交的指针文件</h4><p>经过上面几个步骤，git 提交历史中将不再包含对那个文件的引用。<br>但在重新打包前需要移除任何包含指向旧提交的指针文件：</p>
+<ol>
+<li>引用日志</li>
+<li>.git/refs/original 通过 filter-branch 选项添加的新引用中还存有对这个文件的引用</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ rm -Rf .git/refs/original</span><br><span class="line">$ rm -Rf .git/logs/</span><br><span class="line">$ git gc</span><br><span class="line">Counting objects: 15, done.</span><br><span class="line">Delta compression using up to 8 threads.</span><br><span class="line">Compressing objects: 100% (11/11), done.</span><br><span class="line">Writing objects: 100% (15/15), done.</span><br><span class="line">Total 15 (delta 1), reused 12 (delta 0)</span><br></pre></td></tr></table></figure>
+<h4 id="7-完全移除大文件对象"><a href="#7-完全移除大文件对象" class="headerlink" title="7. 完全移除大文件对象"></a>7. 完全移除大文件对象</h4><p>大文件已不在包文件里，<br>也不会在推送或接下来的克隆中出现，这是最重要的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ git count-objects -v</span><br><span class="line">count: 11</span><br><span class="line">size: 4904</span><br><span class="line">in-pack: 15</span><br><span class="line">packs: 1</span><br><span class="line">size-pack: 8</span><br><span class="line">prune-packable: 0</span><br><span class="line">garbage: 0</span><br><span class="line">size-garbage: 0</span><br></pre></td></tr></table></figure>
+<p>但从 size 的值看出，大文件还在松散对象中，并没有消失；<br>如果真的想要删除它，可以通过有 –expire 选项的 git prune 命令来完全地移除那个对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ git prune --expire now</span><br><span class="line">$ git count-objects -v</span><br><span class="line">count: 0</span><br><span class="line">size: 0</span><br><span class="line">in-pack: 15</span><br><span class="line">packs: 1</span><br><span class="line">size-pack: 8</span><br><span class="line">prune-packable: 0</span><br><span class="line">garbage: 0</span><br><span class="line">size-garbage: 0</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 10.6 - 传输协议/" rel="next" title="chapter 10.6 - Git 传输协议">
+                <i class="fa fa-chevron-left"></i> chapter 10.6 - Git 传输协议
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 10.8 - 环境变量/" rel="prev" title="chapter 10.8 - Git 环境变量">
+                chapter 10.8 - Git 环境变量 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#维护"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x7EF4;&#x62A4;" class="headerlink" title="&#x7EF4;&#x62A4;"></a>&#x7EF4;&#x62A4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据恢复（找回丢失提交）"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x6570;&#x636E;&#x6062;&#x590D;&#xFF08;&#x627E;&#x56DE;&#x4E22;&#x5931;&#x63D0;&#x4EA4;&#xFF09;" class="headerlink" title="&#x6570;&#x636E;&#x6062;&#x590D;&#xFF08;&#x627E;&#x56DE;&#x4E22;&#x5931;&#x63D0;&#x4EA4;&#xFF09;"></a>&#x6570;&#x636E;&#x6062;&#x590D;&#xFF08;&#x627E;&#x56DE;&#x4E22;&#x5931;&#x63D0;&#x4EA4;&#xFF09;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-有引用日志的情况"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#1-&#x6709;&#x5F15;&#x7528;&#x65E5;&#x5FD7;&#x7684;&#x60C5;&#x51B5;" class="headerlink" title="1. &#x6709;&#x5F15;&#x7528;&#x65E5;&#x5FD7;&#x7684;&#x60C5;&#x51B5;"></a>1. &#x6709;&#x5F15;&#x7528;&#x65E5;&#x5FD7;&#x7684;&#x60C5;&#x51B5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-没有引用日志的情况"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#2-&#x6CA1;&#x6709;&#x5F15;&#x7528;&#x65E5;&#x5FD7;&#x7684;&#x60C5;&#x51B5;" class="headerlink" title="2. &#x6CA1;&#x6709;&#x5F15;&#x7528;&#x65E5;&#x5FD7;&#x7684;&#x60C5;&#x51B5;"></a>2. &#x6CA1;&#x6709;&#x5F15;&#x7528;&#x65E5;&#x5FD7;&#x7684;&#x60C5;&#x51B5;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移除对象（修改提交历史）"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x79FB;&#x9664;&#x5BF9;&#x8C61;&#xFF08;&#x4FEE;&#x6539;&#x63D0;&#x4EA4;&#x5386;&#x53F2;&#xFF09;" class="headerlink" title="&#x79FB;&#x9664;&#x5BF9;&#x8C61;&#xFF08;&#x4FEE;&#x6539;&#x63D0;&#x4EA4;&#x5386;&#x53F2;&#xFF09;"></a>&#x79FB;&#x9664;&#x5BF9;&#x8C61;&#xFF08;&#x4FEE;&#x6539;&#x63D0;&#x4EA4;&#x5386;&#x53F2;&#xFF09;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#历史里的大文件问题"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x5386;&#x53F2;&#x91CC;&#x7684;&#x5927;&#x6587;&#x4EF6;&#x95EE;&#x9898;" class="headerlink" title="&#x5386;&#x53F2;&#x91CC;&#x7684;&#x5927;&#x6587;&#x4EF6;&#x95EE;&#x9898;"></a>&#x5386;&#x53F2;&#x91CC;&#x7684;&#x5927;&#x6587;&#x4EF6;&#x95EE;&#x9898;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#警告"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x8B66;&#x544A;" class="headerlink" title="&#x8B66;&#x544A;"></a>&#x8B66;&#x544A;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤演示"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#&#x6B65;&#x9AA4;&#x6F14;&#x793A;" class="headerlink" title="&#x6B65;&#x9AA4;&#x6F14;&#x793A;"></a>&#x6B65;&#x9AA4;&#x6F14;&#x793A;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-查看空间占用"><span class="nav-number">3.3.1.</span> <span class="nav-text"><a href="#1-&#x67E5;&#x770B;&#x7A7A;&#x95F4;&#x5360;&#x7528;" class="headerlink" title="1. &#x67E5;&#x770B;&#x7A7A;&#x95F4;&#x5360;&#x7528;"></a>1. &#x67E5;&#x770B;&#x7A7A;&#x95F4;&#x5360;&#x7528;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-找出大文件"><span class="nav-number">3.3.2.</span> <span class="nav-text"><a href="#2-&#x627E;&#x51FA;&#x5927;&#x6587;&#x4EF6;" class="headerlink" title="2.&#x627E;&#x51FA;&#x5927;&#x6587;&#x4EF6;"></a>2.&#x627E;&#x51FA;&#x5927;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-找出大文件路径"><span class="nav-number">3.3.3.</span> <span class="nav-text"><a href="#3-&#x627E;&#x51FA;&#x5927;&#x6587;&#x4EF6;&#x8DEF;&#x5F84;" class="headerlink" title="3. &#x627E;&#x51FA;&#x5927;&#x6587;&#x4EF6;&#x8DEF;&#x5F84;"></a>3. &#x627E;&#x51FA;&#x5927;&#x6587;&#x4EF6;&#x8DEF;&#x5F84;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-查看大文件最早的提交-SHA"><span class="nav-number">3.3.4.</span> <span class="nav-text"><a href="#4-&#x67E5;&#x770B;&#x5927;&#x6587;&#x4EF6;&#x6700;&#x65E9;&#x7684;&#x63D0;&#x4EA4;-SHA" class="headerlink" title="4. &#x67E5;&#x770B;&#x5927;&#x6587;&#x4EF6;&#x6700;&#x65E9;&#x7684;&#x63D0;&#x4EA4; SHA"></a>4. &#x67E5;&#x770B;&#x5927;&#x6587;&#x4EF6;&#x6700;&#x65E9;&#x7684;&#x63D0;&#x4EA4; SHA</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-重写提交从历史中移除"><span class="nav-number">3.3.5.</span> <span class="nav-text"><a href="#5-&#x91CD;&#x5199;&#x63D0;&#x4EA4;&#x4ECE;&#x5386;&#x53F2;&#x4E2D;&#x79FB;&#x9664;" class="headerlink" title="5. &#x91CD;&#x5199;&#x63D0;&#x4EA4;&#x4ECE;&#x5386;&#x53F2;&#x4E2D;&#x79FB;&#x9664;"></a>5. &#x91CD;&#x5199;&#x63D0;&#x4EA4;&#x4ECE;&#x5386;&#x53F2;&#x4E2D;&#x79FB;&#x9664;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-移除包含指向旧提交的指针文件"><span class="nav-number">3.3.6.</span> <span class="nav-text"><a href="#6-&#x79FB;&#x9664;&#x5305;&#x542B;&#x6307;&#x5411;&#x65E7;&#x63D0;&#x4EA4;&#x7684;&#x6307;&#x9488;&#x6587;&#x4EF6;" class="headerlink" title="6. &#x79FB;&#x9664;&#x5305;&#x542B;&#x6307;&#x5411;&#x65E7;&#x63D0;&#x4EA4;&#x7684;&#x6307;&#x9488;&#x6587;&#x4EF6;"></a>6. &#x79FB;&#x9664;&#x5305;&#x542B;&#x6307;&#x5411;&#x65E7;&#x63D0;&#x4EA4;&#x7684;&#x6307;&#x9488;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-完全移除大文件对象"><span class="nav-number">3.3.7.</span> <span class="nav-text"><a href="#7-&#x5B8C;&#x5168;&#x79FB;&#x9664;&#x5927;&#x6587;&#x4EF6;&#x5BF9;&#x8C61;" class="headerlink" title="7. &#x5B8C;&#x5168;&#x79FB;&#x9664;&#x5927;&#x6587;&#x4EF6;&#x5BF9;&#x8C61;"></a>7. &#x5B8C;&#x5168;&#x79FB;&#x9664;&#x5927;&#x6587;&#x4EF6;&#x5BF9;&#x8C61;</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

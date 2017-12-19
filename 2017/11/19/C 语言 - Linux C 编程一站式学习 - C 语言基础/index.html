@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="C 语言," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="程序的基本概念 常量、变量、表达式简单函数深入理解函数分支语句循环语句结构体数组编码风格gdb排序和查找栈和队列 学习一门编程语言要注意下面三个方面：  提供了哪些儿 Primitive，如基本类型、基本运算符、表达式和语句 提供了哪些儿组合规则，如基本类型如何组合成复合类型，基本的表达式和语句如何组合成复合的表达式和语句 提供了哪些儿抽象机制，包括数据抽象和过程抽象  C 标准old styl">
+<meta name="keywords" content="C 语言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C 语言 - Linux C 编程一站式学习 - C 语言基础">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/C 语言 - Linux C 编程一站式学习 - C 语言基础/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="程序的基本概念 常量、变量、表达式简单函数深入理解函数分支语句循环语句结构体数组编码风格gdb排序和查找栈和队列 学习一门编程语言要注意下面三个方面：  提供了哪些儿 Primitive，如基本类型、基本运算符、表达式和语句 提供了哪些儿组合规则，如基本类型如何组合成复合类型，基本的表达式和语句如何组合成复合的表达式和语句 提供了哪些儿抽象机制，包括数据抽象和过程抽象  C 标准old styl">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.shenlin.ltd/2017/11/19/C%20语言%20-%20Linux%20C%20编程一站式学习%20-%20C%20语言基础/images/FirstSector.jpg">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.514Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C 语言 - Linux C 编程一站式学习 - C 语言基础">
+<meta name="twitter:description" content="程序的基本概念 常量、变量、表达式简单函数深入理解函数分支语句循环语句结构体数组编码风格gdb排序和查找栈和队列 学习一门编程语言要注意下面三个方面：  提供了哪些儿 Primitive，如基本类型、基本运算符、表达式和语句 提供了哪些儿组合规则，如基本类型如何组合成复合类型，基本的表达式和语句如何组合成复合的表达式和语句 提供了哪些儿抽象机制，包括数据抽象和过程抽象  C 标准old styl">
+<meta name="twitter:image" content="http://www.shenlin.ltd/2017/11/19/C%20语言%20-%20Linux%20C%20编程一站式学习%20-%20C%20语言基础/images/FirstSector.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/C 语言 - Linux C 编程一站式学习 - C 语言基础/"/>
+
+
+
+
+
+  <title>C 语言 - Linux C 编程一站式学习 - C 语言基础 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/C 语言 - Linux C 编程一站式学习 - C 语言基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C 语言 - Linux C 编程一站式学习 - C 语言基础</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-语言/" itemprop="url" rel="index">
+                    <span itemprop="name">C 语言</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <a id="more"></a>
+<h2 id="程序的基本概念"><a href="#程序的基本概念" class="headerlink" title="程序的基本概念"></a>程序的基本概念</h2><p><img src="images/FirstSector.jpg" alt="FirstSector"></p>
+<h2 id="常量、变量、表达式"><a href="#常量、变量、表达式" class="headerlink" title="常量、变量、表达式"></a>常量、变量、表达式</h2><h2 id="简单函数"><a href="#简单函数" class="headerlink" title="简单函数"></a>简单函数</h2><h2 id="深入理解函数"><a href="#深入理解函数" class="headerlink" title="深入理解函数"></a>深入理解函数</h2><h2 id="分支语句"><a href="#分支语句" class="headerlink" title="分支语句"></a>分支语句</h2><h2 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h2><h2 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h2><h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><h2 id="编码风格"><a href="#编码风格" class="headerlink" title="编码风格"></a>编码风格</h2><h2 id="gdb"><a href="#gdb" class="headerlink" title="gdb"></a>gdb</h2><h2 id="排序和查找"><a href="#排序和查找" class="headerlink" title="排序和查找"></a>排序和查找</h2><h2 id="栈和队列"><a href="#栈和队列" class="headerlink" title="栈和队列"></a>栈和队列</h2><hr>
+<h2 id="学习一门编程语言"><a href="#学习一门编程语言" class="headerlink" title="学习一门编程语言"></a>学习一门编程语言</h2><p>要注意下面三个方面：</p>
+<ul>
+<li>提供了哪些儿 Primitive，如基本类型、基本运算符、表达式和语句</li>
+<li>提供了哪些儿组合规则，如基本类型如何组合成复合类型，基本的表达式和语句如何组合成复合的表达式和语句</li>
+<li>提供了哪些儿抽象机制，包括数据抽象和过程抽象</li>
+</ul>
+<h2 id="C-标准"><a href="#C-标准" class="headerlink" title="C 标准"></a>C 标准</h2><p>old style C, 89, 99, 11</p>
+<h2 id="C-标准库"><a href="#C-标准库" class="headerlink" title="C 标准库"></a>C 标准库</h2><p>C 标准由两部分组成：C 的语法和 C 标准库，实现 C 标准，就要实现 C 编译器和 C 标准库</p>
+<p>C 标准库定义了一组标准头文件，每个头文件包含一些儿函数、变量、类型声明和宏定义。</p>
+<p>Linux 平台使用最广泛的 C 函数库是 glibc，它提供了一组头文件和库文件，最基本最常用的标准库函数和系统函数都在库文件 libc.so</p>
+<p>使用数学函数需要包含头文件 math.h，它位于 libm.so 库文件中，编译时需要加 <code>-lm</code> 参数来告诉编译器去这个库文件中找</p>
+<p>但大部分常用的函数位于 libc.so 库文件中，但编译时无需额外参数，是因为 gcc 默认已经添加了 <code>-lc</code> 选项</p>
+<h2 id="char"><a href="#char" class="headerlink" title="char"></a>char</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"%d"</span>,<span class="string">'3'</span>);       <span class="comment">//输出 51，是字符 3 的 ASCII 码值</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d"</span>,<span class="string">'3'</span>-<span class="string">'0'</span>);   <span class="comment">//输出 3，字符'3'减去字符'0k后转换为整数值 3</span></span><br></pre></td></tr></table></figure>
+<h2 id="main-函数"><a href="#main-函数" class="headerlink" title="main 函数"></a>main 函数</h2><p>main 函数是被操作系统调用的，因此返回值也是给操作系统的。</p>
+<p>$? 表示上一条命令的退出状态<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./a.out</span><br><span class="line">$ echo $?</span><br></pre></td></tr></table></figure></p>
+<h3 id="main-函数的写法"><a href="#main-函数的写法" class="headerlink" title="main 函数的写法"></a>main 函数的写法</h3><p>系统在调用 main 函数时是传递参数的，它的标准形式：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br></pre></td></tr></table></figure></p>
+<p>不使用系统传递的参数也可以这种写法<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br></pre></td></tr></table></figure></p>
+<p>最老的 old style C 的写法<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">main()&#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>默认返回 int 类型</li>
+<li>参数类型和个数不确定</li>
+<li>但这种宽松的规定使得编译器无法检查程序中可能的 bug</li>
+<li>为了向后的兼容还可以这样写，但会被警告，不推荐的写法</li>
+</ul>
+<p>除了上面的形式，其他写法都是错误或不可移植的。</p>
+<h2 id="void"><a href="#void" class="headerlink" title="void"></a>void</h2><p>任何表达式都有值和类型两个基本属性</p>
+<p>函数 void test(void) 没有返回值，那么表达式 test() 的值是什么呢？</p>
+<p>没有返回值的函数的返回类型是 void，则表示它有一个 void 类型的值，这样设计则任何表达式都有值，编译器做语法解析时不用考虑特殊情况</p>
+<p>从语义上规定 void 类型的返回值不能参与运算，因此 这种写法不能通过语义检查：test() + 1</p>
+<p>这种设计兼顾了语法上的一致和语义上没有矛盾，是 C 的实现方法，其他语言可能使用其他方法，如分为有返回值的函数，和没有返回值的过程 procedure</p>
+<h2 id="声明和定义"><a href="#声明和定义" class="headerlink" title="声明和定义"></a>声明和定义</h2><h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>只有分配了内存空间的变量声明才可以称为变量定义</p>
+<p>声明<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">short</span> age;</span><br></pre></td></tr></table></figure></p>
+<p>定义<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">short</span> age = <span class="number">12</span>;</span><br></pre></td></tr></table></figure></p>
+<h2 id="取模和整除"><a href="#取模和整除" class="headerlink" title="取模和整除"></a>取模和整除</h2><p>???取模和取余???<br><a href="https://wenku.baidu.com/view/7d796163ddccda38376baf58.html" target="_blank" rel="noopener">https://wenku.baidu.com/view/7d796163ddccda38376baf58.html</a></p>
+<p>% 取模运算符，即两个数相除的余数，结果的符号总是和被除数相同<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,<span class="number">7</span>%<span class="number">-2</span>);  <span class="comment">//输出 1</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,<span class="number">-7</span>%<span class="number">2</span>);  <span class="comment">//输出 -1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>整数除法运算总是趋向 0<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>,<span class="number">7</span>/<span class="number">2</span>); <span class="comment">//3</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>,<span class="number">-7</span>/<span class="number">2</span>); <span class="comment">//-3</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="逻辑运算"><a href="#逻辑运算" class="headerlink" title="逻辑运算"></a>逻辑运算</h2><p>关于逻辑运算的数学体系称为布尔代数，以创始人布尔(Boolean Algebra)命名</p>
+<h2 id="return"><a href="#return" class="headerlink" title="return"></a>return</h2><p>函数的返回值相当于定义了一个临时变量，临时变量的数据类型和函数的返回类型相同，并且用 return 后面的语句初始化这个临时变量<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">if</span> <span class="title">is_even</span><span class="params">(i)</span></span></span><br><span class="line"><span class="function">    <span class="title">printf</span><span class="params">(<span class="string">"%d是偶数\n"</span>,i)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">is_even</span><span class="params">(x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> !(x % <span class="number">2</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//执行过程相当于</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> i = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line">x = i;                      <span class="comment">//函数内的局部变量 x</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> temp_var = !(x % <span class="number">2</span>)     <span class="comment">//函数退出，局部变量 x 被释放，需要创建临时变量 temp_var 来保存函数的返回值</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (temp_var)               <span class="comment">//临时变量 temp_var 使用完就释放</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d是偶数\n"</span>,i);</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>虽然函数的返回值相当于临时变量，但不能向其赋值，如 is_even(20) = 1;</li>
+</ul>
+<p>返回时不用加括号<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span>(<span class="number">1</span>);</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>表达式里加括号是为了改变优先级，但这里不起任何作用，所以第一种写法即可</li>
+</ul>
+<h2 id="Dead-Code"><a href="#Dead-Code" class="headerlink" title="Dead Code"></a>Dead Code</h2><p>代码路径 Code Path 里永远执行不到的代码，有 Dead Code 就表示肯定有 Bug，因为不会故意写一行永远不会执行的代码，所以肯定是程序的运行和你的预想不一样</p>
+<h2 id="Hard-Coding"><a href="#Hard-Coding" class="headerlink" title="Hard Coding"></a>Hard Coding</h2><p>硬编码，直接写死在程序里，而不是通过常量、变量来保存</p>
+<h2 id="递归定义和Base-Case"><a href="#递归定义和Base-Case" class="headerlink" title="递归定义和Base Case"></a>递归定义和Base Case</h2><p>递归定义需要基础条件 Base Case</p>
+<p>如阶乘的定义为: n!=n * (n-1)!，即3的阶乘等于3乘以2的阶乘，2的阶乘又等于2乘以1的阶乘，一直到0的阶乘，然后定义0的阶乘等于1</p>
+<p>n! = n * (n-1)!<br>0! = 1</p>
+<p>递归和循环是等价的，一些儿语言没有循环只有递归</p>
+<h2 id="Terms"><a href="#Terms" class="headerlink" title="Terms"></a>Terms</h2><p>Leap Of Faith 信仰之跃，先假设某个未完成的函数返回结果是正确的，在此基础上完成其他部分。</p>
+<p>infinite recursion  无穷递归</p>
+<p>infinite loop  无限循环</p>
+<p>POSIX time 或者 Epoch time<br>    Unix 系统诞生于 1969 年，因此所有类 Unix 系统都把 1970-01-01 0:00:00 称为 Epoch time 或 Unix 时间戳</p>
+<h2 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h2><p>下面的例子中 n 忽大忽小，但最后都是 1，不会死循环，这就是著名的 3x+1 问题，目前还未被证明<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">n = <span class="number">7</span>;</span><br><span class="line"><span class="keyword">while</span> (n != <span class="number">1</span>) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (n % <span class="number">2</span> = <span class="number">0</span>)</span><br><span class="line">        n = n / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        n = n * <span class="number">3</span> + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>3x+1 猜想：任取一个自然数，如果它是偶数，我们就把它除以2，如果它是奇数，我们就把它乘3再加上1。使用新得到的新自然数反复变换，最后结果为1。</p>
+<h2 id="标号"><a href="#标号" class="headerlink" title="标号"></a>标号</h2><p>如 switch 语句中的 case,default，goto语句的<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> () &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"1"</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"2"</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"others"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">goto</span> mark;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>,i);</span><br><span class="line"></span><br><span class="line">mark:</span><br><span class="line">    i = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>goto 不能跨函数</li>
+</ul>
+<h2 id="Duff’s-Device"><a href="#Duff’s-Device" class="headerlink" title="Duff’s Device"></a>Duff’s Device</h2><p>达夫设备，一种特殊的代码写法，利用 switch 的语句块和循环语句的语句块没有本质区别，实现了巧妙的代码优化</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>,j = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">switch</span> (i) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>: <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:     ++j;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:     ++j;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:     ++j;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span>:     ++j;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">5</span>:     ++j;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">6</span>:     <span class="built_in">printf</span>(<span class="string">"%d,"</span>,j);</span><br><span class="line">        &#125; <span class="keyword">while</span> (j &lt; <span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\nj = %d\n"</span>,j);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//输出</span></span><br><span class="line"><span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,</span><br><span class="line">j = <span class="number">5</span></span><br></pre></td></tr></table></figure>
+<p><a href="http://blog.csdn.net/kingmax26/article/details/5252657" target="_blank" rel="noopener">http://blog.csdn.net/kingmax26/article/details/5252657</a></p>
+<h2 id="后缀运算符"><a href="#后缀运算符" class="headerlink" title="后缀运算符"></a>后缀运算符</h2><p>i++ 后缀++<br>i– 后缀–<br>struct.item 结构体访问成员<br>array[1] 数组下标<br>func() 函数调用</p>
+<p>后缀运算符优先级最高，其次是单目运算符，如正负号、逻辑非!、前缀++、前缀–</p>
+<h2 id="数据驱动的编程"><a href="#数据驱动的编程" class="headerlink" title="数据驱动的编程"></a>数据驱动的编程</h2><p>data-driven programming</p>
+<p>写代码时相对于控制流程和算法，选择正确的数据结构是更重要的</p>
+<p>举例：根据输入的数字 1~7 输出对应的星期几<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_day</span><span class="params">(<span class="keyword">short</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"please input number : "</span>);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;i);</span><br><span class="line">        <span class="keyword">if</span> (i &gt; <span class="number">0</span> &amp;&amp; i &lt; <span class="number">8</span>)</span><br><span class="line">            print_day(i);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"err:invalid number\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//良好的数据结构选择，没有任何的if else 判断</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_day</span><span class="params">(<span class="keyword">short</span> i)</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> dayName[<span class="number">8</span>][<span class="number">10</span>] = &#123;<span class="string">""</span>, <span class="string">"monday"</span>, <span class="string">"tuesday"</span>, <span class="string">"wednesday"</span>, <span class="string">"thursday"</span>, <span class="string">"friday"</span>, <span class="string">"saturday"</span>, <span class="string">"sunday"</span>&#125;;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s\n"</span>,dayName[i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="随机数"><a href="#随机数" class="headerlink" title="随机数"></a>随机数</h2><p>计算机执行的每一条指令的结果都是确定的，没有一条指令的结果是随机的，<br>因此调用C函数库得到的随机数其实是伪随机数 pseudorandom，是使用数学公式计算出来的确定的数，只是看起来像随机，<br>随机数的种子即是数学公式里的参数，种子确定的话，其生成的整个随机数序列也是确定和循环的。<br>从统计上看生成的随机数是接近均匀分布的</p>
+<p>C 语言生成随机数需要包含头文件 stdlib.h，使用 rand 函数，没有参数，返回 0 到 RAND_MAX 之间接近均匀分布的整数。<br>RAND_MAX 是 stdlib.h 中定义的常量，是一个非常大的整数，不同的平台其取值不同<br>通常使用时通过取模运算(如 rand() % 10)限定生成的值的范围，而不是直接使用默认的 0~RAND_MAX 之间的范围。</p>
+<p>srand 可以设定随机数的种子<br>rand 然后生成随机数</p>
+<h2 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h2><p>定义常量<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 20;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h2><p>preprocess</p>
+<p>编译器的工作分为预处理和编译两个阶段</p>
+<p>以 # 号开头的行表示 预处理指示 Preprocessing Directive</p>
+<p>查看文件在预处理之后编译之前的内容，两条命令效果相同<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -E test.c</span><br><span class="line"></span><br><span class="line">$ cpp test.c</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>cpp 表示 C preprocess</li>
+</ul>
+<p>可以看到预处理将会：</p>
+<ul>
+<li>展开包含的头文件的代码</li>
+<li>把定义的常量替换为定义的真正数值</li>
+</ul>
+<h2 id="排序和查找-1"><a href="#排序和查找-1" class="headerlink" title="排序和查找"></a>排序和查找</h2><p>算法 Algorithm 是用来解决一类问题的，而不是具体的某一个问题</p>
+<h2 id="栈和队列-1"><a href="#栈和队列-1" class="headerlink" title="栈和队列"></a>栈和队列</h2><p>数据结构就是数据的组织方式，包含了存储方式和访问方式两层含义，且两者紧密联系，例如：<br>把同一类型的数据组织成数组，每个元素一个挨着一个的存储，且大小相同，因此使用下标的方式访问。<br>把同一对象的成员组织成结构体，每个成员也是一个挨着一个的存储，但大小不一样，所以使用点运算符加成员名来访问。</p>
+<p>数据的存储方式和访问方式也决定了解决问题需要的算法，同时要设计一个算法也要设计一个相应的数据结构来支持这种算法，<br>所以 Pascal 语言的设计者 Niklaus Wirth 提出了：算法 + 数据结构 = 程序</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C-语言/" rel="tag"># C 语言</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Bash - 基础/" rel="next" title="bash - 基础">
+                <i class="fa fa-chevron-left"></i> bash - 基础
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/C 语言 - Linux C 编程一站式学习 - C 语言本质/" rel="prev" title="C 语言 - Linux C 编程一站式学习 - C 语言本质">
+                C 语言 - Linux C 编程一站式学习 - C 语言本质 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#程序的基本概念"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x7A0B;&#x5E8F;&#x7684;&#x57FA;&#x672C;&#x6982;&#x5FF5;" class="headerlink" title="&#x7A0B;&#x5E8F;&#x7684;&#x57FA;&#x672C;&#x6982;&#x5FF5;"></a>&#x7A0B;&#x5E8F;&#x7684;&#x57FA;&#x672C;&#x6982;&#x5FF5;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常量、变量、表达式"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5E38;&#x91CF;&#x3001;&#x53D8;&#x91CF;&#x3001;&#x8868;&#x8FBE;&#x5F0F;" class="headerlink" title="&#x5E38;&#x91CF;&#x3001;&#x53D8;&#x91CF;&#x3001;&#x8868;&#x8FBE;&#x5F0F;"></a>&#x5E38;&#x91CF;&#x3001;&#x53D8;&#x91CF;&#x3001;&#x8868;&#x8FBE;&#x5F0F;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单函数"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x7B80;&#x5355;&#x51FD;&#x6570;" class="headerlink" title="&#x7B80;&#x5355;&#x51FD;&#x6570;"></a>&#x7B80;&#x5355;&#x51FD;&#x6570;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深入理解函数"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x6DF1;&#x5165;&#x7406;&#x89E3;&#x51FD;&#x6570;" class="headerlink" title="&#x6DF1;&#x5165;&#x7406;&#x89E3;&#x51FD;&#x6570;"></a>&#x6DF1;&#x5165;&#x7406;&#x89E3;&#x51FD;&#x6570;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分支语句"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x5206;&#x652F;&#x8BED;&#x53E5;" class="headerlink" title="&#x5206;&#x652F;&#x8BED;&#x53E5;"></a>&#x5206;&#x652F;&#x8BED;&#x53E5;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#循环语句"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x5FAA;&#x73AF;&#x8BED;&#x53E5;" class="headerlink" title="&#x5FAA;&#x73AF;&#x8BED;&#x53E5;"></a>&#x5FAA;&#x73AF;&#x8BED;&#x53E5;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构体"><span class="nav-number">7.</span> <span class="nav-text"><a href="#&#x7ED3;&#x6784;&#x4F53;" class="headerlink" title="&#x7ED3;&#x6784;&#x4F53;"></a>&#x7ED3;&#x6784;&#x4F53;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组"><span class="nav-number">8.</span> <span class="nav-text"><a href="#&#x6570;&#x7EC4;" class="headerlink" title="&#x6570;&#x7EC4;"></a>&#x6570;&#x7EC4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编码风格"><span class="nav-number">9.</span> <span class="nav-text"><a href="#&#x7F16;&#x7801;&#x98CE;&#x683C;" class="headerlink" title="&#x7F16;&#x7801;&#x98CE;&#x683C;"></a>&#x7F16;&#x7801;&#x98CE;&#x683C;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gdb"><span class="nav-number">10.</span> <span class="nav-text"><a href="#gdb" class="headerlink" title="gdb"></a>gdb</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排序和查找"><span class="nav-number">11.</span> <span class="nav-text"><a href="#&#x6392;&#x5E8F;&#x548C;&#x67E5;&#x627E;" class="headerlink" title="&#x6392;&#x5E8F;&#x548C;&#x67E5;&#x627E;"></a>&#x6392;&#x5E8F;&#x548C;&#x67E5;&#x627E;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#栈和队列"><span class="nav-number">12.</span> <span class="nav-text"><a href="#&#x6808;&#x548C;&#x961F;&#x5217;" class="headerlink" title="&#x6808;&#x548C;&#x961F;&#x5217;"></a>&#x6808;&#x548C;&#x961F;&#x5217;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学习一门编程语言"><span class="nav-number">13.</span> <span class="nav-text"><a href="#&#x5B66;&#x4E60;&#x4E00;&#x95E8;&#x7F16;&#x7A0B;&#x8BED;&#x8A00;" class="headerlink" title="&#x5B66;&#x4E60;&#x4E00;&#x95E8;&#x7F16;&#x7A0B;&#x8BED;&#x8A00;"></a>&#x5B66;&#x4E60;&#x4E00;&#x95E8;&#x7F16;&#x7A0B;&#x8BED;&#x8A00;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-标准"><span class="nav-number">14.</span> <span class="nav-text"><a href="#C-&#x6807;&#x51C6;" class="headerlink" title="C &#x6807;&#x51C6;"></a>C &#x6807;&#x51C6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-标准库"><span class="nav-number">15.</span> <span class="nav-text"><a href="#C-&#x6807;&#x51C6;&#x5E93;" class="headerlink" title="C &#x6807;&#x51C6;&#x5E93;"></a>C &#x6807;&#x51C6;&#x5E93;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#char"><span class="nav-number">16.</span> <span class="nav-text"><a href="#char" class="headerlink" title="char"></a>char</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#main-函数"><span class="nav-number">17.</span> <span class="nav-text"><a href="#main-&#x51FD;&#x6570;" class="headerlink" title="main &#x51FD;&#x6570;"></a>main &#x51FD;&#x6570;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#main-函数的写法"><span class="nav-number">17.1.</span> <span class="nav-text"><a href="#main-&#x51FD;&#x6570;&#x7684;&#x5199;&#x6CD5;" class="headerlink" title="main &#x51FD;&#x6570;&#x7684;&#x5199;&#x6CD5;"></a>main &#x51FD;&#x6570;&#x7684;&#x5199;&#x6CD5;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#void"><span class="nav-number">18.</span> <span class="nav-text"><a href="#void" class="headerlink" title="void"></a>void</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#声明和定义"><span class="nav-number">19.</span> <span class="nav-text"><a href="#&#x58F0;&#x660E;&#x548C;&#x5B9A;&#x4E49;" class="headerlink" title="&#x58F0;&#x660E;&#x548C;&#x5B9A;&#x4E49;"></a>&#x58F0;&#x660E;&#x548C;&#x5B9A;&#x4E49;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#变量"><span class="nav-number">19.1.</span> <span class="nav-text"><a href="#&#x53D8;&#x91CF;" class="headerlink" title="&#x53D8;&#x91CF;"></a>&#x53D8;&#x91CF;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#取模和整除"><span class="nav-number">20.</span> <span class="nav-text"><a href="#&#x53D6;&#x6A21;&#x548C;&#x6574;&#x9664;" class="headerlink" title="&#x53D6;&#x6A21;&#x548C;&#x6574;&#x9664;"></a>&#x53D6;&#x6A21;&#x548C;&#x6574;&#x9664;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑运算"><span class="nav-number">21.</span> <span class="nav-text"><a href="#&#x903B;&#x8F91;&#x8FD0;&#x7B97;" class="headerlink" title="&#x903B;&#x8F91;&#x8FD0;&#x7B97;"></a>&#x903B;&#x8F91;&#x8FD0;&#x7B97;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#return"><span class="nav-number">22.</span> <span class="nav-text"><a href="#return" class="headerlink" title="return"></a>return</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dead-Code"><span class="nav-number">23.</span> <span class="nav-text"><a href="#Dead-Code" class="headerlink" title="Dead Code"></a>Dead Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hard-Coding"><span class="nav-number">24.</span> <span class="nav-text"><a href="#Hard-Coding" class="headerlink" title="Hard Coding"></a>Hard Coding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#递归定义和Base-Case"><span class="nav-number">25.</span> <span class="nav-text"><a href="#&#x9012;&#x5F52;&#x5B9A;&#x4E49;&#x548C;Base-Case" class="headerlink" title="&#x9012;&#x5F52;&#x5B9A;&#x4E49;&#x548C;Base Case"></a>&#x9012;&#x5F52;&#x5B9A;&#x4E49;&#x548C;Base Case</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Terms"><span class="nav-number">26.</span> <span class="nav-text"><a href="#Terms" class="headerlink" title="Terms"></a>Terms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#循环"><span class="nav-number">27.</span> <span class="nav-text"><a href="#&#x5FAA;&#x73AF;" class="headerlink" title="&#x5FAA;&#x73AF;"></a>&#x5FAA;&#x73AF;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标号"><span class="nav-number">28.</span> <span class="nav-text"><a href="#&#x6807;&#x53F7;" class="headerlink" title="&#x6807;&#x53F7;"></a>&#x6807;&#x53F7;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Duff’s-Device"><span class="nav-number">29.</span> <span class="nav-text"><a href="#Duff&#x2019;s-Device" class="headerlink" title="Duff&#x2019;s Device"></a>Duff&#x2019;s Device</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后缀运算符"><span class="nav-number">30.</span> <span class="nav-text"><a href="#&#x540E;&#x7F00;&#x8FD0;&#x7B97;&#x7B26;" class="headerlink" title="&#x540E;&#x7F00;&#x8FD0;&#x7B97;&#x7B26;"></a>&#x540E;&#x7F00;&#x8FD0;&#x7B97;&#x7B26;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据驱动的编程"><span class="nav-number">31.</span> <span class="nav-text"><a href="#&#x6570;&#x636E;&#x9A71;&#x52A8;&#x7684;&#x7F16;&#x7A0B;" class="headerlink" title="&#x6570;&#x636E;&#x9A71;&#x52A8;&#x7684;&#x7F16;&#x7A0B;"></a>&#x6570;&#x636E;&#x9A71;&#x52A8;&#x7684;&#x7F16;&#x7A0B;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#随机数"><span class="nav-number">32.</span> <span class="nav-text"><a href="#&#x968F;&#x673A;&#x6570;" class="headerlink" title="&#x968F;&#x673A;&#x6570;"></a>&#x968F;&#x673A;&#x6570;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常量"><span class="nav-number">33.</span> <span class="nav-text"><a href="#&#x5E38;&#x91CF;" class="headerlink" title="&#x5E38;&#x91CF;"></a>&#x5E38;&#x91CF;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#预处理"><span class="nav-number">34.</span> <span class="nav-text"><a href="#&#x9884;&#x5904;&#x7406;" class="headerlink" title="&#x9884;&#x5904;&#x7406;"></a>&#x9884;&#x5904;&#x7406;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排序和查找-1"><span class="nav-number">35.</span> <span class="nav-text"><a href="#&#x6392;&#x5E8F;&#x548C;&#x67E5;&#x627E;-1" class="headerlink" title="&#x6392;&#x5E8F;&#x548C;&#x67E5;&#x627E;"></a>&#x6392;&#x5E8F;&#x548C;&#x67E5;&#x627E;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#栈和队列-1"><span class="nav-number">36.</span> <span class="nav-text"><a href="#&#x6808;&#x548C;&#x961F;&#x5217;-1" class="headerlink" title="&#x6808;&#x548C;&#x961F;&#x5217;"></a>&#x6808;&#x548C;&#x961F;&#x5217;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

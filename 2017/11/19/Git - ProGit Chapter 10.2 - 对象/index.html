@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Git,Git-Objects," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Git 是一个内容寻址文件系统。这意味着，Git 的核心部分是一个简单的键值对数据库（key-value data store）。可以向该数据库插入任意类型的内容，它会返回一个键值，通过该键值可以在任意时刻再次检索（retrieve）该内容。">
+<meta name="keywords" content="Git,Git-Objects">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter 10.2 - Git 对象">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 10.2 - 对象/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="Git 是一个内容寻址文件系统。这意味着，Git 的核心部分是一个简单的键值对数据库（key-value data store）。可以向该数据库插入任意类型的内容，它会返回一个键值，通过该键值可以在任意时刻再次检索（retrieve）该内容。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.528Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter 10.2 - Git 对象">
+<meta name="twitter:description" content="Git 是一个内容寻址文件系统。这意味着，Git 的核心部分是一个简单的键值对数据库（key-value data store）。可以向该数据库插入任意类型的内容，它会返回一个键值，通过该键值可以在任意时刻再次检索（retrieve）该内容。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 10.2 - 对象/"/>
+
+
+
+
+
+  <title>chapter 10.2 - Git 对象 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 10.2 - 对象/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">chapter 10.2 - Git 对象</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/Book-ProGit/" itemprop="url" rel="index">
+                    <span itemprop="name">Book-ProGit</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Git 是一个内容寻址文件系统。这意味着，Git 的核心部分是一个简单的键值对数据库（key-value data store）。可以向该数据库插入任意类型的内容，它会返回一个键值，通过该键值可以在任意时刻再次检索（retrieve）该内容。</p>
+<a id="more"></a>
+<h2 id="git-对象类型"><a href="#git-对象类型" class="headerlink" title="git 对象类型"></a>git 对象类型</h2><p>共4种类型</p>
+<ol>
+<li><p>blob    数据对象<br> 内容没有固定格式</p>
+</li>
+<li><p>tree    树对象<br> 内容有固定格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">100644 blob fd23bdb7c00d546fc05baf679ab071b09572f394    .gitignore</span><br><span class="line">100644 blob 1d4e6ea39ca3b189bf698ccd5ed0eb689f3468ce    README.md</span><br><span class="line">100644 blob aafbfbc387ca5eec77aad8e978d5ca05f39b9a8e    test.txt</span><br><span class="line">040000 tree 6b7916d2dc254d5b8d627094643ec6874f543aab    vendor</span><br></pre></td></tr></table></figure>
+<p> 第一列表示文件模式：</p>
+<pre><code>100644  普通文件
+100755  可执行文件
+120000  符号链接
+040000  普通目录
+</code></pre><p> 第二列对象类型<br> 第三列对象指针<br> 第四列文件名</p>
+</li>
+<li><p>commit  提交对象<br> 内容有固定格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">tree 136483782871900f09f4977ca2e64a6d2ff16718</span><br><span class="line">parent 29b3988a97dd904f9644949d6f974aae8d5adef1</span><br><span class="line">author bitbite &lt;bitbite@foxmail.com&gt; 1497308152 +0800</span><br><span class="line">committer bitbite &lt;bitbite@foxmail.com&gt; 1497308152 +0800</span><br><span class="line"></span><br><span class="line">commit for tree test</span><br></pre></td></tr></table></figure>
+<p> tree        指向顶层 tree 对象的指针<br> parent      当前 commit 对象的父对象，即上一个 commit 对象<br> author      作者和时间戳<br> committer   提交者和时间戳</p>
+</li>
+<li><p>tag 附注标签对象</p>
+<p> 标签分轻量标签和附注标签，轻量标签是引用，附注标签是对象</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">object fd61fc5d10a311ad261c9b1a2ff22b09faf0a776</span><br><span class="line">type commit</span><br><span class="line">tag v1.0</span><br><span class="line">tagger bitbite &lt;bitbite@foxmail.com&gt; 1497338311 +0800</span><br><span class="line"></span><br><span class="line">software goto 1.0</span><br></pre></td></tr></table></figure>
+<pre><code>object  指向被标签对象的指针
+type    被标签对象类型
+tag     标签
+tagger  标签创建者信息和时间戳
+[一个空行]
+注释信息
+</code></pre><h2 id="git-对象存储过程"><a href="#git-对象存储过程" class="headerlink" title="git 对象存储过程"></a>git 对象存储过程</h2><p>通过 <code>irb</code> 命令启动 Ruby 的交互模式，查看字符串“what is up, doc?”的存储步骤：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ irb</span><br><span class="line">&gt;&gt; content = &quot;what is up, doc?&quot;</span><br><span class="line">=&gt; &quot;what is up, doc?&quot;</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li><p>构造头信息<br>头信息的组成格式：<br><code>对象类型字符串(&quot;blob&quot;|&quot;tree&quot;|&quot;commit&quot;)</code> + <code>一个空格</code> + <code>数据内容的长度</code> + <code>一个空字节(null byte)</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; header = &quot;blob #&#123;content.length&#125;\0&quot;</span><br><span class="line">=&gt; &quot;blob 16\u0000&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将上述头信息和原始数据拼接起来，并计算出这条新内容的 SHA-1 校验和。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; store = header + content</span><br><span class="line">=&gt; &quot;blob 16\u0000what is up, doc?&quot;</span><br><span class="line">&gt;&gt; sha1 = Digest::SHA1.hexdigest(store)</span><br><span class="line">=&gt; &quot;bd9dbf5aae1a3862dd1526723246b20206e5fc37&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>调用zlib压缩新内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; zlib_content = Zlib::Deflate.deflate(store)</span><br><span class="line">=&gt; &quot;x\x9CK\xCA\xC9OR04c(\xCFH,Q\xC8,V(-\xD0QH\xC9O\xB6\a\x00_\x1C\a\x9D&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>确定新内容的磁盘保存路径并创建目录<br>都保存在.git/objects/目录下<br>SHA-1校验和的前两个字符用于命名子目录<br>余下的 38 个字符则用作文件名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; path = &apos;.git/objects/&apos; + sha1[0,2] + &apos;/&apos; + sha1[2,38]</span><br><span class="line">=&gt; &quot;.git/objects/bd/9dbf5aae1a3862dd1526723246b20206e5fc37&quot;</span><br><span class="line">&gt;&gt; FileUtils.mkdir_p(File.dirname(path))</span><br><span class="line">=&gt; &quot;.git/objects/bd&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将经过zlib压缩的新内容写入文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; File.open(path, &apos;w&apos;) &#123; |f| f.write zlib_content &#125;</span><br><span class="line">=&gt; 32</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>概括：</p>
+<ul>
+<li>对象类型、内容长度、原始内容拼接生成新内容，根据新内容生成SHA校验和确定磁盘存储路径，新内容再经过zlib压缩存放</li>
+<li>每一条要存储的内容都要经过上述流程写入对应的一个文件</li>
+<li>所有的git对象都以这种方式存储</li>
+</ul>
+<p>这样存储的问题有：</p>
+<ul>
+<li>hash值和内容一一对应，没有存储文件名，记住每一个版本的hash值并不现实</li>
+<li>不知道文件的组织结构</li>
+<li>不知道是谁保存的，什么时候保存的，为什么保存</li>
+</ul>
+<p>tree 树对象解决前两个问题<br>commit 提交对象解决最后一个问题</p>
+<h2 id="blob-数据对象"><a href="#blob-数据对象" class="headerlink" title="blob 数据对象"></a>blob 数据对象</h2><h3 id="存储数据对象"><a href="#存储数据对象" class="headerlink" title="存储数据对象"></a>存储数据对象</h3><p><code>hash-object</code>命令可存储任意文件到.git目录</p>
+<h4 id="存储文件"><a href="#存储文件" class="headerlink" title="存储文件"></a>存储文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git hash-object -w test.txt</span><br><span class="line">5bdcfc19f119febc749eef9a9551bc335cb965e2</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>-w</code>选项表示将存储数据对象，否则只生成hash值</li>
+</ul>
+<h4 id="存储字符串"><a href="#存储字符串" class="headerlink" title="存储字符串"></a>存储字符串</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ echo &quot;give this string a hash value&quot; | git hash-object -w --stdin</span><br><span class="line">582c37ab0e7750d6d162506ba876d0f6e0552f0c</span><br></pre></td></tr></table></figure>
+<p><code>--stdin</code>表示从标准输入接收参数</p>
+<h3 id="查看数据对象"><a href="#查看数据对象" class="headerlink" title="查看数据对象"></a>查看数据对象</h3><h4 id="定位存储位置"><a href="#定位存储位置" class="headerlink" title="定位存储位置"></a>定位存储位置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ find .git/objects -type f</span><br><span class="line">.git/objects/58/2c37ab0e7750d6d162506ba876d0f6e0552f0c</span><br><span class="line">.git/objects/5b/dcfc19f119febc749eef9a9551bc335cb965e2</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Question:<br>键值对数据库和.git/objects/目录关系<br>后来改成键值对数据库了吗？<br>blob对象写入键值对数据库了吗？键名是hash值，键值是文件内容?</p>
+</blockquote>
+<h4 id="查看对象类型"><a href="#查看对象类型" class="headerlink" title="查看对象类型"></a>查看对象类型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git cat-file -t 582c37ab0e7750d6d162506ba876d0f6e0552f0c</span><br><span class="line">blob</span><br></pre></td></tr></table></figure>
+<ul>
+<li>-t选项查看类型</li>
+</ul>
+<h4 id="读取对象内容"><a href="#读取对象内容" class="headerlink" title="读取对象内容"></a>读取对象内容</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git cat-file -p 582c37ab0e7750d6d162506ba876d0f6e0552f0c</span><br><span class="line">give this string a hash value</span><br></pre></td></tr></table></figure>
+<ul>
+<li>-p参数指示命令自动判断内容的类型，并显示格式友好的内容</li>
+</ul>
+<h4 id="实现版本恢复"><a href="#实现版本恢复" class="headerlink" title="实现版本恢复"></a>实现版本恢复</h4><p>利用<code>hash-object</code>的存储数据对象和<code>cat-file</code>的读取对象内容的功能即可实现版本恢复：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">//存储第一个版本</span><br><span class="line">$ echo version1 &gt; test.txt</span><br><span class="line">$ git hash-object -w test.txt</span><br><span class="line">5bdcfc19f119febc749eef9a9551bc335cb965e2</span><br><span class="line"></span><br><span class="line">//存储第二个版本</span><br><span class="line">$ echo version2 &gt; test.txt</span><br><span class="line">$ git hash-object -w test.txt</span><br><span class="line">df7af2c382e49245443687973ceb711b2b74cb4a</span><br><span class="line"></span><br><span class="line">//利用存储的版本恢复</span><br><span class="line">$ cat test.txt</span><br><span class="line">version2</span><br><span class="line">$ git cat-file -p 5bdcfc19f119febc749eef9a9551bc335cb965e2 &gt; test.txt</span><br><span class="line">$ cat test.txt</span><br><span class="line">version1</span><br></pre></td></tr></table></figure>
+<h2 id="tree-树对象"><a href="#tree-树对象" class="headerlink" title="tree 树对象"></a>tree 树对象</h2><p>解决了文件名保存问题，解决了文件的组织结构问题。</p>
+<p>tree对象和blob对象就是目录和文件的关系</p>
+<h3 id="查看-tree-对象"><a href="#查看-tree-对象" class="headerlink" title="查看 tree 对象"></a>查看 tree 对象</h3><h4 id="方法一：根据提交记录查找到tree对象的hash值查看"><a href="#方法一：根据提交记录查找到tree对象的hash值查看" class="headerlink" title="方法一：根据提交记录查找到tree对象的hash值查看"></a>方法一：根据提交记录查找到tree对象的hash值查看</h4><p>先查看log记录，找到commit的hash值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git log --pretty=oneline</span><br><span class="line">a52d1d8f7725c4adc427339ae1302920ab020d5c (HEAD -&gt; dev) add monolog directory and txt</span><br><span class="line">12c274b7d7d4d5a22bc815656e9054bb8123cee1 commit for tree test</span><br><span class="line">29b3988a97dd904f9644949d6f974aae8d5adef1 add eeeeee</span><br></pre></td></tr></table></figure></p>
+<p>再查看commit对象里记录的顶层tree对象的hash值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ git cat-file -p a52d1d8f7725c4adc427339ae1302920ab020d5c</span><br><span class="line">tree 6f0c41495f324d9a54072b465dccc1e54e6fb634</span><br><span class="line">parent 12c274b7d7d4d5a22bc815656e9054bb8123cee1</span><br><span class="line">author bitbite &lt;bitbite@foxmail.com&gt; 1497309682 +0800</span><br><span class="line">committer bitbite &lt;bitbite@foxmail.com&gt; 1497309682 +0800</span><br><span class="line"></span><br><span class="line">add monolog directory and txt</span><br></pre></td></tr></table></figure></p>
+<p>最后根据tree对象的hash值查看内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ git cat-file -p 6f0c41495f324d9a54072b465dccc1e54e6fb634</span><br><span class="line">100644 blob fd23bdb7c00d546fc05baf679ab071b09572f394    .gitignore</span><br><span class="line">100644 blob e69de29bb2d1d6434b8b29ae775ad8c2e48c5391    4.txt</span><br><span class="line">100644 blob e69de29bb2d1d6434b8b29ae775ad8c2e48c5391    5.txt</span><br><span class="line">100644 blob e69de29bb2d1d6434b8b29ae775ad8c2e48c5391    6.txt</span><br><span class="line">100644 blob 1d4e6ea39ca3b189bf698ccd5ed0eb689f3468ce    README.md</span><br><span class="line">100644 blob d00491fd7e5bb6fa28c517a0bb32b8b506539d4d    test.txt</span><br><span class="line">040000 tree 9ebe621674445e0931d92b36a62d78c758b0f624    vendor</span><br></pre></td></tr></table></figure></p>
+<h4 id="方法二：直接查看某分支最后一次提交对应的tree对象"><a href="#方法二：直接查看某分支最后一次提交对应的tree对象" class="headerlink" title="方法二：直接查看某分支最后一次提交对应的tree对象"></a>方法二：直接查看某分支最后一次提交对应的tree对象</h4><p>格式：<code>分支名^{tree}</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ git cat-file -p dev^&#123;tree&#125;</span><br><span class="line">100644 blob fd23bdb7c00d546fc05baf679ab071b09572f394    .gitignore</span><br><span class="line">100644 blob e69de29bb2d1d6434b8b29ae775ad8c2e48c5391    4.txt</span><br><span class="line">100644 blob e69de29bb2d1d6434b8b29ae775ad8c2e48c5391    5.txt</span><br><span class="line">100644 blob e69de29bb2d1d6434b8b29ae775ad8c2e48c5391    6.txt</span><br><span class="line">100644 blob 1d4e6ea39ca3b189bf698ccd5ed0eb689f3468ce    README.md</span><br><span class="line">100644 blob d00491fd7e5bb6fa28c517a0bb32b8b506539d4d    test.txt</span><br><span class="line">040000 tree 9ebe621674445e0931d92b36a62d78c758b0f624    vendor</span><br></pre></td></tr></table></figure></p>
+<p>当然也可查看最后一次提交对应的commit对象<br>格式：<code>分支名^{commit}</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ git cat-file -p dev^&#123;commit&#125;</span><br><span class="line">tree 6f0c41495f324d9a54072b465dccc1e54e6fb634</span><br><span class="line">parent 12c274b7d7d4d5a22bc815656e9054bb8123cee1</span><br><span class="line">author bitbite &lt;bitbite@foxmail.com&gt; 1497309682 +0800</span><br><span class="line">committer bitbite &lt;bitbite@foxmail.com&gt; 1497309682 +0800</span><br><span class="line"></span><br><span class="line">add monolog directory and txt</span><br></pre></td></tr></table></figure></p>
+<h3 id="创建-tree-对象"><a href="#创建-tree-对象" class="headerlink" title="创建 tree 对象"></a>创建 tree 对象</h3><p>不能直接创建 tree 对象，需要通过暂存区来创建 tree 对象： Git 会根据某一时刻 index 区（暂存区）的状态创建并记录一个对应的树对象，所以要创建 tree 对象，可以先创建 index 区</p>
+<h4 id="创建-index-区"><a href="#创建-index-区" class="headerlink" title="创建 index 区"></a>创建 index 区</h4><p>使用<code>git ls-files</code>命令查看 index 区<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git ls-files --stage</span><br><span class="line">100644 43b67b58d92a592260065f61581b2ac26d20487f 0       test.txt</span><br><span class="line">100644 fd23bdb7c00d546fc05baf679ab071b09572f394 0       .gitignore</span><br><span class="line">100644 e69de29bb2d1d6434b8b29ae775ad8c2e48c5391 0       vendor/7.txt</span><br></pre></td></tr></table></figure></p>
+<p>使用<code>git add</code>之后可见 index 区被更新了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ echo index file test &gt; test.txt</span><br><span class="line">$ git add test.txt</span><br><span class="line"></span><br><span class="line">$ git ls-files --stage</span><br><span class="line">100644 e18feaec5a521413c47872e9e3aab6101ef149cb 0       test.txt</span><br><span class="line">100644 fd23bdb7c00d546fc05baf679ab071b09572f394 0       .gitignore</span><br><span class="line">100644 e69de29bb2d1d6434b8b29ae775ad8c2e48c5391 0       vendor/7.txt</span><br></pre></td></tr></table></figure></p>
+<p>高层命令<code>git add</code>其实是调用底层命令<code>updaet-index</code>实现的 index 区更新<br>调用<code>update-index</code>将磁盘文件更新到 index 区：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ git echo some new thing &gt; test.txt</span><br><span class="line">$ git touch wukong.txt &amp;&amp; echo sun wukong is comig &gt; wukong.txt</span><br><span class="line">$ git update-index test.txt</span><br><span class="line">$ git update-index --add wukong.txt</span><br><span class="line">$ git status</span><br><span class="line">On branch dev</span><br><span class="line">Your branch is ahead of &apos;origin/dev&apos; by 5 commits.</span><br><span class="line">  (use &quot;git push&quot; to publish your local commits)</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">        modified:   test.txt</span><br><span class="line"></span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line"></span><br><span class="line">        wukong.txt</span><br></pre></td></tr></table></figure></p>
+<p>wuong.txt是新建文件不在 index 区所以要加–add选项</p>
+<p>也可将已 git 对象更新到 index 区：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git update-index --add --cacheinfo 100644,c0e38c69fd2e04533a0656757f1020a0a8f50698,wukong2.txt</span><br></pre></td></tr></table></figure></p>
+<pre><code>--cacheinfo 表示要添加的文件位于 git 数据库中，而不是当前目录，格式为
+--cacheinfo &lt;mode&gt;,&lt;object&gt;,&lt;path&gt;
+    &lt;mode&gt;      文件模式
+                100644  普通文件
+                100755  可执行文件
+                120000  符号链接
+    &lt;object&gt;    git对象SHA值
+    &lt;path&gt;      文件名
+</code></pre><h4 id="创建-tree-对象-1"><a href="#创建-tree-对象-1" class="headerlink" title="创建 tree 对象"></a>创建 tree 对象</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git write-tree</span><br><span class="line">f50fc22ff236284f2153395717adf238e184e4fd</span><br></pre></td></tr></table></figure>
+<p>返回的是 tree 对象</p>
+<pre><code>--prefix 可以指定 tree 对象的上级
+</code></pre><h2 id="commit-提交对象"><a href="#commit-提交对象" class="headerlink" title="commit 提交对象"></a>commit 提交对象</h2><p>提交 tree 对象同时会得到commit对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git commit-tree -p 4bbb5c4b82eabe25ad426ccc9d0f889024389249 -m &quot;this tree is commited by my hand&quot; f50fc22ff236284f2153395717adf238e184e4fd</span><br><span class="line"></span><br><span class="line">fd61fc5d10a311ad261c9b1a2ff22b09faf0a776</span><br></pre></td></tr></table></figure>
+<p>返回的是 commit 对象</p>
+<pre><code>-p  上级 commit 对象，否则这次的 commit 对象不在git log的历史记录里
+-m  注释
+</code></pre><h2 id="一个完整的手工提交"><a href="#一个完整的手工提交" class="headerlink" title="一个完整的手工提交"></a>一个完整的手工提交</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">//更改txt文件</span><br><span class="line">$ echo this string is commited by hand &gt; test.txt</span><br><span class="line"></span><br><span class="line">//更新index区</span><br><span class="line">$ git update-index test.txt</span><br><span class="line"></span><br><span class="line">//创建tree对象</span><br><span class="line">$ git write-tree</span><br><span class="line">f50fc22ff236284f2153395717adf238e184e4fd</span><br><span class="line"></span><br><span class="line">//查看日志找到最新的commit对象</span><br><span class="line">$ git log --pretty=oneline -1</span><br><span class="line">4bbb5c4b82eabe25ad426ccc9d0f889024389249 (HEAD -&gt; dev) modify sth</span><br><span class="line"></span><br><span class="line">//提交tree对象则会创建commit对象，</span><br><span class="line">//-p参数指明commit对象的上级commit对象，</span><br><span class="line">//否则这次的commit对象不在git log的历史记录里</span><br><span class="line">$ git commit-tree f50fc22ff236284f2153395717adf238e184e4fd -p 4bbb5c4b82eabe25ad426ccc9d0f889024389249 -m &quot;this tree is commited by my hand&quot;</span><br><span class="line">fd61fc5d10a311ad261c9b1a2ff22b09faf0a776</span><br><span class="line"></span><br><span class="line">//当前index区还是更改状态</span><br><span class="line">$ git status</span><br><span class="line">On branch dev</span><br><span class="line">Your branch is ahead of &apos;origin/dev&apos; by 8 commits.</span><br><span class="line">  (use &quot;git push&quot; to publish your local commits)</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">        modified:   test.txt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//当前的日志还没有我们刚刚的提交</span><br><span class="line">$ git log --pretty=oneline</span><br><span class="line">4bbb5c4b82eabe25ad426ccc9d0f889024389249 (HEAD -&gt; dev) modify sth</span><br><span class="line">108adeba753504c992199d026e96902850fbf7e7 add some text</span><br><span class="line">f26fdbdc4eb8d65dc14e70b89ae5ef9bdf600363 Initial commit</span><br><span class="line"></span><br><span class="line">//原来还需要更新分支，指向当前最新的提交</span><br><span class="line">$ git update-ref refs/heads/dev fd61fc5d10a311ad261c9b1a2ff22b09faf0a776</span><br><span class="line"></span><br><span class="line">//再查看index区状态也正常了</span><br><span class="line">$ git status</span><br><span class="line">On branch dev</span><br><span class="line">Your branch is ahead of &apos;origin/dev&apos; by 9 commits.</span><br><span class="line">  (use &quot;git push&quot; to publish your local commits)</span><br><span class="line">nothing to commit, working tree clean</span><br><span class="line"></span><br><span class="line">//日志也已经有了我们刚刚的提交</span><br><span class="line">$ git log --pretty=oneline</span><br><span class="line">fd61fc5d10a311ad261c9b1a2ff22b09faf0a776 (HEAD -&gt; dev) this tree is commited by my hand</span><br><span class="line">4bbb5c4b82eabe25ad426ccc9d0f889024389249 modify sth</span><br><span class="line">108adeba753504c992199d026e96902850fbf7e7 add some text</span><br><span class="line">f26fdbdc4eb8d65dc14e70b89ae5ef9bdf600363 Initial commit</span><br></pre></td></tr></table></figure>
+<p>上述过程就是<code>git add</code>和<code>git commit</code>的实际执行过程：</p>
+<pre><code>update-index --&gt; git add
+    将更改文件生成blob对象，并把blob对象更新到index区
+
+write-tree
+    根据index区内容创建tree对象
+    Git 会先计算每一个子目录的校验和，然后在 Git 仓库中把这些校验和保存为树对象
+
+commit-tree
+    根据tree对象创建commit对象
+
+update-ref
+    更新分支引用指向最新的commit对象
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+            <a href="/tags/Git-Objects/" rel="tag"># Git-Objects</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 10.1 - 底层命令和高层命令/" rel="next" title="chapter 10.1 - Git 底层命令和高层命令">
+                <i class="fa fa-chevron-left"></i> chapter 10.1 - Git 底层命令和高层命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 10.3 - 引用/" rel="prev" title="chapter 10.3 - Git 引用">
+                chapter 10.3 - Git 引用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#git-对象类型"><span class="nav-number">1.</span> <span class="nav-text"><a href="#git-&#x5BF9;&#x8C61;&#x7C7B;&#x578B;" class="headerlink" title="git &#x5BF9;&#x8C61;&#x7C7B;&#x578B;"></a>git &#x5BF9;&#x8C61;&#x7C7B;&#x578B;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-对象存储过程"><span class="nav-number">2.</span> <span class="nav-text"><a href="#git-&#x5BF9;&#x8C61;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;" class="headerlink" title="git &#x5BF9;&#x8C61;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;"></a>git &#x5BF9;&#x8C61;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#blob-数据对象"><span class="nav-number">3.</span> <span class="nav-text"><a href="#blob-&#x6570;&#x636E;&#x5BF9;&#x8C61;" class="headerlink" title="blob &#x6570;&#x636E;&#x5BF9;&#x8C61;"></a>blob &#x6570;&#x636E;&#x5BF9;&#x8C61;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#存储数据对象"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x5B58;&#x50A8;&#x6570;&#x636E;&#x5BF9;&#x8C61;" class="headerlink" title="&#x5B58;&#x50A8;&#x6570;&#x636E;&#x5BF9;&#x8C61;"></a>&#x5B58;&#x50A8;&#x6570;&#x636E;&#x5BF9;&#x8C61;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#存储文件"><span class="nav-number">3.1.1.</span> <span class="nav-text"><a href="#&#x5B58;&#x50A8;&#x6587;&#x4EF6;" class="headerlink" title="&#x5B58;&#x50A8;&#x6587;&#x4EF6;"></a>&#x5B58;&#x50A8;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#存储字符串"><span class="nav-number">3.1.2.</span> <span class="nav-text"><a href="#&#x5B58;&#x50A8;&#x5B57;&#x7B26;&#x4E32;" class="headerlink" title="&#x5B58;&#x50A8;&#x5B57;&#x7B26;&#x4E32;"></a>&#x5B58;&#x50A8;&#x5B57;&#x7B26;&#x4E32;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看数据对象"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x67E5;&#x770B;&#x6570;&#x636E;&#x5BF9;&#x8C61;" class="headerlink" title="&#x67E5;&#x770B;&#x6570;&#x636E;&#x5BF9;&#x8C61;"></a>&#x67E5;&#x770B;&#x6570;&#x636E;&#x5BF9;&#x8C61;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定位存储位置"><span class="nav-number">3.2.1.</span> <span class="nav-text"><a href="#&#x5B9A;&#x4F4D;&#x5B58;&#x50A8;&#x4F4D;&#x7F6E;" class="headerlink" title="&#x5B9A;&#x4F4D;&#x5B58;&#x50A8;&#x4F4D;&#x7F6E;"></a>&#x5B9A;&#x4F4D;&#x5B58;&#x50A8;&#x4F4D;&#x7F6E;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看对象类型"><span class="nav-number">3.2.2.</span> <span class="nav-text"><a href="#&#x67E5;&#x770B;&#x5BF9;&#x8C61;&#x7C7B;&#x578B;" class="headerlink" title="&#x67E5;&#x770B;&#x5BF9;&#x8C61;&#x7C7B;&#x578B;"></a>&#x67E5;&#x770B;&#x5BF9;&#x8C61;&#x7C7B;&#x578B;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#读取对象内容"><span class="nav-number">3.2.3.</span> <span class="nav-text"><a href="#&#x8BFB;&#x53D6;&#x5BF9;&#x8C61;&#x5185;&#x5BB9;" class="headerlink" title="&#x8BFB;&#x53D6;&#x5BF9;&#x8C61;&#x5185;&#x5BB9;"></a>&#x8BFB;&#x53D6;&#x5BF9;&#x8C61;&#x5185;&#x5BB9;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现版本恢复"><span class="nav-number">3.2.4.</span> <span class="nav-text"><a href="#&#x5B9E;&#x73B0;&#x7248;&#x672C;&#x6062;&#x590D;" class="headerlink" title="&#x5B9E;&#x73B0;&#x7248;&#x672C;&#x6062;&#x590D;"></a>&#x5B9E;&#x73B0;&#x7248;&#x672C;&#x6062;&#x590D;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tree-树对象"><span class="nav-number">4.</span> <span class="nav-text"><a href="#tree-&#x6811;&#x5BF9;&#x8C61;" class="headerlink" title="tree &#x6811;&#x5BF9;&#x8C61;"></a>tree &#x6811;&#x5BF9;&#x8C61;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看-tree-对象"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#&#x67E5;&#x770B;-tree-&#x5BF9;&#x8C61;" class="headerlink" title="&#x67E5;&#x770B; tree &#x5BF9;&#x8C61;"></a>&#x67E5;&#x770B; tree &#x5BF9;&#x8C61;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方法一：根据提交记录查找到tree对象的hash值查看"><span class="nav-number">4.1.1.</span> <span class="nav-text"><a href="#&#x65B9;&#x6CD5;&#x4E00;&#xFF1A;&#x6839;&#x636E;&#x63D0;&#x4EA4;&#x8BB0;&#x5F55;&#x67E5;&#x627E;&#x5230;tree&#x5BF9;&#x8C61;&#x7684;hash&#x503C;&#x67E5;&#x770B;" class="headerlink" title="&#x65B9;&#x6CD5;&#x4E00;&#xFF1A;&#x6839;&#x636E;&#x63D0;&#x4EA4;&#x8BB0;&#x5F55;&#x67E5;&#x627E;&#x5230;tree&#x5BF9;&#x8C61;&#x7684;hash&#x503C;&#x67E5;&#x770B;"></a>&#x65B9;&#x6CD5;&#x4E00;&#xFF1A;&#x6839;&#x636E;&#x63D0;&#x4EA4;&#x8BB0;&#x5F55;&#x67E5;&#x627E;&#x5230;tree&#x5BF9;&#x8C61;&#x7684;hash&#x503C;&#x67E5;&#x770B;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法二：直接查看某分支最后一次提交对应的tree对象"><span class="nav-number">4.1.2.</span> <span class="nav-text"><a href="#&#x65B9;&#x6CD5;&#x4E8C;&#xFF1A;&#x76F4;&#x63A5;&#x67E5;&#x770B;&#x67D0;&#x5206;&#x652F;&#x6700;&#x540E;&#x4E00;&#x6B21;&#x63D0;&#x4EA4;&#x5BF9;&#x5E94;&#x7684;tree&#x5BF9;&#x8C61;" class="headerlink" title="&#x65B9;&#x6CD5;&#x4E8C;&#xFF1A;&#x76F4;&#x63A5;&#x67E5;&#x770B;&#x67D0;&#x5206;&#x652F;&#x6700;&#x540E;&#x4E00;&#x6B21;&#x63D0;&#x4EA4;&#x5BF9;&#x5E94;&#x7684;tree&#x5BF9;&#x8C61;"></a>&#x65B9;&#x6CD5;&#x4E8C;&#xFF1A;&#x76F4;&#x63A5;&#x67E5;&#x770B;&#x67D0;&#x5206;&#x652F;&#x6700;&#x540E;&#x4E00;&#x6B21;&#x63D0;&#x4EA4;&#x5BF9;&#x5E94;&#x7684;tree&#x5BF9;&#x8C61;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建-tree-对象"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;-tree-&#x5BF9;&#x8C61;" class="headerlink" title="&#x521B;&#x5EFA; tree &#x5BF9;&#x8C61;"></a>&#x521B;&#x5EFA; tree &#x5BF9;&#x8C61;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建-index-区"><span class="nav-number">4.2.1.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;-index-&#x533A;" class="headerlink" title="&#x521B;&#x5EFA; index &#x533A;"></a>&#x521B;&#x5EFA; index &#x533A;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建-tree-对象-1"><span class="nav-number">4.2.2.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;-tree-&#x5BF9;&#x8C61;-1" class="headerlink" title="&#x521B;&#x5EFA; tree &#x5BF9;&#x8C61;"></a>&#x521B;&#x5EFA; tree &#x5BF9;&#x8C61;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#commit-提交对象"><span class="nav-number">5.</span> <span class="nav-text"><a href="#commit-&#x63D0;&#x4EA4;&#x5BF9;&#x8C61;" class="headerlink" title="commit &#x63D0;&#x4EA4;&#x5BF9;&#x8C61;"></a>commit &#x63D0;&#x4EA4;&#x5BF9;&#x8C61;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一个完整的手工提交"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x4E00;&#x4E2A;&#x5B8C;&#x6574;&#x7684;&#x624B;&#x5DE5;&#x63D0;&#x4EA4;" class="headerlink" title="&#x4E00;&#x4E2A;&#x5B8C;&#x6574;&#x7684;&#x624B;&#x5DE5;&#x63D0;&#x4EA4;"></a>&#x4E00;&#x4E2A;&#x5B8C;&#x6574;&#x7684;&#x624B;&#x5DE5;&#x63D0;&#x4EA4;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

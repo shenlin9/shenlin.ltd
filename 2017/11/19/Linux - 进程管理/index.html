@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="��٣����̵ĸ������̹��������ƻ����� ���̵ĸ���———————————————————————————————— �����̺ͳ�������� �����Ǿ�̬���������Ϊһ�������Դ���ڴ��ڣ��������ǳ����ִ�й��̣����Ƕ�̬�����һ���������ڣ��Ƕ�̬�����������ġ�  ����ͽ�����һһ��">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shenlin&#39;s blog">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Linux - 进程管理/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="��٣����̵ĸ������̹��������ƻ����� ���̵ĸ���———————————————————————————————— �����̺ͳ�������� �����Ǿ�̬���������Ϊһ�������Դ���ڴ��ڣ��������ǳ����ִ�й��̣����Ƕ�̬�����һ���������ڣ��Ƕ�̬�����������ġ�  ����ͽ�����һһ��">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.561Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="shenlin&#39;s blog">
+<meta name="twitter:description" content="��٣����̵ĸ������̹��������ƻ����� ���̵ĸ���———————————————————————————————— �����̺ͳ�������� �����Ǿ�̬���������Ϊһ�������Դ���ڴ��ڣ��������ǳ����ִ�й��̣����Ƕ�̬�����һ���������ڣ��Ƕ�̬�����������ġ�  ����ͽ�����һһ��">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/Linux - 进程管理/"/>
+
+
+
+
+
+  <title> | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Linux - 进程管理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="��٣�"><a href="#��٣�" class="headerlink" title="��٣�"></a>��٣�</h2><p>���̵ĸ���<br>���̹�������<br>�ƻ�����</p>
+<p>���̵ĸ���————————————————————————————————</p>
+<p>�����̺ͳ��������</p>
+<pre><code>�����Ǿ�̬���������Ϊһ�������Դ���ڴ��ڣ��������ǳ����ִ�й��̣����Ƕ�̬�����һ���������ڣ��Ƕ�̬�����������ġ�
+
+����ͽ�����һһ��Ӧ��ϵ��һ����������ɶ�����̹��ã���һ���棬һ�������ڻ��Ҳ��˳���ִ����ɸ�������ʹ������ָ��;�ֿ�����ɸ����
+</code></pre><p>�����������ӽ��̡�</p>
+<pre><code>������PID��Process ID����ʾ��������ʹ��PPID��ʾ��Parent Process ID��
+
+�ӽ������ɽ����������Ľ��̣��������̵Ľ��̳�Ϊ�����̣��������Ľ��̳�Ϊ�ӽ��̡�
+
+��������ֹ�ӽ�����Ȼ��ֹ�� �ӽ�����������ܳ�Ϊ�¶����̻�ʬ���̣�
+
+    �������ֹ�����ӽ���������ԭ��û����ֹ�����ӽ��̱���Ϊ�¶����̣�linux��⵽�¶����̺󣬻Ὣ�¶����̵ĸ�����ָ��init���̣�
+
+    ���ӽ��̱���ֹ�󣬸�����û�˽⵽����Ϣ�������Ժ��ӽ���ȡ����ϵ������ӽ��̳�Ϊ��ʬ���̣�linux����Z��Zombie����ʾ��
+
+linuxϵͳ�У�ʹ��ϵͳ����fork�������̡�fork���Ƶ����ݰ��������̵����ݺͶ�ջ���Լ������̵Ľ��̻�����
+</code></pre><p>��ǰ̨�������̨���̡�</p>
+<pre><code>ǰ̨���̣�
+
+    ��Shell��ʾ������������س����򴴽���һ���ӽ��������д������Shell���̽��ȴ���������˳���������������֮ǰ������û�����Shell��ʾ������ʱ������������У���Shell�����ڵȴ���������̺�Shell���̲���ͬʱ���У������첽���У�����ǰ̨���С�
+
+��̨���̣�
+
+    ��Shell��ʾ�����������������������һ����ִ̨�з�&amp;��Ȼ��س����򴴽���һ���ӽ��������д������Shell���̲��ȴ���������˳���ֱ�ӷ��ص����û�����Shell��ʾ������ʱ������������У���Shell����Ҳ�����У�������̺�Shell������ͬ�����У����ں�̨���С�
+
+��̨���̱����Ƿǽ���ʽ�ġ�
+</code></pre><p>������״̬��</p>
+<pre><code>����״̬��
+
+    �����Ѿ����䵽��Դ������Ϊ����������ռ��CPU��������ʱ�������ж��ȴ�����CPU��״̬��
+
+�ȴ�״̬��
+
+    ��ȴ�ĳ���¼�����ʱ�������е�״̬��
+
+����״̬��
+
+    ���̷��䵽CPU�����ڴ����������С�
+</code></pre><p>������״̬ϸ����</p>
+<pre><code>�û�̬���У���CPU��ִ���û�����
+����̬���У���CPU��ִ�к��Ĵ���
+
+���ڴ�������߱�����������ֻ�ȵ��ȳ���Ϊ������CPU
+���ڴ�˯�ߣ���ȴ�ĳһ�¼��ķ����������ڴ����Ŷӵȴ�
+
+�����������������̱�����������ϼ������ھ���״̬
+�����˯�ߣ�˯�߽��̱�����������ϼ����ȴ�
+
+���ڴ���ͣ�������stop��������������ͣ״̬���ȴ��丸���̷�������
+�������ͣ�����ڸ�����̬ͣ�Ľ��̱������������
+
+����̬���½������ڱ�����������δ��ϵ��м�״̬
+��ֹ̬��������ֹ�Լ�
+</code></pre><p>���̹�������————————————————————————————————</p>
+<p>���鿴�û���¼��Ϣ��who���w���</p>
+<pre><code>who
+
+w           �鿴�����û��ĵ�¼��Ϣ
+w �û�A     �鿴�û�A�ĵ�¼��Ϣ
+
+�����
+
+    10:31:03 up 4 min, 2 users, load average: 0.54,0.52,0.24
+
+    USER    TTY     FROM        LOGIN@      IDLE        JCPU        PCPU        WHAT
+    --------------------------------------------------------------------------------
+    ssl     tty1    -           10:30       9.00s       0.07s       0.07s       -bash
+    samlee  pts/0   192.168.9.2 11:10       0.00s       0.10s       0.13s       sshd:sam
+
+���ͣ�
+
+    load average���ֱ���ʾϵͳ�ڹ�ȥ1����5��15�����ڵ�ƽ�����س̶ȡ�forkը��???
+
+    TTY����¼�ն�
+
+    FROM����ʾ�û��Ӻδ���¼ϵͳ������ǡ�:0���������û���X Windows�£����ı�ģʽ���ڵ�¼�ġ�
+
+    LOGIN@��
+
+    IDLE���û�������ʱ�䣬һ���û�ִ���κβ�������ʱ�佫�����á����������ִ������Ҳ�����á�
+
+    JCPU�����ն˴��������֣����ն�������صĽ���ִ��ʱ�������ĵ�CPUʱ�����ʾ�����
+
+    PCPU��CPUִ�г���ķѵ�ʱ�䡣
+
+    WHAT���û�����ִ�еĲ�����
+</code></pre><p>�����̲鿴����ps – process status��</p>
+<pre><code>ps Ϊ�����ṩ�˽��̵�һ���ԵĲ鿴�������ṩ�Ĳ鿴���������̬�����ģ������Խ���ʱ���أ�Ӧ���� top ���ߡ�
+
+-a����ʾ�����û��Ľ���
+
+-u����ʾ�û�������ʱ��
+
+-x����ʾû�п����ն˵Ľ���
+
+-e����ʾ���н��̣�����û�п����ն˵Ľ���
+
+-l������ʽ��ʾ
+
+-w��������ʾ������ʹ�ö��w���мӿ���ʾ
+
+
+--------------------------------
+ps -l �����ʽ��
+--------------------------------
+
+F   S   UID     PID     PPID    C       PRI     NI      ADDR        SZ      WCHAN       TTY     TIME        CMD
+----------------------------------------------------------------------------------------------------------------
+4   S   0       3526    3508    0       78      0       -           733     wait        pts/0   00:00:00    su
+
+���ͣ�
+
+    PID�����̺�
+
+    PPID�������̵Ľ��̺�
+
+    TTY����������ն�
+
+    S����ʾSTAT�����̵�ǰ״̬��
+
+            S Sleeping      ����״̬  
+
+            D Drop Sleep    �����жϵ�����״̬ 
+
+            R Running       ����״̬ 
+
+            Z Zombie        ����״̬ 
+
+            T sToped        ֹͣ״̬
+
+    NI���������ȼ�
+
+    TIME������������������CPU����ʱ��
+
+    COMMAND/CMD�����̵�������
+
+    USER���û���
+
+    %CPU��ռ��CPUʱ�����ʱ��İٷֱ�
+
+    %MEM��ռ���ڴ���ϵͳ�ڴ������İٷֱ�
+
+--------------------------------
+ps u �����ʽ��
+--------------------------------
+
+USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND
+
+��ʽ˵����
+
+    USER: �г�ӵ����
+
+    PID: pid
+
+    %CPU: ռ�õ� CPU ʹ����
+
+    %MEM: ռ�õļ�����ʹ����
+
+    VSZ: ռ�õ�����������С
+
+    RSS: ռ�õļ������С
+
+    TTY: �ն˵Ĵ�Ҫװ�ú��� (minor device number of tty)
+
+    STAT: ���г̵�״̬��linux�Ľ�����5��״̬��
+
+    D �����ж� uninterruptible sleep (usually IO)
+
+    R ���� runnable (on run queue)
+
+    S �ж� sleeping
+
+    T ֹͣ traced or stopped
+
+    Z ���� a defunct (��zombie��) process
+
+    ע: ����״̬������W(��פ��ҳ), &lt;(�����ȼ�����), N(�����ȼ�����), L(�ڴ���ҳ).
+
+    START: �г̿�ʼʱ��
+
+    TIME: ִ�е�ʱ��
+
+    COMMAND:��ִ�е�ָ��
+
+--------------------------------
+
+���ֱ����ps�������ʾ���н��̵�״̬��ͨ�����grep����鿴ĳ���̵�״̬��
+
+ps���������÷���
+
+    �鿴�����û���ִ�н��̵���ϸ��Ϣ
+
+        ps -le �� ps -aux
+
+    �鿴ָ�����̵���Ϣ����Ϲܵ���grepʹ�ã�
+
+        ps -aux | grep httpd
+        ps -le | grep httpd
+
+    �鿴ָ���û��Ľ�����Ϣ��
+
+        ps -uU ssl
+        ps -aux | grep ssl
+
+    �����̵�PID�Խ��̽������򣬻��ɰ�UID��ִ��ʱ�������
+
+        ps -aux --sort pid
+</code></pre><p>���鿴������pstree��</p>
+<pre><code>pstree
+
+    �������г����н���
+</code></pre><p>��ɱ������Kill��</p>
+<pre><code>ΪʲôҪɱ�����̣�
+
+    �ý���ռ���˹����CPUʱ��
+
+    �ý�����ס��һ���նˣ�ʹ����ǰ̨�����޷�����
+
+    ����ʱ���������û��Ԥ��Ч��
+
+    �����˹��ൽ��Ļ������ļ������
+
+    �޷������˳�
+
+�رս��̣�
+
+    kill ���̺�
+
+kill�źţ�
+
+    kill -l �г������źţ����õ���1��9
+
+    kill -1 ���̺�      �������
+
+    kill -9 ���̺�      ǿ�йر�
+
+�ر�ͼ�ν��̣�
+
+    xkill
+
+�ر����н��̰����ƣ�
+
+    killall httpd
+
+���ҷ�����̺ţ�
+
+    pgrep ��������
+
+�رշ�����̣�
+
+    pkill ��������
+
+/proc��
+
+    /procĿ¼����������������Ŀ¼���ǽ��̵�PID��
+</code></pre><p>���趨���̵����ȼ�nice��renice��</p>
+<pre><code>���ȼ�ȡֵ��ΧΪ��-20��19��ֵԽС�����ȼ�Խ��
+
+ָ��������������ȼ���
+
+    nice -n ������
+
+        nice --5 httpd  ��httpd���ȼ���Ϊ-5
+
+�ı�һ���������еĽ��̵����ȼ�
+
+    renice n pid
+
+        renice -5 679
+</code></pre><p>���˳���¼���Լ���ִ��nohup���</p>
+<pre><code>ʹ�������û��˳���¼���Լ���ִ�У���û������ض���ȷ�ʽָ������Ĵ洢λ�ã�nohup���ִ�к��������Ϣ�ʹ�����ϢĬ�ϴ洢���ļ�nohup.out��
+
+nohup ���� &amp; 
+</code></pre><p>�����̵Ĺ���ͻָ���</p>
+<pre><code>����/��ֹ���̣�Ctrl+Z
+
+��ֹ��Ctrl+C
+
+�ָ����̵�ǰ̨�������У�fg
+
+    fg 1
+
+        1��ʹ��jobs������ı��
+
+�ָ����̵���̨�������У�bg
+
+�鿴������Ľ��̣�jobs
+</code></pre><p>������״̬��ʾ�ͽ��̿��ơ�</p>
+<pre><code>top
+
+    �ڲ���ݼ���
+
+        d   ָ��ˢ�µ�ʱ����Ĭ��Ϊ5�����Զ�ˢ��һ��
+
+        c   ��ʾ���������ж���������ʾ������
+
+        u   �鿴ָ���û��Ľ���
+
+        k   ��ִֹ���еĽ���
+
+        h/? ��ð���
+
+        r   �������ý������ȼ�
+
+        s   �ı�ˢ�µ�ʱ����
+
+        W   ����ǰ����д��~/.toprc�ļ���
+</code></pre><p>�����̴���ʽ��</p>
+<pre><code>standalone  ��������
+
+    ������󣬻�һֱ��ϵͳפ��ռ��ϵͳ��Դ���ȴ���Ӧ����
+
+    ��Ӧ�ٶȿ쵫��ռ����Դ
+
+xinetd      �����й�
+
+    �ǻ����������ػ�����inetd�������棬/etc/xinetd.dĿ¼�µľ����йܵķ���
+
+    xinetd��������˿������пͻ�������ʱ��xinetd���Ӧ�ķ�����Ӧ�����������������ֹ���� 
+
+    ռ����Դ���ٵ���Ӧ�ٶ���
+
+atd��crond  �ƻ�����
+
+    ÿ��һ���Ӵ�����������һ�Σ��鿴�б����Ƿ���Ҫִ�еļƻ�������˼ƻ������ܾ�ȷ����
+
+
+�д������ʣ���Ҫ����Ӧ���ѡ��standalone��ʽ����webserver Apache
+</code></pre><p>�ƻ�����————————————————————————————————</p>
+<p>��һ���Լƻ�����at��batch��</p>
+<pre><code>at      ������ҵ��ĳһʱ��ִ��һ��
+
+batch   ������ҵ��ϵͳ���ز���ʱִ��һ��
+</code></pre><p>�������Լƻ�����cron��</p>
+<pre><code>cron    �������������е���ҵ
+</code></pre><p>��at��</p>
+<pre><code>����һ������������ָ����ʱ������һ��
+
+at���̵���ű���/etc/rc.d/init.d/atd
+
+�����ļƻ�����λ�ڣ�/var/spool/atĿ¼�£�Ҳ����ֱ�ӱ༭��Ŀ¼�¶�Ӧ���ļ����޸ļƻ����������
+
+at ʱ��
+
+    ���뻥��ģʽ������Ҫִ�е����ע��ʹ�þ���·����Ϊ��ֹ�ڿ��滻�����ļ�
+
+    ����������󣬰�Ctrl+d����
+
+at -f �ļ��� ʱ��
+
+    ִ��ָ���ļ��е���������
+
+at -d ���� atrm     ɾ�������е�����
+
+at -l ���� atq      �鿴�����е�����
+
+    3   2014-03-20 17:22 a ssl
+    2   2014-03-20 21:00 a root
+
+    2,3�Ǳ�ţ�atrmɾ��ʱ�����ݴ˱��
+    ʱ���Ǽƻ�����Ҫִ�е�ʱ��
+    a��ʾ�ƻ������״̬active
+    ssl/root��ʾ����Ĵ�����
+</code></pre><p>��at����ָ��ʱ��ķ�ʽ��</p>
+<pre><code>���Լ�ʱ����
+
+    midnight    noon    teatime������4�㣩
+
+    hh:mm [today]
+
+    hh:mm tomorrow
+
+    hh:mm ����
+
+    hh:mm MM/DD/YY
+    hh:mm MMDDYY
+    hh:mm DD.MM.YY.
+
+��Լ�ʱ����
+
+    now + n minutes
+
+    now + n hours
+
+    now + days
+</code></pre><p>��at�������ļ���</p>
+<pre><code>������Щ���û�����ʹ��at����
+
+/etc/at.allow
+
+/etc/at.deny
+
+at.allow�ļ������ȼ�����at.deny
+
+��at.allow�ļ����ڣ������at.deny��ֻ������at.allow�е��û��ſ���ʹ��at����
+
+��at.allow�ļ������ڣ���at.deny�ļ����ڣ���ֻ������at.deny�ļ��е��û�����ʹ��at����
+
+�������ļ��������ڣ���ֻ�г����û�����ʹ��at����
+
+�������ļ��������Ҷ�Ϊ�գ��������û�������ʹ��at����
+</code></pre><p>��batch��</p>
+<pre><code>����һ������������ϵͳ���ؽ���ʱ����һ�Σ�һ������¸��ؽ���ָƽ�����ؽ���0.8����
+
+ʹ�÷���ͬat
+</code></pre><p>��crontab��</p>
+<pre><code>cron���̵���ű���/etc/rc.d/init.d/crond
+
+��������cron��������Ҫ��crontab�ļ���λ��/var/spool/cronĿ¼�£����û���������
+
+crontab -l  ��ʾ��ǰ��crontab
+
+        -r  ɾ����ǰ��crontab
+
+        -e  �༭��ǰ��crontab
+
+��ʽ��
+
+    ����    Сʱ    ��    ��    ����    ����/�ű�
+
+    ÿ�����Ϊ�գ��������룬����Ҫָ������*��ʾ�κ�ʱ��
+
+    ÿ�����ָ�����ֵ���ö���,�ָ�Ҳ����ָ������ֵ���ú��-�ָ�
+
+    ����Ӧ��ʹ�þ���·������Ӧ���б�׼���������������ض����ļ�
+
+    �û����������������Ӧ���������Ȩ��
+
+ȡֵ��Χ��
+
+    ����    0~59
+
+    Сʱ    0~23
+
+    ��      1~31
+
+    ��      1~12
+
+    ����    0~6
+
+���ţ�
+
+    ������ҵ��ҵ�����󣬰�֪���ľ����ʱ�����ϣ���֪���Ķ�����*
+
+    ��ÿ���賿4��ִ��A����
+
+        ����    Сʱ    ��    ��    ����    ����/�ű�
+        0       4       *     *     *       A
+
+    ��һ�����·ݵ�ÿ���ڶ�������������6��ִ��A����
+
+        ����    Сʱ    ��    ��    ����    ����/�ű�
+        0       18       *    1-3     2,5       A
+
+    ÿ��2���ӣ�ʹ��*/2��ʾ
+</code></pre><p>��cron�������ļ���</p>
+<pre><code>/etc/crontab
+/etc/cron.allow
+/etc/cron.deny
+</code></pre><p>��������</p>
+<pre><code>telnet�������Ĵ��䣬�ѱ�ssh����
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Linux - 软件包管理-markdown/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Linux - 错误指正/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#��٣�"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#xFFFD;&#xFFFD;&#x663;&#xFFFD;" class="headerlink" title="&#xFFFD;&#xFFFD;&#x663;&#xFFFD;"></a>&#xFFFD;&#xFFFD;&#x663;&#xFFFD;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

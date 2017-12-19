@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Git,Git-Branch," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="分支简介git 的分支，其实本质上仅仅是指向提交对象的可变指针，每次提交后，分支都会向前移动指向最后的提交对象。">
+<meta name="keywords" content="Git,Git-Branch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter 3.1 - Git 分支基础">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 3.1 - 分支基础/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="分支简介git 的分支，其实本质上仅仅是指向提交对象的可变指针，每次提交后，分支都会向前移动指向最后的提交对象。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://git-scm.com/book/en/v2/images/branch-and-history.png">
+<meta property="og:image" content="https://git-scm.com/book/en/v2/images/lr-branches-2.png">
+<meta property="og:image" content="https://git-scm.com/book/en/v2/images/topic-branches-1.png">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.534Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter 3.1 - Git 分支基础">
+<meta name="twitter:description" content="分支简介git 的分支，其实本质上仅仅是指向提交对象的可变指针，每次提交后，分支都会向前移动指向最后的提交对象。">
+<meta name="twitter:image" content="https://git-scm.com/book/en/v2/images/branch-and-history.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 3.1 - 分支基础/"/>
+
+
+
+
+
+  <title>chapter 3.1 - Git 分支基础 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 3.1 - 分支基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">chapter 3.1 - Git 分支基础</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/Book-ProGit/" itemprop="url" rel="index">
+                    <span itemprop="name">Book-ProGit</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="分支简介"><a href="#分支简介" class="headerlink" title="分支简介"></a>分支简介</h2><p>git 的分支，其实本质上仅仅是指向提交对象的可变指针，每次提交后，分支都会向前移动指向最后的提交对象。</p>
+<a id="more"></a>
+<p>git 的分支实质上仅是包含所指对象校验和（长度为 40 的 SHA-1 值字符串）的文件，所以创建和销毁都异常高效。 创建一个新分支就相当于往一个文件中写入 41 个字节（40 个字符和 1 个换行符）</p>
+<p>git 分支简单和高效，鼓励开发人员频繁地创建和使用分支。</p>
+<p>git 分支–&gt; commit 对象 –&gt; tree 对象（内容快照）</p>
+<p>commit 对象组成：</p>
+<ul>
+<li>暂存区内容快照 tree 对象</li>
+<li>作者的姓名和邮箱</li>
+<li>提交时输入的信息</li>
+<li>指向它的父对象的指针。<ul>
+<li>首次提交产生的提交对象没有父对象</li>
+<li>普通提交操作产生的提交对象有一个父对象</li>
+<li>由多个分支合并产生的提交对象有多个父对象</li>
+</ul>
+</li>
+</ul>
+<p>git 默认分支名是 master，和其他分支一样，并没有特殊性，仅仅是因为<code>git init</code>命令默认创建的分支。</p>
+<p>HEAD 特殊指针指向当前所在的本地分支</p>
+<p><img src="https://git-scm.com/book/en/v2/images/branch-and-history.png" alt="分支及提交历史"></p>
+<h2 id="分支典型模式"><a href="#分支典型模式" class="headerlink" title="分支典型模式"></a>分支典型模式</h2><h3 id="长期分支"><a href="#长期分支" class="headerlink" title="长期分支"></a>长期分支</h3><p>使用多个长期分支的方法并非必要，但是这么做通常很有帮助，尤其是在一个非常庞大或者复杂的项目中工作时。</p>
+<p>这么做的目的是使分支具有不同级别的稳定性；当它们具有一定程度的稳定性后，再把它们合并入具有更高级别稳定性的分支中。</p>
+<p>通常把他们想象成流水线（work silos）可能更好理解一点，那些经过测试考验的提交会被遴选到更加稳定的流水线上去。</p>
+<p>渐进稳定分支的流水线（“silo”）视图<br><img src="https://git-scm.com/book/en/v2/images/lr-branches-2.png" alt=""></p>
+<h4 id="1-master-分支"><a href="#1-master-分支" class="headerlink" title="1. master 分支"></a>1. master 分支</h4><p>保留完全稳定的代码——有可能仅仅是已经发布或即将发布的代码。 </p>
+<h4 id="2-develop-或者-next-分支"><a href="#2-develop-或者-next-分支" class="headerlink" title="2. develop 或者 next 分支"></a>2. develop 或者 next 分支</h4><p>被用来做后续开发或者测试稳定性——这些分支不必保持绝对稳定，但是一旦达到稳定状态，它们就可以被合并入 master 分支了。</p>
+<h4 id="3-proposed（建议）或-updates（建议更新）分支"><a href="#3-proposed（建议）或-updates（建议更新）分支" class="headerlink" title="3. proposed（建议）或 updates（建议更新）分支"></a>3. proposed（建议）或 updates（建议更新）分支</h4><p>可能因包含一些不成熟的内容而不能进入 next 或者 master 分支。 </p>
+<h3 id="特性分支"><a href="#特性分支" class="headerlink" title="特性分支"></a>特性分支</h3><p>特性分支是一种短期分支，它被用来实现单一特性或其相关工作，对任何规模的项目都适用。 </p>
+<p>特性分支使你的工作被分散到不同的流水线中，在不同的流水线中每个分支都仅与其目标特性相关，因此，在做代码审查之类的工作的时候就能更加容易地看出你做了哪些改动。</p>
+<p>你可以把做出的改动在特性分支中保留几分钟、几天甚至几个月，等它们成熟之后再合并，而不用在乎它们建立的顺序或工作进度。</p>
+<p><img src="https://git-scm.com/book/en/v2/images/topic-branches-1.png" alt=""></p>
+<h2 id="分支操作"><a href="#分支操作" class="headerlink" title="分支操作"></a>分支操作</h2><h3 id="创建切换分支"><a href="#创建切换分支" class="headerlink" title="创建切换分支"></a>创建切换分支</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//创建分支，未切换到新分支上</span><br><span class="line">$ git branch newbranch</span><br><span class="line"></span><br><span class="line">//切换到新分支</span><br><span class="line">$ git checkout newbranch</span><br><span class="line"></span><br><span class="line">//创建并切换到新分支</span><br><span class="line">$ git checkout -b newbranch</span><br></pre></td></tr></table></figure>
+<p>切换分支时：</p>
+<ol>
+<li>把 HEAD 指针指向要切换到的分支</li>
+<li>把工作目录恢复成目标分支的快照内容，Git 会自动添加、删除、修改文件以确保此时你的工作目录和这个分支最后一次提交时的样子一模一样。如果 git 不能干净利落的完成任务，如有未提交的修改文件，git 将禁止切换</li>
+</ol>
+<h3 id="查看分支"><a href="#查看分支" class="headerlink" title="查看分支"></a>查看分支</h3><h4 id="分支列表"><a href="#分支列表" class="headerlink" title="分支列表"></a>分支列表</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git branch</span><br><span class="line">  iss53</span><br><span class="line">* master</span><br><span class="line">  testing</span><br></pre></td></tr></table></figure>
+<p>* 号表示 HEAD 指针指向的分支</p>
+<h4 id="查看每个分支最后一次提交"><a href="#查看每个分支最后一次提交" class="headerlink" title="查看每个分支最后一次提交"></a>查看每个分支最后一次提交</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -v</span><br><span class="line">  dev     a3b00c3 now the onlien one more new</span><br><span class="line">  hotfix  912d37a conflict test</span><br><span class="line">* master  7a23f52 [ahead 5, behind 1] conflict test</span><br><span class="line">  monster d0135c0 index.html add</span><br></pre></td></tr></table></figure>
+<h4 id="查看哪些儿分支已经合并到当前分支"><a href="#查看哪些儿分支已经合并到当前分支" class="headerlink" title="查看哪些儿分支已经合并到当前分支"></a>查看哪些儿分支已经合并到当前分支</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git branch --merged</span><br><span class="line">  iss53</span><br><span class="line">* master</span><br></pre></td></tr></table></figure>
+<p>这个列表里不带 * 号的分支通常可以<code>git branch -d</code> 删掉，因为都已经合并到当前分支，不会丢失数据</p>
+<h4 id="查看哪些儿分支没有合并到当前分支"><a href="#查看哪些儿分支没有合并到当前分支" class="headerlink" title="查看哪些儿分支没有合并到当前分支"></a>查看哪些儿分支没有合并到当前分支</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git branch --no-merged</span><br><span class="line">  dev</span><br><span class="line">  hotfix</span><br><span class="line">  monster</span><br></pre></td></tr></table></figure>
+<ul>
+<li>这个列表里的分支不能被’git branch -d’删除，因为还未被合并到当前分支，可能丢失数据</li>
+<li>要删除必须使用<code>-D</code>选项强制删除,即<code>git branch -D</code></li>
+</ul>
+<h3 id="删除分支"><a href="#删除分支" class="headerlink" title="删除分支"></a>删除分支</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -d hotfix</span><br></pre></td></tr></table></figure>
+<h3 id="合并分支"><a href="#合并分支" class="headerlink" title="合并分支"></a>合并分支</h3><p>见下一章节 chapter3.2</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+            <a href="/tags/Git-Branch/" rel="tag"># Git-Branch</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 2.3 - 标签/" rel="next" title="chapter 2.3 - Git 标签">
+                <i class="fa fa-chevron-left"></i> chapter 2.3 - Git 标签
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 3.2 - 分支合并/" rel="prev" title="chapter 3.2 - Git 分支合并">
+                chapter 3.2 - Git 分支合并 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#分支简介"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5206;&#x652F;&#x7B80;&#x4ECB;" class="headerlink" title="&#x5206;&#x652F;&#x7B80;&#x4ECB;"></a>&#x5206;&#x652F;&#x7B80;&#x4ECB;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分支典型模式"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5206;&#x652F;&#x5178;&#x578B;&#x6A21;&#x5F0F;" class="headerlink" title="&#x5206;&#x652F;&#x5178;&#x578B;&#x6A21;&#x5F0F;"></a>&#x5206;&#x652F;&#x5178;&#x578B;&#x6A21;&#x5F0F;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#长期分支"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x957F;&#x671F;&#x5206;&#x652F;" class="headerlink" title="&#x957F;&#x671F;&#x5206;&#x652F;"></a>&#x957F;&#x671F;&#x5206;&#x652F;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-master-分支"><span class="nav-number">2.1.1.</span> <span class="nav-text"><a href="#1-master-&#x5206;&#x652F;" class="headerlink" title="1. master &#x5206;&#x652F;"></a>1. master &#x5206;&#x652F;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-develop-或者-next-分支"><span class="nav-number">2.1.2.</span> <span class="nav-text"><a href="#2-develop-&#x6216;&#x8005;-next-&#x5206;&#x652F;" class="headerlink" title="2. develop &#x6216;&#x8005; next &#x5206;&#x652F;"></a>2. develop &#x6216;&#x8005; next &#x5206;&#x652F;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-proposed（建议）或-updates（建议更新）分支"><span class="nav-number">2.1.3.</span> <span class="nav-text"><a href="#3-proposed&#xFF08;&#x5EFA;&#x8BAE;&#xFF09;&#x6216;-updates&#xFF08;&#x5EFA;&#x8BAE;&#x66F4;&#x65B0;&#xFF09;&#x5206;&#x652F;" class="headerlink" title="3. proposed&#xFF08;&#x5EFA;&#x8BAE;&#xFF09;&#x6216; updates&#xFF08;&#x5EFA;&#x8BAE;&#x66F4;&#x65B0;&#xFF09;&#x5206;&#x652F;"></a>3. proposed&#xFF08;&#x5EFA;&#x8BAE;&#xFF09;&#x6216; updates&#xFF08;&#x5EFA;&#x8BAE;&#x66F4;&#x65B0;&#xFF09;&#x5206;&#x652F;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特性分支"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x7279;&#x6027;&#x5206;&#x652F;" class="headerlink" title="&#x7279;&#x6027;&#x5206;&#x652F;"></a>&#x7279;&#x6027;&#x5206;&#x652F;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分支操作"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x5206;&#x652F;&#x64CD;&#x4F5C;" class="headerlink" title="&#x5206;&#x652F;&#x64CD;&#x4F5C;"></a>&#x5206;&#x652F;&#x64CD;&#x4F5C;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建切换分支"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;&#x5207;&#x6362;&#x5206;&#x652F;" class="headerlink" title="&#x521B;&#x5EFA;&#x5207;&#x6362;&#x5206;&#x652F;"></a>&#x521B;&#x5EFA;&#x5207;&#x6362;&#x5206;&#x652F;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看分支"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x67E5;&#x770B;&#x5206;&#x652F;" class="headerlink" title="&#x67E5;&#x770B;&#x5206;&#x652F;"></a>&#x67E5;&#x770B;&#x5206;&#x652F;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分支列表"><span class="nav-number">3.2.1.</span> <span class="nav-text"><a href="#&#x5206;&#x652F;&#x5217;&#x8868;" class="headerlink" title="&#x5206;&#x652F;&#x5217;&#x8868;"></a>&#x5206;&#x652F;&#x5217;&#x8868;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看每个分支最后一次提交"><span class="nav-number">3.2.2.</span> <span class="nav-text"><a href="#&#x67E5;&#x770B;&#x6BCF;&#x4E2A;&#x5206;&#x652F;&#x6700;&#x540E;&#x4E00;&#x6B21;&#x63D0;&#x4EA4;" class="headerlink" title="&#x67E5;&#x770B;&#x6BCF;&#x4E2A;&#x5206;&#x652F;&#x6700;&#x540E;&#x4E00;&#x6B21;&#x63D0;&#x4EA4;"></a>&#x67E5;&#x770B;&#x6BCF;&#x4E2A;&#x5206;&#x652F;&#x6700;&#x540E;&#x4E00;&#x6B21;&#x63D0;&#x4EA4;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看哪些儿分支已经合并到当前分支"><span class="nav-number">3.2.3.</span> <span class="nav-text"><a href="#&#x67E5;&#x770B;&#x54EA;&#x4E9B;&#x513F;&#x5206;&#x652F;&#x5DF2;&#x7ECF;&#x5408;&#x5E76;&#x5230;&#x5F53;&#x524D;&#x5206;&#x652F;" class="headerlink" title="&#x67E5;&#x770B;&#x54EA;&#x4E9B;&#x513F;&#x5206;&#x652F;&#x5DF2;&#x7ECF;&#x5408;&#x5E76;&#x5230;&#x5F53;&#x524D;&#x5206;&#x652F;"></a>&#x67E5;&#x770B;&#x54EA;&#x4E9B;&#x513F;&#x5206;&#x652F;&#x5DF2;&#x7ECF;&#x5408;&#x5E76;&#x5230;&#x5F53;&#x524D;&#x5206;&#x652F;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看哪些儿分支没有合并到当前分支"><span class="nav-number">3.2.4.</span> <span class="nav-text"><a href="#&#x67E5;&#x770B;&#x54EA;&#x4E9B;&#x513F;&#x5206;&#x652F;&#x6CA1;&#x6709;&#x5408;&#x5E76;&#x5230;&#x5F53;&#x524D;&#x5206;&#x652F;" class="headerlink" title="&#x67E5;&#x770B;&#x54EA;&#x4E9B;&#x513F;&#x5206;&#x652F;&#x6CA1;&#x6709;&#x5408;&#x5E76;&#x5230;&#x5F53;&#x524D;&#x5206;&#x652F;"></a>&#x67E5;&#x770B;&#x54EA;&#x4E9B;&#x513F;&#x5206;&#x652F;&#x6CA1;&#x6709;&#x5408;&#x5E76;&#x5230;&#x5F53;&#x524D;&#x5206;&#x652F;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除分支"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#&#x5220;&#x9664;&#x5206;&#x652F;" class="headerlink" title="&#x5220;&#x9664;&#x5206;&#x652F;"></a>&#x5220;&#x9664;&#x5206;&#x652F;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#合并分支"><span class="nav-number">3.4.</span> <span class="nav-text"><a href="#&#x5408;&#x5E76;&#x5206;&#x652F;" class="headerlink" title="&#x5408;&#x5E76;&#x5206;&#x652F;"></a>&#x5408;&#x5E76;&#x5206;&#x652F;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="PHP,Composer," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="有修改或扩展 Composer 功能的需要时，可以使用插件。">
+<meta name="keywords" content="PHP,Composer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Composer - Chapter 9 - 插件">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 9 - 插件/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="有修改或扩展 Composer 功能的需要时，可以使用插件。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.523Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Composer - Chapter 9 - 插件">
+<meta name="twitter:description" content="有修改或扩展 Composer 功能的需要时，可以使用插件。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 9 - 插件/"/>
+
+
+
+
+
+  <title>Composer - Chapter 9 - 插件 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 9 - 插件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Composer - Chapter 9 - 插件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/Composer/" itemprop="url" rel="index">
+                    <span itemprop="name">Composer</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>有修改或扩展 Composer 功能的需要时，可以使用插件。</p>
+<a id="more"></a>
+<h2 id="创建插件"><a href="#创建插件" class="headerlink" title="创建插件"></a>创建插件</h2><h3 id="创建插件包"><a href="#创建插件包" class="headerlink" title="创建插件包"></a>创建插件包</h3><p>Composer 的插件就是一个 Composer 包，有些儿特殊：</p>
+<ul>
+<li><code>type</code> 属性必须是 <code>composer-plugin</code></li>
+<li><code>extra</code> 属性必须包含元素 <code>class</code>，它的值是插件的命名空间和类名，如果包里有多个插件，则应是一个类名的数组</li>
+<li>必须 <code>require</code> 一个特殊的包 <code>composer-plugin-api</code> 来定义你的插件是和哪个版本的插件 API 兼容</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;name&quot;: &quot;my/plugin-package&quot;,</span><br><span class="line">    &quot;type&quot;: &quot;composer-plugin&quot;,</span><br><span class="line">    &quot;require&quot;: &#123;</span><br><span class="line">        &quot;composer-plugin-api&quot;: &quot;^1.1&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;extra&quot;: &#123;</span><br><span class="line">        &quot;class&quot;: &quot;My\\Plugin&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="创建插件类"><a href="#创建插件类" class="headerlink" title="创建插件类"></a>创建插件类</h3><p>每个插件都必须提供一个实现了接口<code>Composer\Plugin\PluginInterface</code>的类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">namespace phpDocumentor\Composer;</span><br><span class="line"></span><br><span class="line">use Composer\Composer;</span><br><span class="line">use Composer\IO\IOInterface;</span><br><span class="line">use Composer\Plugin\PluginInterface;</span><br><span class="line"></span><br><span class="line">class TemplateInstallerPlugin implements PluginInterface</span><br><span class="line">&#123;</span><br><span class="line">    public function activate(Composer $composer, IOInterface $io)</span><br><span class="line">    &#123;</span><br><span class="line">        $installer = new TemplateInstaller($io, $composer);</span><br><span class="line">        $composer-&gt;getInstallationManager()-&gt;addInstaller($installer);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>类中的<code>active()</code>方法在插件加载之后执行</li>
+<li><code>active()</code>的两个参数分别是<code>Composer\Composer</code>类和<code>Composer\IO\IOInterface</code>的实例</li>
+<li>使用这两个对象实例可以读取所有设置参数和操作内部对象和状态。</li>
+</ul>
+<h2 id="事件处理"><a href="#事件处理" class="headerlink" title="事件处理"></a>事件处理</h2><p>插件也可以通过实现接口 <code>Composer\EventDispatcher\EventSubscriberInterface</code> 来实现自动事件处理</p>
+<p>通过实现 <code>getSubscribedEvents()</code> 向事件注册针对的处理方法，注册的方法必须返回一个数组，键名为事件名，键值为方法名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public static function getSubscribedEvents()</span><br><span class="line">&#123;</span><br><span class="line">    return array(</span><br><span class="line">        &apos;post-autoload-dump&apos; =&gt; &apos;methodToBeCalled&apos;,</span><br><span class="line">        // ^ event name ^         ^ method name ^</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面的键值还可以为一个数组，多传一个优先级参数，数字越大优先级越高越早被调用，默认为 0<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public static function getSubscribedEvents()</span><br><span class="line">&#123;</span><br><span class="line">    return array(</span><br><span class="line">        // Will be called before events with priority 0</span><br><span class="line">        &apos;post-autoload-dump&apos; =&gt; array(&apos;methodToBeCalled&apos;, 1)</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>键值还可以为多维数组来绑定多个方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public static function getSubscribedEvents()</span><br><span class="line">&#123;</span><br><span class="line">    return array(</span><br><span class="line">        &apos;post-autoload-dump&apos; =&gt; array(</span><br><span class="line">            array(&apos;methodToBeCalled&apos;      ), // Priority defaults to 0</span><br><span class="line">            array(&apos;someOtherMethodName&apos;, 1), // This fires first</span><br><span class="line">        )</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>完整例子<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">namespace Naderman\Composer\AWS;</span><br><span class="line"></span><br><span class="line">use Composer\Composer;</span><br><span class="line">use Composer\EventDispatcher\EventSubscriberInterface;</span><br><span class="line">use Composer\IO\IOInterface;</span><br><span class="line">use Composer\Plugin\PluginInterface;</span><br><span class="line">use Composer\Plugin\PluginEvents;</span><br><span class="line">use Composer\Plugin\PreFileDownloadEvent;</span><br><span class="line"></span><br><span class="line">class AwsPlugin implements PluginInterface, EventSubscriberInterface</span><br><span class="line">&#123;</span><br><span class="line">    protected $composer;</span><br><span class="line">    protected $io;</span><br><span class="line"></span><br><span class="line">    public function activate(Composer $composer, IOInterface $io)</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;composer = $composer;</span><br><span class="line">        $this-&gt;io = $io;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static function getSubscribedEvents()</span><br><span class="line">    &#123;</span><br><span class="line">        return array(</span><br><span class="line">            PluginEvents::PRE_FILE_DOWNLOAD =&gt; array(</span><br><span class="line">                array(&apos;onPreFileDownload&apos;, 0)</span><br><span class="line">            ),</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function onPreFileDownload(PreFileDownloadEvent $event)</span><br><span class="line">    &#123;</span><br><span class="line">        $protocol = parse_url($event-&gt;getProcessedUrl(), PHP_URL_SCHEME);</span><br><span class="line"></span><br><span class="line">        if ($protocol === &apos;s3&apos;) &#123;</span><br><span class="line">            $awsClient = new AwsClient($this-&gt;io, $this-&gt;composer-&gt;getConfig());</span><br><span class="line">            $s3RemoteFilesystem = new S3RemoteFilesystem($this-&gt;io, $event-&gt;getRemoteFilesystem()-&gt;getOptions(), $awsClient);</span><br><span class="line">            $event-&gt;setRemoteFilesystem($s3RemoteFilesystem);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="插件功能"><a href="#插件功能" class="headerlink" title="插件功能"></a>插件功能</h2><p>Composer 定义了一组可以由插件实现的标准功能，目的是使插件生态更稳定，因此减少了对类<code>composer/composer</code>内部状态的干扰，为公共的插件需求提供显式的扩展点。</p>
+<p>功能性插件必须实现接口<code>Composer\Plugin\Capable</code>，并且在方法<code>getCapabilities()</code>中声明功能，方法必须返回一个数组，键名为 Composer 定义的功能类名，键值为实现功能的插件类名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">namespace My\Composer;</span><br><span class="line"></span><br><span class="line">use Composer\Composer;</span><br><span class="line">use Composer\IO\IOInterface;</span><br><span class="line">use Composer\Plugin\PluginInterface;</span><br><span class="line">use Composer\Plugin\Capable;</span><br><span class="line"></span><br><span class="line">class Plugin implements PluginInterface, Capable</span><br><span class="line">&#123;</span><br><span class="line">    public function activate(Composer $composer, IOInterface $io)</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function getCapabilities()</span><br><span class="line">    &#123;</span><br><span class="line">        return array(</span><br><span class="line">            &apos;Composer\Plugin\Capability\CommandProvider&apos; =&gt; &apos;My\Composer\CommandProvider&apos;,</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Composer\Plugin\Capability\CommandProvider</code> 允许为 Composer 注册命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">namespace My\Composer;</span><br><span class="line"></span><br><span class="line">use Composer\Plugin\Capability\CommandProvider as CommandProviderCapability;</span><br><span class="line">use Symfony\Component\Console\Input\InputInterface;</span><br><span class="line">use Symfony\Component\Console\Output\OutputInterface;</span><br><span class="line">use Composer\Command\BaseCommand;</span><br><span class="line"></span><br><span class="line">class CommandProvider implements CommandProviderCapability</span><br><span class="line">&#123;</span><br><span class="line">    public function getCommands()</span><br><span class="line">    &#123;</span><br><span class="line">        return array(new Command);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Command extends BaseCommand</span><br><span class="line">&#123;</span><br><span class="line">    protected function configure()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;setName(&apos;custom-plugin-command&apos;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected function execute(InputInterface $input, OutputInterface $output)</span><br><span class="line">    &#123;</span><br><span class="line">        $output-&gt;writeln(&apos;Executing&apos;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><code>custom-plugin-command</code> 现在可以使用 Composer 运行了</li>
+</ul>
+<h2 id="使用插件"><a href="#使用插件" class="headerlink" title="使用插件"></a>使用插件</h2><p>在运行<code>composer install</code>命令安装完毕插件之后即自动加载，</p>
+<p>在 composer 启动过程中发现已安装软件包中有插件时也会自动加载。</p>
+<p>使用 <code>composer global</code> 命令安装在 <code>COMPOSER_HOME</code> 目录中的插件会在当前项目插件之前加载。</p>
+<p>使用 <code>--no-plugins</code> 选项可以不加载已安装的插件，当有插件出错你想更新或卸载它时特别有用。</p>
+<p>## </p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PHP/" rel="tag"># PHP</a>
+          
+            <a href="/tags/Composer/" rel="tag"># Composer</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Composer - Chapter 8 - 资源库/" rel="next" title="Composer - Chapter 8 - 资源库">
+                <i class="fa fa-chevron-left"></i> Composer - Chapter 8 - 资源库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Composer - Chapter B - HTTP 基本身份认证/" rel="prev" title="Composer - Chapter B - HTTP 基本身份认证">
+                Composer - Chapter B - HTTP 基本身份认证 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建插件"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;&#x63D2;&#x4EF6;" class="headerlink" title="&#x521B;&#x5EFA;&#x63D2;&#x4EF6;"></a>&#x521B;&#x5EFA;&#x63D2;&#x4EF6;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建插件包"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;&#x63D2;&#x4EF6;&#x5305;" class="headerlink" title="&#x521B;&#x5EFA;&#x63D2;&#x4EF6;&#x5305;"></a>&#x521B;&#x5EFA;&#x63D2;&#x4EF6;&#x5305;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建插件类"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;&#x63D2;&#x4EF6;&#x7C7B;" class="headerlink" title="&#x521B;&#x5EFA;&#x63D2;&#x4EF6;&#x7C7B;"></a>&#x521B;&#x5EFA;&#x63D2;&#x4EF6;&#x7C7B;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件处理"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x4E8B;&#x4EF6;&#x5904;&#x7406;" class="headerlink" title="&#x4E8B;&#x4EF6;&#x5904;&#x7406;"></a>&#x4E8B;&#x4EF6;&#x5904;&#x7406;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插件功能"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x63D2;&#x4EF6;&#x529F;&#x80FD;" class="headerlink" title="&#x63D2;&#x4EF6;&#x529F;&#x80FD;"></a>&#x63D2;&#x4EF6;&#x529F;&#x80FD;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用插件"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x4F7F;&#x7528;&#x63D2;&#x4EF6;" class="headerlink" title="&#x4F7F;&#x7528;&#x63D2;&#x4EF6;"></a>&#x4F7F;&#x7528;&#x63D2;&#x4EF6;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

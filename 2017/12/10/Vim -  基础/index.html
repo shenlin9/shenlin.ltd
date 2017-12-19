@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Vim," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="vim 的基本设置和基础操作">
+<meta name="keywords" content="Vim">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vim 基础">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/12/10/Vim -  基础/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="vim 的基本设置和基础操作">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-10T02:55:22.313Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vim 基础">
+<meta name="twitter:description" content="vim 的基本设置和基础操作">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/12/10/Vim -  基础/"/>
+
+
+
+
+
+  <title>Vim 基础 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/12/10/Vim -  基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vim 基础</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-10T10:55:22+08:00">
+                2017-12-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vim/" itemprop="url" rel="index">
+                    <span itemprop="name">Vim</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>vim 的基本设置和基础操作</p>
+<a id="more"></a>
+<h2 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h2><p><a href="http://www.jianshu.com/p/8ae25a680ed7" target="_blank" rel="noopener">http://www.jianshu.com/p/8ae25a680ed7</a></p>
+<h2 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h2><p><a href="http://www.cnblogs.com/bwangel23/p/4421957.html" target="_blank" rel="noopener">http://www.cnblogs.com/bwangel23/p/4421957.html</a></p>
+<p>显示寄存器列表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:reg</span><br></pre></td></tr></table></figure></p>
+<p>粘贴寄存器内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;&lt;n&gt;p</span><br></pre></td></tr></table></figure></p>
+<h2 id="跳转"><a href="#跳转" class="headerlink" title="跳转"></a>跳转</h2><p><a href="http://easwy.com/blog/archives/advanced-vim-skills-advanced-move-method/" target="_blank" rel="noopener">http://easwy.com/blog/archives/advanced-vim-skills-advanced-move-method/</a></p>
+<p>ma 设定标记a<br>‘a 跳转到设定的标记a</p>
+<p>‘’ 在最后两次的位置来回跳转</p>
+<p>zt<br>zz<br>zb</p>
+<h2 id="vim-环境变量"><a href="#vim-环境变量" class="headerlink" title="vim 环境变量"></a>vim 环境变量</h2><p>//查看环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">:echo $HOME</span><br><span class="line">C:\Users\ssl</span><br><span class="line"></span><br><span class="line">:echo $VIM</span><br><span class="line">C:\Program Files\Vim</span><br><span class="line"></span><br><span class="line">:echo $VIMRUNTIME</span><br><span class="line">C:\Program Files\Vim\vim80</span><br></pre></td></tr></table></figure></p>
+<p>//查看路径<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:set runtimepath</span><br><span class="line">:set rtp</span><br></pre></td></tr></table></figure></p>
+<p>//设置路径<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">:set rtp+=~/.vim/bundle/Vundle.vim</span><br><span class="line">:set rtp+=$ProgramFiles\Git\bin</span><br><span class="line">:set rtp+=$ProgramFiles\Git\mingw32\bin</span><br><span class="line">:set rtp+=$ProgramFiles\Git\mingw32\libexec\git-core</span><br></pre></td></tr></table></figure></p>
+<p>重新加载配置文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//windows</span><br><span class="line">:source $VIM\_vimrc</span><br><span class="line">:so $VIM\_vimrc</span><br><span class="line"></span><br><span class="line">//linux</span><br><span class="line">:source ~\.vimrc</span><br><span class="line">:so ~\.vimrc</span><br></pre></td></tr></table></figure></p>
+<p>? MyDiff 已存在，要使用 ! 覆盖<br>? source <code>$VIMRUNTIME/vimrc_example.vim</code> 作用<br>? Pathogen 和 Vundle</p>
+<h2 id="python-环境"><a href="#python-环境" class="headerlink" title="python 环境"></a>python 环境</h2><p>vim 里执行命令输出如下说明支持 python 特性<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:version</span><br><span class="line">...+python/dyn +python3/dyn..</span><br></pre></td></tr></table></figure></p>
+<p>vim 里执行命令输出如下说明已安装 python 环境<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">:echo has(&quot;python&quot;)</span><br><span class="line">1</span><br><span class="line"></span><br><span class="line">:echo has(&quot;python3&quot;)</span><br><span class="line">1</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>0 表示未安装 python 环境</li>
+<li>还发现个问题就是桌面上的文件使用 vim 打开，执行上述命令时返回0，其他目录则返回1</li>
+<li>未安装 python 环境，要先安装 python 再安装 vim</li>
+<li>python 不要安装 3.6 版本，vim 不支持，安装 3.5 版本即开</li>
+</ul>
+<p>lua 等的检测是一样的</p>
+<h2 id="查找和替换"><a href="#查找和替换" class="headerlink" title="查找和替换"></a>查找和替换</h2><p><a href="http://blog.csdn.net/zcube/article/details/42710141" target="_blank" rel="noopener">http://blog.csdn.net/zcube/article/details/42710141</a></p>
+<h2 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h2><p><a href="http://www.cnblogs.com/RigorosLee/archive/2011/05/13/2045806.html" target="_blank" rel="noopener">http://www.cnblogs.com/RigorosLee/archive/2011/05/13/2045806.html</a></p>
+<table>
+<thead>
+<tr>
+<th>元字符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.</td>
+<td>匹配任意一个字符</td>
+</tr>
+<tr>
+<td>[abc]</td>
+<td>匹配方括号中的任意一个字符。可以使用-表示字符范围， 如[a-z0-9]匹配小写字母和阿拉伯数字。</td>
+</tr>
+<tr>
+<td>[^abc]</td>
+<td>在方括号内开头使用^符号，表示匹配除方括号中字符之外的任意字符。</td>
+</tr>
+<tr>
+<td>\d</td>
+<td>匹配阿拉伯数字，等同于[0-9]。</td>
+</tr>
+<tr>
+<td>\D</td>
+<td>匹配阿拉伯数字之外的任意字符，等同于[^0-9]。</td>
+</tr>
+<tr>
+<td>\x</td>
+<td>匹配十六进制数字，等同于[0-9A-Fa-f]。</td>
+</tr>
+<tr>
+<td>\X</td>
+<td>匹配十六进制数字，等同于[^0-9A-Fa-f]。</td>
+</tr>
+<tr>
+<td>\w</td>
+<td>匹配单词字母，等同于[0-9A-Za-z_]。</td>
+</tr>
+<tr>
+<td>\W</td>
+<td>匹配单词字母之外的任意字符，等同于[^0-9A-Za-z_]。</td>
+</tr>
+<tr>
+<td>\t</td>
+<td>匹配<tab>字符。</tab></td>
+</tr>
+<tr>
+<td>\s</td>
+<td>匹配空白字符，等同于[ \t]。</td>
+</tr>
+<tr>
+<td>\S</td>
+<td>匹配非空白字符，等同于[^ \t]。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="转换大小写"><a href="#转换大小写" class="headerlink" title="转换大小写"></a>转换大小写</h2><p>gu 转换为小写<br>gU 转换为大写</p>
+<p>整篇文章</p>
+<pre><code>ggguG
+gggUG
+</code></pre><p>单词转换</p>
+<pre><code>guw 、gue
+gUw、gUe
+gu5w、gu5e
+</code></pre><p>行转换</p>
+<pre><code>gU0        ：从光标所在位置到行首，都变为大写
+gU$        ：从光标所在位置到行尾，都变为大写
+gUG        ：从光标所在位置到文章最后一个字符，都变为大写
+</code></pre><h2 id="文件最后一行结束符"><a href="#文件最后一行结束符" class="headerlink" title="文件最后一行结束符"></a>文件最后一行结束符</h2><p>EOL 表示 endofline</p>
+<p>vim 认为文件是由行组成的，并且文件最后一行是以<code>&lt;EOL&gt;</code>为结束符的</p>
+<p>查看当前设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:echo &amp;eol</span><br></pre></td></tr></table></figure></p>
+<p>设置文件以<code>&lt;EOL&gt;</code>结尾<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:set eol</span><br></pre></td></tr></table></figure></p>
+<p>不以<code>&lt;EOL&gt;</code>结尾<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:set noeol</span><br></pre></td></tr></table></figure></p>
+<p>查看是否自动修正不以<code>&lt;EOL&gt;</code>结尾的文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:echo &amp;fixeol</span><br></pre></td></tr></table></figure></p>
+<p>自动修正<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:set fixeol</span><br></pre></td></tr></table></figure></p>
+<p>不自动修正<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:set nofixeol</span><br></pre></td></tr></table></figure></p>
+<h2 id="回车和换行"><a href="#回车和换行" class="headerlink" title="回车和换行"></a>回车和换行</h2><p>windows, linux, macos 对待换行的方式都不一样，需要进行针对性设置</p>
+<h3 id="读写文件时"><a href="#读写文件时" class="headerlink" title="读写文件时"></a>读写文件时</h3><p>设置读取文件时的换行检测<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:set fileformats=dos,unix</span><br><span class="line">:set ffs=dos,unix</span><br></pre></td></tr></table></figure></p>
+<p>查看、设置当前文件换行格式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">:set fileformat</span><br><span class="line">:set fileformat=unix</span><br><span class="line">:set ff=unix</span><br></pre></td></tr></table></figure></p>
+<pre><code>取值和对应的换行符
+    dos        &lt;CR&gt; &lt;NL&gt;
+    unix    &lt;NL&gt;
+    mac        &lt;CR&gt;
+</code></pre><p>显示换行符和 tab 符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:set list</span><br></pre></td></tr></table></figure></p>
+<p>取消换行符和 tab 符的显示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:set nolist</span><br></pre></td></tr></table></figure></p>
+<h3 id="查找替换时"><a href="#查找替换时" class="headerlink" title="查找替换时"></a>查找替换时</h3><p>??? 没有测试成功，始终无法查找到回车符</p>
+<p>查找时，\n 代表换行符 (newline)， \r 代表回车符 (CR carriage return = Ctrl-M = ^M)</p>
+<p>替换时，\r 代表换行，\n 代表空字符 (null byte 0x00)</p>
+<p>所以下列命令可以转换DOS回车符“^M”为真正的换行符：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:%s/\r/\r/g</span><br></pre></td></tr></table></figure>
+<h3 id="文件中的-M-字符"><a href="#文件中的-M-字符" class="headerlink" title="文件中的 ^M 字符"></a>文件中的 ^M 字符</h3><p>有时在文本编辑器里看到的的 <code>^M</code> 字符，</p>
+<p>是因为 windows 以回车 <code>\r</code> 和换行 <code>\n</code> 两个字符表示换行，</p>
+<p>linux 以 <code>\n</code> 表示换行，<code>^M</code> 就是 linux 下多余出来的回车 <code>\r</code> 字符</p>
+<p>单文件替换 <code>^M</code> 字符为空字符可以使用下面命令</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:%s///g</span><br></pre></td></tr></table></figure>
+<ul>
+<li>注意上面命令中的 ^ 和 M 字符不是直接输入的，而是按住 Ctrl+v Ctrl+m 产生的</li>
+</ul>
+<p>多文件替换可以使用 dos2unix 命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ find ./ -<span class="built_in">type</span> f -print0 | xargs -0 dos2unix</span><br></pre></td></tr></table></figure>
+<h2 id="buffer操作"><a href="#buffer操作" class="headerlink" title="buffer操作"></a>buffer操作</h2><pre><code>:ls     查看当前已打开的buffer
+:b n    切换buffer，n为buffer list中的编号
+:bn     下一个 buffer
+:bp     上一个 buffer
+:b#     前一个 buffer
+:bdelete n 删除buffer，n为buffer list中的编号
+</code></pre><h2 id="光标跳转"><a href="#光标跳转" class="headerlink" title="光标跳转"></a>光标跳转</h2><pre><code>ctrl+o 
+ctrl+i
+</code></pre><h2 id="colorscheme"><a href="#colorscheme" class="headerlink" title="colorscheme"></a>colorscheme</h2><p>查看当前scheme</p>
+<pre><code>:colorscheme
+</code></pre><p>查看已安装的scheme</p>
+<pre><code>:colorscheme &lt;Tab&gt;
+</code></pre><ul>
+<li>注意有个空格和 Tab</li>
+<li>可以通过按 Tab 在 scheme 之间切换</li>
+</ul>
+<p>恢复上次文件打开位置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set viminfo=&apos;10,\&quot;100,:20,%,n~/.viminfo</span><br><span class="line">au BufReadPost * if line(&quot;&apos;\&quot;&quot;) &gt; 0|if line(&quot;&apos;\&quot;&quot;) &lt;= line(&quot;$&quot;)|exe(&quot;norm &apos;\&quot;&quot;)|else|exe &quot;norm $&quot;|endif|endif</span><br></pre></td></tr></table></figure></p>
+<p>文件被外部应用改动时，自动读入文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if exists(&quot;&amp;autoread&quot;)</span><br><span class="line">    set autoread</span><br><span class="line">endif</span><br></pre></td></tr></table></figure></p>
+<p>30s 自动保存文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let autosave=30</span><br></pre></td></tr></table></figure></p>
+<p>cd 和 lcd 命令区别</p>
+<blockquote>
+<p>cd 意思为 global current directory<br>lcd 意思为 local current directory</p>
+<p>cd 可以指定全局的目录，这样方便使用 :edit , :Explore 来查找编辑文件。<br>但在多窗口和多 tab 时需要去其他目录查阅资料，这时使用全局目录切来切去很麻烦，可使用 lcd 对当前窗口指定一个工作目录。</p>
+<p>查看当前目录使用 :pwd 命令</p>
+</blockquote>
+<h2 id="关于-Tab"><a href="#关于-Tab" class="headerlink" title="关于 Tab"></a>关于 Tab</h2><p>显示 Tab 字符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:set list</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>默认 Tab 将显示为 <code>^I</code></li>
+<li>行尾显示为 <code>$</code></li>
+<li>没显示行首</li>
+</ul>
+<p>将 Tab 字符转换为 <code>&gt;_</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:set list listchars=tab:&gt;_</span><br></pre></td></tr></table></figure></p>
+<p>Tab、空格和缩进<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/\t</span><br><span class="line">:retab</span><br><span class="line">:set expandtab</span><br><span class="line">:set tabstop=4</span><br><span class="line">:set softtabstop=4</span><br><span class="line">:set shiftwidth=4</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>搜索时使用 \t 表示 Tab</li>
+<li><p>retab</p>
+<p>  将现有 Tab 全部转换为空格</p>
+</li>
+<li><p>expandtab</p>
+<p>  输入的 tab 键都转换为空格</p>
+</li>
+<li><p>tabstop</p>
+<p>  vim 读取文件遇到 \t 字符时，解释为几个空格长度</p>
+</li>
+<li><p>softtabstop</p>
+<p>  编辑文件时，将几个空格作为一个 tab 处理，</p>
+<p>  针对的是 <code>&lt;Backspace&gt;</code> 和 <code>&lt;Tab&gt;</code> 按键，如设为4，</p>
+<p>  则按<code>&lt;Tab&gt;</code>时插入4个空格宽度，按<code>&lt;Backspace&gt;</code>时把</p>
+<p>  4个空格作为一个tab删除</p>
+</li>
+<li><p>shifwidth</p>
+<p>  缩进时使用几个空格</p>
+</li>
+</ul>
+<h2 id="拆分窗口"><a href="#拆分窗口" class="headerlink" title="拆分窗口"></a>拆分窗口</h2><pre><code>快捷键按键方法：先一起按下Ctrl + W，然后释放，再按对应的第三键，不是三个键一起按
+
+1、水平窗口分割：
+    $ vim  -o  file1 file2  水平分割成两个窗口分别显示文件
+    :split         （开启另一个窗口察看同一文件）
+    :split 文件名  （开启另一个窗口察看指定文件）
+
+2、垂直窗口分割：
+    $ vim  -O  file1 file2  垂直分割成两个窗口分别显示文件
+    :vsplit（开启另一个窗口察看同一文件）
+    :vsplit 文件名（开启另一个窗口察看指定文件）
+
+3、在窗口之间进行切换：
+    Ctrl + w + w： 在所有窗口中循环移动
+    Ctrl + w + h： 向左移动窗口
+    Ctrl + w + j： 向下移动窗口
+    Ctrl + w + k： 向上移动窗口
+    Ctrl + w + l： 向右移动窗口
+
+4、增大或减少窗口大小：
+    Ctrl + W + =：让所有窗口调整至相同尺寸（平均划分）
+    Ctrl + W + -：将当前窗口的高度减少一行，- 号前也可以加数字指定行数，也可在ex命令中，：resize -4明确指定减少的尺寸
+    Ctrl + W + +：将当前窗口的高度增加一行，+ 号前也可以加数字指定行数。同样在ex命令中，：resize +n 明确指定增加尺寸
+
+    Ctrl + W + &lt; ：将当前窗口的宽度减少
+    Ctrl + W + &gt; ：将当前窗口的宽度增加
+    Ctrl + W + |：将当前窗口的宽度调到最大，也可他哦你通过ex命令：vertical resize n明确指定改变宽度
+
+5、关闭窗口：
+    四种方法：离开（quit）、关闭（close）、隐藏（hide）、关闭其他窗口（only）
+
+    1）将光标切换到当前窗口下，然后按照关闭单个窗口的方法关闭窗口。例如：q命令。
+    2）关闭所有窗口文件：在所有关闭单个窗口的命令中加上all，例如：qall命令。
+    3）关闭除当前窗口之外的文件：only。
+</code></pre><h2 id="帮助文件导航"><a href="#帮助文件导航" class="headerlink" title="帮助文件导航"></a>帮助文件导航</h2><pre><code>移动光标到某个标签，然后 Ctrl + ] 跳转到主题，Ctrl + O 返回
+</code></pre><h2 id="package-packpath"><a href="#package-packpath" class="headerlink" title="package packpath"></a>package packpath</h2><p>vim 中的 package 就是一个包含一个或多个 plugin 的目录</p>
+<p>package 比 plugin 的优点：</p>
+<ul>
+<li>package 可以作为一个归档整体下载和解档到它自己的目录，文件不会和其它插件文件混在一起，也因此更新和删除更方便</li>
+<li>package 可以是一个 git, mercurial 等一类的库，更新方便</li>
+<li>一个 package 可以包含多个互相依赖的 plugin</li>
+<li>package 中的插件可以在 vim 启动时自动加载或在需要时使用<code>:packadd</code>命令加载</li>
+</ul>
+<p>vim 启动时，处理完配置文件<code>.vimrc</code>后，会接着扫描<code>packpath</code>中所有路径的子目录<code>pack/*/start</code>来查找 plugin，首先把所有<code>pack/*/start</code>路径添加到<code>runtimepath</code>，然后加载所有找到的plugin，<code>pack/*/opt</code>不会被添加到 runtimepath。</p>
+<p><code>pack/*/start/lib/autoload</code> 文件夹常用来放多个插件共用的文件，如</p>
+<pre><code>pack/foo/start/one/plugin/one.vim
+    call foolib#getit()
+pack/foo/start/two/plugin/two.vim
+    call foolib#getit()
+
+pack/foo/start/lib/autoload/foolib.vim
+    func foolib#getit()
+</code></pre><p>如果 package 包含一个名为 after 的目录，则会被放到 <code>runtimepath</code> 的后面，则 <code>after</code> 目录里的 plugin 将会加载的较晚。</p>
+<p>如果不是一个 package，而是一个独立的 plugin，则需要自己创建 start 目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">% mkdir -p ~/.vim/pack/foo/start/foobar</span><br><span class="line">% cd ~/.vim/pack/foo/start/foobar</span><br><span class="line">% unzip /tmp/someplugin.zip</span><br><span class="line">`</span><br></pre></td></tr></table></figure></p>
+<p>目录结构为</p>
+<pre><code>pack/foo/start/foobar/plugin/foo.vim
+pack/foo/start/foobar/syntax/some.vim
+</code></pre><p>对比 package 则只需创建包目录, 包名 foo 是随意的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">% mkdir -p ~/.vim/pack/foo</span><br><span class="line">% cd ~/.vim/pack/foo</span><br><span class="line">% unzip /tmp/foopack.zip</span><br></pre></td></tr></table></figure></p>
+<p>目录结构为</p>
+<pre><code>pack/foo/README.txt
+pack/foo/start/foobar/plugin/foo.vim
+pack/foo/start/foobar/syntax/some.vim
+pack/foo/opt/foodebug/plugin/debugger.vim
+</code></pre><p>操作命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//$HOME,$VIM 等没有展开</span><br><span class="line">:set packpath</span><br><span class="line">:set pp</span><br><span class="line"></span><br><span class="line">//全展开了</span><br><span class="line">:echo &amp;pp</span><br><span class="line"></span><br><span class="line">//</span><br><span class="line">set packpath+=~/.vim</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//加载所有包命令</span><br><span class="line">:packloadall</span><br></pre></td></tr></table></figure></p>
+<h2 id="runtimepath"><a href="#runtimepath" class="headerlink" title="runtimepath"></a>runtimepath</h2><p>runtimepath 是一个目录列表，用来定位运行时文件</p>
+<pre><code>filetype.vim    filetypes by file name |new-filetype|
+scripts.vim    filetypes by file contents |new-filetype-scripts|
+autoload/    automatically loaded scripts |autoload-functions|
+colors/    color scheme files |:colorscheme|
+compiler/    compiler files |:compiler|
+doc/        documentation |write-local-help|
+ftplugin/    filetype plugins |write-filetype-plugin|
+indent/    indent scripts |indent-expression|
+keymap/    key mapping files |mbyte-keymap|
+lang/        menu translations |:menutrans|
+menu.vim    GUI menus |menu.vim|
+pack/        packages |:packadd|
+plugin/    plugin scripts |write-plugin|
+print/    files for printing |postscript-print-encoding|
+spell/    spell checking files |spell|
+syntax/    syntax files |mysyntaxfile|
+tutor/    files for vimtutor |tutor|
+</code></pre><p>大多数的系统默认设置搜索5个地方：</p>
+<pre><code>1. In your home directory, for your personal preferences.
+2. In a system-wide Vim directory, for preferences from the system
+   administrator.
+3. In $VIMRUNTIME, for files distributed with Vim.
+                        *after-directory*
+4. In the &quot;after&quot; directory in the system-wide Vim directory.  This is
+   for the system administrator to overrule or add to the distributed
+   defaults (rarely needed)
+5. In the &quot;after&quot; directory in your home directory.  This is for
+   personal preferences to overrule or add to the distributed defaults
+   or system-wide settings (rarely needed).
+</code></pre><p>操作命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//这样的查询 $HOME,$VIM 没有展开为完整目录</span><br><span class="line">:set runtimepath</span><br><span class="line">:set rtp</span><br><span class="line"></span><br><span class="line">//这样则全部展开了</span><br><span class="line">:echo &amp;rtp</span><br><span class="line"></span><br><span class="line">//增加runtimepath 路径</span><br><span class="line">:set runtimepath+=some\path,some\path</span><br><span class="line">:runtime syntax/c.vim</span><br><span class="line">:ru syntax/c.vim</span><br></pre></td></tr></table></figure></p>
+<h2 id="netrwhist"><a href="#netrwhist" class="headerlink" title=".netrwhist"></a>.netrwhist</h2><p>netrw 是一个通过网络读写文件的 vim 插件，.netrwhist 就是 netrw 的历史记录文件，保存的是被修改的目录的列表，当修改 ~/.vim 目录下的文件时就加入记录</p>
+<p>内容一般如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let g:netrw_dirhistmax  =10</span><br><span class="line">let g:netrw_dirhist_cnt =6</span><br><span class="line">let g:netrw_dirhist_1=&apos;/Users/wolever/EnSi/repos/web/env/web/lib/python2.6/site-packages/django&apos;</span><br><span class="line">let g:netrw_dirhist_2=&apos;/private/tmp/b/.hg/attic&apos;</span><br><span class="line">let g:netrw_dirhist_3=&apos;/Users/wolever/code/sandbox/pydhcplib-0.6.2/pydhcplib&apos;</span><br><span class="line">let g:netrw_dirhist_4=&apos;/Users/wolever/EnSi/repos/common/env/common/bin&apos;</span><br><span class="line">let g:netrw_dirhist_5=&apos;/Users/wolever/EnSi/repos/common/explode&apos;</span><br><span class="line">let g:netrw_dirhist_6=&apos;/Users/wolever/Sites/massuni-wiki/conf&apos;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>netrw_dirhistmax 表示记录的最多历史条数</li>
+<li>netrw_dirhist_cnt 表示当前已记录条数</li>
+</ul>
+<p>没有禁用产生 .netrwhist 文件的方法，可以设置为产生后立即自动删除<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">au VimLeave * if filereadable(&quot;[path here]/.netrwhist&quot;)|call delete(&quot;[path here]/.netrwhist&quot;)|endif</span><br></pre></td></tr></table></figure></p>
+<p>或设置最多记录数为 0 则不再记录，但原先的 .netrwhist 或 .netrwbook 并不会自动删除<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:let g:netrw_dirhistmax = 0</span><br></pre></td></tr></table></figure></p>
+<p>可以指定 .netrwhist 文件的位置，以免和 vim 的 runtimepath 文件混在一起<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let g:netrw_home=$XDG_CACHE_HOME.&apos;/vim&apos;</span><br></pre></td></tr></table></figure></p>
+<h2 id="vim-查看文件时多了很多"><a href="#vim-查看文件时多了很多" class="headerlink" title="vim 查看文件时多了很多   "></a>vim 查看文件时多了很多 <200b> <200c> <200d></200d></200c></200b></h2><p>如：<br><code>git submodule [--quiet] deinit [-f|--force] (--all|[--] &lt;path&gt;…​)</code></p>
+<p>commonly abbreviated ZWSP<br>this character is intended for invisible word separation and for line break control; it has no width, but its presence between two characters does not prevent increased letter spacing in justification<br><a href="http://www.fileformat.info/info/unicode/char/200B/index.htm" target="_blank" rel="noopener">http://www.fileformat.info/info/unicode/char/200B/index.htm</a></p>
+<p>这些字符是排版过程中产生的，而排版使用的规范是Unicode编码标准</p>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>unicode code point</th>
+<th>utf-8(in literal)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ZERO WIDTH SPACE</td>
+<td>U+200b</td>
+<td>\xe2\x80\x8b</td>
+</tr>
+<tr>
+<td>ZERO WIDTH JOINER</td>
+<td>U+200c</td>
+<td>\xe2\x80\x8c</td>
+</tr>
+<tr>
+<td>ZERO WIDTH NON-JOINER</td>
+<td>U+200d</td>
+<td>\xe2\x80\x8d</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$value = str_replace(&quot;\xe2\x80\x8b&quot;, &apos;&apos;, $value); </span><br><span class="line">$value = str_replace(&quot;\xe2\x80\x8c&quot;, &apos;&apos;, $value); </span><br><span class="line">$value = str_replace(&quot;\xe2\x80\x8d&quot;, &apos;&apos;, $value);</span><br></pre></td></tr></table></figure>
+<p><a href="https://superuser.com/questions/207207/how-can-i-delete-u200b-zero-width-space-using-sed" target="_blank" rel="noopener">https://superuser.com/questions/207207/how-can-i-delete-u200b-zero-width-space-using-sed</a></p>
+<h2 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><h3 id="提示-“modifiable-is-off”"><a href="#提示-“modifiable-is-off”" class="headerlink" title="提示 “modifiable is off”"></a>提示 “modifiable is off”</h3><p>modifiable 关闭时不允许更改缓存内容，也不允许更改 <code>fileformat</code> 和 <code>fileencoding</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">:set modifiable</span><br><span class="line">:set nomodifiable</span><br><span class="line"></span><br><span class="line">//可简写为</span><br><span class="line">:set ma</span><br><span class="line">:set noma</span><br></pre></td></tr></table></figure></p>
+<p>出现上述提示可能是插件或者设置错误导致的，可运行下面命令尝试找到错误原因：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:verbose setlocal modifiable?</span><br></pre></td></tr></table></figure></p>
+<p>使用下列命令打开<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:autocmd BufWinEnter * setlocal modifiable</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Vim/" rel="tag"># Vim</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/28/李威讲记忆/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/19/Hexo 详解/" rel="prev" title="Hexo 详解">
+                Hexo 详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#快捷键"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5FEB;&#x6377;&#x952E;" class="headerlink" title="&#x5FEB;&#x6377;&#x952E;"></a>&#x5FEB;&#x6377;&#x952E;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#寄存器"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5BC4;&#x5B58;&#x5668;" class="headerlink" title="&#x5BC4;&#x5B58;&#x5668;"></a>&#x5BC4;&#x5B58;&#x5668;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#跳转"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x8DF3;&#x8F6C;" class="headerlink" title="&#x8DF3;&#x8F6C;"></a>&#x8DF3;&#x8F6C;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vim-环境变量"><span class="nav-number">4.</span> <span class="nav-text"><a href="#vim-&#x73AF;&#x5883;&#x53D8;&#x91CF;" class="headerlink" title="vim &#x73AF;&#x5883;&#x53D8;&#x91CF;"></a>vim &#x73AF;&#x5883;&#x53D8;&#x91CF;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python-环境"><span class="nav-number">5.</span> <span class="nav-text"><a href="#python-&#x73AF;&#x5883;" class="headerlink" title="python &#x73AF;&#x5883;"></a>python &#x73AF;&#x5883;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找和替换"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x67E5;&#x627E;&#x548C;&#x66FF;&#x6362;" class="headerlink" title="&#x67E5;&#x627E;&#x548C;&#x66FF;&#x6362;"></a>&#x67E5;&#x627E;&#x548C;&#x66FF;&#x6362;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则表达式"><span class="nav-number">7.</span> <span class="nav-text"><a href="#&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;" class="headerlink" title="&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;"></a>&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#转换大小写"><span class="nav-number">8.</span> <span class="nav-text"><a href="#&#x8F6C;&#x6362;&#x5927;&#x5C0F;&#x5199;" class="headerlink" title="&#x8F6C;&#x6362;&#x5927;&#x5C0F;&#x5199;"></a>&#x8F6C;&#x6362;&#x5927;&#x5C0F;&#x5199;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件最后一行结束符"><span class="nav-number">9.</span> <span class="nav-text"><a href="#&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4E00;&#x884C;&#x7ED3;&#x675F;&#x7B26;" class="headerlink" title="&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4E00;&#x884C;&#x7ED3;&#x675F;&#x7B26;"></a>&#x6587;&#x4EF6;&#x6700;&#x540E;&#x4E00;&#x884C;&#x7ED3;&#x675F;&#x7B26;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#回车和换行"><span class="nav-number">10.</span> <span class="nav-text"><a href="#&#x56DE;&#x8F66;&#x548C;&#x6362;&#x884C;" class="headerlink" title="&#x56DE;&#x8F66;&#x548C;&#x6362;&#x884C;"></a>&#x56DE;&#x8F66;&#x548C;&#x6362;&#x884C;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#读写文件时"><span class="nav-number">10.1.</span> <span class="nav-text"><a href="#&#x8BFB;&#x5199;&#x6587;&#x4EF6;&#x65F6;" class="headerlink" title="&#x8BFB;&#x5199;&#x6587;&#x4EF6;&#x65F6;"></a>&#x8BFB;&#x5199;&#x6587;&#x4EF6;&#x65F6;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查找替换时"><span class="nav-number">10.2.</span> <span class="nav-text"><a href="#&#x67E5;&#x627E;&#x66FF;&#x6362;&#x65F6;" class="headerlink" title="&#x67E5;&#x627E;&#x66FF;&#x6362;&#x65F6;"></a>&#x67E5;&#x627E;&#x66FF;&#x6362;&#x65F6;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件中的-M-字符"><span class="nav-number">10.3.</span> <span class="nav-text"><a href="#&#x6587;&#x4EF6;&#x4E2D;&#x7684;-M-&#x5B57;&#x7B26;" class="headerlink" title="&#x6587;&#x4EF6;&#x4E2D;&#x7684; ^M &#x5B57;&#x7B26;"></a>&#x6587;&#x4EF6;&#x4E2D;&#x7684; ^M &#x5B57;&#x7B26;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#buffer操作"><span class="nav-number">11.</span> <span class="nav-text"><a href="#buffer&#x64CD;&#x4F5C;" class="headerlink" title="buffer&#x64CD;&#x4F5C;"></a>buffer&#x64CD;&#x4F5C;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#光标跳转"><span class="nav-number">12.</span> <span class="nav-text"><a href="#&#x5149;&#x6807;&#x8DF3;&#x8F6C;" class="headerlink" title="&#x5149;&#x6807;&#x8DF3;&#x8F6C;"></a>&#x5149;&#x6807;&#x8DF3;&#x8F6C;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#colorscheme"><span class="nav-number">13.</span> <span class="nav-text"><a href="#colorscheme" class="headerlink" title="colorscheme"></a>colorscheme</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于-Tab"><span class="nav-number">14.</span> <span class="nav-text"><a href="#&#x5173;&#x4E8E;-Tab" class="headerlink" title="&#x5173;&#x4E8E; Tab"></a>&#x5173;&#x4E8E; Tab</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拆分窗口"><span class="nav-number">15.</span> <span class="nav-text"><a href="#&#x62C6;&#x5206;&#x7A97;&#x53E3;" class="headerlink" title="&#x62C6;&#x5206;&#x7A97;&#x53E3;"></a>&#x62C6;&#x5206;&#x7A97;&#x53E3;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#帮助文件导航"><span class="nav-number">16.</span> <span class="nav-text"><a href="#&#x5E2E;&#x52A9;&#x6587;&#x4EF6;&#x5BFC;&#x822A;" class="headerlink" title="&#x5E2E;&#x52A9;&#x6587;&#x4EF6;&#x5BFC;&#x822A;"></a>&#x5E2E;&#x52A9;&#x6587;&#x4EF6;&#x5BFC;&#x822A;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#package-packpath"><span class="nav-number">17.</span> <span class="nav-text"><a href="#package-packpath" class="headerlink" title="package packpath"></a>package packpath</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#runtimepath"><span class="nav-number">18.</span> <span class="nav-text"><a href="#runtimepath" class="headerlink" title="runtimepath"></a>runtimepath</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#netrwhist"><span class="nav-number">19.</span> <span class="nav-text"><a href="#netrwhist" class="headerlink" title=".netrwhist"></a>.netrwhist</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vim-查看文件时多了很多"><span class="nav-number">20.</span> <span class="nav-text"><a href="#vim-&#x67E5;&#x770B;&#x6587;&#x4EF6;&#x65F6;&#x591A;&#x4E86;&#x5F88;&#x591A;" class="headerlink" title="vim &#x67E5;&#x770B;&#x6587;&#x4EF6;&#x65F6;&#x591A;&#x4E86;&#x5F88;&#x591A;   "></a>vim &#x67E5;&#x770B;&#x6587;&#x4EF6;&#x65F6;&#x591A;&#x4E86;&#x5F88;&#x591A; <200b> <200c> <200d></200d></200c></200b></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-amp-A"><span class="nav-number">21.</span> <span class="nav-text"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#提示-“modifiable-is-off”"><span class="nav-number">21.1.</span> <span class="nav-text"><a href="#&#x63D0;&#x793A;-&#x201C;modifiable-is-off&#x201D;" class="headerlink" title="&#x63D0;&#x793A; &#x201C;modifiable is off&#x201D;"></a>&#x63D0;&#x793A; &#x201C;modifiable is off&#x201D;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

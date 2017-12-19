@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Git,Git-Hooks," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Git 能在特定的动作发生时触发自定义脚本，有两组钩子：客户端和服务器端。 客户端钩子由提交、合并一类的操作调用，服务器端钩子由接收被推送的提交这样的联网操作调用。">
+<meta name="keywords" content="Git,Git-Hooks">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter 8.3 - Git 钩子">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 8.3 - 钩子/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="Git 能在特定的动作发生时触发自定义脚本，有两组钩子：客户端和服务器端。 客户端钩子由提交、合并一类的操作调用，服务器端钩子由接收被推送的提交这样的联网操作调用。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.548Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter 8.3 - Git 钩子">
+<meta name="twitter:description" content="Git 能在特定的动作发生时触发自定义脚本，有两组钩子：客户端和服务器端。 客户端钩子由提交、合并一类的操作调用，服务器端钩子由接收被推送的提交这样的联网操作调用。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 8.3 - 钩子/"/>
+
+
+
+
+
+  <title>chapter 8.3 - Git 钩子 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Git - ProGit Chapter 8.3 - 钩子/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">chapter 8.3 - Git 钩子</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/Book-ProGit/" itemprop="url" rel="index">
+                    <span itemprop="name">Book-ProGit</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Git 能在特定的动作发生时触发自定义脚本，有两组钩子：客户端和服务器端。</p>
+<p>客户端钩子由提交、合并一类的操作调用，服务器端钩子由接收被推送的提交这样的联网操作调用。</p>
+<a id="more"></a>
+<p>克隆一个库时，客户端的钩子不会被克隆，服务器端的钩子会被克隆。</p>
+<h2 id="安装钩子"><a href="#安装钩子" class="headerlink" title="安装钩子"></a>安装钩子</h2><p>特定的动作对应特定的钩子文件名，把一个正确命名的脚本文件放入 <code>.git/hooks</code> 目录，就完成了钩子安装，即可被 git 调用</p>
+<p>钩子被存储在 <code>.git/hooks</code> 目录下， 使用 <code>git init</code> 命令初始化库时，会在此目录下放入示例钩子</p>
+<p>示例钩子都以 <code>.sample</code> 结尾，移除这个后缀就可以启用，被特定的动作触发调用，注释部分还说明了传入的参数</p>
+<p>示例钩子都是 shell 脚本文件，有些儿混杂了 perl 代码，自己编写的钩子可使用任何的可执行脚本语言</p>
+<h2 id="客户端钩子"><a href="#客户端钩子" class="headerlink" title="客户端钩子"></a>客户端钩子</h2><h3 id="提交工作流钩子"><a href="#提交工作流钩子" class="headerlink" title="提交工作流钩子"></a>提交工作流钩子</h3><p><code>pre-commit</code></p>
+<ul>
+<li>在键入提交信息前运行</li>
+<li>用于检查即将提交的快照，例如：<ul>
+<li>检查代码风格是否一致（运行类似 lint 的程序）</li>
+<li>尾随空白字符是否存在（自带的钩子就是这么做的）</li>
+<li>新方法的文档是否适当</li>
+</ul>
+</li>
+<li>以非零值退出，Git 将放弃此次提交，但可以用 <code>git commit --no-verify</code> 绕过这个环节 </li>
+</ul>
+<p><code>prepare-commit-msg</code></p>
+<ul>
+<li>在启动提交信息编辑器之前，默认信息被创建之后运行</li>
+<li>允许你编辑提交者所看到的默认信息。 该钩子接收一些选项：存有当前提交信息的文件的路径、提交类型和修补提交的提交的 sha-1 校验。</li>
+<li>对一般的提交来说并没有什么用；然而对那些会自动产生默认信息的提交，如提交信息模板、合并提交、压缩提交和修订提交等非常实用。 你可以结合提交模板来使用它，动态地插入信息。</li>
+</ul>
+<p><code>commit-msg</code></p>
+<ul>
+<li>接收一个参数，即存有当前提交信息的临时文件的路径。</li>
+<li>可以用来在提交通过前验证项目状态或提交信息</li>
+<li>以非零值退出，Git 将放弃提交</li>
+</ul>
+<p><code>post-commit</code></p>
+<ul>
+<li>在整个提交过程完成后运行</li>
+<li>不接收任何参数，但可以通过运行 <code>git log -1 HEAD</code> 获得最后一次的提交信息</li>
+<li>该钩子一般用于通知之类的事情</li>
+</ul>
+<h3 id="电子邮件工作流钩子"><a href="#电子邮件工作流钩子" class="headerlink" title="电子邮件工作流钩子"></a>电子邮件工作流钩子</h3><p>如果需要通过电子邮件接收由 <code>git format-patch</code> 产生的补丁，这些钩子也许用得上。</p>
+<p>可以给电子邮件工作流设置三个客户端钩子，都是由 <code>git am</code> 命令运行期间调用的， 按调用顺序：</p>
+<p><code>applypatch-msg</code></p>
+<ul>
+<li>第一个被调用的钩子</li>
+<li>接收单个参数：包含请求合并信息的临时文件的名字</li>
+<li>返回非零值，Git 将放弃该补丁</li>
+<li>可以用该脚本来确保提交信息符合格式，或直接用脚本修正格式错误。</li>
+</ul>
+<p><code>pre-applypatch</code></p>
+<ul>
+<li>正好运行于应用补丁之后，产生提交之前</li>
+<li>可以用它在提交前检查快照。 可以用这个脚本运行测试或检查工作区。 </li>
+<li>如果有什么遗漏，或测试未能通过，脚本会以非零值退出，中断 git am 的运行，这样补丁就不会被提交。</li>
+</ul>
+<p><code>post-applypatch</code></p>
+<ul>
+<li>运行于提交产生之后，是在 <code>git am</code> 运行期间最后被调用的钩子</li>
+<li>可以用它把结果通知给一个小组或所拉取的补丁的作者。 但没办法用它停止打补丁的过程。</li>
+</ul>
+<h3 id="其它客户端钩子"><a href="#其它客户端钩子" class="headerlink" title="其它客户端钩子"></a>其它客户端钩子</h3><p><code>pre-rebase</code></p>
+<ul>
+<li>运行于变基之前</li>
+<li>以非零值退出可以中止变基的过程</li>
+<li>可以用来禁止对已经推送的提交变基。 Git 自带的 pre-rebase 钩子示例就是这么做的，不过它所做的一些假设可能与你的工作流程不匹配。</li>
+</ul>
+<p><code>post-rewrite</code></p>
+<ul>
+<li>钩子被那些会替换提交记录的命令调用，比如 git commit –amend 和 git rebase（不过不包括 git filter-branch）</li>
+<li>唯一的参数是触发重写的命令名，同时从标准输入中接受一系列重写的提交记录</li>
+<li>用途很大程度上跟 post-checkout 和 post-merge 差不多。</li>
+</ul>
+<p><code>post-checkout</code></p>
+<ul>
+<li>在 git checkout 成功运行后被调用。</li>
+<li>可以根据项目环境用它调整工作目录。 其中包括放入大的二进制文件、自动生成文档或进行其他类似这样的操作。</li>
+</ul>
+<p><code>post-merge</code></p>
+<ul>
+<li>在 git merge 成功运行后被调用</li>
+<li>可以恢复 Git 无法跟踪的工作区数据，比如权限数据。</li>
+<li>也可以用来验证某些在 Git 控制之外的文件是否存在，这样就能在工作区改变时，把这些文件复制进来。</li>
+</ul>
+<p><code>pre-push</code></p>
+<ul>
+<li>在 git push 运行期间， 更新了远程引用但尚未传送对象时被调用</li>
+<li>接受远程分支的名字和位置作为参数，同时从标准输入中读取一系列待更新的引用</li>
+<li>可以在推送开始之前，用它验证对引用的更新操作（一个非零的退出码将终止推送过程）</li>
+</ul>
+<p><code>pre-auto-gc</code></p>
+<ul>
+<li>在垃圾回收开始之前被调用（git 的一些日常操作在运行时，偶尔会调用 <code>git gc --auto</code> 进行垃圾回收 ）</li>
+<li>可以用来提醒现在要回收垃圾了，或者依情形判断是否要中断回收</li>
+</ul>
+<h2 id="服务器端钩子"><a href="#服务器端钩子" class="headerlink" title="服务器端钩子"></a>服务器端钩子</h2><p>系统管理员还可以使用服务器端的钩子对项目强制执行各种类型的策略</p>
+<p>服务器端钩子脚本在推送到服务器之前和之后运行</p>
+<p>推送到服务器前运行的钩子可以在任何时候以非零值退出，拒绝推送并给客户端返回错误消息，还可以设置足够复杂的推送策略。</p>
+<p><code>pre-receive</code></p>
+<ul>
+<li>处理来自客户端的推送操作时，最先被调用的脚本是 pre-receive。它从标准输入获取一系列被推送的引用。</li>
+<li>以非零值退出，所有的推送内容都不会被接受。可以用这个钩子阻止对引用进行非快进（non-fast-forward）的更新，或者对该推送所修改的所有引用和文件进行访问控制。</li>
+</ul>
+<p><code>update</code></p>
+<ul>
+<li>update 脚本和 pre-receive 脚本十分类似，不同之处在于它会为每一个准备更新的分支各运行一次。 假如推送者同时向多个分支推送内容，pre-receive 只运行一次，相比之下 update 则会为每一个被推送的分支各运行一次</li>
+<li>不从标准输入读取内容，而是接受三个参数：引用的名字（分支），推送前的引用指向的内容的 SHA-1 值，以及用户准备推送的内容的 SHA-1 值</li>
+<li>以非零值退出，只有相应的那一个引用会被拒绝；其余的依然会被更新</li>
+</ul>
+<p><code>post-receive</code></p>
+<ul>
+<li>在整个过程完结以后运行</li>
+<li>接受与 pre-receive 相同的标准输入数据</li>
+<li>可以用来更新其他系统服务或者通知用户：<ul>
+<li>给某个邮件列表发信</li>
+<li>通知持续集成（continous integration）的服务器</li>
+<li>更新问题追踪系统（ticket-tracking system） —— 甚至可以通过分析提交信息来决定某个问题（ticket）是否应该被开启，修改或者关闭。</li>
+</ul>
+</li>
+<li>该脚本无法终止推送进程，不过客户端在它结束运行之前将保持连接状态，所以如果想做其他操作需谨慎使用它，因为它将耗费很长的一段时间。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+            <a href="/tags/Git-Hooks/" rel="tag"># Git-Hooks</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/Git - ProGit Chapter 8.2 - 属性/" rel="next" title="chapter 8.2 - Git 属性">
+                <i class="fa fa-chevron-left"></i> chapter 8.2 - Git 属性
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/19/Git - SVN 和 Git/" rel="prev" title="SVN 和 Git">
+                SVN 和 Git <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装钩子"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;&#x94A9;&#x5B50;" class="headerlink" title="&#x5B89;&#x88C5;&#x94A9;&#x5B50;"></a>&#x5B89;&#x88C5;&#x94A9;&#x5B50;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端钩子"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5BA2;&#x6237;&#x7AEF;&#x94A9;&#x5B50;" class="headerlink" title="&#x5BA2;&#x6237;&#x7AEF;&#x94A9;&#x5B50;"></a>&#x5BA2;&#x6237;&#x7AEF;&#x94A9;&#x5B50;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#提交工作流钩子"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x63D0;&#x4EA4;&#x5DE5;&#x4F5C;&#x6D41;&#x94A9;&#x5B50;" class="headerlink" title="&#x63D0;&#x4EA4;&#x5DE5;&#x4F5C;&#x6D41;&#x94A9;&#x5B50;"></a>&#x63D0;&#x4EA4;&#x5DE5;&#x4F5C;&#x6D41;&#x94A9;&#x5B50;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#电子邮件工作流钩子"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x7535;&#x5B50;&#x90AE;&#x4EF6;&#x5DE5;&#x4F5C;&#x6D41;&#x94A9;&#x5B50;" class="headerlink" title="&#x7535;&#x5B50;&#x90AE;&#x4EF6;&#x5DE5;&#x4F5C;&#x6D41;&#x94A9;&#x5B50;"></a>&#x7535;&#x5B50;&#x90AE;&#x4EF6;&#x5DE5;&#x4F5C;&#x6D41;&#x94A9;&#x5B50;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其它客户端钩子"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x5176;&#x5B83;&#x5BA2;&#x6237;&#x7AEF;&#x94A9;&#x5B50;" class="headerlink" title="&#x5176;&#x5B83;&#x5BA2;&#x6237;&#x7AEF;&#x94A9;&#x5B50;"></a>&#x5176;&#x5B83;&#x5BA2;&#x6237;&#x7AEF;&#x94A9;&#x5B50;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器端钩子"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x670D;&#x52A1;&#x5668;&#x7AEF;&#x94A9;&#x5B50;" class="headerlink" title="&#x670D;&#x52A1;&#x5668;&#x7AEF;&#x94A9;&#x5B50;"></a>&#x670D;&#x52A1;&#x5668;&#x7AEF;&#x94A9;&#x5B50;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
