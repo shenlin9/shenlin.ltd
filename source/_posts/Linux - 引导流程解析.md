@@ -1,217 +1,224 @@
-��Linux�������̡�
+---
+title: linux - 引导流程解析
+categories:
+  - linux
+tags:
+  - linux
+---
 
-    �̼�Firmware(CMOS/BIOS)->ִ��POST(Power On Self Test)�ӵ��Լ�->��ȡMBR->�Ծٳ���BootLoader(GRUB)->�����ں�->�ں�Kernel->����Ӳ��
+linux 引导流程解析
 
-                                                                                                                          ->��������init->��ȡ��ִ�������ļ�/etc/inittab
+<!--more-->
 
+Linux引导流程
 
-    init�Ĺ�����
+    固件Firmware(CMOS/BIOS)->执行POST(Power On Self Test)加电自检->读取MBR->自举程序BootLoader(GRUB)->载入内核->内核Kernel->驱动硬件->启动进程init->读取并执行配置文件/etc/inittab
 
-        init�������ȡinittab�ļ���ִ��ȱʡ���м��𣬴Ӷ������������̡�
+init的工作：
 
-        ��UNIXϵͳ�У�init�ǵ�һ�����Դ��ڵĽ��̣�����PID��Ϊ1������Ҳ������һ�����߼��Ĺ��ܸ���PIDΪ0���ں˵�������Kernel Scheduler�����Ӷ����CPUʱ�� 
+    init启动后读取inittab文件，执行缺省运行级别，从而继续引导过程。
 
-    �ں˵��������������CPUʱ��ͽ��̼��л���
+    在UNIX系统中，init是第一个可以存在的进程，它的PID恒为1，但它也必须向一个更高级的功能负责：PID为0的内核调度器（Kernel Scheduler），从而获得CPU时间 
 
-    ���ӽ��̣�linux�У���������ֹ���ӽ���Ҳ���뱻��ֹ���������̱���ֹ�����ӽ���������ԭ��û����ֹ�����ӽ��̱���Ϊ�¶����̣�linux��⵽�¶����̺󣬻Ὣ�¶����̵ĸ�����ָ��init���̣�
+内核调度器：负责分配CPU时间和进程间切换。
 
-              ���ӽ��̱���ֹ�󣬸�����û�˽⵽����Ϣ�������Ժ��ӽ���ȡ����ϵ������ӽ��̳�Ϊ��ʬ���̣�linux����Z��Zombie����ʾ��
+父子进程：linux中，父进程终止，子进程也必须被终止；若父进程被终止，而子进程因特殊原因没被终止，则子进程被称为孤儿进程；linux检测到孤儿进程后，会将孤儿进程的父进程指向init进程；
 
-    MBR��Mater Boot Record ��������¼��λ��0����0��ͷ1����
+          若子进程被终止后，父进程没了解到此信息，还尝试和子进程取得联系，则此子进程称为僵尸进程，linux中用Z（Zombie）表示。
 
-         MBR��512���ֽ�
+MBR：Mater Boot Record 主引导记录，位于0柱面0磁头1扇区
 
-             Boot Loader ��446bytes�� �Ծٳ���
+     MBR共512个字节
 
-             Partition Table ��64bytes�� ������
+         Boot Loader （446bytes） 自举程序
 
-                   partition1 
-                   partition2 
-                   partition3 
-                   partition4 
+         Partition Table （64bytes） 分区表
 
-             Magic Number��2bytes�� ������־��
+               partition1 
+               partition2 
+               partition3 
+               partition4 
 
-    �̼�����������Ӳ��֮��
+         Magic Number（2bytes） 结束标志字
 
-    �̼��ĳ������ã�
+固件介于软件和硬件之间
 
-        ��ȫ���ã�������BIOS����
+    固件的常用设置：
 
-        �������Ľ����б�
+    安全设置，如设置BIOS密码
 
-        ���������ʵ�����˳��
+    可引导的介质列表
 
-        ��Դ����
+    可引导介质的搜索顺序
 
-        ����ϸ����ʾ
+    电源管理
 
-        ��������
+    启动细节显示
 
-    BIOSʱ��
+    …………
 
-        Ӳ��ʱ�ӣ�linux�г�Ϊhardware clock��ʹ������hwclock�鿴
+BIOS时钟
 
-        ����Ӳ��ʱ��ʱ�䣺hwclock --set --date="9/22/96 16:45:05"
+    硬件时钟，linux中称为hardware clock，使用命令hwclock查看
 
-    ����ʱ��
+    更改硬件时钟时间：hwclock --set --date="9/22/96 16:45:05"
 
-        linuxϵͳ��ʱ�ӣ�ʹ��date����鿴
+软件时钟
 
-        ��������ʱ��ʱ�䣺date MMDDhhmm[[CC]YY][.ss]����ʽ�� ��������ʱʱ�ַ���������.����
+    linux系统的时钟，使用date命令查看
 
-                          date 030821192014.30
+    更改软件时钟时间：date MMDDhhmm[[CC]YY][.ss]，格式是 月月日日时时分分年年年年.秒秒
 
-    ����ʱ�Ӻ�Ӳ��ʱ�ӵ�ͬ��
+                      date 030821192014.30
 
-        ����ʱ��ͬ������Ҫ��һЩ��Ӧ�ó����ڵ���ʱ��ֵʱ��ʱ�Ӳ�ͬ�����޷��������У�����ʾTime Error
+    软件时钟和硬件时钟的同步
 
-                            һЩ��Ӧ�ó����ʱ���кܸߵ�Ҫ�������绷����ʵ��ͬ�������籸�ݣ���ʱ��Ҫ����������������ʱ����һ�µ�
+        两个时钟同步很重要：一些儿应用程序在调用时间值时，时钟不同步则无法正常运行，会提示Time Error
 
-        ͬ�����hwclock --hctosys         hardware clock to sys����Ӳ��ʱ��ͬ����ϵͳ
+                            一些儿应用程序对时间有很高的要求，如网络环境中实现同步的网络备份，这时需要网络中所有主机的时间是一致的
 
-                  hwclock --systohc         sys clock to haredware����ϵͳʱ��ͬ����Ӳ��
+        同步命令：hwclock --hctosys         hardware clock to sys，将硬件时钟同步到系统
 
-        NTP��Network Time Protocal�����񣬶��ں�ʵ�ʷ�����ͬ��???
+                  hwclock --systohc         sys clock to haredware，将系统时钟同步到硬件
 
-��Linux���м���
+        NTP（Network Time Protocal）服务，定期和实际服务器同步???
 
-    ��/etc/inittab�����ļ�������linux�����м���init���̽���ȡinittab�����ļ�������ϵͳ�������趨�ļ����ϡ�
+Linux运行级别
 
-    ��7������0 - halt
-                    ���𣨹ػ�???�ô�???������Ҫ��Ĭ�ϵ����м�����Ϊ��ֵ
+    在/etc/inittab配置文件中设置linux的运行级别，init进程将读取inittab配置文件，并将系统运行在设定的级别上。
+
+    共7个级别：0 - halt
+                    挂起（关机???用处???），不要将默认的运行级别设为此值
 
                1 - Single user mode
-                    ���û�ģʽ��������windows�İ�ȫģʽ��ֻ��root���Ե�¼���ô�дS��ʾ
+                    单用户模式，类似于windows的安全模式，只有root可以登录，用大写S表示
 
                2 - Multiuser,without NFS
-                    ���û�ģʽ��û��NFS�������ʹ������ͺ�3һ��
+                    多用户模式，没有NFS，如果不使用网络就和3一样
 
-                    NFS��Network File System�������ļ�ϵͳ��sun��˾�����ķ�������Unix��Linux֮����ļ��������򵥵���ȫ�Բʹ�ý���
+                    NFS：Network File System，网络文件系统，sun公司开发的服务，用于Unix和Linux之间的文件共享，简单但安全性差，使用较少
 
                3 - Full multiuser mode
-                    �����Ķ��û�ģʽ
+                    完整的多用户模式
 
                4 - unused
-                    û��ʹ�ã������Լ���������м��𣬿��Զ���������Щ������
+                    没有使用，可以自己定义的运行级别，可以定义启动哪些儿服务
 
                5 - X11
-                    X11��X Window�İ汾�ţ�ͼ�λ��Ķ��û�������
+                    X11是X Window的版本号，图形化的多用户环境，
 
                6 - reboot
-                    ��������Ҫ��Ĭ�ϵ����м�����Ϊ��ֵ
+                    重启，不要将默认的运行级别设为此值
 
-               ???ϵͳ��Ĭ�ϼ���
+               ???系统的默认级别
 
-    �鿴��ǰ�����м���runlevel
+    查看当前的运行级别：runlevel
 
-                ��ʾN 3��N��ʾû���л������м���???
+                显示N 3，N表示没有切换过运行级别???
 
-                ��ʾS 3��S��ʾ�л������м���???
+                显示S 3，S表示切换过运行级别???
 
-    �л����м���init [0123456Ss]
+    切换运行级别：init [0123456Ss]
 
                   telinit [0123456Ss]
 
-                  telinit��init��������
+                  telinit是init的软链接
 
-    ��inittab�У�������Ŀ��ȡ���¸�ʽ��
+    在inittab中，所有条目采取以下格式：
 
         id:runlevels:action:process
 
-            id����Ŀ�ı�ʶ����1��4λ�ַ�
+            id：条目的标识符，1到4位字符
 
-            run-levels��ָ�����м��𣬿���ָ����������Ϊ�գ����Ǳ�ʾ��ִ�У����Ǳ�ʾ��0��6ÿ�����м���Ҫִ��
+            run-levels：指定运行级别，可以指定多个，如果为空，不是表示不执行，而是表示从0到6每个运行级别都要执行
 
-            action��ָ������״̬��action����ȡֵ��
+            action：指定运行状态，action常用取值：
 
-                        initdefault��ָ��ϵͳȱʡ���������м���
+                        initdefault：指定系统缺省启动的运行级别
 
-                        sysinit��ϵͳ����ִ��process��ָ��������
+                        sysinit：系统启动执行process中指定的命令
 
-                        wait��ִ��process��ָ������������������������������
+                        wait：执行process中指定的命令，并等其结束再运行其他命令
 
-                        once��ִ��process��ָ����������ȴ������
+                        once：执行process中指定的命令，不等待其结束
 
-                        ctrlaltdel������Ctrl+Alt+Delʱִ��processָ��������
+                        ctrlaltdel：按下Ctrl+Alt+Del时执行process指定的命令
 
-                        powerfail�������ֵ�Դ����ʱִ��processָ����������ȴ������
+                        powerfail：当出现电源错误时执行process指定的命令，不等待其结束
 
-                        powerokwait������Դ�ָ�ʱִ��processָ��������
+                        powerokwait；当电源恢复时执行process指定的命令
 
-                        respawn��һ��processָ����������ֹ�����������и�����
+                        respawn：一旦process指定的命令中止，便重新运行该命令
 
-            process��ָ��Ҫ���еĳ��������·��
+            process：指定要运行的程序的完整路径
 
 
-        �Ƚ������һ�У�������ϵͳ����ʱ��Ĭ�����м���
+        比较特殊的一行，定义了系统启动时的默认运行级别：
 
             id:5:initdefault:
 
+Linux启动服务管理
 
-��Linux�������������
+    启动脚本 /etc/rc.d/rc.sysinit
 
+        /etc/inittab中为si::sysinit:/etc/rc.d/rc.sysinit        
 
-    �����ű� /etc/rc.d/rc.sysinit
+        可见运行状态为空，说明无论哪种运行级别，都会执行rc.sysinit，如自己有需要每次系统启动时都执行的脚本，可以附加在此文件内容后
 
-        /etc/inittab��Ϊsi::sysinit:/etc/rc.d/rc.sysinit        
+        完成系统服务程序启动，如系统环境变量设置，设置系统时钟，加载字体，检查加载文件系统，生成系统启动信息日志文件等
 
-        �ɼ�����״̬Ϊ�գ�˵�������������м��𣬶���ִ��rc.sysinit�����Լ�����Ҫÿ��ϵͳ����ʱ��ִ�еĽű������Ը����ڴ��ļ����ݺ�
+    启动脚本 /etc/rc.d/rc
 
-        ���ϵͳ���������������ϵͳ�����������ã�����ϵͳʱ�ӣ��������壬�������ļ�ϵͳ������ϵͳ������Ϣ��־�ļ���
+        判断系统的运行级别，启动对应运行级别目录中的服务程序，完成相应运行级别的初始化设置
 
-    �����ű� /etc/rc.d/rc
+    启动脚本 /etc/rc.d/rc[0123456].d        /etc/rc[0123456].d是其软链接，是为了和Unix的良好兼容
 
-        �ж�ϵͳ�����м���������Ӧ���м���Ŀ¼�еķ�����������Ӧ���м���ĳ�ʼ������
-
-    �����ű� /etc/rc.d/rc[0123456].d        /etc/rc[0123456].d���������ӣ���Ϊ�˺�Unix�����ü���
-
-        �ֱ��Ŷ�Ӧ�����м���ķ������ű��ķ������ӣ����ӵ�init.dĿ¼�е���Ӧ�ű���ls -l /etc/rc.d/rc3.dִ�н��������
+        分别存放对应于运行级别的服务程序脚本的符号链接，链接到init.d目录中的相应脚本，ls -l /etc/rc.d/rc3.d执行结果举例：
 
             K35smb -> ../init.d/smb
             S55sshd - > ../init.d/sshd
 
-        �ļ���ʽ��Ϊ3�����֣�
+        文件格式分为3个部分：
 
-            ��ͷ��ĸS��K��S��ͷ�ı�ʾ�ڴ����м���ҪStart������K��ͷ�ı�ʾKill�رգ�ע�ⶼ�Ǵ�д����S��ΪСд���������������ô��ص�ر��Լ�����Ҫ�ķ������д˹��ɣ�����Сдs��ͷ�ľͿ����˽⵽ĳ����ȱʡ����ϵͳ�����ģ��Լ�������Ϊ�˲�����
+            开头字母S或K：S开头的表示在此运行级别要Start启动，K开头的表示Kill关闭，注意都是大写。如S改为小写，则不启动，可利用此特点关闭自己不需要的服务，则有此规律，看到小写s开头的就可以了解到某服务缺省是随系统启动的，自己随后调整为了不启动
 
-            �м������35,55��ʾ����/�رյ�˳������ԽСԽ��������
+            中间的数字35,55表示启动/关闭的顺序，数字越小越优先启动
 
-            ����ǽű�������
+            最后是脚本的名称
 
 
-    �����ܽ᣺
+启动总结
 
-    firmware-->BootLoader(λ��MBR��)-->����init����-->��ȡ/etc/inittab�����ļ�-->�ж�ϵͳ��ȱʡ���м���initDefault-->ִ�нű�/etc/rc.d/rc.sysinit��ʼ��ִ�У������м����޹أ�-->ִ�нű�/etc/rc.d/rc���ж�initDefault-->�������м���������ӦĿ¼/etc/rc.d/rc[0123456].d�µ���S��ͷ�Ľű�-->����usrename,password
+    firmware-->BootLoader(位于MBR中)-->启动init进程-->读取/etc/inittab配置文件-->判断系统的缺省运行级别initDefault-->执行脚本/etc/rc.d/rc.sysinit（始终执行，和运行级别无关）-->执行脚本/etc/rc.d/rc，判断initDefault-->根据运行级别启动对应目录/etc/rc.d/rc[0123456].d下的以S开头的脚本-->输入usrename,password
 
 
     tty
 
-        ctrl+alt+[F1--F6]��������Ӧ��6���ն�
+        ctrl+alt+[F1--F6]可启动对应的6个终端
 
-        ctrl+alt+F7 �ص�X Window
+        ctrl+alt+F7 回到X Window
 
-    /etc/rc.d/init.d        /etc/init.d�Ǵ�Ŀ¼��������Ŀ¼
+    /etc/rc.d/init.d        /etc/init.d是此目录的软链接目录
 
-        ��Ŀ¼�°����������м���ķ������ű�
+        该目录下包含各个运行级别的服务程序脚本
 
-        linux��װ�ķ���������ű���λ�ڴ�Ŀ¼
+        linux安装的服务的启动脚本都位于此目录
 
-        ֱ�����д�Ŀ¼�µĽű����ᵯ��ʹ�÷�������ʾ��Ϣ�����Դ������ֹ������͹رշ���
+        直接运行此目录下的脚本，会弹出使用方法的提示信息，可以从这里手工启动和关闭服务：
 
             /etc/rc.d/init.d/sshd
 
-            Usage��/etc/rc.d/init.d/sshd {start|stop|restart|reload|condrestart|status}
+            Usage：/etc/rc.d/init.d/sshd {start|stop|restart|reload|condrestart|status}
 
-                reload  ��ʾ���¶�ȡ����������ļ�������Ҫ��������
+                reload  表示重新读取服务的配置文件，不需要重启服务
 
-                condrestart ���ȼ������Ƿ������У�����������������û���������κβ���
+                condrestart 首先检测服务是否在运行，在运行则重启服务，没运行则不做任何操作
 
-    ��������������
+    设置自启动程序
 
         ln -s
 
-            ��һ����������ű��ļ��������ӣ��ŵ���Ӧ�����������Ŀ¼�£���
+            做一个启动服务脚本文件的软链接，放到对应的启动级别的目录下，如
 
             ln -s /etc/rc.d/init.d/msg.script /etc/rc.d/rc3.d/S100msg.script
 
@@ -219,14 +226,14 @@
 
             chkconfig --list
 
-                ��ʾϵͳ���Ѱ�װ�ķ����ȱʡ��״̬
+                显示系统中已安装的服务和缺省的状态
 
-                chkconfig --list httpd  ֻ��ʾhttpd�������Ϣ
+                chkconfig --list httpd  只显示httpd服务的信息
 
             chkconfig --levels servicename on/off
             chkconfig --level servicename on/off
 
-                ������Ϊservicename�ķ��������м���levels����Ϊon/off��һ�����м���ʹ��ѡ��--level�����ʹ��--levels
+                将名称为servicename的服务在运行级别levels上设为on/off，一个运行级别使用选项--level，多个使用--levels
 
                 chkconfig --levels 2345 httpd on
 
@@ -234,117 +241,117 @@
 
             ntsysv --level 3
 
-            �趨���м���3����������ͼ�ν���
+            设定运行级别3的启动服务，图形界面
 
         dmesg
 
-            ��������ڼ�Ĵ���
+            检查引导期间的错误
 
             dmesg | grep hda
 
             dmesg | grep eth0
 
-                ���û���ҵ��κ���Ϣ��˵���ں�û������������
+                如果没有找到任何信息，说明内核没能驱动此网卡
 
-        ϵͳ��־ /var/log/messages
+        系统日志 /var/log/messages
 
             grep syslogd /var/log/messages
 
-                ���ϵͳ��־�����ҿ��ܱ�dmesg���Ե�Ӧ�ó������
+                检查系统日志，查找可能被dmesg忽略的应用程序错误
 
             /var/log
 
-                ��Ŀ¼��ŵ�����־�ļ�
+                此目录存放的是日志文件
 
 
-��GRUB������Ӧ�á�
+【GRUB配置与应用】
 
     
-    GRUB��the GRand Unified Bootloader
+    GRUB：the GRand Unified Bootloader
 
-    GRUB�������ļ�Ĭ��Ϊ/boot/grub/grub.conf    /etc/grub.confΪ�������ļ���������
+    GRUB的配置文件默认为/boot/grub/grub.conf    /etc/grub.conf为此配置文件的软连接
 
-    ����ѡ�
+    配置选项：
 
         default
     
-            ����ȱʡ������ϵͳ��0��ʾ��1����1��ʾ��2��������ϵͳ���б���title�˵��������пɿ���
+            定义缺省的启动系统，0表示第1个，1表示第2个，启动系统的列表在title菜单项名称中可看见
 
         timeout
 
-            ����ȱʡ�ȴ�ʱ��
+            定义缺省等待时间
 
         splashimage
 
-            ����GRUB����ͼƬ�����640x480�ķֱ��ʣ�ɫ��14�����ʱ�Կ�����δ���أ��߷ֱ��ʵ�ͼƬ�ᵼ�±������һƬ
+            定义GRUB界面图片，最好640x480的分辨率，色深14，因此时显卡驱动未加载，高分辨率的图片会导致背景漆黑一片
 
-            λ��/boot/grub/splash.xpm.gz
+            位于/boot/grub/splash.xpm.gz
 
         hiddenmenu
 
-            ���ز˵���ɾ����ѡ������ʾ�˵���
+            隐藏菜单，删除此选项则显示菜单项
 
         title
 
-            ����˵�������
+            定义菜单项名称
         
         root
 
-            ����GRUB�ĸ��豸���ں����ڵķ���
+            设置GRUB的根设备即内核所在的分区
 
         kernel
 
-            �����ں��ļ�����λ��
+            定义内核文件所在位置
 
         initrd
 
-            ������ؾ����ļ�
+            命令加载镜像文件
 
-    GRUB���
+    GRUB命令：
 
-        e���༭��ǰ�������˵���
+        e：编辑当前的启动菜单项
 
-        c������GRUB��������ģʽ
+        c：进入GRUB的命令行模式
 
-        b��������ǰ�Ĳ˵���
+        b：启动当前的菜单项
 
-        d��ɾ����ǰ��
+        d：删除当前行
 
-        esc������GRUB�����˵����棬ȡ���Ե�ǰ�˵����������κ��޸�
-
-
-���������Ϸ���������
+        esc：返回GRUB启动菜单界面，取消对当前菜单项所做的任何修改
 
 
-    Ӧ��1��root�������룬���뵥�û�ģʽ�������룺
+【启动故障分析与解决】
 
-            ��������GRUB���棬��e����༭��ģʽ
 
-                            ��ѡ��kernel�У��ٴΰ�e
+    应用1：root忘记密码，进入单用户模式重置密码：
 
-                            �����µĽ�������һ�е����λ������ո�����м���ı�ţ����ɽ����Ӧ�����м�����ո�1����ո�s����ʾҪ���뵥�û�ģʽ
+            开机进入GRUB界面，按e进入编辑行模式
 
-                            ���س���b���������������úõ����м���
+                            ，选中kernel行，再次按e
 
-                            �����뵥�û�ģʽ�ǲ���Ҫ�κ����ܵģ�����ϵͳ��passwd root��Ҳ����Ҫ�����뼴�ɸ���
+                            ，在新的界面的最后一行的最后位置输入空格加运行级别的编号，即可进入对应的运行级别，如空格1（或空格s）表示要进入单用户模式
 
-    Ӧ��2������GRUB���룬�����κ��˿ɽ��뵥�û�ģʽ��
+                            ，回车后按b键即启动进入设置好的运行级别
 
-        1��ʹ��GRUB�Դ���grub-md5-crypt ���� ��GRUB���������н�����ʹ��md5crypt�õ�MD5���ܵ������ַ�������xxx
+                            ，进入单用户模式是不需要任何秘密的，进入系统后passwd root，也不需要旧密码即可更改
 
-        2������GRUB�����ļ�/boot/grub/grub.conf����title��������һ�У�password --md5 xxxxxxxxxx ��xxxΪ����ʹ������õ������룩
+    应用2：设置GRUB密码，避免任何人可进入单用户模式：
 
-        3����������GRUBʱ�������ǰ�e���б༭��������Ҫ�Ȱ�p����������
+        1、使用GRUB自带的grub-md5-crypt 或者 在GRUB交互命令行界面中使用md5crypt得到MD5加密的密码字符串，如xxx
 
-    Ӧ��3�������ļ�grub.conf���ô����޸�GRUB
+        2、进入GRUB配置文件/boot/grub/grub.conf，在title上面增加一行：password --md5 xxxxxxxxxx （xxx为上面使用命令得到的密码）
 
-        �����������grub���浫û�в˵���ֻʣ��һ��grub>��ʾ��������취��
+        3、重启进入GRUB时，不再是按e进行编辑，而是需要先按p键键入密码
 
-        1���鿴grub�����õĲ������ҳ�����
+    应用3：配置文件grub.conf设置错误，修复GRUB
+
+        当开机后进入grub界面但没有菜单，只剩下一个grub>提示符，解决办法：
+
+        1、查看grub里设置的参数，找出错误：
 
             grub>cat /grub/grub.conf
 
-        2��ȷ�ϴ���󣬽�root,kernel,initrd 3������ʹ����ȷ�ķ�ʽִ��һ�飺
+        2、确认错误后，将root,kernel,initrd 3个命令使用正确的方式执行一遍：
 
             grub>root(hd0,6)
 
@@ -352,17 +359,17 @@
 
             grub>initrd(hd0,6)/initrd-2.4.18-14.img
 
-        3������
+        3、启动
 
             grub>boot
 
-    Ӧ��4��inittab�ļ��𻵻�ʧ������linux rescueģʽ
+    应用4：inittab文件损坏或丢失，进入linux rescue模式
 
-            1��BIOS����Ϊ������������Linux��װ�̷ŵ�������ʹ�ù���������
+            1、BIOS中设为光盘启动，把Linux安装盘放到光驱，使用光盘引导。
 
-            2�����ְ�װ����󣬸�����ʾ��F5������linux rescueģʽ
+            2、出现安装界面后，根据提示按F5键进入linux rescue模式
 
-            3����boot������linux rescue�����س�
+            3、在boot下输入linux rescue，并回车
 
-            4��ʹ�ñ��ݵ�inittab.bak�޸�
+            4、使用备份的inittab.bak修复
 

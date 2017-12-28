@@ -1,8 +1,16 @@
-﻿# linux bash的配置文件
-
-标签： AAA linux shell bash profile 配置文件
-
 ---
+title: linux - Bash 的配置文件
+categories:
+  - Linux
+  - Bash
+tags:
+  - Linux
+  - Bash
+---
+
+Bash 的配置文件
+
+<!--more-->
 
 交互式shell
 :    shell接受来自键盘的命令
@@ -28,6 +36,7 @@
     可以在上面的文件里定义个人的shell环境
 
 ## 登录后
+
 在用户登录后，bashell对于交互式shell会运行文件：
 > ~/.bashrc
 
@@ -39,11 +48,14 @@ bashell关于配置文件的选项：
     --rcfile    强制使用指定的~/.bashrc之外的文件
 
 ~/.bash_profile中有对.bashrc文件的调用
+
 ## 注销时
+
 在用户注销时，bashell会运行：
 > ~/.bash_logout
 
 # 非交互式shell
+
 运行脚本时，bash会在非交互式shell中运行，这时不会读取配置文件，但如果设置了BASH_ENV变量，bash会扩展该值并假设它是一个文件名称，如果文件存在，则会在运行脚本之前运行此文件。
 
 

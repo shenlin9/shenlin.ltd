@@ -1,16 +1,17 @@
-﻿# php 字符串函数
-
-标签： AAA php 字符串
-
 ---
-
-[TOC]
-
+title: php - 字符串函数
+categories:
+  - php
+  - 字符串函数
+tags:
+  - php
+  - 字符串函数
 ---
 
 ## 数组相关
 
 ### implode
+
 ```php 
 string implode(string $glue, array $pieces)
 string implode(array $pieces)
@@ -24,6 +25,7 @@ string implode(array $pieces)
 `join` — 别名 `implode`
 
 ### explode
+
 ```php
 array explode ( string $delimiter , string $string [, int $limit ] )
 ```
@@ -32,18 +34,18 @@ array explode ( string $delimiter , string $string [, int $limit ] )
 
 
 ### str_split
+
 ```php
 array str_split ( string $string [, int $split_length = 1 ] )
 ```
 
 将字符串`$string`按指定长度`$split_length`切割为数组
 
----
 
 ## 针对特定格式字符串
 
-
 ### parse_str
+
 ```php
 void parse_str ( string $str [, array &$arr ] )
 ```
@@ -51,17 +53,17 @@ void parse_str ( string $str [, array &$arr ] )
 将URL中的QueryString字符串直接解析成变量 或 解析到数组`&$arr`中
 
 ### str_getcsv
+
 ```php
 array str_getcsv ( string $input[, string $delimiter = "," [, string $enclosure = '"' [, string $escape = "\\" ]]] )
 ```
 
 解析 CSV 字符串为一个数组
 
----
-
 ## 切割字符串
 
 ### strtok
+
 ```php
 string strtok ( string $str , string $token )
 string strtok ( string $token )
@@ -70,6 +72,7 @@ string strtok ( string $token )
 分割字符串`$str`使用`$token`标记中的每一个字符，第一次调用需要指明`$str`，以后每次调用只需指明`$token`，每分割一次获得一个字符串
 
 ### chunk_split
+
 ```php
 string chunk_split ( string $body [, int $chunklen = 76 [, string $end = "\r\n" ]] )
 ```
@@ -81,23 +84,21 @@ string chunk_split ( string $body [, int $chunklen = 76 [, string $end = "\r\n" 
 `$chunklen` 默认值76，和 `base64_encode()` 配合输出符合RFC2045多用途网际邮件扩充协议(MIME)的字符串
 
 ### wordwrap
+
 ```php
 string wordwrap ( string $str [, int $width = 75 [, string $break = "\n" [, bool $cut = false ]]] )
 ```
 
 将字符串 `$str` 格式化为指定长度 `$width` 就添加 `$break` 的字符串，`$cut` 指明是否切割单词
 
----
-
 ## 查找指定字符串位置
 
-
 ### strpos
+
 ```php
 mixed strpos ( string $haystack , mixed $needle [, int $offset = 0 ] )
 
 stripos strpos 函数的忽略大小写版本
-
 ``` 
 
 在字符串 `$haystack` 中查找字符串 `$needle` **第一次** 出现的位置
@@ -115,13 +116,13 @@ strripos strrpos 函数的忽略大小写版本
 在字符串 `$haystack` 中查找字符串 `$needle` **最后一次** 出现的位置
 方向永远是向后查找
 `$offset` 为正表示从`$offset`位置开始向后查找
-`$offset`为负表示从0开始`向后查找，但查`找截止位置为倒数第$offset个字符
+`$offset`为负表示从0开始`向后查找，但查`找截止位置为倒数第`$offset`个字符
 
----
 
 ## 查找指定字符串位置并返回字符串
 
 ### strstr
+
 ```php
 string strstr ( string $haystack , mixed $needle [, bool $before_needle = false ] )
 
@@ -154,6 +155,7 @@ string strpbrk ( string $haystack , string $char_list )
 并返回自此位置到`$haystack`末尾的字符串（包含那个匹配的字符）
 
 ### substr
+
 ```php
 string substr ( string $string , int $start [, int $length ] )
 ```
@@ -162,12 +164,10 @@ string substr ( string $string , int $start [, int $length ] )
 `$start`为非负数则表示开始位置的偏移量，为负数则表示倒数第`$start`个字符
 `$length`省略则取到末尾，为正数则表示获取字符的长度，为负数则表示截止到倒数第`$length`个字符为止
 
----
-
 ## 字符串替换
 
-
 ### substr_replace
+
 ```php
 mixed substr_replace ( mixed $string , mixed $replacement , mixed $start [, mixed $length ] )
 ```
@@ -192,6 +192,7 @@ mixed substr_replace ( mixed $string , mixed $replacement , mixed $start [, mixe
 数组表示按对应关系指定每次替换的长度
 
 ### str_replace
+
 ```php
 mixed str_replace ( mixed $needle , mixed $replace , mixed $haystack [, int &$count ] )
 
@@ -218,8 +219,8 @@ str_ireplace str_replace 的忽略大小写版本
 
 此参数通过引用传递可以接收替换执行的次数
 
-
 ### strtr
+
 ```php
 string strtr ( string $str , string $from , string $to )
 ```
@@ -229,6 +230,7 @@ string strtr ( string $str , string $from , string $to )
 是**字节替换**，`$from`和`$to`长度不同时，多余的字符将被忽略，将按最短的参数进行替换
 
 ### strtr
+
 ```php
 string strtr ( string $str , array $replace_pairs )
 ```
@@ -237,11 +239,11 @@ string strtr ( string $str , array $replace_pairs )
 
 是**字符串替换**，key和value长度可不同
 
----
 
 ## 字符串输出语言结构
 
 ### echo
+
 ```php
 void echo ( string $arg1 [, string $... ] )
 ```
@@ -279,7 +281,6 @@ $func('aaa');
 var?echo true:echo false;
 ```
 
-
 ### print
 ```php
 int print ( string $arg )
@@ -296,8 +297,6 @@ var_dump($var?print true:print false);
 int(1)
 ```
 
----
-
 ## 格式化输出或返回
 
 > 
@@ -309,6 +308,7 @@ v 表示参数为一个数组，否则为多个字符串参数
 s 表示不输出而是返回字符串，否则直接输出字符串返回字符串长度
 
 ### printf
+
 ```php
 int printf ( string $format [, mixed $args [, mixed $... ]] )
 ```
@@ -356,6 +356,7 @@ string sprintf ( string $format [, mixed $args [, mixed $... ]] )
 同printf，只是不直接输出生成的字符串，而是返回。
 
 ### vprintf
+
 ```php
 int vprintf ( string $format , array $args )
 ```
@@ -367,6 +368,7 @@ int vprintf ( string $format , array $args )
 返回的是输出字符串的长度。
 
 ### vsprintf
+
 ```php
 string vsprintf ( string $format , array $args )
 ```
@@ -378,6 +380,7 @@ string vsprintf ( string $format , array $args )
 返回的是最终生成的字符串。
     
 ### fprintf
+
 ```php
 int fprintf ( resource $handle , string $format [, mixed $args [, mixed $... ]] )
 ``` 
@@ -396,12 +399,12 @@ fprintf($fp,'%04d-%02d-%02d',$year,$month,$day);
 ```
 
 ### vfprintf
+
 ```php
 int vfprintf ( resource $handle , string $format , array $args )
 ```
 同上面的fprintf，只是参数为数组
 
----
 
 ### 解析输入字符串
 

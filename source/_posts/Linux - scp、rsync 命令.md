@@ -1,4 +1,4 @@
-﻿# linux scp、rsync 命令
+# linux scp、rsync 命令
 
 tags ： AAA linux scp rsync
 

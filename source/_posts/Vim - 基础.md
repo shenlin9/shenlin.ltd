@@ -1,4 +1,4 @@
-﻿---
+---
 title: Vim 基础
 categories: Vim
 tags: Vim
@@ -17,12 +17,12 @@ http://www.jianshu.com/p/8ae25a680ed7
 http://www.cnblogs.com/bwangel23/p/4421957.html
 
 显示寄存器列表
-```
+```vim
 :reg
 ```
 
 粘贴寄存器内容
-```
+```vim
 "<n>p
 ```
 
@@ -41,8 +41,8 @@ zb
 
 ## vim 环境变量
 
-//查看环境变量
-```
+查看环境变量
+```vim
 :echo $HOME
 C:\Users\ssl
 
@@ -53,14 +53,14 @@ C:\Program Files\Vim
 C:\Program Files\Vim\vim80
 ```
 
-//查看路径
-```
+查看路径
+```vim
 :set runtimepath
 :set rtp
 ```
 
-//设置路径
-```
+设置路径
+```vim
 :set rtp+=~/.vim/bundle/Vundle.vim
 :set rtp+=$ProgramFiles\Git\bin
 :set rtp+=$ProgramFiles\Git\mingw32\bin
@@ -68,7 +68,7 @@ C:\Program Files\Vim\vim80
 ```
 
 重新加载配置文件
-```
+```vim
 //windows
 :source $VIM\_vimrc
 :so $VIM\_vimrc
@@ -85,13 +85,13 @@ C:\Program Files\Vim\vim80
 ## python 环境
 
 vim 里执行命令输出如下说明支持 python 特性
-```
+```vim
 :version
 ...+python/dyn +python3/dyn..
 ```
 
 vim 里执行命令输出如下说明已安装 python 环境
-```
+```vim
 :echo has("python")
 1
 
@@ -157,32 +157,32 @@ EOL 表示 endofline
 vim 认为文件是由行组成的，并且文件最后一行是以`<EOL>`为结束符的
 
 查看当前设置
-```
+```vim
 :echo &eol
 ```
 
 设置文件以`<EOL>`结尾
-```
+```vim
 :set eol
 ```
 
 不以`<EOL>`结尾
-```
+```vim
 :set noeol
 ```
 
 查看是否自动修正不以`<EOL>`结尾的文件
-```
+```vim
 :echo &fixeol
 ```
 
 自动修正
-```
+```vim
 :set fixeol
 ```
 
 不自动修正
-```
+```vim
 :set nofixeol
 ```
 
@@ -193,29 +193,30 @@ windows, linux, macos 对待换行的方式都不一样，需要进行针对性�
 ### 读写文件时
 
 设置读取文件时的换行检测
-```
+```vim
 :set fileformats=dos,unix
 :set ffs=dos,unix
 ```
 
 查看、设置当前文件换行格式
-```
+```vim
 :set fileformat
 :set fileformat=unix
 :set ff=unix
 ```
+
     取值和对应的换行符
-	    dos	    <CR> <NL>
-	    unix    <NL>
-	    mac	    <CR>
+    dos	    <CR> <NL>
+    unix    <NL>
+    mac	    <CR>
 
 显示换行符和 tab 符
-```
+```vim
 :set list
 ```
 
 取消换行符和 tab 符的显示
-```
+```vim
 :set nolist
 ```
 
@@ -229,11 +230,27 @@ windows, linux, macos 对待换行的方式都不一样，需要进行针对性�
 
 所以下列命令可以转换DOS回车符“^M”为真正的换行符：
 
-```
+```vim
 :%s/\r/\r/g
 ```
 
-### 文件中的 ^M 字符
+### FileFormat 和 文件中的 ^M 字符
+
+设置文件的换行格式是 unix 还是 dos，
+
+unix 是以一个换行符作为换行，dos 则表示以回车符和换行符两个符号一起来表示换行
+
+```vim
+"查询当前文件的换行格式
+:set ff?
+
+"设置当前文件的换行格式
+:set ff=dos
+:set ff=unix
+
+"设置读取文件时的换行检测
+:set ffs=unix,dos
+```
 
 有时在文本编辑器里看到的的 `^M` 字符，
 
@@ -252,6 +269,14 @@ linux 以 `\n` 表示换行，`^M` 就是 linux 下多余出来的回车 `\r` �
 
 ```bash
 $ find ./ -type f -print0 | xargs -0 dos2unix
+```
+
+### BOM
+
+byte of mark 字节序
+
+```vim
+:set nobomb
 ```
 
 ## buffer操作
@@ -282,20 +307,20 @@ $ find ./ -type f -print0 | xargs -0 dos2unix
 * 可以通过按 Tab 在 scheme 之间切换
 
 恢复上次文件打开位置
-```
+```vim
 set viminfo='10,\"100,:20,%,n~/.viminfo
 au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
 ```
 
 文件被外部应用改动时，自动读入文件：
-```
+```vim
 if exists("&autoread")
     set autoread
 endif
 ```
 
 30s 自动保存文件
-```
+```vim
 let autosave=30
 ```
 
@@ -312,7 +337,7 @@ cd 和 lcd 命令区别
 ## 关于 Tab
 
 显示 Tab 字符
-```
+```vim
 :set list
 ```
 * 默认 Tab 将显示为 `^I`
@@ -320,12 +345,12 @@ cd 和 lcd 命令区别
 * 没显示行首
 
 将 Tab 字符转换为 `>_`
-```
+```vim
 :set list listchars=tab:>_
 ```
 
 Tab、空格和缩进
-```
+```vim
 /\t
 :retab
 :set expandtab
@@ -431,18 +456,18 @@ vim 启动时，处理完配置文件`.vimrc`后，会接着扫描`packpath`中�
 
 
 如果不是一个 package，而是一个独立的 plugin，则需要自己创建 start 目录
-```
+```vim
 % mkdir -p ~/.vim/pack/foo/start/foobar
 % cd ~/.vim/pack/foo/start/foobar
 % unzip /tmp/someplugin.zip
-````
+```
 目录结构为
 
 	pack/foo/start/foobar/plugin/foo.vim
 	pack/foo/start/foobar/syntax/some.vim
 
 对比 package 则只需创建包目录, 包名 foo 是随意的：
-```
+```vim
 	% mkdir -p ~/.vim/pack/foo
 	% cd ~/.vim/pack/foo
 	% unzip /tmp/foopack.zip
@@ -456,19 +481,19 @@ vim 启动时，处理完配置文件`.vimrc`后，会接着扫描`packpath`中�
 
 
 操作命令
-```
-//$HOME,$VIM 等没有展开
+```vim
+"$HOME,$VIM 等没有展开
 :set packpath
 :set pp
 
-//全展开了
+"全展开了
 :echo &pp
 
-//
+"
 set packpath+=~/.vim
 
 
-//加载所有包命令
+"加载所有包命令
 :packloadall
 ```
 
@@ -477,32 +502,30 @@ set packpath+=~/.vim
 
 runtimepath 是一个目录列表，用来定位运行时文件
 
-	  filetype.vim	filetypes by file name |new-filetype|
-	  scripts.vim	filetypes by file contents |new-filetype-scripts|
-	  autoload/	automatically loaded scripts |autoload-functions|
-	  colors/	color scheme files |:colorscheme|
-	  compiler/	compiler files |:compiler|
-	  doc/		documentation |write-local-help|
-	  ftplugin/	filetype plugins |write-filetype-plugin|
-	  indent/	indent scripts |indent-expression|
-	  keymap/	key mapping files |mbyte-keymap|
-	  lang/		menu translations |:menutrans|
-	  menu.vim	GUI menus |menu.vim|
-	  pack/		packages |:packadd|
-	  plugin/	plugin scripts |write-plugin|
-	  print/	files for printing |postscript-print-encoding|
-	  spell/	spell checking files |spell|
-	  syntax/	syntax files |mysyntaxfile|
-	  tutor/	files for vimtutor |tutor|
+    filetype.vim	filetypes by file name |new-filetype|
+    scripts.vim	filetypes by file contents |new-filetype-scripts|
+    autoload/	automatically loaded scripts |autoload-functions|
+    colors/	color scheme files |:colorscheme|
+    compiler/	compiler files |:compiler|
+    doc/		documentation |write-local-help|
+    ftplugin/	filetype plugins |write-filetype-plugin|
+    indent/	indent scripts |indent-expression|
+    keymap/	key mapping files |mbyte-keymap|
+    lang/		menu translations |:menutrans|
+    menu.vim	GUI menus |menu.vim|
+    pack/		packages |:packadd|
+    plugin/	plugin scripts |write-plugin|
+    print/	files for printing |postscript-print-encoding|
+    spell/	spell checking files |spell|
+    syntax/	syntax files |mysyntaxfile|
+    tutor/	files for vimtutor |tutor|
 
 
 大多数的系统默认设置搜索5个地方：
 
 	1. In your home directory, for your personal preferences.
-	2. In a system-wide Vim directory, for preferences from the system
-	   administrator.
-	3. In $VIMRUNTIME, for files distributed with Vim.
-							*after-directory*
+	2. In a system-wide Vim directory, for preferences from the system administrator.
+	3. In $VIMRUNTIME, for files distributed with Vim.  *after-directory*
 	4. In the "after" directory in the system-wide Vim directory.  This is
 	   for the system administrator to overrule or add to the distributed
 	   defaults (rarely needed)
@@ -512,15 +535,15 @@ runtimepath 是一个目录列表，用来定位运行时文件
 
 
 操作命令
-```
-//这样的查询 $HOME,$VIM 没有展开为完整目录
+```vim
+"这样的查询 $HOME,$VIM 没有展开为完整目录
 :set runtimepath
 :set rtp
 
-//这样则全部展开了
+"这样则全部展开了
 :echo &rtp
 
-//增加runtimepath 路径
+"增加runtimepath 路径
 :set runtimepath+=some\path,some\path
 :runtime syntax/c.vim
 :ru syntax/c.vim
@@ -531,7 +554,7 @@ runtimepath 是一个目录列表，用来定位运行时文件
 netrw 是一个通过网络读写文件的 vim 插件，.netrwhist 就是 netrw 的历史记录文件，保存的是被修改的目录的列表，当修改 ~/.vim 目录下的文件时就加入记录
 
 内容一般如下：
-```
+```vim
 let g:netrw_dirhistmax  =10
 let g:netrw_dirhist_cnt =6
 let g:netrw_dirhist_1='/Users/wolever/EnSi/repos/web/env/web/lib/python2.6/site-packages/django'
@@ -545,17 +568,17 @@ let g:netrw_dirhist_6='/Users/wolever/Sites/massuni-wiki/conf'
 * netrw_dirhist_cnt 表示当前已记录条数
 
 没有禁用产生 .netrwhist 文件的方法，可以设置为产生后立即自动删除
-```
+```vim
 au VimLeave * if filereadable("[path here]/.netrwhist")|call delete("[path here]/.netrwhist")|endif 
 ```
 
 或设置最多记录数为 0 则不再记录，但原先的 .netrwhist 或 .netrwbook 并不会自动删除 
-```
+```vim
 :let g:netrw_dirhistmax = 0
 ```
 
 可以指定 .netrwhist 文件的位置，以免和 vim 的 runtimepath 文件混在一起
-```
+```vim
 let g:netrw_home=$XDG_CACHE_HOME.'/vim'
 ```
 
@@ -576,7 +599,7 @@ http://www.fileformat.info/info/unicode/char/200B/index.htm
 |ZERO WIDTH JOINER|U+200c|\xe2\x80\x8c|
 |ZERO WIDTH NON-JOINER|U+200d|\xe2\x80\x8d|
 
-```
+```vim
 $value = str_replace("\xe2\x80\x8b", '', $value); 
 $value = str_replace("\xe2\x80\x8c", '', $value); 
 $value = str_replace("\xe2\x80\x8d", '', $value); 
@@ -589,7 +612,7 @@ https://superuser.com/questions/207207/how-can-i-delete-u200b-zero-width-space-u
 ### 提示 “modifiable is off”
 
 modifiable 关闭时不允许更改缓存内容，也不允许更改 `fileformat` 和 `fileencoding`
-```
+```vim
 :set modifiable
 :set nomodifiable
 
@@ -599,11 +622,11 @@ modifiable 关闭时不允许更改缓存内容，也不允许更改 `fileformat
 ```
 
 出现上述提示可能是插件或者设置错误导致的，可运行下面命令尝试找到错误原因：
-```
+```vim
 :verbose setlocal modifiable?
 ```
 
 使用下列命令打开
-```
+```vim
 :autocmd BufWinEnter * setlocal modifiable
 ```

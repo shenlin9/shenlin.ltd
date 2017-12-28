@@ -1,11 +1,11 @@
-﻿title: Composer - Chapter 1 - 概述
+﻿---
+title: Composer - Chapter 1 - 概述
 categories:
   - PHP
   - Composer
 tags:
   - PHP
   - Composer
-
 ---
 
 Composer 是 PHP 的依赖管理工具，它允许你声明自己的项目所依赖的库，而它将根据你的声明为你的项目安装、更新这些儿库。

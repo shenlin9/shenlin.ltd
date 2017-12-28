@@ -1,3 +1,17 @@
+---
+title: linux - Shell 编程
+categories:
+  - Linux
+  - Shell
+tags:
+  - Linux
+  - Shell
+---
+
+Shell 编程
+
+<!--more-->
+
 【Shell结构】
 
     #!  指定执行脚本的shell
