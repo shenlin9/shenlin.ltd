@@ -1,0 +1,611 @@
+类和对象
+---------
+
+【class】
+
+	class ClassName{
+		类成员
+		类方法
+	}
+
+	PHP保留字不可以做类名
+
+【属性】
+
+	属性声明由public、protected、private开头，后面跟一个变量
+
+		为了兼容PHP4，声明属性也可以直接使用关键字var，属性会被认为是public的。
+
+	属性的初始化值必须是常数，这里的常数是指PHP脚本在编译阶段时就是常数，而不是在运行阶段计算出的常数。
+
+		PHP5.3之后，可以使用hereDoc和nowDoc结构来初始化类的静态变量、属性和常量，但初始化时不能在heredoc结构中使用变量。
+
+		echo Demo::$str1.'<br>';
+		echo Demo::$str2.'<br>';
+
+		$obj = new Demo;
+		echo $obj::str3.'<br>';
+		echo $obj::str4.'<br>';
+
+		echo $obj->str5.'<br>';
+		echo $obj->str6.'<br>';
+
+		$obj->test();
+
+		class Demo{
+			public static $str1 = <<<haha
+		aaa aaa aaa aaa
+		haha;
+
+			public static $str2 = <<<'haha'
+		bbb bbb bbb bbb
+		haha;
+
+			const str3 = <<<haha
+		ccc ccc ccc ccc
+		haha;
+
+			const str4 = <<<'haha'
+		ddd ddd ddd ddd
+		haha;
+
+			public $str5 = <<<haha
+		eee eee eee eee
+		haha;
+
+			public $str6 = <<<'haha'
+		fff fff fff fff
+		haha;
+
+			public function test(){
+				$var = 'ggg ggg ggg ggg';
+				$str7 = <<<haha
+		output \$var's value: $var
+		haha;
+				echo $str7;
+			}
+		}
+
+
+	在类的成员方法中，通过：$this->property 访问类的属性、方法。
+
+	在类的静态方法中，通过：self::$property 访问类的静态属性
+
+	静态属性不可以由对象通过->操作符来访问，静态方法可以
+
+【伪变量$this】
+
+	当一个方法在对象内部调用时使用，这时$this是调用此方法的对象的引用。注：调用此方法的对象不一定是方法所属的对象：
+
+		class AAA{
+				function test(){
+						if(isset($this)){
+							echo '$this定义了到类'.get_class($this).'的引用<br>';
+						}else{
+							echo '没有定义$this <br>';	
+						}
+				}
+		}
+
+		class BBB{
+				function test(){
+					AAA::test();	
+				}
+
+				function test22(){
+					$d = new AAA;
+					$d->test();	
+				}
+		}
+
+		AAA::test();//没有定义$this 
+		BBB::test();//没有定义$this 
+
+		$d = new AAA;
+		$d->test();//$this定义了到类AAA的引用
+
+		BBB::test22();//$this定义了到类AAA的引用
+
+		$d = new BBB;
+		$d->test22();//$this定义了到类AAA的引用
+
+		$d = new BBB;
+		$d->test();//$this定义了到类BBB的引用，注意这个
+
+	在类的设计和调用时注意，"$this->类方法"有时会出错，因$this这时代表的可能并不是当前方法所在的对象引用：
+
+		class AAA{
+				function test(){
+					$this->wahaha();	//执行时，$this是类BBB的引用，这里调用的是类BBB的wahaha方法
+					$this->lalala();	//执行到这里会出错，因为类BBB没有lalala方法
+				}
+
+				function wahaha(){
+					echo 'Class AAA wahaha';	
+				}
+
+				function lalala(){
+					echo 'Class AAA lalala';	
+				}
+		}
+
+		class BBB{
+				function test(){
+					AAA::test();	
+				}
+
+				function wahaha(){
+					echo 'Class BBB wahaha';	
+				}
+		}
+
+		$d = new BBB;
+		$d->test();
+
+	因为$this是调用其所在的方法的对象的引用，但静态方法可直接使用类名调用，因此对象可能不存在，因此在静态方法中不能使用$this变量
+
+【new】
+
+	$obj = &new Demo;
+
+		自PHP5起，new自动返回引用，再使用&则会产生E_STRICT级别的消息：Deprecated: Assigning the return value of new by reference is deprecated
+
+	$obj = new Demo;
+			
+【extends】
+
+	只能继承一个基类
+
+	被继承基类的成员和方法可以在子类中通过使用同样地名字重新声明进行覆盖
+
+	基类中定义方法时使用了final关键字的不能被覆盖
+
+	通过parent::可以访问基类的方法，包括被子类覆盖的
+
+【常量】
+
+	定义和使用常量时不需要使用$，常量的值必须是定值。
+
+【类的静态变量、类的常量、类的静态方法的访问方式】
+
+		$obj = new Demo;
+
+		//访问类的静态变量：只能通过类名
+		echo Demo::$str1.'<br>';
+
+		//访问类的常量：可以通过类名和对象名，但符号都是::
+		echo $obj::str3.'<br>';
+		echo Demo::str3.'<br>';
+
+		//访问类的静态方法
+		Demo::test();
+		$obj::test();
+		$obj->test();
+
+		class Demo{
+			public static $str1 = 'aaa aaa aaa aaa';
+
+			const str3 = 'ccc ccc ccc ccc';
+
+			public static function test(){
+				$var = 'ggg ggg ggg ggg';
+				$str7 = "output \$var's value: $var <br>";
+				echo $str7;
+			}
+		}
+
+【自动加载类】
+
+	__autoload函数
+
+		试图在使用尚未被定义的类时自动调用，通过调用此函数，脚步引擎在PHP出错失败前有了最后一个机会加载所需的类。
+
+		避免在每个类文件开头写一个长长的包含文件列表。
+
+		在此函数中抛出的异常不能被catch语句块捕获并会导致致命错误。
+
+		使用PHP的CLI交互模式时，则Autoloading不存在。
+
+【构造函数】
+
+	void __construct([mixed $args [,$...]])
+
+	具有构造函数的类会在每次创建对象时调用此方法，适合在使用对象之前做一些儿初始化工作。
+
+	子类中定义了构造函数则不会调用父类的构造函数，需要执行父类的构造函数，则需要在子类的构造函数中调用：parent::__construct()
+
+	为了实现向后兼容，PHP5会先寻找新标准的构造函数__construct()，找不到则寻找旧标准的构造函数：和类同名的函数。
+
+【析构函数】
+
+	void __destruct(void)
+
+	当某个对象的所有引用都被删除或者当对象被显式销毁时执行。
+
+	???析构函数在脚本关闭时调用，此时所有的头信息都已经发出。
+
+	试图在析构函数中抛出一个异常会导致致命错误。
+
+	子类中定义了析构函数则不会调用父类的析构函数，需要执行父类的析构函数，则需要在子类的析构函数中调用：parent::__destruct()
+
+【访问控制】
+
+	作用于属性或方法，使用关键字public、protected、private实现
+
+	public定义的类成员可以在任何地方被访问；
+
+	protected定义的类成员则可以被其所在类的子类和父类访问；
+
+	private定义的类成员则只能被其所在类访问。
+
+	对类成员和类方法都必须使用关键字public、protected、private进行定义，其中类成员为兼容性也可使用var定义，但var只是作为public的一个别名；没有使用这些关键字定义的类方法默认为public
+
+【范围解析操作符】
+
+	::
+
+	用于访问静态成员、静态方法和常量，也可用于覆盖类中的成员和方法。
+
+	当在类的外部访问静态成员、静态方法和常量时，必须使用类的名字。
+
+	当在类的内部访问静态成员、静态方法和常量时，需要使用特殊的关键字：self、parent。
+
+	使用::方式调用一个非静态方法会导致一个E_STRICT级别的错误。
+
+【Static关键字】
+
+	被声明为static的类成员和类方法，可以在类外直接使用类名反问，无需实例化类。
+
+	静态成员不能通过对象来访问，但静态方法可以。
+
+	访问静态方法时，可能还不存在对象，所以伪变量$this在静态方法中不可用。
+
+【抽象类】
+
+	php5支持抽象类和抽象方法。
+
+	抽象类使用关键字：abstract定义，如abstract class Demo{}
+
+	抽象方法也使用关键字：abstract定义，如abstract protected function test();，注意此句后的;号
+
+		抽象方法指的是只有方法声明没有方法体的方法function test()，注意不包含方法后的{}，包含了说明方法体为空，而非没有方法体。
+
+	抽象类中至少要包含一个抽象方法
+
+	抽象类不能被直接被实例化，必须先继承抽象类，然后再实例化子类；继承了抽象类的子类必须实现抽象类的所有抽象方法；另外，这些抽象方法的访问控制必须和抽象类一样或只能比抽象类更宽松。
+
+    抽象类继承抽象类？
+
+【接口】
+
+	使用interface定义，像定义一个类一样，如interface iTemplate{}
+
+	接口可以理解为一个特殊的抽象类，但不是使用abstract class定义，而是使用interface定义；接口中的所有方法都是抽象方法，而不是像抽象类中只包含一个抽象方法即可。抽象方法在接口中无需像抽象类中使用abstract来定义，可以省略；接口中的所有方法都必须是public的。
+
+	使用implements关键字来实现接口，实现接口的类必须实现接口中定义的所有方法；还可以实现多个接口，使用逗号分割接口名称；但实现多个接口时，接口中的方法不能重名。
+
+	接口也可以使用extends进行继承，且可以继承多个接口，接口名之间使用逗号分割：interface c extends a,b{}。
+
+	接口中可以定义常量。
+
+		interface a{
+			const myconst = 123;
+		}
+
+		echo a::myconst;
+
+【重载】
+
+	PHP的重载和其他绝大多数面向对象语言的重载不同，传统的重载指的是多个类方法的名称相同，但参数类型和个数不同。
+
+	PHP的重载指的是动态的创建类属性和方法，是通过魔术方法实现的。
+
+	当调用当前环境下未定义或不可见的类属性和方法时，重载方法就会被调用。
+
+	所有的重载方法都必须被声明为public，且方法的参数都不能通过引用传递。
+
+	一、属性重载
+
+		属性重载只应用于对象，在静态方法中将不会进行属性重载，所以属性重载的方法不能被声明为static
+
+		void __set(string $name,mixed $value)
+
+			给未定义的变量赋值时被调用
+
+		mixed __get(string $name)
+
+			读取未定义的变量的值时被调用
+
+		bool __isset(string $name)
+
+			对未定义的变量调用isset()或empty()时被调用
+
+		bool __unset(string $name)
+
+			对未定义的变量调用unset()时被调用
+
+		$name指的是要操作的变量的名称，$value指的是$name变量的值
+
+	二、方法重载
+
+		mixed __call(string $name,array $arguments)
+
+			当调用一个不可访问（未定义或不可见）的方法时被调用
+
+		mixed __callStatic(string $name,array $arguments)
+
+			当在静态方法中调用一个不可访问方法时被调用???
+
+			当调用类中未定义的静态方法时被调用 
+
+            必须被声明为static public
+
+		$name参数是要调用的方法名称，$arguments参数是一个数组，包含了要传递给方法的参数。
+
+【对象迭代】
+
+	使用foreach来遍历对象的属性，在外部迭代可得到类的public属性，在内部则可得到所有属性
+
+	通过实现Iterator接口来实现迭代	
+
+	通过实现InteratorAggregate接口来实现迭代
+
+【设计模式】
+
+	一、工厂模式
+
+		负责生产对象，允许在代码执行时动态的实例化对象。
+
+		class DB{
+			public static function factory($type){
+				if(include_once 'Drivers/'.$type.'.class.php'){
+					$classname = 'Drivers_'.$type;
+					return new $classname;
+				}else{
+					throw new Exception('Driver not found');
+				}
+			}
+		}
+
+		$mysql = DB::factory('mysql');
+		$sqlite = DB::factory('sqlite');
+
+	二、单例模式
+
+		为一个类生成一个唯一的对象，实现原理是将构造方法声明为private来防止直接创建对象。
+
+		最常用的地方是数据库连接。
+
+		class Example{
+
+			//类的实例被保存在这个属性中
+			private static $instance;
+
+			//构造方法声明为private，防止直接创建对象 
+			private function __construct(){
+				echo 'i am constructed';
+			}
+
+			//只能通过此方法创建对象
+			public static function singleton(){
+				if(!isset(self::$instance)){
+					$c = __CLASS__;	//防止类改名
+					self::$instance = new $c;
+				}
+				return self::$instance;
+			}
+
+			//阻止用户复制对象实例 
+			public function __clone(){
+				trigger_error('Clone is not allowed',E_USER_ERROR);
+			}
+
+			//类的普通方法
+			public function test(){
+				echo 'aaaaa';
+			}
+		}
+
+		//这个写法会出错，因为构造方法被声明为private
+		$test = new Example;
+
+		//得到Example类的单例实例
+		$test = Example::singleton();
+		$test->test();
+
+		//复制对象导致错误
+		$test_clone = clone $test;
+
+【魔术方法】
+
+	PHP把所有的以两个下划线开头的类方法当成魔术方法，所有定义自己的类方法时，不要以__为前缀。
+
+	__sleep
+
+		在执行序列化函数serialize()之前会被调用
+
+		应返回一个包含对象中所有变量名称的数组，如果该方法不返回任何内容，则NULL被序列化，会导致一个E_NOTICE错误。
+
+		可以用于清理对象，提交未提交的数据
+
+	__wakeup
+
+		在执行反序列化函数unserialize()之前会被调用
+
+		常用于反序列化操作中，用于预先准备对象数据，如重建数据库连接或执行其他初始化操作等。
+
+	__toString
+
+		当尝试将一个类转换为一个字符串时
+
+		$obj = new Demo;
+
+		echo $obj;
+
+	__invoke
+
+		当尝试以调用函数的方式调用一个对象时
+
+		$obj = new Demo;
+
+		$obj(3);
+
+	__set_state
+
+		当调用var_export()时被调用
+
+		参数是一个数组，包含了按array('property'=>value,...)格式排列的类属性
+
+【final关键字】
+
+	用于修饰类和类方法
+
+	被声明为final的类不能被继承
+
+	被声明为final的类方法不能被子类覆盖
+
+	被声明为final类中，方法再被声明为final无意义
+
+【对象复制】
+
+	使用clone关键字 $copy_of_object = clone $object;
+
+	对象中存在__clone()方法时，会先被调用（对象中的__clone方法不能直接调用）
+
+	当对象被复制后，PHP会对对象的所有属性执行一个浅复制（shallow copy），所有的属性中的引用仍然不变，指向原来的变量。
+
+	如果定义了__clone()方法，则复制生成的对象中的__clone()方法会被调用，可用于修改属性的值。
+
+	理解例子???
+
+		clone的同时也会调用__construct方法?
+
+【对象比较】
+
+	使用==比较两个对象：两个对象是同一个类的实例，且两个对象的属性和属性值都相等，则对象变量相等。
+
+	使用===比较两个对象：两个对象指向一个类的同一个实例
+
+【类型约束】
+
+	在类方法和函数的定义时，都可以使用类型约束。
+
+		class Demo{
+			public function test(array $arr){
+			}
+		}
+
+		function test(Demo $arg){
+		}
+
+	函数调用的参数类型和定义的类型不一致时，会抛出致命错误。
+
+	类型约束只支持对象（类的名字）和数组（array）两种类型，不支持整型、字符串类型
+
+        ? 布尔 浮点 资源 NULL
+
+	NULL可以作为使用了类型约束的参数的默认值，且调用时也可以使用NULL作为实参。
+
+		function test(Demo $arg=null){
+		}
+
+		test(null);
+
+	但如果定义类型约束时没有使用NULL作为参数默认值，则不能传递NULL值
+
+		function test(Demo $arg){
+		}
+
+		test(null);//错误，必须是Demo类的实例
+
+【后期静态绑定】
+
+	PHP的继承模型中有一个存在已久的问题，即在父类中引用扩展类的属性、方法比较困难。原因在于self::取决于定义当前方法所在的类，而非调用此方法的类。
+
+		class A{
+			public static function test(){
+				self::who();    //这里改为static::who()，即为后期静态绑定
+			}
+			public static function who(){
+				echo __CLASS__;
+			}
+		}
+
+		class B extends A{
+			public static function who(){
+				echo __CLASS__;
+			}
+		}
+
+		B::test();
+
+    上面的例子是子类覆盖了父类的who()方法，本想调用子类的who()方法，实际上调用的却是父类的，输出A
+
+	为解决上述问题，引入后期静态绑定，用于在继承范围内引用静态调用的类，使用关键字static::，表示运行时最初调用的类，是实际运行时计算的，而不再被解析为定义当前方法所在的类。
+
+    静态调用使用parent::或者self::，将转发调用信息：
+
+
+        class A {
+            public static function foo() {
+                static::who();
+            }
+
+            public static function who() {
+                echo __CLASS__."\n";
+            }
+        }
+
+        class B extends A {
+            public static function test() {
+                A::foo();
+                parent::foo();
+                self::foo();
+            }
+
+            public static function who() {
+                echo __CLASS__."\n";
+            }
+        }
+        class C extends B {
+            public static function who() {
+                echo __CLASS__."\n";
+            }
+        }
+
+        C::test();
+
+        输出结果：A C C
+
+
+		???重读本节
+
+	另：__CLASS__指的是定义此方法的的类，而get_called_class()函数可返回调用此方法的类
+
+【对象和引用】
+
+	默认情况下对象是通过引用传递的，这句话不是完全正确的。
+
+	首先PHP的引用是别名，指的是两个不同的变量名指向同一个标识符；
+
+	而对象在作为参数传递，作为结果返回，或者赋值给另外一个变量时，其实是复制了一份标识符（可以看出也是赋值传递），这时是两个变量分别指向两个标识符（这两个标识符完全相同，因为是复制的），和两个变量指向同一个标识符的引用是不同的。
+
+【对象序列化】
+
+	指的是使用函数serialize()将PHP值转换为一个包含字节流的字符串，再使用unserialize()函数重新把字符串变回PHP原来的值。
+
+	序列化一个对象会保存对象的所有变量，但不会保存对象的方法，只会保存类的名字。
+
+	当序列化对象时，这个对象的类必须已经定义过。可以包含一个定义该类的文件或使用函数spl_autoload_register()来实现。
+
+	若在解序列化对象的时候，如果没有找到该对象的类的定义，则会把没有方法的类__PHP_Incomplete_Class_Name作为该对象的类，导致返回一个没有用的对象。
+
+
+【】
+
+
+	Traits
+
+	当一个子类覆盖父类中的方法时，PHP不会再执行父类中已被覆盖的方法，除非子类中显式的调用这些方法，这种机制也作用于构造函数、析构函数、重载、魔术函数。
+
+	PHP5.3.0之后，可以使用一个变量来动态调用类，但该变量的值不能为关键字self,parent,static

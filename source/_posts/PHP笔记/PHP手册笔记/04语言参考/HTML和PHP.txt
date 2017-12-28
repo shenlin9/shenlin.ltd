@@ -1,0 +1,117 @@
+HTML和PHP
+---------
+
+【通过表单和URL传值时需做的编码、解码】
+
+	1、浏览器自动提交表单进行GET请求
+
+		表单中的值要使用双引号括起来，并使用htmlspecialchars()作转义处理：
+
+			原因在于一些儿特殊字符如<>等会扰乱正常的HTML解析，所以放入表单中的值，需htmlspecialchars()进行处理。
+
+		为什么要放入双引号中而不是单引号？
+
+			原因在于默认设置下，双引号会转义为&quot;，则内容中的双引号和边界的双引号不冲突，而单引号默认不转义，放入单引号中则冲突。
+
+		转义后还能正常显示和传值吗？
+
+			可以，简单来说，这是浏览器的一项责任，浏览器会解析HTML的转义字符，然后正常进行显示，就像浏览器解释<b></b>标签一样。
+
+		正确的表单值处理举例：	
+
+			<?php
+				$data = '<>&"\'中文';
+			?>
+			<?php echo htmlspecialchars($data); ?>
+			<br>
+			<input type="text" name="username" value="<?php echo htmlspecialchars($data); ?>">
+
+			HTML源文件中输出为
+
+			&lt;&gt;&amp;&quot;'中文			<br>
+			<input type="text" name="username" value="&lt;&gt;&amp;&quot;'中文">
+
+		可见在HTML源文件中页面和输入框中的值都进行了转义（注，是转义不是编码），但在正常页面浏览时显示是正常的 <>&"\'中文，并不是转义后的字符，使用PHP接收后也是转义前的正常字符，原因在于这是浏览器的一项责任，浏览器会解析HTML的转义字符，然后正常进行显示，就像浏览器解释<b></b>标签一样。
+
+	2、自己编写URL进行GET请求
+
+		上述是数据的输出和显示，这里涉及到数据的编码和传递。
+
+		无论GET还是POST请求，数据都是编码传递的，对传递数据进行编码是浏览器的一项责任，通常情况是浏览器自动完成，我们需要做的仅仅是上述的对数据进行正确输出。
+	
+		但常常还是需要自己编写URL请求，如链接的href属性，则需要对数据进行urlencode编码，注意，这里仅仅是对传递的数据编码，不是针对对整个url。
+
+			<?php
+			echo '<a href="' . htmlspecialchars('test.php?submit=yes&stage=23&data='.urlencode($data)) . '">click here</a>';
+			?>
+
+		输出：
+
+			<a href="test.php?submit=yes&amp;stage=23&amp;data=%22%27%3C%3E%26%D6%D0%CE%C4">click here</a>
+
+		为什么要对整个url进行htmlspecialchars？
+			
+			原因是这个url是HTML的一个属性值。
+
+		&被转义为了&amp;，这是对的吗
+
+			&amp;才是url中正确的形式，&号是错的，一些儿浏览器可能无法正确解析。鉴于此，静态URL也需要进行htmlspecialchars()
+
+
+【PHP对HTML变量名中空格和.的处理】
+
+	HTML表单变量名中包含有空格和.，浏览器向服务器传递时空格会编码为+：?user+id=11&user.pwd=22，PHP接收后会将变量名中的空格和.全部替换为下划线_
+
+		array
+		  'user_id' => string '11' (length=2)
+		  'user_pwd' => string '22' (length=2)
+
+	<input type='image' src='' name='submit'>
+
+		这个标签显示一副图片，单击时会提交表单，同时会提交两个变量。
+
+		如标签名为submit，则提交的变量名为submit.x和submit.y：?submit.x=106&submit.y=51，记录的是点击图片的坐标。
+
+		同理，PHP也会将.转为下划线，接收时应为 $_GET['submit_x']  $_GET['submit_y']
+
+		注：即使此标签没有name属性值，也会传递变量x和y
+
+
+【HTML表单的变量数组】
+
+	1、名字相同的表单变量，在浏览器像服务器传递时形如：?userid=11&userid=22&userid=33，在PHP中并不会形成数组，相反后面的变量会覆盖前面的同名变量，即最终PHP中的userid=3
+
+	在表单变量名后加[]，像数组一样，[]中可以指定key，浏览器传递时变量名中的[]会被编码，形如：?userid%5B%5D=11&userid%5B%5D=22&userid%5B%5D=33，这种形式的HTML表单变量在PHP中会形成数组：
+
+		array
+		  'userid' => 
+			array
+			  0 => string '11' (length=2)
+			  1 => string '22' (length=2)
+			  2 => string '33' (length=2)
+		  'submit' => string 'yes' (length=3)
+
+	2、对于一个变量可能有多个值的HTML标签，如select，方法和上述相似，名字后加[]，则多选的值会作为数组提交，否则仍会出现后值覆盖前值
+
+		<select name='username[]' multiple='yes'>
+			<option value='aaa'>aaa</option>
+			<option value='bbb'>bbb</option>
+			<option value='ccc'>ccc</option>
+			<option value='ddd'>ddd</option>
+		</select
+
+	提交后可取值
+
+		array
+		  'username' => 
+			array
+			  0 => string 'aaa' (length=3)
+			  1 => string 'bbb' (length=3)
+			  2 => string 'ccc' (length=3)
+		  'submit' => string 'yes' (length=3)
+
+	3、名字加[]后的javascript处理
+
+		如果在 JavaScript 中通过名字来引用单元，单元名字中的 []可能会造成问题。用表单单元中的数字序号来替代，或者将变量名用单引号括起来并用其作为单元数组的索引
+
+		variable = documents.forms[0].elements['var[]'];

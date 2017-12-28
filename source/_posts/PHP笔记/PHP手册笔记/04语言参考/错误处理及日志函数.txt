@@ -1,0 +1,365 @@
+错误处理及日志函数
+---------
+【die()】
+
+	是exit()的别名
+	die()和exit()都是语言构造器，而不是函数
+
+	void exit([string $status])
+	void exit([int $status])
+
+	终止脚本文件的执行，但register_shutdown_function()和对象的析构函数__destruct()仍会执行，但自动后缀auto_append_file将不会执行。
+
+	参数是字符串，则会输出
+
+	参数是0到255的整型数字，则不会输出，表示了退出状态，其中0表示成功终止，255被PHP保留，用户不应使用。
+
+	$file = fopen('d:\cfg.txt','r') OR exit('unable to open file');
+
+【受die()、exit()影响的内容】
+
+	一、关闭触发函数 void register_shutdown_function(callback $callback,[mixed $parameter [,miexed $...]])
+
+		注册一个回调函数，下列情况自动调用此函数：
+			当脚本执行完毕后
+			调用exit()、die()后
+			当浏览器用户点击STOP按钮后（但函数中的输出可能看不到）
+
+		一个脚本文件中，可以多次执行此函数来注册多个回调函数，多个函数的被调用顺序和注册顺序相同，如果在exit()之前只注册了一个，则只调用一个。
+		如果回调函数无效则会产生一个E_WARNING级别的错误。
+		注意：如果回调函数涉及文件处理，则文件路径必须使用绝对路径，不能使用相对的路径，因为被注册的回调函数都被调入内存中，直接从内存中执行，不是从脚步文件里执行，因此不存在相对路径。
+		可用于脚步意外时给用户一个友好的反馈。如脚本头部设置$i=false;脚步末尾设置为$i=true;如果回调函数中检测到$i==false;则表示脚步未正常结束，给出友好提示。
+
+		参数：callback，要调用的函数，使用''或""括起来，注意没有括号，也不要直接写函数名不括起来
+		参数：parameter，被调用的函数的参数
+
+	二、php.ini 中的自动后缀 auto_append_file string
+
+	指定了在主文件之后自动解析的文件名，就像使用include()函数包含进来一样，但使用exit()终止，则不会执行自动后缀。
+
+	综合举例：
+
+				echo time(),'<br>';
+
+				function shutdown1($arg1,$arg2,$arg3){
+					echo 'shutdown1,parameter is ',$arg1,$arg2,$arg3,'<br>';
+				}
+				function shutdown2(){
+					$file=fopen('D:\wamp\www\test.txt','a');
+					fwrite($file,time()."\r\n");
+					fclose($file);
+					echo 'shutdown2,use absolute path open file','<br>';
+				}
+
+				class Demo1{
+					public function __destruct(){
+						echo 'demo1 destruct<br>';	
+					}
+				}
+				class Demo2{
+					public function __destruct(){
+						echo 'demo2 destruct<br>';	
+					}
+				}
+
+				register_shutdown_function("shutdown2");
+				register_shutdown_function('shutdown1',1,2,3);
+
+				sleep(3);
+
+				$obj1 = new Demo1;
+				$obj2 = new Demo2;
+
+				exit('die<br>');
+
+				输出：
+
+				1325570160
+				die
+				shutdown2,use absolute path open file
+				shutdown1,parameter is 123
+				demo2 destruct
+				demo1 destruct
+
+【PHP.ini中的相关错误选项】
+
+	error_reporting integer
+
+		设置错误报告的级别，可以是表示二进制位的整数或预定义常量名称
+		默认值为 E_ALL & ~E_NOTICE，表示除了E_NOTICE之外的所有错误级别，开发阶段最好开启E_NOTICE错误级别
+		E_STRICT是PHP5新加入的错误级别，不包含在E_ALL中，在PHP6中则被包含
+		在PHP中使用预定义常量设置错误级别很直观，但在PHP外，如apache的httpd.conf中，则只能使用整数来表示，但E_ALL的整型表示会随着错误级别的增多而变大，因此要使用较大的数值来涵盖将来会使用到的二进制位，如整型最大值2147483647
+		因为其实是设置二进制值，因此在php.ini中可用的操作符包括：按位与&  按位或|  按位异或^  按位非~   逻辑非!
+
+	display_errors string
+
+		设置是否将错误作为输出的一部分输出，默认值on
+
+		off 		不显示错误
+		stderr	将错误输出到标准错误输出，cli和cgi下有效
+		on			将错误输出到标准输出
+		stdout	将错误输出到标准输出
+
+	display_startup_errors boolean
+
+		设置是否将PHP启动过程中的错误信息输出，默认值off
+		即使设置为on，启动过程也不会显示错误信息，强烈建议设置为off
+
+	error_log string
+
+		设置脚本错误记录到的文件，如d:\php.log，该文件必须是web服务器用户可写的，默认值是空
+
+		设置为特殊值syslog，则记录到系统日志（unix上为syslog(3)，windows上为事件日志）
+
+				但此值需要配合函数syslog()使用，若未设置syslog()，则错误信息被发送到SAPI错误记录器，如Apache的错误日志，CLI则发送到stderr
+
+	log_errors boolean
+
+		设置是否将脚本运行的错误信息记录到服务器错误日志 或 error_log之中，默认值off，但在产生系统中，强烈建议设置为on
+
+	log_errors_max_len integer
+
+		设置log_errors的最大字节数，默认值为1024，设置为0表示不限长度
+
+		除了使用整型值，还可以使用速记符：K,M,G，分别代表Kilobytes、Megabytes、Gigabytes，但只能在php.ini中使用，且使用速记符后，使用ini_get()读取到值后要记得转换。
+
+	ignore_repeated_errors boolean
+
+		不记录重复的错误，默认值off
+
+		重复的错误指的是发生在同一个文件同一行的同一个错误，因此不同文件不同行的同一个错误会多次记录。
+
+	ignore_repeated_source boolean	
+
+		判断什么是重复的错误时不判断错误来源，即不判断错误发生的文件和行，是同一个错误即认为重复，设置为on后，则将不同文件不同行的同一个错误只记录一次。
+
+		默认值off
+
+	track_errors boolean
+
+		是否将最后一个错误保存在变量$php_errormsg中，默认值Off
+
+	html_errors	boolean
+
+		当输出或log错误信息时，是否插入有关此错误的文档链接，默认On，为性能和安全考虑设置为Off
+
+	error_prpend_string string
+
+		错误信息之前输出的内容，如"<font color='red'>"
+
+	error_append_string string
+
+		错误信息之后输出的内容，如"</font>"
+
+【error_log()】
+
+	bool error_log(string $message [,int $message_type=0 [,string $destination [, string $extra_headers]]])
+
+	发送错误消息到web服务器的错误日志或到一个文件中
+
+	参数：$message  发送的错误消息
+
+	参数：$message_type 消息类型，也对应了日志类型，同时决定了消息将往哪里去，取值包括：
+
+											0 取决于php.ini中error_log指令的设置，发送到一个文件中或操作系统日志中，此为默认值
+
+											1 发送到电子邮箱中，邮箱地址由第三个参数destination指定，同时，也只有这个消息类型需要第四个参数extra_headers
+
+											2 不再是个选项
+
+											3 添加到目标文件的末尾，目标文件由第三个参数destination指定，添加时不会自动添加为新行
+
+											4 发生到SAPI错误记录器，如Apache的错误日志，CLI的stderr
+
+	参数：$destination 消息目的地，如上面所述，和$message_type搭配使用
+
+	参数：$extra_heanders 如上面所述，只有$message_type = 1 时才有用
+
+	返回值：成功返回true，失败false
+
+	举例：
+
+			if(!ora_Logon($username,$passwd)){
+					error_log('oracle database can not connetct');
+			}
+
+			if(!($foo=allocate_new_foo())){
+					error_log('big trouble,we are all out of FOOS!',1,'operator@example.com');
+			}
+
+			error_log('You messed up!',3,'/var/tmp/my_errors.log');
+
+【$php_errormsg】
+
+	包含了PHP生成的最后一个错误信息。
+
+	此变量只在错误发生的作用域内可用。
+
+	php.ini中的track_errors默认为Off，使用$php_errormsg会报错：Notice: Undefined variable: php_errormsg，设置为on后则可正常取值。
+
+	如果set_error_handler()函数和$php_errormsg同时使用，set_error_handler()必须明确的返回false，否则$php_errormsg也会报错：Notice: Undefined variable: php_errormsg。
+
+	可和错误控制运算符@结合使用，@只能用在表达式之前，并将表达式产生的任何错误信息忽略掉，但激活了track_errors后，则会将错误信息放入$php_errormsg中
+
+				function error_handler($errlevel,$errmsg){
+					echo 'error_handler: ',$errmsg,'<br>';
+					return false;
+				}
+				set_error_handler('error_handler');
+
+				@strpos();
+
+				echo '$php_errormsg: ',$php_errormsg,'<br>';
+
+				die;
+
+				输出:
+
+				error_handler: strpos() expects at least 2 parameters, 0 given
+				$php_errormsg: strpos() expects at least 2 parameters, 0 given
+
+	???$php_errormsg在函数内部不起作用???
+
+【error_reporting()】
+
+	int error_reporting([int $level])
+
+		读取或设置运行时的错误报告级别，注意，读取的错误报告级别也是运行时的，即使用此函数将错误运行级别修改，再读取则为新的级别，虽然php.ini中的error_reporting未改变。
+
+		只读取则无需传参数
+
+		传递参数时，将级别重新设置的同时，也会返回设置前的级别
+
+		参数可以是整型数，也可以是预定义的错误常量，为未来的兼容性考虑建议使用后者
+
+		举例；
+
+			error_reporting(0);
+
+			error_reporting(-1);
+
+			error_reporting(E_ALL ^ E_NOTICE);
+
+			error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+
+			ini_set('error_reporting',E_ALL);
+
+【trigger_error()】
+
+	bool trigger_error(string $error_msg [, int $error_type = E_USER_NOTICE])
+
+		创建一个用户级的error/warning/notice消息
+
+		可以和内置的错误处理结合使用，也可以和用户使用set_error_handler()定义的错误处理函数一起使用
+
+		参数：error_msg 错误消息，长度限制为1024个字符，超出此范围的字符将被截取
+
+										若消息中包含HTML标签，HTML标签并未被转义HTML为实体，即<font color='red'>error msg</font>在浏览器中显示时会显示为红色的字体，因此如果想原样显示标签，则可以使用htmlentities()将标签转为实体
+
+		参数：error_type 为错误消息指定的错误类型，只可以使用E_USER家族的预定义错误常量，默认为E_USER_NOTICE
+										 
+										  E_USER家族的预定义错误常量包括：
+
+												E_USER_NOTICE
+													用户产生的通知信息，显示为Notice，注意不是什么UserNotice或E_USER_NOTICE，下面的一样
+													产生错误后程序会继续运行
+												E_USER_WARNING
+													用户产生的警告信息，显示为Warning
+													产生错误后程序会继续运行
+												E_USER_ERROR
+													用户产生的致命错误信息，显示为Fatal error
+													产生错误后程序会终止运行
+												E_USER_DEPRECATED
+													用户产生的运行时警告，表示有在未来版本中可能无法正常工作的代码，显示为DEPRECATED，程序会继续运行
+													产生错误后程序会继续运行
+													注意：如果使用了xdebug调试器，则xdebug有个bug，触发的DEPRECATED错误，会显示为Unknown error
+
+		返回值：指定的错误类型不正确时返回false，其余均返回true
+
+		举例；
+
+				//html标签和html实体
+				trigger_error('<font color="blue">here is a error</font>');
+				trigger_error(htmlentities('<font color="red">here is a error</font>'));
+				trigger_error('&lt;font color="red"&gt;here is a error&lt;/font&gt;');
+
+				//error type
+				trigger_error('a E_USER_NOTICE level error',E_USER_NOTICE);
+				trigger_error('a E_USER_WARNING level error',E_USER_WARNING);
+				trigger_error('a E_USER_DEPRECATED level error',E_USER_DEPRECATED);
+				trigger_error('a E_USER_ERROR level error',E_USER_ERROR);
+
+		输出：
+
+				Notice: here is a error in D:\wamp\www\test.php on line 3 //这里的here is a error显示为蓝色
+				Notice: <font color="red">here is a error</font> in D:\wamp\www\test.php on line 4
+				Notice: <font color="red">here is a error</font> in D:\wamp\www\test.php on line 5
+				Notice: a E_USER_NOTICE level error in D:\wamp\www\test.php on line 8
+				Warning: a E_USER_WARNING level error in D:\wamp\www\test.php on line 9
+				Deprecated: a E_USER_DEPRECATED level error in D:\wamp\www\test.php on line 10
+				Fatal error: a E_USER_ERROR level error in D:\wamp\www\test.php on line 11
+
+【set_error_handler()】
+
+	mixed set_error_handler(callback $error_handler [,int $error_types= E_ALL | E_STRICT])
+
+		设置一个运行时的用户自定义错误处理函数
+		标准的PHP错误处理将完全忽视参数$error_types指定的错误类型，除非回调函数返回false
+		error_reporting()函数的设置将不起作用，而回调函数会被执行，当然，这时可以读取php.ini文件中的error_reporting配置
+		如果引起错误的语句前添加了错误控制运算符@，则???值为0
+		需要注意的是和set_exception_handler()不同，此函数不会终止脚本执行，需要终止时还需要在回调函数中die;
+		下列错误类型不能被自定义函数处理：E_ERROR,E_PARSE,E_CORE_ERROR,E_CORE_WARNING,E_COMPILE_ERROR,E_COMPILE_WARNING
+		自定义错误处理函数必须在注册后才会执行。
+
+		参数：$error_types 设置触发的错误类型，不设置这个值则将按照error_reporting中的设置触发
+
+		返回值：发生错误时返回NULL
+						如果前面没有设置错误处理函数，也返回NULL
+						如果前面设置了错误处理函数，则返回前一个错误处理函数的名字
+						如果前面设置的错误处理函数是一个类的方法，则返回一个包含了类名和方法名的索引数组
+
+	handler(int $errno,string $errstr [, string $errfile [, int $errline [, array $errcontext]]])
+
+		用户的自定义错误处理函数，作为回调函数
+
+		参数：2个必选参数，3个可选参数
+					errno				错误级别
+					errcontext	错误环境，是一个数组，包含了错误发生时作用域内的每个变量
+
+		返回值：如果返回false，则PHP的标准错误处理将继续，如$php_errormsg，因此如果函数正确处理了错误，应返回true
+
+		举例；
+
+				function error_handler1($errlevel,$errmsg){
+					echo 'error_handler1: ',$errmsg,'<br>';
+				}
+
+				function error_handler2($errlevel,$errmsg){
+					echo 'error_handler2: ',$errmsg,'<br><br>';
+				}
+
+				var_dump(set_error_handler('error_handler1',E_STRICT));
+				var_dump(set_error_handler('error_handler2',E_ALL));
+
+				@strpos();
+
+				echo 'this line will also be executed';
+
+				die;
+
+				输出：
+
+				null
+				string 'error_handler1' (length=14)
+				error_handler2: strpos() expects at least 2 parameters, 0 given
+				this line will also be executed
+
+【restore_error_handler()】
+
+	bool restore_error_handler(void)
+
+	在使用set_error_handler()设置错误处理函数error_handler后，error_handler已接管了错误处理，想要恢复原来的错误处理，则使用此函数复原到前一个错误处理器，可能是内置的错误处理 或 另一个用户自定义函数
+
+	注意：在error_handler函数内调用此函数将被忽略掉
+
+	返回值：总是true

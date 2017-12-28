@@ -1,0 +1,235 @@
+变量
+
+基础
+
+	变量的声明
+		使用一个美元符号后跟变量名来表示: $变量 = 值
+		以字母或下划线开头，后面跟数字、字母或下划线
+			这里的字母除了小写a-z和大写A-Z外，还包括ASCII码从127到255（0x7f-0xff）的字符，是一些乱七八糟的字符使用chr输出后也看不到
+			因此可声明为php变量的字符个数为：小写字母26+大写字母26+数字10+下划线1+ASCII从127到255的129个=182个，其中常用的为63个，开头的为53个
+			鉴于上述描述，php变量的正则可描述为'/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/'
+			变量名中可以使用中文
+
+	变量的赋值
+		分为传值赋值和引用赋值两种
+		默认总是为传值赋值
+		将&符号加到要赋值的原变量前，即为引用赋值
+			$a=&$b;
+		只有有名字的变量才可以引用赋值：
+			$a=&(10*18);	//错误，引用了没有名字的表达式
+			$a=&test();	//错误
+
+	变量的初始化
+		php的变量不需要初始化，但未初始化的php变量会发出E_NOTICE错误，但是在向一个未初始化的数组附加单元时不会
+			$str.="aaa";
+			$int+=10;	
+			$float+=1.11;
+			echo ($bool?'true':'false');	//以上均会发生E_NOTICE错误
+			$arr[]=11;			//这个不会
+		未初始化php变量的值是其类型的默认值：字符串为空，布尔值为false，整型和浮点型为0，数组为空数组
+		依赖未初始化变量的默认值可能会产生问题
+
+	变量的生命周期和isset语言结构
+		变量在使用之前，是不存在的，即还未创建到内存，使用isset判断则返回false
+		变量在第一次使用时，则被自动创建到内存，同时获得了一个与应用环境对应的类型，若这时没有指定变量值，则返回类型的默认值（不同于其他语言如C，不指定变量值时，其默认值是指向的内存空间中的垃圾值），这时isset返回true
+		销毁的变量的方法：设置变量值为null $a=null;
+				  使用unset方法 unset($a);
+		无论使用哪种方法，销毁变量后isset返回false
+		还有一种特殊情况，变量已被创建到内存，但其值为null，则isset也返回false
+
+	isset语言结构
+		判断一个变量是否存在 或者 变量存在时其值是否为null
+		只能用于判断变量，不能传表达式、函数等
+		参数的个数不限，当多个参数时，分别判断各参数的值，然后进行或运算，返回整个isset的值
+		
+
+	empty语言结构
+		未创建的变量使用empty判断不会发生notice错误，返回值为true
+		变量已创建，当其值为类型的默认值时，返回值为true
+
+	访问一个不存在的数组元素时，会发生错误，使用isset和empty对数组和元素检测
+		<?php
+		$item = array(); 
+			//Now isset($item) returns true. But isset($item['unicorn']) is false.
+			//empty($item) is true, and so is empty($item['unicorn']
+
+		$item['unicorn'] = '';
+			//Now isset($item['unicorn']) is true. And empty($item) is false. 
+			//But empty($item['unicorn']) is still true;
+
+		$item['unicorn'] = 'Pink unicorn';
+			//isset($item['unicorn']) is still true. And empty($item) is still false. 
+			//But now empty($item['unicorn']) is false;
+		?>
+
+
+
+	php是弱类型语言，变量的类型由存储的值确定
+		
+
+		变量的声明和使用都需要$
+		不能使用php的运算符号
+		可以使用系统关键字作为变量名，如$if="aa"; $self="aa";  $parent="aa";但$this是一个特殊的变量，不可以被赋值
+		变量和常量区分大小写，但其他不区分，如函数echo和Echo是一样的
+
+
+预定义变量
+
+	PHP提供了大量的预定义变量，这些变量将所有的外部变量（即来自PHP之外的变量）表示成内建环境变量，并且将错误信息表示成返回头。
+
+	关于register_globals
+
+		默认为off，作用是自动注册生成变量，如用户Html表单提交的各种变量，都会被注入代码，导致安全问题，PHP6.0已删除此选项。
+
+	import_request_variables
+
+		如果register_global设置为off，同时又想直接使用部分全局变量，则可使用此函数，将GET/POST/Cookie变量导入到全局作用域中。
+
+		bool import_request_variables(string $types[,string $prefix])
+			types
+				取值为字母'G','P','C'，分别代表了GET、POST、Cookie，任何其他字母都将被忽略
+				不区分大小写，可任意组合
+				任意组合时，注意顺序，如'gp'则表示POST的变量会覆盖同名的GET变量
+			prefix
+				变量名的前缀，将会置于所有被导入到全局作用域的变量之前
+				如GET变量userid，将前缀设为pref，导入之后将变为pref_userid
+				虽然prefix参数为可选参数，但若不指定或为空字符串，则会触发Notice级错误
+			举例：
+				import_request_variables('p','p_');
+				echo $p_userid;
+				
+
+	预定义变量列表
+
+		分为超全局变量和全局变量，超全局变量在全部作用域都可使用，即使在函数内也可直接使用；但全局变量在函数内则需要使用global关键字引入。
+
+		超全局变量
+				默认在全部作用域中都可用，在函数或方法中无需global $var;就可以访问。
+				之所以说默认是因为PHP.ini配置文件有一些指令和超全局变量相关，会影响到其可用性，但$GLOBALS总是可用。
+				在函数或类方法中，超全局变量不能被用作可变变量。
+
+				超全局变量列表如下：
+				--------------------
+				$GLOBALS
+						包含了全局作用域中的所有变量，包含了用户自己定义的变量和超全局变量。
+						是一个数组的形式：
+							用户自定义变量的变量名即为key，变量值即为value；
+							超全局变量的key即为该超全局变量的名字，值为其对应的数组
+							元素'GLOBALS'又包含了对$GLOBALS数组本身的引用，不知用处为何
+						举例如下：
+								$myvar1 = 'AAAAAAA';
+								$myvar2 = 123;
+								$myvar3 = false;
+								var_dump($GLOBALS);
+								var_dump($GLOBALS['_SERVER']['HTTP_HOST'])
+						输出如下：
+								array
+								  'GLOBALS' => 
+									&array
+								  '_POST' => 
+									array
+									  empty
+								  '_GET' => 
+									array
+									  empty
+								  '_COOKIE' => 
+									array
+									  empty
+								  '_FILES' => 
+									array
+									  empty
+								  '_ENV' => 
+									array
+									  empty
+								  '_REQUEST' => 
+									array
+									  empty
+								  '_SERVER' => 
+									array
+									  'HTTP_HOST' => string 'localhost' (length=9)
+									  'HTTP_CONNECTION' => string 'keep-alive' (length=10)
+										...................................省略server变量输出
+								  'myvar1' => string 'AAAAAAA' (length=7)
+								  'myvar2' => int 123
+								  'myvar3' => boolean false
+
+								string 'localhost' (length=9)
+								
+				$_SERVER
+					包含了服务器和执行环境的信息
+					数组中的项由web服务器创建，因此不同的web服务器创建的项目可能会稍有不同
+
+					'PHP_SELF'
+						以网站根目录为起点的文件绝对路径，如/test/test.php
+
+				$_ENV
+
+				$_GET
+					通过URL参数传递给脚本的变量数组
+					接收到的所有数据类型均为字符串，如传true,1.234,123等都是字符串类型 
+				$_POST
+				$_REQUEST
+
+				$_COOKIE
+				$_SESSION
+
+				$_FILES
+
+		$php_errormsg
+
+		$HTTP_RAW_POST_DATA
+		$http_response_header
+
+		$argc
+		$argv
+
+变量范围
+
+	全局变量
+		同样在include和require文件中起作用
+
+	局部变量
+		函数内部的变量
+		因担心函数内的局部变量不小心覆盖了全局变量，因此全局变量在函数内部并不自动生效，需要使用global关键字
+			global $a,$b;
+			echo $a.$b;
+		第二个方法是使用超全局变量$GLOBALS数组
+			echo $GLOBALS['a'].$GLOBALS['b']
+		预定义变量并非都是超的，不是超全局的变量在函数内也需要使用global
+			????
+
+	静态变量
+		静态变量仅仅在局部函数域中存在，但当程序执行离开此作用域时，其值并不丢失。
+		格式：
+				static $var = value;
+						value不能使用表达式的结果。
+						static $int = 0;
+						static $int = 1+2;	//错，不能为表达式的结果
+		应用：
+			设置计数器
+			中止递归函数，防止无穷递归
+				function test(){
+					static $count = 0;
+
+					$count++;
+					echo $count;
+					if($count<10){
+						test();
+					}
+					$count--;
+				}
+		
+可变变量
+
+	一个变量的变量名可以动态的设置和使用。
+		$a = 'hello';
+		$$a = 'world';
+		echo "$a ${$a}";
+		echo "$a $hello";
+
+	将可变变量用于数组
+		需要解决一个模棱两可的问题：如$$a[1]，解析器需要知道是$a[1]作为变量，还是$$a作为变量，因此使用{}对两种情况分别表示为：${$a[1]} ${$a}[1]
+
+	在PHP的函数和类方法中，超全局变量不能用作可变变量
+
+来自PHP之外的变量

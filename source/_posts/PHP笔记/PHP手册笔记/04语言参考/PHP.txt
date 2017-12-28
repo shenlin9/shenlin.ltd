@@ -1,0 +1,79 @@
+PHP
+
+	最初的意义是：Personal Home Page，后改为PHP:Hypertext Preprocessor	即超文本预处理器
+
+	PHP语法混合了C、Java、Perl和自己的独特语法
+
+【PHP应用】
+
+	是一种开源的多用途脚本语言，用于下列三个领域：
+
+			1、服务端脚本，需要PHP解析器，web服务器、web浏览器
+
+			2、命令行脚本，只需要PHP解析器
+
+			3、桌面应用程序，需要PHP-GTK扩展
+
+            ???PHP解析器（CGI或服务器模块）
+
+	使用PHP可以自由的选择操作系统的web服务器：
+
+			1、PHP支持所有的主流操作系统：Linux、Unix各种变种、windows、Max OS X、RISK OS等
+
+			2、PHP支持大多数的web服务器：Apache、IIS等，支持方式包括提供PHP模块和支持CGI标准两种方式。
+
+	使用PHP可以选择编程方式：
+
+			1、面向过程
+
+			2、面向对象，PHP5已引入了完全的对象模型
+
+			3、两者混合
+
+	PHP可以用来动态输出图像、PDF、Flash动画、文本，在服务器端开辟出一块动态内容的缓存，生成后，可以：打印输出 或 存储到文件系统
+
+	PHP具有极其有效的文本处理特性：
+
+			1、Perl兼容正则表达式
+
+			2、解析和访问XML文档：libxml2、SimpleXML、XMLReader、XMLWriter
+
+	PHP支持很大范围的数据库：
+
+			1、
+			MySQL
+			Oracle
+			IBM DB2
+			PostgreSQL
+			SQLite
+			ODBC
+			Direct MS-SQL
+			.....
+
+			2、PHP可以自由的使用支持PDO扩展的数据库
+
+			3、PHP支持ODBC，即Open Database Connectivity 开放数据库互连，可以连接任何支持该标准的数据库
+
+            4、使用cURL或sockets的数据库，如CouchDB
+
+	PHP支持使用如下协议的服务：
+
+			LDAP、IMAP、SNMP、NNTP、POP3、HTTP、COM等等
+
+    PHP可以开放原始网络端口，使得协议能够协同工作。
+
+	PHP支持和所有的web开发语言之间的WDDX复杂数据交换，如支持了对JAVA对象的即时连接，并且可以透明的将其用作PHP对象。
+
+【PHP新旧代码的兼容性】
+
+	PHP的语言开发者为向下兼容性下了很多功夫，但有两点改动需要注意：
+
+		1、取消了老的$HTTP_*_VARS数组，改为超全局变量，如$HTTP_POST_VARS可以使用$_POST代替。
+
+			 自PHP5.0.0起，使用register_long_arrays选项禁用长类型的PHP预定义变量数组
+
+		2、外部变量不再被默认注册为全局变量，即register_globals默认值为off，建议使用超全局变量来替代
+
+【关于换行】
+
+    1、PHP会在输出时自动删除其结束符?>后的一个换行，该功能主要是针对一个页面中嵌入多段PHP代码 或 包含了无实质性输出的PHP文件 而设计，如果需要在?>后输出换行的话，可以在其后加一个空格，或者在最后的echo/print语句中加一个换行。

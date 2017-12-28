@@ -1,0 +1,44 @@
+||和OR的优先级不同，||比=高，OR比=低
+
+    <?php
+    $x=TRUE;
+    $y=FALSE;
+
+    $z=$y OR $x;
+    $j=$y || $x;
+    ?> 
+
+上例中$z=false,$j=true
+
+运算符优先级从高到低顺序为：|| = OR
+
+所以使用OR运算符时，一定要配合使用括号
+
+
+
+
+布尔值转换为字符串：
+
+    var_dump((string)false);    // string '' (length=0)
+    var_dump((string)true);     // string '1' (length=1)
+
+或者这样的效果是一样的：
+
+    echo false;     //nothing
+    echo true;      //'1'
+
+    因echo的参数需要字符串，false转为字符串则为''
+
+    echo (int)false;    //'0'
+
+可以使用这样的函数：
+
+    function bool_num($val=false){
+        return $val?1:0;
+    }
+
+    function bool_str($val=false){
+        return $val?'true','false';
+    }
+
+

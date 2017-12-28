@@ -1,0 +1,371 @@
+控制结构
+---------
+
+【流程控制的替代语法】
+	
+	PHP提供了一些流程控制的替代语法，包括if，while，for，foreach和switch。
+
+	替代语法的基本形式是把左花括号{换为冒号:，把右花括号}分别换为endif; endwhile; endfor; endforeach; endswitch;
+
+【elseif 和 else if】
+
+	在流程控制的替代语法中不能使用else if，必须使用elseif，其他情况两者通用。
+
+【for循环】
+
+	for (expr1; expr2; expr3)
+		statement
+
+	表达式expr1,expr2,expr3都可以为空，也都可以为使用逗号分隔的多个表达式。
+
+		$i = 1;
+		for(;;){
+			if($i > 10){
+				break;
+			}
+			echo $i;
+			$i++;
+		}
+
+	表达式expr2中，用逗号分隔的多个表达式都会进行计算，但只取最后一个结果。
+
+		for($i = 0,$j = 0; $i < 10,$j < 5; $i++,$j++){	//循环判断条件将以$j<5为准，只执行5次
+			echo $i.$j."<br>";
+		}
+
+	表达式expr2为空，则PHP将和C一样，认为其值为true，会无限循环下去，除非用break;结束循环。
+
+		for($i=1; ;$i++){
+			if($i > 10){
+				break;
+			}
+			echo $i;
+		}
+
+【foreach语句】
+
+	语法1：
+			foreach(array_expression as $value)
+				statement
+
+	语法2：
+			foreach(array_expression as $key=>$value)
+				statement
+
+	foreach可用于遍历数组和对象
+
+	foreach不支持"@"抑制错误
+
+	foreach开始执行时，数组内部的指针会自动指向第一个单元，这意味着不需要在foreach循环之前调用reset()，即使此数组在传给foreach时指针不是指向第一个单元。每循环一次，当前单元的键名赋值给变量$key，单元值赋给$value，然后数组内部的指针向后移动一步。
+
+
+	???foreach对数组指针有些副作用。除非对其重置，在 foreach 循环中或循环后都不要依赖数组指针的值。
+
+	除非数组是被引用，foreach操作的是数组A的一个复制，而不是数组A本身。在$value之前加上&，则是引用赋值而不是值的拷贝，将直接修改原数组的值。
+
+		$arr=array(1,2,3);
+		foreach($arr as $key=>&$value){	//
+			echo $key;
+			$value *= 2;
+		}
+		print_r($arr);
+
+		注意，经测试，只能是$value为引用，若$key也改为引用，会导致错误：Fatal error: Key element cannot be a reference 
+										  若$arr改为引用，会导致错误：Parse error: syntax error, unexpected '&' 
+
+	但此方法仅可以用在被遍历的数组可以被引用时才适用，例如上例中数组是个变量，下例中的数组则会报错：
+
+		foreach(array(1,2,3) as &$value){
+			echo $value *= 2;
+		}
+
+	适用each和list实现foreach的同样功能
+
+		$arr = array('one'=>1,'two'=>2,'three'=>3);
+		reset($arr);
+		while(list($key,$value)=each($arr)){
+			echo $key.$value;
+		}
+
+		foreach($arr as $key=>$value){
+			echo $key.$value;
+		}
+
+【break语句】
+
+	break结束当前for，foreach，while，do-while或者switch结构的执行
+
+	break接受一个可选的数字参数来决定跳出几重循环。
+
+		$i = 0;
+		while(++$i){
+			switch($i){
+				case 5:
+					echo 'at 5 <br>';
+					break 1;	//跳出了switch
+				case 10:
+					echo 'at 10 <br>';
+					break 2;	//跳出了switch和while
+				default:
+					break;
+			}
+		}
+
+【continue语句】
+
+	continue在循环结构中用于跳过本次循环中剩余的代码并在条件求值为真时开始执行下一次循环。
+
+	循环中可以嵌套循环，因此continue接受一个可选的数字参数来决定跳出几重循环。
+
+		$i = 0;
+		while($i++ < 5){
+			echo 'outer <br>';
+			while(1){
+				echo 'middle <br>';
+				while(1){
+					echo 'inner <br>';
+					continue 3;
+				}
+				echo 'this never gets output';
+			}
+			echo 'neither does this<br>';
+		}
+
+【switch语句】
+
+	switch($expression){
+		case $value1:
+			statement
+			break;
+		case $value1:
+			statement
+			break;
+		case $value1:
+			statement
+			break;
+		default:
+			statement
+	}
+
+	允许使用分号;代替case后面的冒号:
+
+	switch执行的松散比较，即==
+
+	case表达式可以是任何求值为简单类型的表达式，即整型、浮点、字符串、布尔（只有两个值没什么意义），不能使用数组或对象。
+
+	和elseif语句相比较，switch语句对条件只求一次值，然后和每个case语句比较，而elseif则要多次求值。
+
+	switch执行规则：
+		1、case和default是入口
+		2、case一个也匹配不上时，从default口入
+		3、case匹配上时，依次执行此case后所有的statement语句，包括default中的
+		4、但遇到break;或continue;语句，则跳出switch
+		5、case后的statement可省略，则相当于此case和下一个case两个入口，执行相同的statement
+
+【switch中的break和continue】
+
+	PHP中的switch语句也被认为是可以使用continue的一种循环结构，但continue在switch中的作用和上述的break类似。
+
+	当switch被包含在循环结构中时，continue 2;是开始外层的新循环，而break 2;是跳出外层的循环，下例中的continue换为break将得到完全不同的结果。
+
+		for($i=0;$i<100;$i++){
+
+				switch($i%5){
+
+					case 1:
+							echo $i.' 1 <br>';
+							continue 2;
+					case 2:
+							echo $i.' 2 <br>';
+							continue 2;
+					case 3:
+							echo $i.' 3 <br>';
+							continue 2;
+					case 4:
+							echo $i.' 4 <br>';
+							continue 2;
+				}
+		}
+
+【declare】
+
+	用来设定一段代码的执行指令。
+
+	语法1：指令对{}中的代码有效
+
+		declare (directive){
+			statement
+		}
+
+	语法2：指令对语句后的所有代码都有效，但若此代码被其他文件包含，对包含它的代码不起作用
+
+		declare (directive);
+		statement
+
+	当和名称空间组合使用时，只有后一种语法才是合法的。
+
+	directive设定，目前仅两个指令：ticks 和 encoding
+
+		ticks：在PHP5.3.0是过时指令，将会从PHP6.0.0移除
+
+		encoding：是PHP5.3.0新增指令
+
+			declare(encoding='UTF-8');
+
+【return语句】
+
+	return是语言结构，不是函数，不要使用括号将参数括起来，这样可以降低PHP负担。
+
+	在函数中调用：结束函数的执行并将return的参数作为函数的值返回。
+
+	在脚本文件的全局范围中调用：结束当前脚本文件的执行。
+
+								如果脚本文件是被include()或require()的，则将控制交回调用文件，将return的参数作为include调用的返回值
+
+	通过引用返回值时，更不要使用括号，通过引用只能返回变量，而不是返回表达式的值。???
+
+【goto操作符】
+
+	跳转到程序的某一指定位置，该目标位置可以用目标名称加上冒号来标记。
+
+	只能在同一个文件和作用域中跳转：无法跳出一个函数或类方法；无法跳入到另一个函数；无法跳入到任何循环或switch结构中。
+
+	常见的用法是跳出循环或switch，代替多层的break;
+
+		for($i=0,$j=50; $i<100; $i++){
+			while($j--){
+				if($j==17) goto end;
+			}
+		}
+		echo "i = $i";
+		end:
+		echo 'j hit 17';
+
+【include()语句】
+
+	包含并运行指定文件。
+
+	被包含文件的代码继承了include所在行的变量作用域，这意味着在被包含的文件里也可以调用包含文件位于此作用域中的变量。
+
+	注意魔术常量在包含文件中的特例，它们是在被包含之前解析的，像__FILE__,__LINE__返回是被包含文件的文件名和行数。
+
+	包含文件中定义的函数和类仍然是具有全局作用域的。
+
+	include作为语言结构，包含文件时不能使用()，否则会将()也认为是文件名的一部分：
+
+		include 'test.php';	//正常
+
+		include('test.php');//会认为包含的文件是('test.php')
+
+		if(include 'test.php' == 'OK'){	//特别是比较时，注意也不要使用括号
+
+		}
+
+	包含文件可用于函数内部，也可用于变量赋值：
+
+		$var = include 'test.php';
+
+	include的返回值：
+
+		当包含文件失败时，产生警告，并返回false
+
+		当包含文件成功时，若包含的文件中有return语句，则是return语句的参数
+
+						  若包含的文件中没有return语句，则返回整型1
+
+		当包含文件为远程文件时：return语句不起作用，但成功则返回整数1，失败返回布尔false
+
+	包含文件自身会触发Fatal Error达到递归调用的最大层级限制，一般为100层左右
+
+	当一个文件被包含时，语法解析器在文件的开头会脱离PHP模式进入HTML模式，在文件的末尾，又会恢复为PHP模式，因此被包含文件中的PHP代码都需要包含在PHP起始和结束标记之间。
+
+	PHP的默认配置中，allow_url_fopen是被激活的，则可以使用URL包含远程服务器的文件，如果远程服务器将目标文件作为PHP代码进行解析，即目标文件已经在远程服务器上运行了，本地脚本只是包含的一个运行结果，这和包含本地文件是不一样的，当然，这时也可以通过GET请求的URL传递参数。
+
+	包含文件的搜寻顺序：
+
+		要包含的文件路径是绝对路径：是则直接包含。
+
+		要包含的文件路径是目录相对路径（形如./file ../dir/file）：直接解析目录相对路径。
+
+			目录相对路径的basedir是当前工作目录。
+
+			在include嵌套的时候，basedir是入口的PHP文件所在的目录
+
+		要包含的文件只有文件名：会根据include_path和当前执行文件的路径组成一个待选的目录列表：include_path后面加上当前文件所在目录。然后依次尝试此目录列表中的每一个目录项，查找文件。
+
+	绝对路径是最快的。
+
+【require()语句】
+
+	和include()几乎完全一样，唯一区别是处理失败的不同方式：
+
+		include()产生一个Warning，而require()则导致一个Fatal Error。
+
+	鉴于上述区别，则：
+	
+		如果想在丢失文件时停止处理页面，就用require()
+
+【include_once()和require_once()语句】
+
+	和include()唯一区别是：如果该文件中的代码已经被包含了，则不会再次包含。
+
+	用于同一个文件有可能被包含超过一次的情况，用于避免函数重定义，变量重新赋值等问题。
+
+【文件包含的相关函数】
+
+		array get_included_files(void)
+
+			返回使用include() include_once() require() require_once()包含的所有文件的文件名数组
+
+		bool virtual(string $filename)
+
+			执行Apache的子请求，等同于使用服务器解析（SSI）的shtml功能，通过Apache解析的任何东西都可以使用此函数
+
+			参数$filename：将要执行虚拟命令的文件名
+
+			返回值；执行虚拟命令失败时返回false
+
+			只有在PHP安装为Apache模块时，才支持此函数。
+
+			virtual 所引入的程序必须要产生有效的 HTTP 头，最少要加入 Content-type 头。
+
+【PHP.ini中和文件包含的相关选项】
+
+		include_path string
+
+			指定一组目录，用于require()、include()、fopen_with_path()寻找文件
+
+			格式为：在UNIX下使用冒号分隔各目录
+
+						include_path = ".:/php/includes"
+
+					windows下使用分号
+
+						include_path = ".;c:\php\includes"
+
+		auto_prepend_file string
+
+			指定了在主文件名之前自动解析的文件名，其使用效果就像调用include()函数包含，也因此也会像include()一样使用include_path。
+
+			设为特殊值none则禁止自动前缀。
+
+		auto_append_file string
+
+			指定了在主文件名之后自动解析的文件名，其使用效果就像调用include()函数包含，也因此也会像include()一样使用include_path。
+
+			设为特殊值none则禁止自动后缀。
+
+			如果脚本通过eixt()中止，则自动后缀不会发生。
+		
+		allow_url_include boolean
+
+			是否允许像包含文件一样包含URLs，需要allow_url_fopen的on支持
+
+			适用方法：include() include_once() require() require_once()
+
+		allow_url_fopen boolean
+
+			是否允许远程文件访问，如可通过ftp、http等协议来访问远程文件
+
+			适用方法：include() include_once() require() require_once() 
+					  GD and Image函数库中的imagecreatefromXXX函数

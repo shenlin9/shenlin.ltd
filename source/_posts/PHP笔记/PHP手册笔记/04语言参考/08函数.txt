@@ -1,0 +1,385 @@
+函数
+---------
+
+【自定义函数】
+
+	函数名大小写无关，不过在调用时，通常使用其定义时的样式。
+
+	PHP不支持函数重载，也不可能取消定义或者重定义已声明的函数。
+
+	PHP中的所有函数和类都具有全局作用域，可以在内部定义外部调用，反之亦然。
+
+	任何有效的PHP代码都可以出现在函数内部，甚至包括其他函数和类定义。
+
+	函数也可以出现在控制结构内部，如if等
+
+	PHP刚执行时，脚本文件中被定义的函数就存在了，可以立即调用，无须在调用之前先定义函数。
+
+		test();
+		die;			//即使此处程序退出，test函数也已定义，可以调用，即使此文件被其他文件包含也一样
+
+		function test(){
+			echo "test starts";
+		}
+
+	但如果函数是被定义在另一个函数A内部或被定义在控制结构C中，只有等到A或C被执行后，其内部的函数才可以被调用：
+
+		demo();				//在demo定义之前就可以调用
+		demo2();			//必须等demo执行后，demo2才会存在，才可以被调用
+		function demo(){
+			echo "demo starts";
+			function demo2(){
+				echo "demo2 starts";
+			}
+			echo "demo finishes";
+		}
+
+		//-----------------------------------
+
+		$bln=true;
+		//这个位置demo3();demo4();均不存在，不能调用
+		if($bln){
+			function demo3(){
+				echo "demo3 starts";
+			}
+		}else{
+			function demo4(){
+				echo "demo4 starts";
+			}
+		}
+		demo3();	//$bln为true，demo3()已存在，可以调用
+		demo4();	//demo4()仍不存在，不能调用
+
+	同样，函数被定义在包含文件中，则执行完include后才存在：
+
+		include 'test2.php'; //test2.php中有个函数test()
+		test();
+
+	递归函数的最大嵌套层级
+
+		当达到近100层嵌套时，会因为可能破坏堆栈而使脚本终止，发生Fatal error。
+
+				recursion(1);
+				function recursion($a)
+				{
+					if ($a <= 97) {		//测试最大值97，98时就错误了
+						echo "$a<br>";
+						recursion($a + 1);
+					}
+				}
+
+【函数的参数】
+
+	默认按 值 传递参数
+
+	通过引用传递参数
+
+        只需要在函数声明时，参数前加上&号即为引用传值
+
+            例如：
+
+                $str='00';
+
+                function getName(&$name)
+                {
+                   $name .= '11'; 
+                }
+
+                getName($str);
+
+                echo $str;
+
+        注：在调用函数时引用传值已不支持，会产生 Fatal error: Call-time pass-by-reference has been removed
+
+                $str='00';
+
+                function getName(&$name)  <-------无论这里是否加&号
+                {
+                   $name .= '11'; 
+                }
+
+                getName(&$str);         <---------这里使用&号都产生Fatal error
+
+                echo $str;
+
+	设置参数默认值
+
+		PHP可以使用标量、数组、NULL作为参数默认值
+
+		参数默认值必须是常量表达式，不能是诸如变量、类成员、函数调用等。	
+
+		当使用参数默认值时，有默认值的参数必须全部放在没有默认值参数的右侧，即有默认值参数在后面。
+
+		PHP5起，通过引用传递的参数也可以有默认值。
+
+	可变数量的参数
+
+		可变参数并不需要特别的语法，参数列表仍按函数定义的方式传递给函数，并按通常的方式使用这些参数。???
+
+        PHP5.6以前版本：
+
+            使用下列函数实现
+
+            func_num_args()
+            func_get_arg()
+            func_get_args()
+
+        PHP5.6及以后版本：
+
+            由...语法实现
+
+【函数的返回值】
+
+	return; return $va;
+
+	是可选的
+
+	可以返回任何类型
+
+	不能返回多个值，可以通过返回数组等方式得到类似的效果。
+
+	会立即中止函数的执行，并将控制权交回调用该函数的代码行。
+
+	从函数正确返回一个引用，必须在声明函数和调用函数时都使用引用操作符&
+
+        class foo {
+            public $value = 3;
+            public function &getValue() {       <---声明有&
+                return $this->value;
+            }
+        }
+        $obj = new foo;
+        $myValue = &$obj->getValue();       <---调用也有&
+        $obj->value = 2;
+        var_dump($myValue);
+
+        输出: int 2
+
+    声明返回引用的函数，在调用时可以使用&号，将返回的引用赋给变量，也可以不使用&号，则直接将值赋给变量：
+
+        class foo {
+            public $value = 3;
+            public function &getValue() {       <---声明有&
+                return $this->value;
+            }
+        }
+        $obj = new foo;
+        $myValue = $obj->getValue();       <---调用没有&
+        $obj->value = 2;
+        var_dump($myValue);
+
+        输出: int 3
+
+
+    函数没有声明返回引用，即声明时没有&号，则调用时不能使用&号，否则产生 Strict standards: Only variables should be assigned by reference
+
+        class foo {
+            public $value = 3;
+            public function getValue() {       <----没有声明为返回引用
+                return $this->value;
+            }
+        }
+        $obj = new foo;
+        $myValue =& $obj->getValue();       <---调用有&，则警告
+        $obj->value = 2;
+        var_dump($myValue);
+
+
+【可变函数】
+
+	如果一个变量名后有圆括号，PHP将寻找与变量值同名的函数，并且尝试执行它。
+
+	可变函数可以用来实现回调函数、函数表等。
+
+		function test($str,$callback){
+			$callback($str);
+		}
+
+		$var = 'test';
+		$var('wa ha ha','printf');
+
+	内置函数也可用于可变函数
+
+	可变函数不能用于语言结构，如echo()、include()等，因为语言结构并不是函数。需要调用语言结构可以自己用函数包装这些结构后再用作可变函数：
+
+		function echoit($arg){
+			echo $arg;
+		}
+		
+		$var = 'echoit';		//这里换作$var = 'echo';则会报Fatal error: Call to undefined function echo() 
+								//这里换为内置函数printf也可以正常执行
+		$var('this is a test');
+
+	可变函数也可用于对象方法：
+
+		class Demo{
+			function show(){
+				echo 'demo show';
+			}
+		}
+
+		$var='show';
+		$obj = new Demo;
+		$obj->$var();
+
+【内置函数】
+
+	PHP的每个版本都包含了许多核心函数，如字符串和变量的函数。
+
+	但也有很多函数需要和特定的PHP扩展模块一起编译，如mysql_connect()函数需要MySQL扩展支持。
+
+	按函数的归属对PHP函数进行分类：
+
+		核心函数库
+			属于PHP内核的一部分，不能通过编译选项将其排除。
+
+		绑定的扩展库
+			绑定在PHP发行包中，包含了Apache、BC Math、JSON、MySQL、Mysqli、PDO、SQLite等
+
+		外部扩展库
+			外部的库
+
+		PECL扩展库
+			PHP Extension Community Library，多数以DLL的形式体现，需要在服务器上配置并注册到主机中
+
+	函数原型，即函数定义，格式
+
+		返回类型  函数名 ( 参数类型 参数名, 参数类型 &参数名 [ , 参数类型 参数名] )
+
+			第二个参数名前的&号表示引用传值
+
+			第三个参数[]括起来即表示为可选参数
+
+		如果给函数传递的参数类型和函数要求的类型不一致，则通常函数会返回NULL，但不一定肯定是NULL，这时函数的返回值将不确定。
+
+	扩展库相关函数
+	
+		array get_loaded_extensions([bool $zend_extensions = false])
+
+			返回被编译并被加载的模块名数组
+
+			参数：zend_extensions
+				
+					是否只返还Zend的扩展
+
+		bool function_exists(string $function_name)
+
+			检测函数是否已被定义，包含了内置函数和用户自定义函数
+
+			参数：函数名字符串
+
+			两种情况返回false：
+					
+					函数未被定义
+
+					被检测的不是函数，如语言结构echo
+
+		array get_extension_funcs(string $module_name)
+
+			返回指定的扩展模块中的函数名数组，但如果扩展模块名无效，则返回false
+
+			参数module_name：模块名，必须是小写
+
+		bool dl(string $library)
+
+			在运行时动态加载PHP扩展库
+
+			参数library：扩展库的文件名，目录路径在php.ini中指定
+
+		bool extension_loaded(string $name)
+
+			检测一个扩展库是否有效可用，包含了内置的扩展库和动态加载的扩展库
+
+【匿名函数】
+
+	也称为闭包函数，是临时创建的一个没有名称的函数。
+
+	在PHP5.3.0以上版本有效，使用Closure类实现（这个类不允许手工创建对象实例），目前不稳定，不推荐用于正式开发。
+
+	格式：
+		function($arg){
+
+		}
+
+	最常用作回调函数的参数：
+
+		echo preg_replace_callback(
+				'~-([a-z])~', 
+				function($match){return strtoupper($match[1]);}, 
+				'hello-world');
+
+	也可以作为变量的值来使用，这时PHP会自动把表达式转换为内置类Closure的对象实例：
+
+		$greet = function($str){
+			echo $str;
+		};						//这里是把Closure的对象实例赋值给了一个变量，所以像普通变量赋值一样有个分号
+
+		$greet('hello world');
+
+	闭包的父作用域指的是声明闭包的函数或类，而不是调用它的函数或类
+
+    闭包可以继承父作用域的变量，必须使用use语言结构
+
+        $usr = 'ssl';
+
+        $greet = function ($msg) use ($usr) {
+            echo $usr.' say '.$msg;
+        };
+
+        $greet('hello');
+        
+    使用use语言结构传递进去的值是在函数定义时就绑定的，不是在调用时绑定的:
+
+        $usr = 'ssl';
+
+        $greet = function ($msg) use ($usr) {   //定义时$usr已绑定值'ssl'
+            echo $usr.' say '.$msg;
+            $usr = 'lss';                       //被调用一次后$usr被改变，但下次再调用上面一行的$usr还是'ssl'
+        };
+
+        $usr = 'mike';                           //调用前改值影响不到闭包函数的绑定值
+        $greet('hello');
+
+        输出是：ssl say hello，而不是 mike say hello
+
+    可以通过引用传递改变$usr的定义时绑定，即
+
+        $greet = function ($msg) use (&$usr) {};
+
+    父类作用域不是全局作用域，下列中的$mystr对匿名函数来说，即存在于父类作用域中，匿名函数可使用use从父类作用域中继承，全局的话则可直接使用。
+
+            demo();
+            function demo(){
+
+                $mystr = 'wa ha ha <br>';
+
+                $greet = function($str) use ($mystr){	//这里没有use ($mystr)则匿名函数访问不到$mystr，会提示未定义的变量
+                    return $mystr.$str;
+                };
+
+                echo $greet('hello world');
+            }
+
+    匿名函数除了可以像上例调用父类作用域中的变量外，也可调用父类作用域的类属性：
+
+            $obj = new Test;
+            $obj->demo();
+
+            class Test{
+
+                    const CLASSSTR = 'this is a class const <br>';
+
+                    function demo(){
+
+                        echo self::CLASSSTR;						//类中调用自己的静态变量
+
+                        $mystr = 'wa ha ha <br>';
+
+                        $greet = function($str) use ($mystr){
+                            return Test::CLASSSTR.$mystr.$str;		//注意这里写的是类名，不是self，因这是匿名函数在访问父类作用域的类属性
+                        };
+
+                        echo $greet('hello world');
+                    }
+            }
+

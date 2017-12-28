@@ -1,0 +1,79 @@
+表达式
+------
+
+	任何有值的东西
+
+	$a = 5
+		5的值即为5，所以5本身也是一个值为5的表达式
+		这个赋值表达式涉及到3个值：整型常量5的值和变量$a的值，还有一个是表达式本身的值，表达式本身的值就是被赋的值
+
+	表达式本身的值就是被赋的值，举例
+
+		function demo(){
+			return $arr[]=false;	//return语句返回的是表达式的值，而这个表达式的值即为被赋的值false
+		}
+		var_dump(demo());
+
+		输出
+
+		boolean false
+
+
+	在有些判断时，不是关心具体的值是多少，而是关心这个值代表true还是false。在需要时，表达式会自动将值转换为布尔值。
+
+	$a = 5 为一个表达式，不是语句，而 $a = 5; 则为一个完整的语句 
+
+	手册中使用expr表示一个表达式，使用'expr'';'即表达式加分号来表示一条语句
+
+	标量值不能拆分为更小的单位
+
+【用户贡献笔记】
+
+	1、三元操作符可避免大量if判断，用在字符串连接中也很方便
+		$string = $otherstring . ( $wakaka ? 'foo' : 'bar' );
+
+	2、三元操作符可以使用括号使程序逻辑看起来更清晰
+		$var == "something" ? "is something" : "not something";
+		可有下面两种理解，如果不清楚运算符优先级
+		$var == ("something" ? "is something" : "not something");
+		($var == "something") ? "is something" : "not something";
+
+		最好将三元操作符的整个表达式都使用括号括起来
+		print( (trim($var) == "") ? "empty" : "not empty" );
+
+	3、手册中定义表达式是一切有值的东西，因此没有值的东西不能用在需要表达式的地方
+		echo不返回值，下列的语句错误
+				$var ? echo(true) : echo(false);
+		include和print有返回值，则不会出错
+				$var ? include('true.inc') : include('false.inc');
+				$var ? print(true) : print(false);
+		用户自定义的函数，即使没有写return语句也会返回null值，因此用户自定义的语句永远是有效表达式
+				function test(){}	
+				function demo(){}	
+				$var ? test() : demo();
+
+	4、短路求值，也称为懒散赋值
+		&& || and or
+		用于数组检测，避免访问到不存在的元素
+				if(myarray!=null && myarray[0]!=1234)
+					myarray[0]=1234;
+		用于文件检测
+			$file=fopen("foo","r") or die("Error!");
+	
+	5、检测是否为NULL,false,array(),''的函数，不包含0和'0'
+		function is_nil($value){
+			return !$value && $value!==0 && $value!=='0';
+		}
+	
+	6、if判断时，有时会误将==写为=，导致程序逻辑错误，避免方法之一，将判断的左右两边颠倒一下：
+		if(5==$a)
+		如果少写了=，则会报语法错误
+	
+	7、php从c语言中借鉴了很多语法，但是逗号的效果却不同，php中无法实现c语言中的组合表达式，除了在for循环中
+		下面的代码错误
+			$a = 2, $b = 4;
+		下面的代码正常
+			for($a=2,$b=4;$a<3;$a++){
+				echo $a.$b;
+			}
+		这是因为php没有真正的逗号操作符，在for的循环头中只是作为语法糖衣

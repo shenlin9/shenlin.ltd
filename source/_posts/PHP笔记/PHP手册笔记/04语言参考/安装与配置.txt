@@ -1,0 +1,63 @@
+【SAPI】
+
+    SAPI  Server Application Programming Interface，服务器端应用编程接口
+
+          要执行PHP脚本有很多种方式，如通过Web服务器，或者命令行，或者嵌入其他程序，或者桌面，无论哪种方式，执行PHP脚本要和其他应用有接口，而PHP SAPI 就是PHP和其他应用交互的接口
+
+    CLI   Command Line Interface，命令行接口
+
+    CGI   Common Gateway Interface 通用网关接口
+
+          CGI是外部应用程序和Web服务器之间的接口标准
+
+          Web服务器把用户请求按照CGI规范交给外部程序处理，外部程序处理完后将结果按CGI规范交给Web服务器
+
+          CGI的跨平台性能极佳，几乎在任何操作系统都可实现
+
+          Perl是主流的CGI开发语言
+
+          使用CGI方式的服务器在遇到链接请求时，先要创建一个CGI的子进程并激活，然后由这个子进程处理请求，处理完后结束这个子进程。这就是fork-and-execute模式（fork是linux的系统调用，用来创建子进程）。所以CGI方式服务器有多少链接请求就有多少个CGI子进程，子进程反复加载是CGI性能低下的原因，如PHP如采用CGI的方式，每一个链接请求PHP都必须重新解析php.ini，重新载入全部扩展并初始化全部数据结构，效率相当低下，所以有了CGI的升级版--FastCGI，而使用FastCGI，所有上述则只在进程启动时加载一次
+
+          CGI同时当用户请求数量很多时，大量的CGI子进程会占用很多系统资源，如内存、cpu时间
+
+          FastCGI是CGI的升级版本，FastCGI像是一个常驻型（long-live）的CGI，它只要激活后可以一直执行，不用每次都花费时间去fork一次
+
+          PHP使用PHP-FPM进行管理---FastCGI Process Manager，PHP FastCGI进程管理器
+
+
+    CLI和CGI是不同的SAPI模块，尽管他们有很多共同行为。
+
+    PHP链接到web服务器：1、利用PHP的SAPI作为web服务器的模块
+
+                        2、作为CGI、FastCGI来使用
+
+    PHP作为命令行脚本，不需要服务器和浏览器。
+
+
+【PHP的命令行模式】
+
+    ???PHP 初始的配置和安装过程被 configure脚本中一系列命令行选项控制。可以通过 ./configure --help命令了解 PHP 所有可用的编译选项及简短解释。
+
+【Windows安装程序】
+
+    在php.net下载windows版本的安装程序，将会安装CGI版本的PHP，并配置好web服务器IIS，但apache需要手动配置
+
+    该安装程序不包含任何外部的PHP扩展
+
+    有很多限制，如不支持自动安装PHP扩展，不是最好的安装方式。
+
+    这种安装方式安装的PHP不是安全的，最好使用手动方式安装，并手动设置好每个选项。
+
+
+【】
+
+
+
+【】
+
+
+
+【】
+
+
+

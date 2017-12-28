@@ -1,0 +1,168 @@
+异常处理
+-----------
+
+【异常规则】
+
+	抛出异常，则必须进行捕获，否则会报Uncaught Exception的fatal error
+	捕获异常可以使用try{throw}catch{}结构和set_exception_handler()函数
+	需要进行异常处理的代码应该放入try代码块内，以便捕获潜在的异常
+	使用throw在try中抛出异常
+	每个try或throw代码块必须至少拥有一个对应的catch代码块
+	使用多个catch代码块可以捕获不同种类的异常
+	异常可以嵌套，可以在内层catch代码块中再次抛出异常
+	set_exception_handler()函数设置处理所有未捕获异常的用户自定义函数
+
+【try....catch】
+
+	当一个异常被抛出throw，throw后的语句将不会继续执行，而查找第一个能匹配的catch，如果没有匹配的catch，且又没有使用set_exception_handler()作处理，则PHP会产生未捕获异常的错误。
+
+	try{
+		....
+		throw new MyException;
+		....
+		throw new YourException;
+		....
+		throw new Exception;
+		....
+	}catch(YourException $e1){
+		.....
+	}
+	}catch(MyException $e2){
+		.....
+	}
+	}catch(Exception $e3){
+		.....
+	}
+
+	throw出的Exception子类会被Exception类catch，但Exception类不会被子类catch，因此，最后一个catch应该是Exception。
+
+【set_exception_handler】
+
+	callback set_exception_handler(callback $exception_handler)	
+
+		throw出的异常没有被捕获到，则会调用使用这个函数定义的用户异常处理
+
+		注意，try..catch语句中，catch后的代码会继续执行，而被set_exception_handler处理的异常则会在调用函数后停止执行。
+
+		参数：用于捕获异常的函数名字符串，这个函数必须在set_exception_handler之前定义好，这个函数有一个参数，是被抛出的异常对象。
+
+		返回值：发生错误时返回NULL
+						如果前面有异常处理函数，则返回前一个异常处理函数的名字
+					如果前面没有异常处理函数，则返回NULL
+
+		举例：
+					function exception_handler1($exception){
+						echo 'exception_handler1：' , $exception->getMessage(), '<br>';
+					}
+					function exception_handler2($exception){
+						echo 'exception_handler2：' , $exception->getMessage(), '<br>';
+					}
+
+					var_dump(set_exception_handler('exception_handler1'));
+					var_dump(set_exception_handler('exception_handler2'));
+
+					throw new Exception('here is a Exception1');
+
+					echo '这里的代码不会被执行到';
+
+		输出：
+
+				null
+				string 'exception_handler1' (length=18)
+				exception_handler2：here is a Exception1
+
+	虽然一个脚本可以设置多个set_exception_handler()，但只是最后一个其作用，其他的只是返回了前一个回调函数的名字
+
+【restore_exception_handler()】
+
+	bool restore_exception_handler(void)
+
+	在使用set_exception_handler()设置异常处理函数exception_handler后，exception_handler已接管了异常处理，想要恢复原来的异常处理，则使用此函数复原到前一个异常处理器，可能是内置的异常处理 或 另一个用户自定义函数
+
+	???注意：在exception_handler函数内调用此函数将被忽略掉???手册里没写这句但相对应的error_handler手册里有写，需确认
+
+	返回值：总是true
+
+【预定义异常Exception】
+
+	Exception异常类是所有异常的基类，包括下面的预定义异常类ErrorException
+
+	Exception类的摘要：
+
+		Exception{
+
+			/*属性*/
+			protected string $file;
+			protected int $line;
+			protected int $code;
+			protected string $Exception->message;
+
+			/*方法*/
+			final public string Exception::getFile(void)
+			final public int Exception::getLine(void)
+			final public int Exception::getCode(void)
+			final public string Exception::getMessage(void)
+			final public array Exception::getTrace(void)
+			final public string Exception::getTraceAsString(void)
+
+			public Exception::__construct([string $message="" [,int $code = 0 [, Exception $previous = NULL]]])
+			public string Exception::_toString(void)
+
+			final public Exception Exception::getPrevious(void)
+			final private void Exception::__clone(void)
+		}
+
+	getTrace和getTraceAsString貌似只有异常发生在类或函数中才会有内容
+
+	使用getPrevious追踪异常，循环打印举例：
+
+				class MyCustomException extends Exception {}
+
+				function doStuff() {
+						try {
+								throw new InvalidArgumentException("You are doing it wrong!", 112);
+						} catch(Exception $e) {
+								throw new MyCustomException("Something happend", 911, $e);
+						}
+				}
+
+				try {
+						doStuff();
+				} catch(Exception $e) {
+						do {
+								printf("%s:%d %s (%d) [%s]<br>", $e->getFile(), $e->getLine(), $e->getMessage(), $e->getCode(), get_class($e));
+						} while($e = $e->getPrevious());
+				}
+
+
+	使用自定义的类来扩展内置的异常类Exception，注意此类中只有__construct方法和__tostring方法不是final的，可被子类覆盖，其他方法均为final
+
+	自定义的异常类若需要重新定义构造函数，最好在构造函数中同时调用parent::__construct()来检查所有的变量是否已被赋值
+
+		class MyException extends Exception{
+			public function __construct($message,$code=0){
+				//自定义代码
+				parent::__construct($message,$code);
+			}
+		}
+
+【预定义错误异常ErrorException】
+
+
+
+【SPL中的异常类】
+
+	Exception
+			RuntimeException
+				BadFunctionCallException
+					BadMethodCallException
+				OutOfBoundsException
+				OverflowException
+				RangeException
+				UnderflowException
+				UnexpectedValueException
+		LogicException
+				DomainException
+				InvalidArgumentException
+				LengthException
+				OutOfRangeException

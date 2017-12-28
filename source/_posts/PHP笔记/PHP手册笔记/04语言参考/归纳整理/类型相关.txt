@@ -1,0 +1,175 @@
+------------------------------------------------
+------------------------------------------------
+strval — 获取变量的字符串值
+boolval — 获取变量的布尔值
+intval — 获取变量的整数值
+floatval — 获取变量的浮点值
+    doubleval — floatval 的别名
+
+
+------------------------------------------------
+------------------------------------------------
+is_string — 检测变量是否是字符串
+is_bool — 检测变量是否是布尔型
+is_int — 检测变量是否是整数
+    is_integer — is_int 的别名
+    is_long — is_int 的别名
+is_float — 检测变量是否是浮点型
+    is_double — is_float 的别名
+    is_real — is_float 的别名
+is_array — 检测变量是否是数组
+is_object — 检测变量是否是一个对象
+is_resource — 检测变量是否为资源类型
+is_null — 检测变量是否为 NULL
+
+is_numeric — 检测变量是否为数字或数字字符串
+is_scalar — 检测变量是否是一个标量
+
+
+----------------------------------------------类型转换-----------------------------------------------------------
+
+
+class empty_class{
+
+}
+$empty_obj=new empty_class();
+
+未定义变量
+var_dump((bool)$not_setvalue_variable); // bool(false)
+
+字符串
+var_dump ((bool)  "" );         // bool(false)
+var_dump ((bool)  "0" );        // bool(false)
+var_dump ((bool)  "00" );       // bool(true)
+var_dump ((bool)  "0.0" );      // bool(true)
+var_dump ((bool)  "false" );    // bool(true)
+var_dump ((bool)  "foo" );      // bool(true)
+
+整型
+var_dump ((bool)  0 );          // bool(false)
+var_dump ((bool)  00 );         // bool(false)
+var_dump ((bool)  1 );          // bool(true)
+var_dump ((bool) -1 );          // bool(true)
+var_dump ((bool)  23 );         // bool(true)
+var_dump ((bool)  -23 );        // bool(true)
+
+浮点
+var_dump ((bool)  0.0);         // bool(false)
+var_dump ((bool)  0.00);        // bool(false)
+var_dump ((bool)  0.000);       // bool(false)
+var_dump ((bool)  00.000);      // bool(false)
+var_dump ((bool)  0.1);         // bool(true)
+var_dump ((bool)  2.3e5 );      // bool(true)
+
+数组
+var_dump ((bool) array());      // bool(false)
+var_dump ((bool) array([]));    // bool(true)
+var_dump ((bool) array( 12 ));  // bool(true)
+
+没有任何成员变量的对象
+var_dump((bool)$empty_obj);     // bool(true)
+
+NULL
+var_dump((bool)NULL);           // bool(false)
+
+资源：所有资源都为true
+$fp=fopen('d:\haha.txt','r');
+var_dump((bool)$fp);            // bool(true)
+
+
+
+
+注意字符串'false'转换为bool时为true：
+
+    $arr=[true];
+
+    if($arr[0]=='false'){
+        echo 'execute to here';
+    }
+
+    if('false'){
+        echo 'execute to here';
+    }
+
+    都将执行输出execute to here
+
+!可以将变量转换为bool
+
+    $t=!0;
+    $t=!1;
+    $t=!'hello';
+    $t=![];
+    
+连续两个!!可以将变量转换为对应的布尔值，如查看是否数组为空：
+
+    if(!!$array){
+    }
+
+    相当于
+
+    if(count($array)>0){
+    }
+
+    
+----------------------------------------------运算符-----------------------------------------------------------
+
+字符串运算符        .
+
+逻辑运算符          && || and or 
+                    !
+                    xor 
+
+
+算术运算符          + - * / %取模 -取反
+递增／递减运算符    ++ -- 
+位运算符            & | ~ ^ <<  >>
+
+
+数组运算符          +
+                    == ===
+                    != <> !==
+
+类型运算符          instanceof
+
+----------------
+
+比较运算符          == ===
+                    != <> !==
+                    > >= < <=
+
+赋值运算符          =
+                    =>
+                    += -= *= /= %=
+                    &= |= ^= <<= >>= 
+
+
+----------------
+
+错误控制运算符      @ 
+
+执行运算符          `` 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var_dump(null==array());    //true
+var_dump(null==0);          //true
+var_dump(array()==0);       //false why?
+
+var_dump((int)array());     //0
+var_dump((bool)array());    //false
+

@@ -1,0 +1,3 @@
+set_time_limit()
+php.ini max_execution_time
+apache.conf php_value max_execution_time

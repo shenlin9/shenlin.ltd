@@ -1,0 +1,217 @@
+命名空间
+----------
+
+【概述】
+
+	是一种封装事物的方法，提供了一种将相关的类、函数和常量组合到一起的途径。
+
+	在PHP中，主要用来解决创建可重用代码（如类、函数）时碰到的两类问题：
+
+		1、名字冲突：用户编写的代码与PHP内部的类、函数、常量或第三方的类、函数、常量名字冲突
+
+		2、提高代码可读性：为了缓解第一类问题而定义了很长的标识符名称，为此长名称创建一个简短的别名，提高代码的可读性。
+
+【全局空间】
+
+	如果没有定义任何命名空间，则所有类、函数、常量的定义都是在全局空间。
+
+	在名称前加上前缀\表示该名称是全局空间中的名称，即使在其他命名空间中也是如此使用： 
+
+		namespace A\B\C;
+
+		function fopen(){
+			$f = \fopen();
+		}
+
+【namespace关键字和__NAMESPACE__魔术常量】
+
+	__NAMESPACE__：当前命名空间的名称字符串，若是全局的命名空间，则是空字符串
+
+	namespace：用于显式访问当前命名空间和子命名空间中的元素，等价于类中的self操作符
+
+		namespace MyProject;
+		......
+		$a=new namespace\sub\cname();	//等价于Myproject\sub\cname()
+		$b=namespace\constant;				//等价于Myproject\constant
+		$c=namespace\func();					//等价于Myproject\func()
+
+【定义命名空间】
+
+	使用关键字namespace声明
+
+		namespace MyProject;
+
+	任意合法的PHP代码都可以包含在命名空间中，但只有三种类型的代码受命名空间的影响：类、函数和常量。
+
+	如果一个文件中包含命名空间，则声明命名空间语句前唯一合法的代码是用于定义源文件编码方式的declare语句，其他的则都不合法：如html代码、空白符。
+
+		declare(encoding='UTF-8');
+		namespace MyProject{
+
+		}
+
+	同一个命名空间可以定义在多个文件中。
+
+【定义子命名空间】
+
+	namespace Myproject\sub\version1;
+
+【在同一个文件中定义多个命名空间】
+
+	不提倡在同一个文件中定义多个命名空间。
+
+	两种语法，建议使用大括号语法。
+
+	简单组合语法
+
+		namespace MyProject1;
+		const tt = 1;
+		class demo{}
+		function test(){}
+
+		namespace MyProject2;
+		const tt = 1;
+		class demo{}
+		function test(){}
+
+	大括号语法
+
+		namespace MyProject1{
+				const tt = 1;
+				class demo{}
+				function test(){}
+		}
+		namespace MyProject2{
+				const tt = 1;
+				class demo{}
+				function test(){}
+		}
+
+	将全局代码和命名空间的代码组合在一起，则只能使用大括号形式的语法，全局代码用一个不带名称的namespace语句加上大括号括起来。
+
+		namespace MyProject{
+
+		}
+
+		namespace {
+			//全局代码
+		}
+
+【命名空间和动态语言特征】
+
+	在命名空间中使用动态的类名称、函数名称、常量名称，必须使用完全限定名称，这时，前导的反斜杠是不必要的，可以省略。
+
+				namespace namespacename;
+				class classname
+				{
+						function __construct()
+						{
+								echo __METHOD__,"<br>";
+						}
+				}
+				function funcname()
+				{
+						echo __FUNCTION__,"<br>";
+				}
+				const constname = "namespaced";
+
+				/* 若使用双引号则需要使用双反斜杠，即"\\namespacename\\classname" */
+				$a = '\namespacename\classname';
+				$obj = new $a; //  namespacename\classname::__construct
+				$a = 'namespacename\classname';
+				$obj = new $a; // also prints namespacename\classname::__construct
+
+				$b = 'namespacename\funcname';
+				$b(); // prints namespacename\funcname
+				$b = '\namespacename\funcname';
+				$b(); // also prints namespacename\funcname
+
+				echo constant('\namespacename\constname'), "\n"; // prints namespaced
+				echo constant('namespacename\constname'), "\n"; // also prints namespaced
+
+【使用命名空间：基础】
+
+	文件系统的三种访问方式：
+
+		1、相对文件名，如foo.txt，会被解析为：当前目录/foo.txt
+		2、相对路径名，如subfolder/foo.txt，会被解析为：当前目录/subfolder/foo.txt
+		3、绝对路径名，如/main/foo.txt，则按原样解析
+
+	命名空间也有相同的三种引用方式：
+
+		1、非限定名称：不包含命名空间分隔符，如$a = new foo();，
+
+				如命名空间为currentnamespace;则被解析为$a = new currentnamespace\foo();
+
+				如代码是全局的,则解析为$a= new foo();
+
+		2、限定名称：包含命名空间分隔符，且第一个字符不是命名空间分隔符的名称，如$a = new subject\foo();
+
+				如命名空间为currentnamespace;则被解析为$a = new currentnamespace\subject\foo();
+
+				如代码是全局的,则解析为$a= new subject\foo();
+
+		3、完全限定名称：包含命名空间分隔符，且第一个字符即是命名空间分隔符的名称，如$a = new \myproject\foo();
+
+				总是被解析为$a = new myproject\foo();
+
+【使用命名空间：别名/导入】
+
+	使用关键字use
+
+	可以为类名、命名空间名称使用别名，不支持函数和常量
+
+	允许通过别名导入外部的完全限定名称，因为必须是完全限定名称，所以在导入时，前导的反斜杠没必要也不允许有
+
+	三种导入方式：
+
+		use my\full\classname as another;
+
+		use my\full\classname;	//相当于 use my\full\classname as classname;
+
+		use \ArrayObject;	//导入一个全局类
+
+		完整例子：
+
+				<?php
+				namespace foo;
+				use My\Full\Classname as Another;
+
+				// 下面的例子与 use My\Full\NSname as NSname 相同
+				use My\Full\NSname;
+
+				// 导入一个全局类
+				use \ArrayObject;
+
+				$obj = new namespace\Another; // 实例化 foo\Another 对象
+				$obj = new Another; // 实例化 My\Full\Classname　对象
+				NSname\subns\func(); // 调用函数 My\Full\NSname\subns\func
+				$a = new ArrayObject(array(1)); // 实例化 ArrayObject 对象
+				// 如果不使用 "use \ArrayObject" ，则实例化一个 foo\ArrayObject 对象
+				?> 
+
+	也可一行use导入多个名称，使用逗号分割
+
+		use my\full\classname as another,my\full\nsname;
+
+	因完全限定名称是确定的，不受导入操作的影响，导入操作只影响非限定名称和限定名称。
+
+	导入操作是在编译时执行的，但动态的类名称、函数名称、常量名称则不是，看下面的代码：
+
+		use my\full\classname as another;
+
+		$obj = new another; //实例化的是my\full\classname对象
+		$a = 'another';
+		$obj = new $a;	//实例化的是another对象
+
+【使用命名空间：后备全局函数/常量】
+
+		在一个命名空间中，PHP遇到一个非限定的类、函数、常量时：
+
+				类名总是解析到当前命名空间中的名称，找不到则报致命错误
+
+						也因此，若想访问系统内部的类名 或 不包含在命名空间中的类名时，必须使用完全限定名称。
+
+				函数和常量，先解析到当前命名空间中的名称，找不到则退而使用全局空间中的函数和名称。
+
+【名称解析规则】
