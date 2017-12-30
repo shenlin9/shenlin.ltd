@@ -97,9 +97,9 @@ string wordwrap ( string $str [, int $width = 75 [, string $break = "\n" [, bool
 
 ```php
 mixed strpos ( string $haystack , mixed $needle [, int $offset = 0 ] )
-
-stripos strpos 函数的忽略大小写版本
 ``` 
+stripos
+strpos 函数的忽略大小写版本
 
 在字符串 `$haystack` 中查找字符串 `$needle` **第一次** 出现的位置
 方向永远是向后查找

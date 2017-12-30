@@ -102,6 +102,13 @@ cmder 支持多种 shell，新建 Tab 时，可选择 shell 的种类：
         lambda = "("..env..") λ"
     end
     ```
+* 看不到命令提示符 `λ` 或 `$`
+
+    是因为命令提示符的颜色和背景色都设为了黑色，打开文件 `cmder/vendor/clink.lua`
+
+    找到 41 行附近的 `local cmder_prompt = "\x1b[1;32;40m{cwd} {git}{hg}{svn} \n\x1b[1;32;40m{lamb} \x1b[0m"`
+
+    把 `[1;32;40m{lamb}` 中的 32 改为 37
 
 * 命令行里有中文字符时，就可以删除到底把提示符 `$`  都删了
 
