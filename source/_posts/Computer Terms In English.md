@@ -1,7 +1,9 @@
 ---
 title: 计算机术语
-categories: 计算机基础
-tags: Terms
+categories: Basis
+tags: 
+  - Terms
+  - Basis
 ---
 
 ## 兼容
@@ -17,6 +19,10 @@ Break Compatibility 不兼容
 Institute of Electrical and Electronics Engineers 美国电气和电子工程师协会
 
 读作：eye-triple-e , I-3E
+
+## IETF
+
+Internet Engineering Task Force (IETF)
 
 ## Side Effect
 

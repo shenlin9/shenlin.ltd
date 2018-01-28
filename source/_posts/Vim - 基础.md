@@ -222,13 +222,11 @@ windows, linux, macos 对待换行的方式都不一样，需要进行针对性�
 
 ### 查找替换时
 
-??? 没有测试成功，始终无法查找到回车符
-
-查找时，\n 代表换行符 (newline)， \r 代表回车符 (CR carriage return = Ctrl-M = ^M)
+查找时，\n 代表换行符 (newline)， \r 代表回车符 (CR 即 carriage return = Ctrl-M = ^M)，若查找 \r 没有找到，则可能是 linux 换行格式文件
 
 替换时，\r 代表换行，\n 代表空字符 (null byte 0x00)
 
-所以下列命令可以转换DOS回车符“^M”为真正的换行符：
+那替换时怎么替换掉回车符呢？ 下列命令可以转换DOS回车符“^M”为真正的换行符：
 
 ```vim
 :%s/\r/\r/g

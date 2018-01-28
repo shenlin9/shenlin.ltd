@@ -1,4 +1,4 @@
-﻿title: VirtualBox
+title: VirtualBox
 categories:
   - Windows
 tags:
@@ -54,6 +54,7 @@ Verifying  : sudo-1.8.6p3-27.el6.i686
   kernel.i686 0:2.6.32-696.3.2.el6
 更新完毕:
 binutils.i686 0:2.20.51.0.2-5.47.el6_9.1 curl.i686 0:7.19.7-53.el6_9                       
+
 //安装外置核心模块
 $ sudo yum install -y kernel-devel
 ```

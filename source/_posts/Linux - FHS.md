@@ -2,13 +2,16 @@
 title: linux - Filesystem Hierarchy Standard 文件系统层次化标准
 categories:
   - Linux
-  - FHS
 tags:
   - Linux
   - FHS
 ---
 
 Filesystem Hierarchy Standard 文件系统层次化标准
+
+https://zh.wikipedia.org/wiki/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E6%A0%87%E5%87%86#cite_ref-11
+http://www.pathname.com/fhs/pub/fhs-2.3.html
+http://www.pathname.com/fhs/
 
 <!--more-->
 
@@ -18,6 +21,7 @@ Filesystem Hierarchy Standard 文件系统层次化标准
 
 FHS定义了系统中每个区域的用途、所需要的最小构成的文件和目录，同时还给出了例外处理与矛盾处理。
 
+在FHS中，所有的文件和目录都出现在根目录"/"下，即使他们存储在不同的物理设备中。
 ## 规范
 
 FHS定义了两层规范
@@ -72,5 +76,94 @@ http://baike.baidu.com/item/FHS
 http://www.cnblogs.com/lifeinsmile/p/4280223.html
 http://www.cnblogs.com/happyframework/p/4480228.html
 
+    /           第一层次结构 的根、 整个文件系统层次结构的根目录。
+    /bin/       需要在单用户模式可用的必要命令（可执行文件）；面向所有用户，例如： cat、 ls、 cp。
+    /boot/      引导程序文件，例如： kernel、initrd；时常是一个单独的分区[6]
+    /dev/       必要设备, 例如：, /dev/null.
 
+    /etc/       特定主机，系统范围内的配置文件。
+                关于这个名称目前有争议。在贝尔实验室关于UNIX实现文档的早期版本中，/etc 被称为etcetera， [7] 这是由于过去此目录中存放所有不属于别处的所有东西（然而，FHS限制/etc存放静态配置文件，不能包含二进制文件）。 [8] 自从早期文档出版以来，目录名称已被以各种方式重新称呼。最近的解释包括反向缩略语如："可编辑的文本配置"（英文 "Editable Text Configuration"）或"扩展工具箱"（英文 "Extended Tool Chest")。 [9]
+    /etc/opt/   /opt/的配置文件
+    /etc/X11/   X Window系统(版本11)的配置文件
+    /etc/sgml/  SGML的配置文件
+    /etc/xml/   XML的配置文件
+
+    /home/ 	    用户的家目录，包含保存的文件、个人设置等，一般为单独的分区。
+    /lib/ 	    /bin/ 和 /sbin/中二进制文件必要的库文件。
+    /media/ 	可移除媒体(如CD-ROM)的挂载点 (在FHS-2.3中出现)。
+    /mnt/ 	    临时挂载的文件系统。
+    /opt/ 	    可选应用软件 包。[10]
+    /proc/ 	    虚拟文件系统，将内核与进程状态归档为文本文件。例如：uptime、 network。在Linux中，对应Procfs格式挂载。
+    /root/ 	    超级用户的家目录
+    /sbin/ 	    必要的系统二进制文件，例如： init、 ip、 mount。
+    /srv/ 	    站点的具体数据，由系统提供。
+    /tmp/ 	    临时文件(参见 /var/tmp)，在系统重启时目录中文件不会被保留。
+
+    /usr/ 	        用于存储只读用户数据的第二层次； 包含绝大多数的(多)用户工具和应用程序。[11]
+    /usr/bin/       非必要可执行文件 (在单用户模式中不需要)；面向所有用户。
+    /usr/include/   标准包含文件。
+    /usr/lib/       /usr/bin/和/usr/sbin/中二进制文件的库。
+    /usr/sbin/      非必要的系统二进制文件，例如：大量网络服务的守护进程。
+    /usr/share/     体系结构无关（共享）数据。
+    /usr/src/       源代码,例如:内核源代码及其头文件。
+    /usr/X11R6/     X Window系统 版本 11, Release 6.
+    /usr/local/     本地数据的第三层次， 具体到本台主机。通常而言有进一步的子目录， 例如：bin/、lib/、share/.
+
+    /var/ 	        变量文件——在正常运行的系统中其内容不断变化的文件，如日志，脱机文件和临时电子邮件文件。有时是一个单独的分区。
+    /var/cache/     应用程序缓存数据。这些数据是在本地生成的一个耗时的I/O或计算结果。应用程序必须能够再生或恢复数据。缓存的文件可以被删除而不导致数据丢失。
+    /var/lib/       状态信息。 由程序在运行时维护的持久性数据。 例如：数据库、包装的系统元数据等。
+    /var/lock/      锁文件，一类跟踪当前使用中资源的文件。 
+    /var/log/       日志文件，包含大量日志文件。
+    /var/mail/      用户的电子邮箱。 
+    /var/run/       自最后一次启动以来运行中的系统的信息，例如：当前登录的用户和运行中的守护进程。现已经被/run代替[13]。 
+    /var/spool/     等待处理的任务的脱机文件，例如：打印队列和未读的邮件。 
+    /var/spool/mail/用户的邮箱(不鼓励的存储位置) 
+    /var/tmp/       在系统重启过程中可以保留的临时文件。
+
+    /run/ 	        代替/var/run目录。
+
+## 目录
+
+/home               普通用户的家目录
+/bin                普通用户使用的命令
+/usr/bin            普通用户使用的命令，系统自带的软件包可执行文件的安装目录
+/usr/local/bin      普通用户使用的命令，用户通过源码编译的软件包的可执行文件目录
+
+/root               超级用户 root 的家目录
+/sbin               超级用户使用的命令
+/usr/sbin           超级用户使用的命令
+/usr/local/sbin     超级用户使用的命令
+
+/boot               linux 内核和系统引导程序（GRUB,LILO）所在的目录
+/dev                设备文件存储目录，如磁盘、声卡……
+/lib                库文件
+/proc               进程信息和内核信息，里面的文件都是伪文件，实际是内存的映射，定义参看 /etc/fstab
+/opt                软件安装目录
+/mnt                存储设备的挂载目录
+
+/etc                系统配置文件和一些儿服务器的配置文件
+/etc/init.d         以 System V 模式启动的脚本
+/etc/xinit.d        以 xinetd 模式启动的脚本
+/etc/rc.d           以 BSD 方式启动的脚本
+/etc/X11            X-Windows 相关的配置文件
+
+/usr                程序目录
+/usr/src            内核源码的存放目录，源码软件包
+/usr/local          用户通过源码包自编译软件的安装目录
+/usr/share          系统共用的资源
+/usr/share/fonts    字体目录
+/usr/share/man      帮助目录
+/usr/share/doc      帮助目录
+
+/var                经常变换的数据
+/var/adm            软件包安装信息、日志、管理信息
+/var/spool          打印机、邮件、代理服务器等假脱机目录
+/var/log            系统日志目录
+/var/www            Apache 站点目录
+/var/lib            库文件，如 MySql 的库文件
+
+
+/log                日志文件
+/tmp                临时文件目录
+/lost+found         系统意外关机或崩溃后产生的碎片文件放到此目录，系统启动时会检查此目录的碎片文件并尝试修复摔坏的文件系统
 

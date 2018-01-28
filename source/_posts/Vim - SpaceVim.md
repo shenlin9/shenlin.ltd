@@ -1,3 +1,4 @@
+---
 title: SpaceVim
 categories:
   - Vim
@@ -5,7 +6,6 @@ categories:
 tags:
   - Vim
   - SpaceVim
-
 ---
 
 https://github.com/SpaceVim/SpaceVim

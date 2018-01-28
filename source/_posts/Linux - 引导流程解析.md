@@ -1,9 +1,9 @@
 ---
-title: linux - 引导流程解析
+title: Linux - 引导流程解析
 categories:
-  - linux
+  - Linux
 tags:
-  - linux
+  - Linux
 ---
 
 linux 引导流程解析
@@ -12,54 +12,38 @@ linux 引导流程解析
 
 Linux引导流程
 
-    固件Firmware(CMOS/BIOS)->执行POST(Power On Self Test)加电自检->读取MBR->自举程序BootLoader(GRUB)->载入内核->内核Kernel->驱动硬件->启动进程init->读取并执行配置文件/etc/inittab
+    固件Firmware(CMOS/BIOS) -> 执行POST(Power On Self Test)加电自检 -> 读取MBR
+    -> 自举程序 Boot Loader(GRUB) -> 载入内核 -> 内核Kernel -> 驱动硬件 & 启动 pid 为 1 的 init 进程
+    -> 读取并执行配置文件 /etc/inittab
 
-init的工作：
-
-    init启动后读取inittab文件，执行缺省运行级别，从而继续引导过程。
-
-    在UNIX系统中，init是第一个可以存在的进程，它的PID恒为1，但它也必须向一个更高级的功能负责：PID为0的内核调度器（Kernel Scheduler），从而获得CPU时间 
-
-内核调度器：负责分配CPU时间和进程间切换。
-
-父子进程：linux中，父进程终止，子进程也必须被终止；若父进程被终止，而子进程因特殊原因没被终止，则子进程被称为孤儿进程；linux检测到孤儿进程后，会将孤儿进程的父进程指向init进程；
-
-          若子进程被终止后，父进程没了解到此信息，还尝试和子进程取得联系，则此子进程称为僵尸进程，linux中用Z（Zombie）表示。
-
-MBR：Mater Boot Record 主引导记录，位于0柱面0磁头1扇区
-
-     MBR共512个字节
-
-         Boot Loader （446bytes） 自举程序
-
-         Partition Table （64bytes） 分区表
-
-               partition1 
-               partition2 
-               partition3 
-               partition4 
-
-         Magic Number（2bytes） 结束标志字
-
-固件介于软件和硬件之间
-
-    固件的常用设置：
+固件介于软件和硬件之间，常用设置：
 
     安全设置，如设置BIOS密码
-
     可引导的介质列表
-
     可引导介质的搜索顺序
-
     电源管理
-
     启动细节显示
-
     …………
+
+MBR：Mater Boot Record 主引导记录
+
+
+    位于0柱面0磁头1扇区，共512个字节，包括：
+    1. Boot Loader 自举程序 446bytes
+        每个磁盘（即使是软盘、CD、DVD 或者 USB 记忆棒之类的固态设备）
+        的 MBR 中均包含此执行代码，即使这个代码只能用于显示一条消息，
+        比如 "Non-bootable disk in drive A:（驱动器 A 中没有可引导磁盘：）"
+    2. Partition Table 分区表 64bytes
+        partition1 
+        partition2 
+        partition3 
+        partition4 
+    3. Magic Number 结束标志字 2bytes
+
 
 BIOS时钟
 
-    硬件时钟，linux中称为hardware clock，使用命令hwclock查看
+    硬件时钟，linux 中称为 hardware clock，使用命令 hwclock 查看
 
     更改硬件时钟时间：hwclock --set --date="9/22/96 16:45:05"
 
@@ -83,29 +67,42 @@ BIOS时钟
 
         NTP（Network Time Protocal）服务，定期和实际服务器同步???
 
+init的工作：
+
+    init启动后读取inittab文件，执行缺省运行级别，从而继续引导过程。
+
+    在UNIX系统中，init是第一个可以存在的进程，它的PID恒为1，但它也必须向一个更高级的功能负责：PID为0的内核调度器（Kernel Scheduler），从而获得CPU时间 
+
+内核调度器：负责分配CPU时间和进程间切换。
+
+父子进程：linux中，父进程终止，子进程也必须被终止；若父进程被终止，而子进程因特殊原因没被终止，则子进程被称为孤儿进程；linux检测到孤儿进程后，会将孤儿进程的父进程指向init进程；
+
+          若子进程被终止后，父进程没了解到此信息，还尝试和子进程取得联系，则此子进程称为僵尸进程，linux中用Z（Zombie）表示。
+
 Linux运行级别
 
     在/etc/inittab配置文件中设置linux的运行级别，init进程将读取inittab配置文件，并将系统运行在设定的级别上。
 
     共7个级别：0 - halt
-                    挂起（关机???用处???），不要将默认的运行级别设为此值
+                    关机，不要将默认的运行级别设为此值
 
                1 - Single user mode
-                    单用户模式，类似于windows的安全模式，只有root可以登录，用大写S表示
+                    单用户模式，类似于windows的安全模式，只有root可以登录，用大写S表示，一般仅用于管理目的
 
                2 - Multiuser,without NFS
-                    多用户模式，没有NFS，如果不使用网络就和3一样
+                    多用户模式，不允许使用网络，没有NFS
 
                     NFS：Network File System，网络文件系统，sun公司开发的服务，用于Unix和Linux之间的文件共享，简单但安全性差，使用较少
 
                3 - Full multiuser mode
-                    完整的多用户模式
+                    完整的多用户模式，允许使用网络
 
                4 - unused
                     没有使用，可以自己定义的运行级别，可以定义启动哪些儿服务
 
                5 - X11
-                    X11是X Window的版本号，图形化的多用户环境，
+                    多用户模式，允许使用网络，X-Windows 方式（图形登录界面）
+                    X11是X Window的版本号，图形化的多用户环境
 
                6 - reboot
                     重启，不要将默认的运行级别设为此值
@@ -132,7 +129,8 @@ Linux运行级别
 
             run-levels：指定运行级别，可以指定多个，如果为空，不是表示不执行，而是表示从0到6每个运行级别都要执行
 
-            action：指定运行状态，action常用取值：
+            action：指定运行状态
+            action常用取值：
 
                         initdefault：指定系统缺省启动的运行级别
 

@@ -1,4 +1,4 @@
-﻿title: Git Commands List
+title: Git Commands List
 categories: Git
 tags:
   - Git
