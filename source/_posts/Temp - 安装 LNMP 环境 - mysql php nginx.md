@@ -17,6 +17,20 @@ MySQL在安装时会带一个MySQL的函数库，而这个函数库在安装PHP�
 
 PHP安装成功后会生成一个php-fpm进程提供fastcgi服务，安装好Apache或者Nginx如果要执行PHP需要进行相关设置。
 
+## php 和 apache,nginx 的安装顺序
+
+php 在 configure 时，
+
+如果以模块化方式和web服务器链接，则需要设定选项：--with-apxs2=/usr/local/apache2/bin/apxs ，
+
+很明显需要提前安装 apache
+
+如果以 FastCGI 或 PHP-FPM 连接服务器，则 ...
+
+如果 php 的 --with-mysql=/usr/local/mysql/bin/mysql_config 则很明显应该安装 mysql，
+
+当然现在一般都是使用 mysqlnd，所以顺序呢 ???
+
 <!--more-->
 
 ## 安装配置 MySQL
@@ -232,13 +246,44 @@ service mysqld stop
 systemctl stop mysqld.service
 ```
 
-## PHP
+## Apache
 
-```bash
-
+### yum 安装
+```
+[shenlin@t460p ~]$ sudo yum install -y httpd
+Installing : httpd-tools-2.4.6-67.el7.centos.6.x86_64
+Installing : mailcap-2.1.41-2.el7.noarch
+Installing : httpd-2.4.6-67.el7.centos.6.x86_64
 ```
 
+### 源码安装
+
+
+
 ## Nginx
+
+### yum 安装
+
+https://www.nginx.com/resources/wiki/start/topics/tutorials/install/
+
+配置 nginx 仓库
+```
+[shenlin@t460p ~]$ cd /etc/yum.repos.d
+[shenlin@t460p /etc/yum.repos.d]$ sudo touch nginx.repo
+[shenlin@t460p /etc/yum.repos.d]$ sudo vi nginx.repo
+    [nginx]
+    name=nginx repo
+    baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
+    gpgcheck=0
+    enabled=1
+```
+
+安装 nginx
+```
+[shenlin@t460p /etc/yum.repos.d]$ sudo yum install -y nginx
+```
+
+### 源码安装
 
 ```bash
 # 根据 LSB 规定的源码存放目录
@@ -253,4 +298,199 @@ systemctl stop mysqld.service
 
 # 验证 PGP 签名
 [shenlin@t460p /usr/local/src]$ gpg --verify nginx-1.12.2.tar.gz.asc
+```
+
+## PHP
+
+### yum 安装
+
+```
+sudo yum install -y \
+php70w php70w-cli php70w-common php70w-mysqlnd php70w-pdo php70w-pdo_dblib \
+php70w-mbstring php70w-mcrypt php70w-gd php70w-opcache php70w-bcmath \
+php70w-fpm
+```
+
+没有 mod_php70w，这个是apache模块，只有 mod_php71w
+
+php70w-mysql        和 php70w-mysqlnd 冲突
+php70w-imap
+php70w-interbase
+php70w-intl
+php70w-ldap
+php70w-pdo_dblib
+php70w-devel
+php70w-pear.noarch
+php70w-pecl-apcu
+php70w-pecl-apcu-devel
+php70w-pecl-geoip
+php70w-pecl-igbinary
+php70w-pecl-igbinary-devel
+php70w-pecl-imagick
+php70w-pecl-imagick-devel
+php70w-pecl-libsodium
+php70w-pecl-memcached
+php70w-pecl-mongodb
+php70w-pecl-xdebug
+php70w-pgsql
+php70w-phpdbg
+php70w-process
+php70w-pspell
+php70w-recode
+php70w-snmp
+php70w-soap
+php70w-tidy
+php70w-xml
+php70w-xmlrpc
+php70w-dba
+php70w-embedded
+php70w-enchant
+php70w-odbc
+
+启用 PHP-FPM 和 Nginx 服务
+```
+[shenlin@t460p /etc/yum.repos.d]$ systemctl enable nginx --now
+[shenlin@t460p /etc/yum.repos.d]$ systemctl enable php-fpm --now
+```
+
+查看防火墙设置
+```
+[shenlin@t460p /etc/yum.repos.d]$ sudo firewall-cmd --list-all --zone=public
+public (active)
+  target: default
+  icmp-block-inversion: no
+  interfaces: enp0s8
+  sources:
+  services: ssh dhcpv6-client
+  ports:
+  protocols:
+  masquerade: no
+  forward-ports:
+  source-ports:
+  icmp-blocks:
+  rich rules:
+```
+
+设置防火墙允许http访问
+```
+[shenlin@t460p ~]$ sudo firewall-cmd --permanent --zone=public --add-service=http
+[shenlin@t460p ~]$ sudo firewall-cmd --reload
+
+[shenlin@t460p ~]$ sudo firewall-cmd --list-all --zone=public
+public (active)
+  target: default
+  icmp-block-inversion: no
+  interfaces: enp0s8
+  sources:
+  services: ssh dhcpv6-client http  # 增加了 http 访问
+  ports:
+  protocols:
+  masquerade: no
+  forward-ports:
+  source-ports:
+  icmp-blocks:
+  rich rules:
+```
+
+设置 nginx 把 php 请求转发到 php-fpm
+```
+# 编辑 nginx 配置文件
+[shenlin@t460p ~]$ sudo vi /etc/nginx/conf.d/default.conf
+
+    server {
+        listen       80;
+        server_name  localhost;
+        root   /usr/share/nginx/html;
+
+        location / {
+            index  index.php index.html index.htm;
+        }
+
+        location ~ \.php$ {
+            fastcgi_pass   127.0.0.1:9000;          # php-fpm 在 9000 端口监听
+            fastcgi_index  index.php;
+            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+            include        fastcgi_params;
+        }
+    }
+
+# 确保上面配置文件涉及的参数在下面的 nginx 参数文件里都有对应取值
+[shenlin@t460p ~]$ sudo vi /etc/nginx/fastcgi_params
+fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
+fastcgi_param  DOCUMENT_ROOT      $document_root;
+
+# nginx 重新载入配置文件
+[shenlin@t460p /etc/nginx/conf.d]$ sudo nginx -s reload
+
+# 确认 php-fpm 在 9000 端口监听
+[shenlin@t460p /usr/share/nginx/html]$ netstat -tln | grep 9000
+tcp        0      0 127.0.0.1:9000          0.0.0.0:*               LISTEN
+```
+
+访问 localhost 结果 html 文件提示 403 forbidden，php 文件提示 file not found
+```
+# 查看日志文件
+[shenlin@t460p /usr/share/nginx/html]$ sudo vi /var/log/nginx/error.log
+
+        # html 文件日志
+2018/01/29 16:03:53 [error] 5143#5143: *29 open() "/home/shenlin/zaimusic/err.html" failed (13: Permission denied), client: 10.0.3.2, server: localhost, request: "GET /err.html HTTP/1.1", host: "localhost"
+
+        # php 文件日志
+2018/01/29 16:12:17 [error] 5143#5143: *35 FastCGI sent in stderr: "Primary script unknown" while reading response header from upstream, client: 10.0.3.2, server: localhost, request: "GET /index.php HTTP/1.1", upstream: "fastcgi://127.0.0.1:9000", host: "localhost"
+
+# 修改目录权限
+[shenlin@t460p /usr/share/nginx/html]$ chomod -R 777 zaimusic
+
+# nginx 用户，php-fpm 用户，站点目录用户不一致
+[shenlin@t460p ~]$ ps aux | grep "nginx"
+root      1002  0.0  0.1  46308   976 ?        Ss   16:39   0:00 nginx: master process /usr/sbin/nginx -c /etc/nginx/nginx.conf
+nginx     1003  0.0  0.4  46724  2404 ?        S    16:39   0:00 nginx: worker process
+
+[shenlin@t460p ~]$ ps aux | grep "php-fpm"
+root      1250  0.1  5.9 461556 29016 ?        Ss   16:48   0:00 php-fpm: master process (/etc/php-fpm.conf)
+apache   1251  0.0  1.0 461556  4936 ?        S    16:48   0:00 php-fpm: pool www
+apache   1252  0.0  1.0 461556  4936 ?        S    16:48   0:00 php-fpm: pool www
+apache   1253  0.0  1.0 461556  4936 ?        S    16:48   0:00 php-fpm: pool www
+apache   1254  0.0  1.0 461556  4936 ?        S    16:48   0:00 php-fpm: pool www
+apache   1255  0.0  1.5 461896  7564 ?        S    16:48   0:00 php-fpm: pool www
+
+[shenlin@t460p ~]$ ll
+drwxrwx---. 2 shenlin shenlin 39 Jan 29 14:24 zaimusic
+
+# 修改 nginx 的启动用户为目录所属用户
+[shenlin@t460p /usr/share/nginx/html]$ sudo vi /etc/nginx/nginx.conf
+user  shenlin;
+
+# 重新载入 Nginx 配置文件
+[shenlin@t460p ~]$ sudo nginx -s reload
+
+# 修改 php-fpm 的启动用户为目录所属用户
+[shenlin@t460p ~]$ sudo vi /etc/php-fpm.d/www.conf
+
+    [www]
+    user = shenlin
+    group = shenlin
+
+# 重启 PHP-FPM
+[shenlin@t460p ~]$ sudo systemctl restart php-fpm
+
+# 停止 selinux
+[shenlin@t460p /usr/share/nginx/html]$ sudo vi /etc/selinux/config
+
+    SELINUX=disable
+    SELINUXTYPE=targeted
+
+```
+
+添加web用户
+```
+[shenlin@t460p /usr/share/nginx/html]$ sudo groupadd www
+[shenlin@t460p /usr/share/nginx/html]$ sudo useradd -g www -s /sbin/nologin www
+```
+
+### 源码安装
+
+```bash
+
 ```

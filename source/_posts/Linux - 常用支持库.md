@@ -14,6 +14,7 @@ tags:
 sudo yum install -y apr* autoconf automake
 sudo yum install -y bison bzip2 bzip2*
 sudo yum install -y compat* cpp curl curl-devel cmake 
+sudo yum install -y epel-release
 sudo yum install -y fontconfig fontconfig-devel freetype freetype* freetypedevel
 sudo yum install -y gcc gcc-c++ gd gettext gettext-devel glibc
 sudo yum install -y kernel kernel-headers keyutils keyutils-libs-devel krb5-devel
@@ -21,7 +22,7 @@ sudo yum install -y libcom_err-devel libpng libpng-devel libjpeg* libsepoldevel 
 sudo yum install -y make mpfr
 sudo yum install -y ncurses* ntp
 sudo yum install -y openssl openssl-devel
-sudo yum install -y patch pcre pcre-devel perl php-common php-gd policycoreutils
+sudo yum install -y patch pcre pcre-devel perl policycoreutils
 sudo yum install -y telnet t1lib t1lib* tiff
 sudo yum install -y nasm nasm*
 sudo yum install -y wget
@@ -98,8 +99,6 @@ patch
 pcre
 pcre-devel
 perl
-php-common
-php-gd
 policycoreutils
 telnet
 t1lib
@@ -112,6 +111,7 @@ zlib-devel
 
 libmcrypt
 cmake
+epel-release
 libvpx
 libgd
 tiff

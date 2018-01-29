@@ -1,7 +1,6 @@
 
 ```bash
-[ssy@localhost php-7.1.5]$ \
-./configure \
+[ssy@localhost php-7.1.5]$ ./configure \
 --prefix=/usr/local/php7.1.5/ 
 --with-config-file-path=/usr/local/php7.1.5/etc/ 
 --with-apxs2=/usr/local/httpd-2.4.25/bin/apxs 
@@ -33,15 +32,16 @@ PHP和服务器连接两种方法：
 详细配置：http://php.net/manual/zh/install.fpm.configuration.php
 
 
---with-apxs2= \
 
-    --with-apxs2 就不会生成 libphp5.so
 
 --with-mysql=/usr/bin/mysql_config  \
 
 
 **--with-apxs2=FILE**
+
 Build shared Apache 2.0 Handler module. FILE is the optional pathname to the Apache apxs tool apxs
+
+没有 --with-apxs2 就不会生成 libphp5.so
 
 
 **--enable-mysqlnd**
@@ -56,6 +56,10 @@ If no value or mysqlnd is passed as FILE, the MySQL native driver will be used
     --with-mysqli=mysqlnd \
     --with-mysqli=/usr/local/mysql/bin/mysql_config \
 
+    mysql_config 由 mysql_xxx_client 或 mysql_xxx_devel 提供，mysql_xxx_server 不提供
+
+    这里的 xxx 指 community 或 enterprise
+
 **--with-pdo-mysql=DIR**
 PDO: MySQL support. 
 DIR is the MySQL base directory
@@ -64,7 +68,47 @@ If no value or mysqlnd is passed as DIR, the MySQL native driver will be used
     --with-pdo-mysql=mysqlnd \
     --with-pdo-mysql=/usr/local/mysql \
 
-
-
 如果之前编译 `make` 失败,记得用 `make clean` 或者 `make distclean` 清除之前编译的缓存文件,然后再重新 `make && make install`
+
+./configure \
+--prefix=/usr/local/php \
+--with-config-file-path=/usr/local/php/etc \
+--with-fpm-user=www \
+--with-fpm-group=www \
+--enable-fpm \
+--enable-opcache \
+--with-mysql=mysqlnd \
+--with-mysqli=mysqlnd \
+--with-pdo-mysql=mysqlnd \
+--disable-fileinfo \
+--with-iconv-dir=/usr/local \
+--with-freetype-dir \
+--with-jpeg-dir \
+--with-png-dir \
+--with-zlib \
+--with-libxml-dir=/usr \
+--enable-xml \
+--disable-rpath \
+--enable-bcmath \
+--enable-shmop \
+--enable-exif \
+--enable-sysvsem \
+--enable-inline-optimization \
+--with-curl \
+--enable-mbregex \
+--enable-mbstring \
+--with-mcrypt \
+--with-gd \
+--enable-gd-native-ttf \
+--with-openssl \
+--with-mhash \
+--enable-pcntl \
+--enable-sockets \
+--with-xmlrpc \
+--enable-ftp \
+--with-gettext \
+--enable-zip \
+--enable-soap \
+--disable-ipv6 \
+--disable-debug
 

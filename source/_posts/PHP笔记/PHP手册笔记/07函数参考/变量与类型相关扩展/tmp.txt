@@ -1,0 +1,66 @@
+PHP 继承自一个老的工程，名叫 PHP/FI。PHP/FI 在 1995 年由 Rasmus Lerdorf 创建，最初只是一套简单的 Perl 脚本，用来跟踪访问他主页的人们的信息。它给这一套脚本取名为"Personal Home Page Tools"。
+
+随着更多功能需求的增加，Rasmus 写了一个更大的 C 语言的实现，它可以访问数据库。
+
+
+Andi Gutmans 和 Zeev Suraski 在为一所大学的项目中开发电子商务程序时发现 PHP/FI 2.0 功能明显不足，于是他们重写了代码。这就是 PHP 3.0。 
+
+经过Andi，Rasmus 和 Zeev 一系列的努力，考虑到 PHP/FI 已存在的用户群，他们决定联合发布 PHP 3.0 作为 PHP/FI 2.0 的官方后继版本。
+
+它从 PHP/FI 2.0
+的名称中移去了暗含"本语言只限于个人使用"的部分。它被命名为简单的缩写"PHP"，它的全称是——PHP: Hypertext Preprocessor。这种方法叫做递归缩写（recursive acronyms）
+
+PHP 3.0 是类似于当今 PHP 语法结构的第一个版本。
+
+
+为了增强复杂程序运行时的性能和 PHP 自身代码的模块性，两年后，"Zend Engine"（zend的意思即zeev+andi）的引擎，成功的实现了设计目标, 基于该引擎并结合了更多新功能的 PHP 4.0
+zend engine引擎的出现使得php有了质的提高：
+1、把边解释边运行的方式变为先进行预编译（compile），再执行（execute）的方式极大提高了php的运行效率。
+2、由于实行功能分离，降低了模块间的耦合度，扩展性大大加强
+Zend Engine 最主要的特性就是把 PHP 的边解释边执行的运行方式改为先进行预编译(Compile)，然后再执行(Execute)。
+这两者的分开给 PHP 带来了革命性的变化：执行效率大幅提高；
+由于实行了功能分离，降低了模块间耦合度，可扩展性也大大增强。
+
+
+PHP 的主版本号，次版本号和发布编号。以 PHP 5.3.1 为例，5是主版本号，3 是次版本号，1是发布编号。通常 PHP 只会在主、次版本更新时增加新特性，在发布编号更新时修正错误
+
+PHP 手册会多次列出 PHP 配置选项的"默认值"。默认值是没有 php.ini配置文件时的值，所以与 php.ini-development 和 php.ini-production存在很大差异。同时这些值也是基于最新版本的 PHP。
+
+PHP数组函数的参数顺序是按needle,haystack的顺序，而字符串函数刚好相反
+
+【URL编码】
+
+在1994年订立的RFC1738中。
+对字符串中除了- _.之外的所有非字母数字字符都替换成百分号(%)后跟两位十六进制数。
+十六进制数中字母必须为大写。
+urlencode遵循RFC1738规范，编码除-_.之外所有字符，空格编码为+号（由于历史原因不符合RFC1738规范）
+
+在2005年定义的RFC3986中，
+将针对- _.~四个字符之外的所有非字母数字字符进行百分号编码。
+rawurlencode遵循RFC3986规范，编码除-_.~之外所有字符，空格编码为20%
+
+在Java和PHP当中，，导致在进行URLEncode的时候，会将空格编码为+，而不是编码为十六进制编码%20
+
+
+•base64_encode — 使用 MIME base64 对数据进行编码
+•base64_decode — 对使用 MIME base64 编码的数据进行解码
+•get_headers — 取得服务器响应一个 HTTP 请求所发送的所有标头
+•get_meta_tags — 从一个文件中提取所有的 meta 标签 content 属性，返回一个数组
+•http_build_query — 生成 URL-encode 之后的请求字符串
+•parse_url — 解析 URL，返回其组成部分
+
+•urlencode — 编码 URL 字符串
+•urldecode — 解码已编码的 URL 字符串
+•rawurlencode — 按照 RFC 3986 对 URL 进行编码
+•rawurldecode — 对已编码的 URL 字符串进行解码
+
+【反斜线】
+
+配置文件
+magic_quotes_gpc
+
+addslashes
+单引号（'）、双引号（"）、反斜线（\）与 NUL（NULL 字符）
+
+stripslashes
+

@@ -1,0 +1,70 @@
+date_create — 别名 DateTime::__construct
+date_create_from_format — 别名 DateTime::createFromFormat
+
+date_create_immutable — 别名 DateTimeImmutable::__construct
+date_create_immutable_from_format — 别名 DateTimeImmutable::createFromFormat
+
+date_interval_create_from_date_string — 别名 DateInterval::createFromDateString
+
+date_add — 别名 DateTime::add
+date_sub — 别名 DateTime::sub
+date_diff — 别名 DateTime::diff
+date_modify — 别名 DateTime::modify
+
+date_date_set — 别名 DateTime::setDate
+date_isodate_set — 别名 DateTime::setISODate
+date_time_set — 别名 DateTime::setTime
+
+date_format — 别名 DateTime::format
+date_interval_format — 别名 DateInterval::format
+date_get_last_errors — 别名 DateTime::getLastErrors
+
+date_offset_get — 别名 DateTime::getOffset
+
+date_timestamp_get — 别名 DateTime::getTimestamp
+date_timestamp_set — 别名 DateTime::setTimestamp
+date_timezone_get — 别名 DateTime::getTimezone
+date_timezone_set — 别名 DateTime::setTimezone
+
+timezone_open — 别名 DateTimeZone::__construct
+timezone_abbreviations_list — 别名 DateTimeZone::listAbbreviations
+timezone_identifiers_list — 别名 DateTimeZone::listIdentifiers
+timezone_location_get — 别名 DateTimeZone::getLocation
+timezone_name_get — 别名 DateTimeZone::getName
+timezone_offset_get — 别名 DateTimeZone::getOffset
+timezone_transitions_get — 别名 DateTimeZone::getTransitions
+
+
+time — 返回当前的 Unix 时间戳
+    mktime — 取得一个日期的 Unix 时间戳，被time取代
+    gmmktime — 取得 GMT 日期的 UNIX 时间戳，被time取代
+microtime — 返回当前 Unix 时间戳和微秒数
+localtime — 取得本地时间
+gettimeofday — 取得当前时间
+
+
+strftime — 根据区域设置格式化本地时间／日期
+    gmstrftime — 根据区域设置格式化 GMT/UTC 时间／日期
+strptime — 解析由 strftime 生成的日期／时间
+strtotime — 将任何字符串的日期时间描述解析为 Unix 时间戳
+
+checkdate — 验证一个格里高里日期
+date — 格式化一个本地时间／日期
+idate — 将本地时间日期格式化为整数
+getdate — 取得日期／时间信息
+    gmdate — 格式化一个 GMT/UTC 日期／时间
+date_parse — Returns associative array with detailed info about given date
+date_parse_from_format — Get info about given date formatted according to the specified format
+
+date_sunrise — 返回给定的日期与地点的日出时间
+date_sunset — 返回给定的日期与地点的日落时间
+date_sun_info — Returns an array with information about sunset/sunrise and twilight begin/end
+
+timezone_version_get — Gets the version of the timezonedb
+timezone_name_from_abbr — Returns the timezone name from abbreviation
+date_default_timezone_get — 取得一个脚本中所有日期时间函数所使用的默认时区
+date_default_timezone_set — 设定用于一个脚本中所有日期时间函数的默认时区
+
+
+
+

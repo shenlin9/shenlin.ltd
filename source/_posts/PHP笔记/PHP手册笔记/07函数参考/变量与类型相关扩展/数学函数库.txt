@@ -1,0 +1,169 @@
+【Math】
+
+处理数据范围在Int和float范围内
+
+--------------------------------------------------------------------------------
+
+base_convert — 在任意进制之间转换数字
+bindec — 二进制转换为十进制
+decbin — 十进制转换为二进制
+octdec — 八进制转换为十进制
+decoct — 十进制转换为八进制
+hexdec — 十六进制转换为十进制
+dechex — 十进制转换为十六进制
+
+min — 找出最小值
+max — 找出最大值
+is_finite — 判断是否为有限值
+is_infinite — 判断是否为无限值
+is_nan — 判断是否为合法数值
+hypot — 计算一直角三角形的斜边长度
+
+lcg_value — 0到1之间的一个随机数
+mt_rand — 生成更好的随机数，值在0~mt_getrandmax之间
+mt_getrandmax — 显示随机数的最大可能值
+    rand — 产生一个随机整数，值在0~getrandmax之间，被mt_rand替换
+    getrandmax — 显示随机数最大的可能值，被mt_getrandmax替换
+    srand — 播下随机数发生器种子，PHP4.2.0后不再需要，系统自动完成随机数播种
+    mt_srand — 播下一个更好的随机数发生器种子，PHP4.2.0后不再需要，系统自动完成随机数播种
+
+round — 对浮点数进行四舍五入
+ceil — 进一法取整
+floor — 舍去法取整
+
+abs — 绝对值
+sqrt — 平方根
+fmod — 返回除法的浮点数余数
+intdiv — 对除法结果取整
+
+pow — 指数表达式
+exp — 计算 e 的指数
+expm1 — 返回 exp(number) - 1，甚至当 number 的值接近零也能计算出准确结果
+log — 自然对数
+log10 — 以 10 为底的对数
+log1p — 返回 log(1 + number)，甚至当 number 的值接近零也能计算出准确结果
+
+
+sin — 正弦
+cos — 余弦
+tan — 正切
+sinh — 双曲正弦
+cosh — 双曲余弦
+tanh — 双曲正切
+acos — 反余弦
+acosh — 反双曲余弦
+asin — 反正弦
+asinh — 反双曲正弦
+atan2 — 两个参数的反正切
+atan — 反正切
+atanh — 反双曲正切
+
+pi — 得到圆周率值
+deg2rad — 将角度转换为弧度
+rad2deg — 将弧度数转换为相应的角度数
+
+【BC Math】
+
+对于任意精度的数学，PHP提供了支持用字符串表示的任意大小和精度的数字的二进制计算，最多为2147483647-1（或0x7FFFFFFF-1）。 
+
+bcadd — 2个任意精度数字的加法计算
+bcsub — 2个任意精度数字的减法
+bcmul — 2个任意精度数字乘法计算
+bcdiv — 2个任意精度的数字除法计算
+bcmod — 对一个任意精度数字取模
+bcpow — 任意精度数字的乘方
+bccomp — 比较两个任意精度的数字
+bcpowmod — Raise an arbitrary precision number to another, reduced by a specified modulus
+bcscale — 设置所有bc数学函数的默认小数点保留位数
+bcsqrt — 任意精度数字的二次方根
+
+
+【GMP】
+
+The GNU MP Bignum Library，
+
+是一个开源的数学运算库，它可以用于任意精度的数学运算，包括有符号整数、有理数和浮点数。
+
+它本身并没有精度限制，只取决于机器的硬件情况。
+
+本函数库定义了圆周率的常量 m_pi 值为 3.14159265358979323846。
+
+大整数必须以字符串的形式出现，否则会被转换为浮点型
+
+本函数库能处理的数值范围只到长整数与倍浮点数的范围。若要处理超过上述范围的数值，要使用 bc 高精确度函数库 。
+
+--------------------------------------------------------------------------------
+
+gmp_abs — Absolute value
+gmp_add — Add numbers
+gmp_and — Bitwise AND
+gmp_clrbit — Clear bit
+gmp_cmp — Compare numbers
+gmp_com — Calculates one's complement
+gmp_div_q — Divide numbers
+gmp_div_qr — Divide numbers and get quotient and remainder
+gmp_div_r — Remainder of the division of numbers
+gmp_div — 别名 gmp_div_q
+gmp_divexact — Exact division of numbers
+gmp_export — Export to a binary string
+gmp_fact — Factorial
+gmp_gcd — Calculate GCD
+gmp_gcdext — Calculate GCD and multipliers
+gmp_hamdist — Hamming distance
+gmp_import — Import from a binary string
+gmp_init — Create GMP number
+gmp_intval — Convert GMP number to integer
+gmp_invert — Inverse by modulo
+gmp_jacobi — Jacobi symbol
+gmp_legendre — Legendre symbol
+gmp_mod — Modulo operation
+gmp_mul — Multiply numbers
+gmp_neg — Negate number
+gmp_nextprime — Find next prime number
+gmp_or — Bitwise OR
+gmp_perfect_square — Perfect square check
+gmp_popcount — Population count
+gmp_pow — Raise number into power
+gmp_powm — Raise number into power with modulo
+gmp_prob_prime — Check if number is "probably prime"
+gmp_random_bits — Random number
+gmp_random_range — Random number
+gmp_random_seed — Sets the RNG seed
+gmp_random — Random number
+gmp_root — Take the integer part of nth root
+gmp_rootrem — Take the integer part and remainder of nth root
+gmp_scan0 — Scan for 0
+gmp_scan1 — Scan for 1
+gmp_setbit — Set bit
+gmp_sign — Sign of number
+gmp_sqrt — Calculate square root
+gmp_sqrtrem — Square root with remainder
+gmp_strval — Convert GMP number to string
+gmp_sub — Subtract numbers
+gmp_testbit — Tests if a bit is set
+gmp_xor — Bitwise XOR
+
+
+
+【LAPACK】
+
+线性数学函数库
+
+其名为Linear Algebra PACKage的缩写，
+
+是一以Fortran编程语言写就，用于数值计算的函式集。 
+
+LAPACK提供了丰富的工具函式，可用于诸如解多元线性方程式、线性系统方程组的最小平方解、计算特征向量、用于计算矩阵QR分解的Householder转换、以及奇异值分解等问题。 
+
+在NetLib亦提供了API经简化的Fortran 95版本的LAPACK95。LAPACK以BSD授权的方法释出。
+
+--------------------------------------------------------------------------------
+
+public static array eigenValues ( array $a [, array $left [, array $right ]] )
+public static array identity ( int $n )
+public static array leastSquaresByFactorisation ( array $a , array $b )
+public static array leastSquaresBySVD ( array $a , array $b )
+public static array pseudoInverse ( array $a )
+public static array singularValues ( array $a )
+public static array solveLinearEquation ( array $a , array $b )
+

@@ -1,0 +1,64 @@
+【错误处理流程】
+
+如果程序没有对错误做任何处理，
+
+即
+
+没有使用try...catch捕获错误，
+
+也
+
+没有设置错误处理函数set_error_handler，
+
+则PHP将捕获错误，捕获的错误类型由error_reporting指定，
+
+    可以在配置文件中设置error_reporting指令 或 运行时调用error_reporting()函数设置错误类型 
+
+PHP捕获错误后，将根据配置文件中的display_errors和log_errors指令对错误进行处理
+
+    display_errors  指定是否将错误信息一同输出
+
+    log_errors      指定是否将错误信息记录到服务器日志 或  error_log指定的文件
+
+    error_log       指定记录错误信息的文件
+
+
+【配置文件】
+
+track_errors    boolean
+
+    如果开启，最后的一个错误将永远存在于变量 $php_errormsg 中。 
+
+【$php_errormsg】
+
+    如果用户定义了错误处理句柄（set_error_handler()）并且返回 FALSE 的时候，$php_errormsg 就会被设置。 
+
+【错误控制运算符@】
+
+    PHP 支持一个错误控制运算符：@。当将其放置在一个 PHP 表达式之前，该表达式可能产生的任何错误信息都被忽略掉。 
+
+    如果用 set_error_handler()设定了自定义的错误处理函数，仍然会被调用，但是此错误处理函数可以（并且也应该）调用 error_reporting()，而该函数在出错语句前有 @ 时将返回 0。 
+
+    如果激活了 track_errors 特性，表达式所产生的任何错误信息都被存放在变量 $php_errormsg中。此变量在每次出错时都会被覆盖，所以如果想用它的话就要尽早检查。
+
+【】   
+【】   
+【】   
+
+debug_backtrace — 产生一条回溯跟踪(backtrace)
+debug_print_backtrace — 打印一条回溯。
+
+error_clear_last — 清除最近一次错误
+error_get_last — 获取最后发生的错误
+error_log — 发送错误信息到某个地方
+error_reporting — 设置应该报告何种 PHP 错误
+
+restore_error_handler — 还原之前的错误处理函数
+restore_exception_handler — 恢复之前定义过的异常处理函数。
+
+set_error_handler — 设置用户自定义的错误处理函数
+set_exception_handler — 设置用户自定义的异常处理函数
+
+trigger_error — 产生一个用户级别的 error/warning/notice 信息
+user_error — trigger_error 的别名
+
