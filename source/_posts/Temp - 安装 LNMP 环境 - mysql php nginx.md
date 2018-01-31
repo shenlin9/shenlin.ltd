@@ -1,9 +1,10 @@
 ---
-title: Linux - 安装配置 LNMP 环境
+title: Linux - 通过 YUM 仓库安装配置 LAMP 或 LNMP 环境
 categories:
   - Linux
 tags:
   - Linux
+  - YUM
   - Nginx
   - MySQL
   - PHP
@@ -256,10 +257,6 @@ Installing : mailcap-2.1.41-2.el7.noarch
 Installing : httpd-2.4.6-67.el7.centos.6.x86_64
 ```
 
-### 源码安装
-
-
-
 ## Nginx
 
 ### yum 安装
@@ -429,7 +426,7 @@ tcp        0      0 127.0.0.1:9000          0.0.0.0:*               LISTEN
 ```
 
 访问 localhost 结果 html 文件提示 403 forbidden，php 文件提示 file not found
-```
+```bash
 # 查看日志文件
 [shenlin@t460p /usr/share/nginx/html]$ sudo vi /var/log/nginx/error.log
 
@@ -444,16 +441,16 @@ tcp        0      0 127.0.0.1:9000          0.0.0.0:*               LISTEN
 
 # nginx 用户，php-fpm 用户，站点目录用户不一致
 [shenlin@t460p ~]$ ps aux | grep "nginx"
-root      1002  0.0  0.1  46308   976 ?        Ss   16:39   0:00 nginx: master process /usr/sbin/nginx -c /etc/nginx/nginx.conf
-nginx     1003  0.0  0.4  46724  2404 ?        S    16:39   0:00 nginx: worker process
+root    1002  0.0  0.1  46308   976 ?      Ss   16:39   0:00 nginx: master process /usr/sbin/nginx -c /etc/nginx/nginx.conf
+nginx   1003  0.0  0.4  46724  2404 ?      S    16:39   0:00 nginx: worker process
 
 [shenlin@t460p ~]$ ps aux | grep "php-fpm"
-root      1250  0.1  5.9 461556 29016 ?        Ss   16:48   0:00 php-fpm: master process (/etc/php-fpm.conf)
-apache   1251  0.0  1.0 461556  4936 ?        S    16:48   0:00 php-fpm: pool www
-apache   1252  0.0  1.0 461556  4936 ?        S    16:48   0:00 php-fpm: pool www
-apache   1253  0.0  1.0 461556  4936 ?        S    16:48   0:00 php-fpm: pool www
-apache   1254  0.0  1.0 461556  4936 ?        S    16:48   0:00 php-fpm: pool www
-apache   1255  0.0  1.5 461896  7564 ?        S    16:48   0:00 php-fpm: pool www
+root      1250  0.1  5.9 461556 29016 ?     Ss   16:48   0:00 php-fpm: master process (/etc/php-fpm.conf)
+apache   1251  0.0  1.0 461556  4936 ?     S    16:48   0:00 php-fpm: pool www
+apache   1252  0.0  1.0 461556  4936 ?     S    16:48   0:00 php-fpm: pool www
+apache   1253  0.0  1.0 461556  4936 ?     S    16:48   0:00 php-fpm: pool www
+apache   1254  0.0  1.0 461556  4936 ?     S    16:48   0:00 php-fpm: pool www
+apache   1255  0.0  1.5 461896  7564 ?     S    16:48   0:00 php-fpm: pool www
 
 [shenlin@t460p ~]$ ll
 drwxrwx---. 2 shenlin shenlin 39 Jan 29 14:24 zaimusic
@@ -481,16 +478,104 @@ user  shenlin;
     SELINUX=disable
     SELINUXTYPE=targeted
 
+# 不停止 selinux 方法
+# 先确认 deined
+[shenlin@t460p ~]$ sudo cat /var/log/audit/audit.log | grep php-fpm | grep denied
+
+    type=AVC msg=audit(1517292196.168:252): avc:  denied  { open } for  pid=1003 comm="php-fpm" path="/home/shenlin/zaimusic/index.php" dev="dm-0" ino=4440113 scontext=system_u:system_r:httpd_t:s0 tcontext=unconfined_u:object_r:user_home_t:s0 tclass=file
+
+[shenlin@t460p ~]$ sudo cat /var/log/audit/audit.log | grep nginx | grep denied
+
+    type=AVC msg=audit(1517214046.233:4876): avc:  denied  { read } for  pid=5308 comm="nginx" name="err.html" dev="dm-0" ino=4440115 scontext=system_u:system_r:httpd_t:s0 tcontext=unconfined_u:object_r:samba_share_t:s0 tclass=file
+
+# 清空日志
+[shenlin@t460p /home/shenlin]$ sudo echo > /var/log/audit/audit.log
+
+[shenlin@t460p /home/shenlin]$ sudo cat /var/log/audit/audit.log
+
+# 访问一次页面后再看日志
+[shenlin@t460p /home/shenlin]$ sudo cat /var/log/audit/audit.log
+
+    type=AVC msg=audit(1517293027.968:288): avc:  denied  { open } for  pid=1005 comm="php-fpm" path="/home/shenlin/zaimusic/index.php" dev="dm-0" ino=4440113 scontext=system_u:system_r:httpd_t:s0 tcontext=unconfined_u:object_r:user_home_t:s0 tclass=file
+    type=SYSCALL msg=audit(1517293027.968:288): arch=c000003e syscall=2 success=no exit=-13 a0=7fff5e004920 a1=0 a2=1b6 a3=3 items=0 ppid=952 pid=1005 auid=4294967295 uid=1000 gid=1000 euid=1000 suid=1000 fsuid=1000 egid=1000 sgid=1000 fsgid=1000 tty=(none) ses=4294967295 comm="php-fpm" exe="/usr/sbin/php-fpm" subj=system_u:system_r:httpd_t:s0 key=(null)
+    type=PROCTITLE msg=audit(1517293027.968:288): proctitle=7068702D66706D3A20706F6F6C20777777
+
+# 安装日志分析工具
+[shenlin@t460p /home/shenlin]$ sudo yum install -y setroubleshoot
+
+# 输出分析日志到文件并查看
+[shenlin@t460p /home/shenlin]$ sudo sealert -a /var/log/audit/audit.log > log1
+
+[shenlin@t460p /home/shenlin]$ sudo cat log1
+
+    found 1 alerts in /var/log/audit/audit.log
+    --------------------------------------------------------------------------------
+
+    SELinux is preventing /usr/sbin/php-fpm from open access on the file /home/shenlin/zaimusic/index.php.
+
+    *****  Plugin catchall_boolean (89.3 confidence) suggests   ******************
+
+    If you want to allow httpd to read user content
+    Then you must tell SELinux about this by enabling the 'httpd_read_user_content' boolean.
+
+    Do
+    setsebool -P httpd_read_user_content 1
+
+    *****  Plugin catchall (11.6 confidence) suggests   **************************
+
+    If you believe that php-fpm should be allowed open access on the index.php file by default.
+    Then you should report this as a bug.
+    You can generate a local policy module to allow this access.
+    Do
+    allow this access for now by executing:
+    # ausearch -c 'php-fpm' --raw | audit2allow -M my-phpfpm
+    # semodule -i my-phpfpm.pp
+
+
+    Additional Information:
+    Source Context                system_u:system_r:httpd_t:s0
+    Target Context                unconfined_u:object_r:user_home_t:s0
+    Target Objects                /home/shenlin/zaimusic/index.php [ file ]
+    Source                        php-fpm
+    Source Path                   /usr/sbin/php-fpm
+    Port                          <Unknown>
+    Host                          <Unknown>
+    Source RPM Packages           php70w-fpm-7.0.27-1.w7.x86_64
+    Target RPM Packages
+    Policy RPM                    selinux-policy-3.13.1-166.el7_4.7.noarch
+    Selinux Enabled               True
+    Policy Type                   targeted
+    Enforcing Mode                Enforcing
+    Host Name                     t460p.shenlin.me
+    Platform                      Linux t460p.shenlin.me 3.10.0-693.17.1.el7.x86_64
+                                  #1 SMP Thu Jan 25 20:13:58 UTC 2018 x86_64 x86_64
+    Alert Count                   1
+    First Seen                    2018-01-30 14:17:07 CST
+    Last Seen                     2018-01-30 14:17:07 CST
+    Local ID                      034d7c78-03dd-4ff8-bd50-10cac1b82a2d
+
+    Raw Audit Messages
+    type=AVC msg=audit(1517293027.968:288): avc:  denied  { open } for  pid=1005 comm="php-fpm" path="/home/shenlin/zaimusic/index.php" dev="dm-0" ino=4440113 scontext=system_u:system_r:httpd_t:s0 tcontext=unconfined_u:object_r:user_home_t:s0 tclass=file
+
+
+    type=SYSCALL msg=audit(1517293027.968:288): arch=x86_64 syscall=open success=no exit=EACCES a0=7fff5e004920 a1=0 a2=1b6 a3=3 items=0 ppid=952 pid=1005 auid=4294967295 uid=1000 gid=1000 euid=1000 suid=1000 fsuid=1000 egid=1000 sgid=1000 fsgid=1000 tty=(none) ses=4294967295 comm=php-fpm exe=/usr/sbin/php-fpm subj=system_u:system_r:httpd_t:s0 key=(null)
+
+    Hash: php-fpm,httpd_t,user_home_t,file,open
+
+# 根据提示设置 selinux 允许 httpd 读取用户内容
+[shenlin@t460p /home/shenlin]$ sudo setsebool -P httpd_read_user_content 1    
+
+# 将 php-fpm 加入 selinux 白名单
+[shenlin@t460p /home/shenlin]$ ausearch -c 'php-fpm' --raw | audit2allow -M my-phpfpm
+# 或者
+[shenlin@t460p /home/shenlin]$ cat /var/log/audit/audit.log | grep nginx | grep denied | audit2allow -M mynginx
+
+# 
+[shenlin@t460p /home/shenlin]$ sudo semodule -i my-phpfpm.pp
 ```
 
 添加web用户
 ```
 [shenlin@t460p /usr/share/nginx/html]$ sudo groupadd www
 [shenlin@t460p /usr/share/nginx/html]$ sudo useradd -g www -s /sbin/nologin www
-```
-
-### 源码安装
-
-```bash
-
 ```

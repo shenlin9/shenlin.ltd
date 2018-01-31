@@ -561,12 +561,75 @@ Authentication is required to reload the systemd state.
 Authenticating as: shenlin
 Password: 
 ==== AUTHENTICATION COMPLETE ===
+```
 
+下面是设置 iptables 或 firewalld 允许 samba 通过
+centos7 的 iptables 默认不开启，改为了 firewalld
+且 iptables 和 firewalld 两者只可开启其一，开启
+其中一个另一个自动停止运行
+下面是分别针对 iptables 和 firewalld 的设置
+可以根据实际运行情况，只设置一项即可
+
+设置防火墙
+```bash
+# 设置防火墙允许 samba 服务通过
+[shenlin@t460p ~]$ sudo firewall-cmd --permanent --zone=public --add-service=samba
+success
+
+# 查看防火墙允许的服务列表
+[shenlin@t460p ~]$ sudo firewall-cmd --permanent --list-service
+ssh dhcpv6-client http samba
+
+# 重新载入防火墙规则
+[shenlin@t460p ~]$ sudo firewall-cmd --reload
+success
+```
+
+设置 iptables
+```bash
+# 清空 iptables ，但这是临时性的，重启后会恢复
 [shenlin@t460p ~]$ sudo iptables -F
 
 [shenlin@t460p ~]$ sudo service iptables save
 iptables: Saving firewall rules to /etc/sysconfig/iptables:[  OK  ]
 
+# 更合适的方法是在 iptables 中增加规则
+# 先查看 iptables 规则
+# 这里列出的是在 iptables 启动的情况下加载的规则
+# 未启动则没有加载规则，规则列表为空
+[shenlin@t460p ~]$ sudo iptables -L --line-number | head
+Chain INPUT (policy ACCEPT)
+num  target     prot opt source               destination
+1    ACCEPT     all  --  anywhere             anywhere             ctstate RELATED,ESTABLISHED
+2    ACCEPT     all  --  anywhere             anywhere
+3    INPUT_direct  all  --  anywhere             anywhere
+4    INPUT_ZONES_SOURCE  all  --  anywhere             anywhere
+5    INPUT_ZONES  all  --  anywhere             anywhere
+6    DROP       all  --  anywhere             anywhere             ctstate INVALID
+7    REJECT     all  --  anywhere             anywhere             reject-with icmp-host-prohibited
+
+# 增加规则，注意规则位置，在第 3 条规则上面
+[shenlin@t460p ~]$ sudo iptables -I INPUT 3  -p udp -m multiport  --dport 137,138 -j ACCEPT
+[shenlin@t460p ~]$ sudo iptables -I INPUT 3 -p tcp -m state --state NEW -m multiport --dport 139,445 -j ACCEPT
+
+# 确认新增加的规则
+[shenlin@t460p ~]$ sudo iptables -L --line-number|head -n 12
+Chain INPUT (policy ACCEPT)
+num  target     prot opt source               destination
+1    ACCEPT     all  --  anywhere             anywhere             ctstate RELATED,ESTABLISHED
+2    ACCEPT     all  --  anywhere             anywhere
+3    ACCEPT     tcp  --  anywhere             anywhere             state NEW multiport dports netbios-ssn,microsoft-ds
+4    ACCEPT     udp  --  anywhere             anywhere             multiport dports netbios-ns,netbios-dgm
+5    INPUT_direct  all  --  anywhere             anywhere
+6    INPUT_ZONES_SOURCE  all  --  anywhere             anywhere
+7    INPUT_ZONES  all  --  anywhere             anywhere
+8    DROP       all  --  anywhere             anywhere             ctstate INVALID
+9    REJECT     all  --  anywhere             anywhere             reject-with icmp-host-prohibited
+
+# 保存
+[shenlin@t460p ~]$ sudo service iptables save
+
+# 
 ```
 在 RHEL 7 系统中， Samba 服务程序默认
 使用的是用户口令认证模式（user）。这种认证模式可以确保仅让有密码且受信任的用户访问
