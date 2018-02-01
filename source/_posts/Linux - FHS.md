@@ -167,3 +167,9 @@ http://www.cnblogs.com/happyframework/p/4480228.html
 /tmp                临时文件目录
 /lost+found         系统意外关机或崩溃后产生的碎片文件放到此目录，系统启动时会检查此目录的碎片文件并尝试修复摔坏的文件系统
 
+
+## 整理过的
+
+/usr                Unix Shared Resources
+                    最初的含义就是 user，是 Unix 系统是用来存放用户家目录的，即相当于现在的 /home 目录，
+                    但现在用来存放共享的可执行文件、库

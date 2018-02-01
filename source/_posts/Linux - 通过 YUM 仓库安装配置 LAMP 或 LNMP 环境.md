@@ -18,6 +18,8 @@ MySQL在安装时会带一个MySQL的函数库，而这个函数库在安装PHP�
 
 PHP安装成功后会生成一个php-fpm进程提供fastcgi服务，安装好Apache或者Nginx如果要执行PHP需要进行相关设置。
 
+???以上存疑
+
 ## php 和 apache,nginx 的安装顺序
 
 php 在 configure 时，
