@@ -9,7 +9,9 @@ tags:
  - curl
 ---
 
-wget 默认把下载文件保存的磁盘，把进度信息输出到 stdout，而 curl 默认把下载文件的内容输出到 stdout，把进度信息输出到 stderr
+wget 默认把下载文件保存的磁盘，把进度信息输出到 stdout，
+
+而 curl 默认把下载文件的内容输出到 stdout，把进度信息输出到 stderr
 
 <!--more-->
 

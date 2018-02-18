@@ -16,6 +16,11 @@ Early Access Program allows you to try pre-release versions of our software to e
 
 Be warned:  It is important to distinguish EAP from traditional pre-release software. Please note that the quality of EAP versions may at times be way below even usual beta standards. If you are looking for a stable version of PhpStorm, please, visit our site.
 
+## VIM 插件
+
+file > Settings > Plugins(左侧) > Browse repositories(右侧按钮) > 查找vim > 找到：IdeaVIM 安装后重启。
+
+## 颜色方案
 
 github 上的 daylerees/colour-schemes 包括了所有主流编辑器的主体方案
 

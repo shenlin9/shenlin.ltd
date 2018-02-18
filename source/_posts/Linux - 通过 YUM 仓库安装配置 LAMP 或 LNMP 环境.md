@@ -578,6 +578,6 @@ user  shenlin;
 
 添加web用户
 ```
-[shenlin@t460p /usr/share/nginx/html]$ sudo groupadd www
-[shenlin@t460p /usr/share/nginx/html]$ sudo useradd -g www -s /sbin/nologin www
+$ sudo groupadd www
+$ sudo useradd -g www -s /sbin/nologin www
 ```

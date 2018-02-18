@@ -23,7 +23,7 @@ wget 是一个用于下载文件的命令行工具，选项繁多使用灵活。
 # 指定保存的文件名
 -> wget http://www.baidu.com/ -O baidu
 
-#下载过程不作任何输出，把进度写入日志文件
+# 下载过程不作任何输出，把进度写入日志文件
 -> wget http://www.baidu.com/ -o baidu.log
 
 # 指定重试的次数

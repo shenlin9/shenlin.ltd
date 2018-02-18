@@ -1,10 +1,11 @@
 ---
-title: PHP - CodeIgniter
+title: PHP - CodeIgniter 和 Nginx 站点设置
 categories:
   - PHP
   - CodeIgniter
 tags:
   - CodeIgniter
+  - Nginx
 ---
 
 ## 建立站点目录
@@ -68,3 +69,4 @@ $ sudo nginx -s reload
 ```
 
 可以测试一下效果（当然前提是 nginx, php-fpm, selinux, firewall 都设置好了）
+
