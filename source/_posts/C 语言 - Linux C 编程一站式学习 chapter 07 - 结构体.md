@@ -6,6 +6,10 @@ categories:
 tags: C 语言
 ---
 
+结构体
+
+<!--more-->
+
 ## 基本类型和复合类型
 
 Primitive Type 基本类型 

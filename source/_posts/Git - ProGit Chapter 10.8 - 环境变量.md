@@ -1,10 +1,10 @@
+---
 title: chapter 10.8 - Git 环境变量
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
-
 ---
 
 Git 总是在一个 shell 中运行，并根据 shell 环境变量来调整运行方式。

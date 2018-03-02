@@ -1,11 +1,11 @@
-﻿title: chapter 10.5 - Git 引用规格
+﻿---
+title: chapter 10.5 - Git 引用规格
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
   - Git-Refs
-
 ---
 
 引用规格 Refspec 可以使用命令行的方式，或者写入`.git/config`配置文件，写入文件的引用规格会每次推送拉取时都被执行。

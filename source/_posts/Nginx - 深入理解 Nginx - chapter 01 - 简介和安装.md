@@ -41,7 +41,6 @@ $ yum install -y zlib zlib-devel
 ```
 * 用于对 HTTP 内容做 gzip 格式的压缩
 
-
 OpenSSL
 ```bash
 $ yum install -y openssl openssl-devel
@@ -53,39 +52,39 @@ $ yum install -y openssl openssl-devel
 linux 内核参数考虑的是最通用的场景，并不适合作为高并发 web 服务器，最通用的支持高并发请求的 TCP 网络参数设置：
 
 ```bash
-$ vi /etc/sysctl.conf                           # 内核参数文件
+$ vi /etc/sysctl.conf           # 内核参数文件
 
-fs.file-max = 999999                            # 设定一个进程可以同时打开的最大句柄数，此参数直接限制了最大并发连接数
+    fs.file-max = 999999                            # 设定一个进程可以同时打开的最大句柄数，此参数直接限制了最大并发连接数
 
-net.ipv4.tcp_tw_reuse = 1                       # 设定是否允许把处于 TIME-WAIT 状态的 SOCKET 重新用于新的 TCP 连接
+    net.ipv4.tcp_tw_reuse = 1                       # 设定是否允许把处于 TIME-WAIT 状态的 SOCKET 重新用于新的 TCP 连接
 
-net.ipv4.tcp_keepalive_time = 600               # 当启用 keepalive 时，TCP 发送 keepalive 消息的频度，默认 2 小时
+    net.ipv4.tcp_keepalive_time = 600               # 当启用 keepalive 时，TCP 发送 keepalive 消息的频度，默认 2 小时
 
-net.ipv4.tcp_fin_timeout = 30                   # 表示当服务器主动关闭连接时，socket保持在 FIN-WAIT-2 状态的最大时间
+    net.ipv4.tcp_fin_timeout = 30                   # 表示当服务器主动关闭连接时，socket保持在 FIN-WAIT-2 状态的最大时间
 
-net.ipv4.tcp_max_tw_buckets = 5000              # 表示操作系统允许 TIME_WAIT 套接字数量的最大值，默认为 180000，过多的TIME_WAIT套接字会使Web服务器变慢。
-                                                # 如果超过这个数字，TIME_WAIT套接字将立刻被清除并打印警告信息。
+    net.ipv4.tcp_max_tw_buckets = 5000              # 表示操作系统允许 TIME_WAIT 套接字数量的最大值，默认为 180000，过多的TIME_WAIT套接字会使Web服务器变慢。
+                                                    # 如果超过这个数字，TIME_WAIT套接字将立刻被清除并打印警告信息。
 
-net.ipv4.tcp_max_syn.backlog = 1024             # 表示 TCP 三次握手建立阶段接收SYN请求队列的最大长度，默认为1024，
-                                                # 将其设置得大一些可以使出现Nginx繁忙来不及accept新连接的情况时，Linux不至于丢失客户端发起的连接请求。
+    net.ipv4.tcp_max_syn.backlog = 1024             # 表示 TCP 三次握手建立阶段接收SYN请求队列的最大长度，默认为1024，
+                                                    # 将其设置得大一些可以使出现Nginx繁忙来不及accept新连接的情况时，Linux不至于丢失客户端发起的连接请求。
 
-net.ipv4.ip_local_port_range = 1024 61000       # 定义了在 UDP 和 TCP 连接中本地端口的取值范围 （不包括连接的远端）
+    net.ipv4.ip_local_port_range = 1024 61000       # 定义了在 UDP 和 TCP 连接中本地端口的取值范围 （不包括连接的远端）
 
-net.ipv4.tcp_rmem = 4096 32768 262142           # 定义了TCP接收缓存（用于TCP接收滑动窗口）的最小值、默认值、最大值。
+    net.ipv4.tcp_rmem = 4096 32768 262142           # 定义了TCP接收缓存（用于TCP接收滑动窗口）的最小值、默认值、最大值。
 
-net.ipv4.tcp_wmem = 4096 32768 262142           # 定义了TCP发送缓存（用于TCP发送滑动窗口）的最小值、默认值、最大值。
+    net.ipv4.tcp_wmem = 4096 32768 262142           # 定义了TCP发送缓存（用于TCP发送滑动窗口）的最小值、默认值、最大值。
 
-net.ipv4.tcp_syncookies = 1                     # 该参数与性能无关，用于解决TCP的SYN攻击
+    net.ipv4.tcp_syncookies = 1                     # 该参数与性能无关，用于解决TCP的SYN攻击
 
-net.core.netdev_max_backlog = 8096              # 当网卡接收数据包的速度大于内核处理的速度时，会有一个队列保存这些数据包。这个参数表示该队列的最大值。
+    net.core.netdev_max_backlog = 8096              # 当网卡接收数据包的速度大于内核处理的速度时，会有一个队列保存这些数据包。这个参数表示该队列的最大值。
 
-net.core.rmem_default = 262144                  # 表示内核套接字接收缓存区默认的大小
+    net.core.rmem_default = 262144                  # 表示内核套接字接收缓存区默认的大小
 
-net.core.wmem_default = 262144                  # 表示内核套接字发送缓存区默认的大小 
+    net.core.wmem_default = 262144                  # 表示内核套接字发送缓存区默认的大小 
 
-net.core.rmem_max = 2097152                     # 表示内核套接字接收缓存区的最大大小
+    net.core.rmem_max = 2097152                     # 表示内核套接字接收缓存区的最大大小
 
-net.core.wmem_max = 2097152                     # 表示内核套接字发送缓存区的最大大小
+    net.core.wmem_max = 2097152                     # 表示内核套接字发送缓存区的最大大小
 ```
 
 ```bash

@@ -1,3 +1,4 @@
+---
 title: chapter 6.3 - GitHub 维护项目
 categories:
   - Git
@@ -5,7 +6,6 @@ categories:
 tags:
   - Git
   - GitHub
-
 ---
 
 在 GitHub 上创建、维护、管理自己的项目。

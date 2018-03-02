@@ -1,3 +1,4 @@
+---
 title: chapter 7.D - Git 替换
 categories:
   - Git
@@ -5,7 +6,6 @@ categories:
 tags:
   - Git
   - Git-Replace
-
 ---
 
 Git 对象是不可变的，但 `replace` 命令可以指定一个对象 A 表面上替换另一个对象 B，

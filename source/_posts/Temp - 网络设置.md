@@ -1,7 +1,17 @@
-﻿http://www.cnblogs.com/Jtianlin/p/4655831.html
+﻿---
+title: Linux - 网络设置
+categories:
+  - Linux
+tags:
+  - Linux
+---
+
+http://www.cnblogs.com/Jtianlin/p/4655831.html
 http://xtbao.blog.51cto.com/7482722/1671739
 http://www.iyunv.com/thread-269695-1-1.html
 http://www.linuxidc.com/Linux/2013-08/88809.htm
+
+<!--more-->
 
 ## 网络基本命令
 
@@ -347,4 +357,9 @@ srwxrwxrwx. 1 root root 0 7月   6 09:13 system_bus_socket
 /usr/bin/dbus-launch
 /usr/share/man/man1/dbus-launch.1.gz
 ```
+
+
+常用命令一中对目录/usr 的解释有误。usr不是user的缩写，而是UNIX SoftWare Resource的缩写。???有一说法unix system resource
+
+对rm -r这个命令中-r选项的解释也是错的。rm -r中的r指的是递归删除（recursive）而不是指删除目录。指定删除仍有数据的目录应该加的是d.--directory。
 

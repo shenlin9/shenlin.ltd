@@ -1,4 +1,5 @@
-﻿title: chapter 9,A1,A2 - Git 与其他系统
+﻿---
+title: chapter 9,A1,A2 - Git 与其他系统
 categories:
   - Git
   - Book-ProGit
@@ -7,9 +8,11 @@ tags:
   - Git-GITK
   - Git-GUI
   - Git-LIBGIT2
-
-
 ---
+
+Git 与其他系统
+
+<!--more-->
 
 ## Git 与 GUI
 

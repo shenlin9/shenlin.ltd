@@ -1,10 +1,12 @@
-﻿title: SVN 和 Git
+﻿---
+title: SVN 和 Git
 categories: Git
 tags:
   - Git
   - SVN
-
 ---
+
+SVN 和 Git
 
 <!--more-->
 

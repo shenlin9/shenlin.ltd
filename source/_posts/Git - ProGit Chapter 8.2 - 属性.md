@@ -1,3 +1,4 @@
+---
 title: chapter 8.2 - Git 属性
 categories:
   - Git
@@ -5,7 +6,6 @@ categories:
 tags:
   - Git
   - Git-Attributes
-
 ---
 
 git 可以对特定的路径配置某些儿设置项，这些基于路径的设置项被称为 git 属性。

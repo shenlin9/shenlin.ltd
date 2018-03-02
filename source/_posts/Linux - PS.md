@@ -11,6 +11,8 @@ https://www.linux.org/docs/man1/ps.html
 
 ps命令是Process Status的缩写，用来列出当前进程的快照，就是执行ps命令的那个时刻的进程状态，
 
+<!--more-->
+
 如果想要动态连续的显示进程信息，可以使用top命令。
 
 Linux上进程有5种状态:

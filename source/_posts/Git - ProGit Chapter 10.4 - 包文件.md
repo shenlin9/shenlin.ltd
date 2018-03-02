@@ -1,12 +1,16 @@
-﻿title: chapter 10.4 - Git 包文件
+﻿---
+title: chapter 10.4 - Git 包文件
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
   - Git-包文件
-
 ---
+
+Git 包文件
+
+<!--more-->
 
 ## 松散对象
 

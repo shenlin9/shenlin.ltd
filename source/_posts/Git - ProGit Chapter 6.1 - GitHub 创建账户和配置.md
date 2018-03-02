@@ -1,11 +1,11 @@
-﻿title: chapter 6.1 - GitHub 创建账户和配置
+﻿---
+title: chapter 6.1 - GitHub 创建账户和配置
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
   - GitHub
-
 ---
 
 GitHub 是最大的 Git 版本库托管商，免费账户的版本库都将被公开，收费账户可以有私有版本库，如果只是克隆公开的版本库，无需注册账户

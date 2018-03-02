@@ -1,18 +1,18 @@
-﻿title: chapter 1.1 - 版本控制系统简介
+﻿---
+title: chapter 1.1 - 版本控制系统简介
 categories: 
   - Git
   - Book-ProGit
 tags: 
   - Git
   - DVCS
-
 ---
 
-### 版本控制系统
+版本控制系统是一种记录一个或若干文件内容变化，以便将来查阅特定版本修订情况的系统。
 
-是一种记录一个或若干文件内容变化，以便将来查阅特定版本修订情况的系统。
+<!--more-->
 
-### 本地版本控制系统 
+## 本地版本控制系统 
 
 ![DVCS](https://git-scm.com/book/en/v2/images/local.png)
 
@@ -24,7 +24,7 @@ tags:
 无法让不同系统上的开发者系统工作
 整个项目的历史记录被保存在单一位置，就有丢失所有历史更新记录的风险。
 
-### 集中化的版本控制系统
+## 集中化的版本控制系统
 
 ![DVCS](https://git-scm.com/book/en/v2/images/centralized.png)
 
@@ -44,7 +44,7 @@ Centralized Version Control Systems，简称 CVCS
 如果宕机一小时，那么在这一小时内，谁都无法提交更新，也就无法协同工作。
 如果中心数据库所在的磁盘发生损坏，又没有做恰当备份，毫无疑问你将丢失所有数据——包括项目的整个变更历史，只剩下人们在各自机器上保留的单独快照。
 
-### 分布式版本控制系统
+## 分布式版本控制系统
 
 ![DVCS](https://git-scm.com/book/en/v2/images/distributed.png)
 

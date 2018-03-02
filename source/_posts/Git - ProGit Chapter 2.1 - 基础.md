@@ -1,11 +1,15 @@
-﻿title: chapter 2.1 - Git 基础
+---
+title: chapter 2.1 - Git 基础
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
-
 ---
+
+Git 基础
+
+<!--more-->
 
 ## 创建 git 库
 

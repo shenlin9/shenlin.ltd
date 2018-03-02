@@ -1,3 +1,4 @@
+---
 title: chapter 7.C - Git 打包
 categories:
   - Git
@@ -5,7 +6,6 @@ categories:
 tags:
   - Git
   - Git-Bundle
-
 ---
 
 `git bundle` 命令会将 `git push` 命令所传输的所有内容打包成一个二进制文件，你可以将这个文件通过邮件或者闪存传给其他人，然后解包到其他的仓库中。

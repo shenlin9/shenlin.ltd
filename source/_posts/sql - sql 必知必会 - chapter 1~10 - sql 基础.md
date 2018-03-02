@@ -1,22 +1,22 @@
 ---
-title: sql - sql 必知必会 - chapter 1~10 - sql 基础
+title: SQL - SQL 必知必会 - chapter 1~10 - SQL 基础
 categories: 
- - sql
+ - SQL
 tags: 
- - sql
+ - SQL
 ---
 
-sql 基础知识。
+SQL 基础知识。
 
 <!--more-->
 
 ## 名词概念
 
-**sql**
+**SQL**
 
 structure query language 结构化查询语言
 
-**ANSI sql**
+**ANSI SQL**
 
 标准 SQL 由 ANSI 管理，从而称为 ANSI SQL 。所有主要的 DBMS ，即使有自己的扩展，也都支持 ANSI SQL 。各个实现有自己的名称，如 PL/SQL 、 Transact-SQL  等。
 
@@ -26,7 +26,9 @@ ANSI 美国国家标准学会（ American National Standards Institute）
 
 关于数据库和表的布局及特性的信息。
 
-表具有一些特性，这些特性定义了数据在表中如何存储，包含存储什么样的数据，数据如何分解，各部分信息如何命名等信息。描述表的这组信息就是所谓的 模式（ schema ），模式可以用来描述数据库中特定的表，也可以用来描述整个数据库（和其中表的关系）。
+表具有一些特性，这些特性定义了数据在表中如何存储，包含存储什么样的数据，数据如何分解，各部分信息如何命名等信息。
+
+描述表的这组信息就是所谓的 模式（ schema ），模式可以用来描述数据库中特定的表，也可以用来描述整个数据库（和其中表的关系）。
 
 **数据类型兼容性**
 

@@ -8,6 +8,10 @@ tags:
   - Nginx
 ---
 
+CodeIgniter 和 Nginx 站点设置
+
+<!--more-->
+
 ## 建立站点目录
 
 下载解押 CodeIgniter , 然后将 CodeIgniter 改名为 www，此目录将作为站点根目录
@@ -44,7 +48,7 @@ $ sudo vi /etc/nginx/conf.d/default.conf
             #listen [::]:80 ipv6only=on;
             server_name  localhost;
             root /home/shenlin/zaimusic/www;
-            index index.php  index.html index.htm;
+            index index.php index.html index.htm;
 
             location / {
                     # 这里使用try_files进行url重写，不用rewrite了。

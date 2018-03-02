@@ -1,3 +1,14 @@
+---
+title: MySQL
+categories: 
+ - MySQL
+tags: 
+ - MySQL
+---
+
+MySQL
+
+<!--more-->
 
 ## 连接和退出
 
@@ -48,7 +59,6 @@ UPDATE `user` SET `authentication_string`=PASSWORD('123456') WHERE `User`='user'
 FLUSH PRIVILEGES;
 ```
 * 123456是密码，user是用户，你如果要该用户名的话 ，注意where后面的条件就可以了，
-
 
 ## 修改列的定义
 

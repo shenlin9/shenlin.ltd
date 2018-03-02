@@ -1,3 +1,4 @@
+---
 title: chapter 7.8 - Git 高级合并
 categories:
   - Git
@@ -5,7 +6,6 @@ categories:
 tags:
   - Git
   - Git-Merge
-
 ---
 
 合并冲突时，Git 不会尝试智能的去解决冲突，Git 的哲学是聪明地决定无歧义的合并方案。 

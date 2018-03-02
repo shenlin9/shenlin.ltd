@@ -1,3 +1,4 @@
+---
 title: chapter 8.3 - Git 钩子
 categories:
   - Git
@@ -5,7 +6,6 @@ categories:
 tags:
   - Git
   - Git-Hooks
-
 ---
 
 Git 能在特定的动作发生时触发自定义脚本，有两组钩子：客户端和服务器端。

@@ -7,6 +7,10 @@ tags:
   - Firefox
 ---
 
+Firefox
+
+<!--more-->
+
 **关闭多个标签时禁用提醒**
 
 地址栏输入 `about:config` 进入设置，找到 `browser.tabs.warnOnCloseOtherTabs` 双击切换为 false

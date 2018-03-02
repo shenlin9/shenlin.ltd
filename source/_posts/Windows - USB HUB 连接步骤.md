@@ -4,6 +4,10 @@ categories: 计算机基础
 tags: USB HUB
 ---
 
+USB HUB
+
+<!--more-->
+
 1. HUB 电源线先插入插座，再插入 HUB
 2. HUB 数据线先插入电脑，再插入 HUB
 3. Windows 这时自动检测到 HUB 并安装驱动

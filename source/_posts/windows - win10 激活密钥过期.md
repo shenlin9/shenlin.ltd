@@ -10,6 +10,8 @@ tags:
 
 详见：https://03k.org/kms.html
 
+<!--more-->
+
 ## Win10
 
 ### 查询过期时间

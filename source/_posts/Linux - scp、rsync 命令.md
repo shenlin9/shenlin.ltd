@@ -1,8 +1,16 @@
-# linux scp、rsync 命令
-
-tags ： AAA linux scp rsync
-
 ---
+title: Linux - scp, rsync
+categories:
+  - Linux
+tags:
+  - Linux
+  - scp
+  - rsync
+---
+
+scp, rsync
+
+<!--more-->
 
 http://www.cnblogs.com/peida/archive/2013/03/15/2960802.html
 

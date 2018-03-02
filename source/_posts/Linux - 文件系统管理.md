@@ -1,3 +1,15 @@
+---
+title: Linux - 文件系统管理
+categories:
+  - Linux
+tags:
+  - Linux
+---
+
+Linux 文件系统管理
+
+<!--more-->
+
 【文件系统构成】
 
 /usr/bin /bin	存放所有用户可以执行的命令

@@ -1,3 +1,12 @@
+---
+title: Nginx - 版本号
+categories: Nginx
+tags: Nginx
+---
+
+Nginx 版本号
+
+<!--more-->
 
 
 Nginx官网 （http://nginx.org/en/download.html）提供了三个类型的版本

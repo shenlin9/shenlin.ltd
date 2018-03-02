@@ -1,3 +1,4 @@
+---
 title: chapter 7.A - Git 调试
 categories:
   - Git
@@ -6,7 +7,6 @@ tags:
   - Git
   - Git-Blame
   - Git-Bisect
-
 ---
 
 主要介绍两个子命令 blame 和 bisect：

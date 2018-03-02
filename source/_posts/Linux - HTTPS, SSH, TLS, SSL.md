@@ -41,8 +41,8 @@ SSL/TLS 版本
     在SSL/TLS家族中有5种协议：SSLv2, SSL v3, TLS v1.0, TLS v1.1, TLS v1.2。
     ( Shawn注: TLS v1.3还在draft阶段)
 
-    * SSL v2不安全，坚决不能用。( Shawn注: OpenSSL和GnuTLS当前的版本
-    (2014.12.2)不支持SSL v2)
+    * SSL v2不安全，坚决不能用。( Shawn注: OpenSSL和GnuTLS当前的版本(2014.12.2)
+    不支持SSL v2)
 
     * SSL v3老而且过时，她缺乏一些密钥特性，你不应该使用她除非有特别好的理
     由。( Shawn注: POODLE漏洞的出现彻底的废掉了SSLv3，之前很多地方支持

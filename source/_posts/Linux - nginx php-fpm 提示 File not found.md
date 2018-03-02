@@ -1,4 +1,15 @@
+---
+title: Linux - PHP-FPM
+categories:
+  - Linux
+tags:
+  - Linux
+  - PHP-FPM
+---
 
+PHP-FPM 提示 "File not found"
+
+<!--more-->
 
 使用php-fpm解析PHP，"No input file specified"，"File not found"是令nginx新手头疼的常见错误，原因是php-fpm进程找不到SCRIPT_FILENAME配置的要执行的.php文件，php- fpm返回给nginx的默认404错误提示。
 

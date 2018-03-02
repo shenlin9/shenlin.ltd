@@ -6,11 +6,15 @@ tags:
   - Windows
 ---
 
+端口占用
+
+<!--more-->
+
 ```dos
 > netstat -ano | findstr "5037"
   TCP    127.0.0.1:5037         0.0.0.0:0              LISTENING       7712
 
-> tasklist|findstr "7712"
+> tasklist | findstr "7712"
 adb.exe                       7712 Console                    1      9,556 K
 
 > taskkill /f /pid 7712

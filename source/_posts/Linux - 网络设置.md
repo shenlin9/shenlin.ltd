@@ -1,3 +1,14 @@
+---
+title: Linux - 网络设置
+categories:
+  - Linux
+tags:
+  - Linux
+---
+
+Linux 网络设置
+
+<!--more-->
 
 CentOS 7
 ```

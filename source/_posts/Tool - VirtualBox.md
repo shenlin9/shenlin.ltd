@@ -1,9 +1,9 @@
+---
 title: VirtualBox
 categories:
   - Windows
 tags:
   - Virtualbox
-
 ---
 
 oracle 公司的虚拟机软件 virtualbox 的基本设置和操作。

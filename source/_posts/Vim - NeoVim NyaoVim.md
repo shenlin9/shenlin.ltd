@@ -1,6 +1,4 @@
-﻿# NeoVim NyaoVim
-标签: AAA NeoVim NyaoVim
-
+﻿---
 title: NeoVim NyaoVim
 categories:
   - Vim
@@ -8,8 +6,11 @@ tags:
   - Vim
   - NeoVim
   - NyaoVim
-
 ---
+
+Vim
+
+<!--more-->
 
 ## 安装 NeoVim
 

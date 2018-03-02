@@ -6,6 +6,10 @@ categories:
 tags: C 语言
 ---
 
+函数
+
+<!--more-->
+
 ## 函数
 
 函数原型

@@ -1,11 +1,11 @@
-﻿title: chapter 10.3 - Git 引用
+﻿---
+title: chapter 10.3 - Git 引用
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
-  - Git-Refs
-
+  - Git引用
 ---
 
 使用一个文件来保存 commit 的 SHA 值，给文件取一个简单的名字，然后用这个简单的文件名字指针来代替复杂的 SHA 值，这样的文件在 git 里就被称为引用 references，缩写 refs。

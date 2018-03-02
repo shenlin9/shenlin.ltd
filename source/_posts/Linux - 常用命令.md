@@ -1,3 +1,15 @@
+---
+title: Linux - 常用命令
+categories:
+  - Linux
+tags:
+  - touch
+---
+
+Linux 常用命令
+
+<!--more-->
+
 【文件命名规则】
 -----------------
 1、大小写敏感，linux使用C语言开发，可以理解为继承了C语言的这个特性

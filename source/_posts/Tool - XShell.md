@@ -6,6 +6,10 @@ tags:
   - xshell
 ---
 
+xshell
+
+<!--more-->
+
 ## 下载安装
 
 不要去中文网站(http://www.xshellcn.com/)下载，去 xshell 的英文网站 http://www.netsarang.com/ 下载学习和家庭用户的免费版本，其功能和商业版是一样的

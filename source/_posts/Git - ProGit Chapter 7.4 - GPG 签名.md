@@ -1,3 +1,4 @@
+---
 title: chapter 7.4 - Git GPG 签名
 categories:
   - Git
@@ -5,7 +6,6 @@ categories:
 tags:
   - Git
   - Git-GPG
-
 ---
 
 从互联网上获取、更新版本库时，想要验证提交是不是来自于可信来源，Git 提供了几种通过 GPG 来签署和验证工作的方式。

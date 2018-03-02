@@ -1,14 +1,12 @@
-﻿title: chapter 3.3 - Git 远程分支
+﻿---
+title: chapter 3.3 - Git 远程分支
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
   - Git-Remote
-
 ---
-
-## 远程库
 
 远程仓库是指托管在因特网或其他网络中的你的项目的版本库。
 

@@ -1,10 +1,10 @@
-﻿title: chapter 4.7,4.8 - GitWeb & GitLab
+﻿---
+title: chapter 4.7,4.8 - GitWeb & GitLab
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
-
 ---
 
 GitWeb 是一个基于网页的 Git 库简易查看器，使用 CGI 脚本实现。

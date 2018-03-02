@@ -1,3 +1,4 @@
+---
 title: chapter 10.6 - Git 传输协议
 categories:
   - Git
@@ -5,7 +6,6 @@ categories:
 tags:
   - Git
   - GitHub
-
 ---
 
 Git 可以通过两种主要的方式在版本库之间传输数据：“哑（dumb）”协议和“智能（smart）”协议。

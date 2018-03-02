@@ -1,7 +1,7 @@
-﻿title: Vim 插件管理器 Vundle
+﻿---
+title: Vim 插件管理器 Vundle
 categories:
   - Vim
-  - Vundle
 tags:
   - Vim
   - Vundle

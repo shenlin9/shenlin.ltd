@@ -1,3 +1,4 @@
+---
 title: chapter 7.5 - Git 搜索
 categories:
   - Git
@@ -5,7 +6,6 @@ categories:
 tags:
   - Git
   - Git Grep
-
 ---
 
 Git 搜索用于查找方法的定义或调用，或者方法的变更历史等。

@@ -7,6 +7,10 @@ tags:
   - PHP-FPM
 ---
 
+PHP-FPM
+
+<!--more-->
+
 设置 PHP-FPM 显示 PHP 错误
 ```bash
 $ sudo vi /etc/php-fpm.d/www.conf

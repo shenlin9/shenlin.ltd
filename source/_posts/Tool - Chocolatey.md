@@ -1,11 +1,11 @@
-﻿title: Chocolatey
+﻿---
+title: Chocolatey
 categories:
   - Windows
 tags:
   - Windows
   - PowerShell
   - Chocolatey
-
 ---
 
 Chocolatey 是 Windows 下的软件包管理工具。

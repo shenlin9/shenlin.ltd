@@ -1,18 +1,18 @@
-﻿title: chapter 3.2 - Git 分支合并
+﻿---
+title: chapter 3.2 - Git 分支合并
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
   - Git-Branch
-
 ---
+
+Git 分支合并
 
 <!--more-->
 
-### 合并分支
-
-#### 快进合并
+## 快进合并
 
 ```
 $ git checkout master
@@ -25,7 +25,7 @@ $ git merge hotfix
 
 ![](https://git-scm.com/book/en/v2/images/basic-branching-5.png)
 
-#### 三方合并
+## 三方合并
 
 ```
 $ git checkout master
@@ -41,7 +41,7 @@ $ git merge iss53
 * Git 将此次三方合并的结果做了一个新的快照并且自动创建一个新的提交指向它。 这个被称作一次合并提交，它的特别之处在于他有不止一个父提交。
 * Git 会自行决定选取哪一个提交作为最优的共同祖先，并以此作为合并的基础。
 
-#### 合并冲突
+## 合并冲突
 
 合并冲突时，git 会暂停合并，不会创建提交对象，但没有冲突的文件已合并，有冲突的文件则会在冲突文件中加入标准的冲突解决标记：
 ```
@@ -53,8 +53,8 @@ github pages test from me
 ```
 表示 HEAD 指向的当前分支和 hotfix 分支有冲突，
 === 上面的是当前分支的内容，下面的是 hotfix 的内容，需要手动解决，即删除<<< === >>> 标记的行，然后冲突代码留下一个你想保留的版本。
-            
-#### 合并工具
+
+## 合并工具
 
 git 中默认的合并工具可能随系统不同而不同，合并工具是用来解决冲突的
 

@@ -1,9 +1,17 @@
-﻿# tmp
-
-tags ：AAA Book-ProGit
-
+﻿---
+title: Git - Book-ProGit
+categories: 
+ - Git
+ - Book-ProGit
+tags: 
+ - Git
 ---
 
+Git
+
+<!--more-->
+
+```
 git config --global merge.tool meld
 git config --global mergetool.meld.path "/c/Program Files (x86)/Meld/Meld.exe"
 
@@ -17,7 +25,7 @@ git reset --hard
 $ git merge hotfix
 fatal: You have not concluded your merge (MERGE_HEAD exists).
 Please, commit your changes before you merge.
-
+```
 
 ```
 git@e42.matrix git

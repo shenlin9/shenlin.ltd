@@ -1,3 +1,4 @@
+---
 title: chapter 7.2 - Git 交互式暂存
 categories:
   - Git
@@ -5,7 +6,6 @@ categories:
 tags:
   - Git
   - Git-Stage
-
 ---
 
 使用交互式命令可以把文件的特定部分组合成提交。

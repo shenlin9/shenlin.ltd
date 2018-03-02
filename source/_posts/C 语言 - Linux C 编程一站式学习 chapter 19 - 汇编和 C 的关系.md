@@ -6,6 +6,8 @@ categories:
 tags: C 语言
 ---
 
+汇编和 C 的关系
+
 <!--more-->
 
 ## 函数调用

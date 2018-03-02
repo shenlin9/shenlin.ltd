@@ -1,50 +1,85 @@
-安装PHP
+---
+title: Linux - 源码编译、安装、配置 LAMP
+categories:
+  - Linux
+tags:
+  - LAMP
+---
 
-    解压
-        tar -zxvf php-5.5.11.tar.gz
-    配置安装变量
-        ./configure --prefix=/usr/local/servers/php 
-    编译
-        make
-    安装
-        make install
-    创建软链接
-        ln -s /usr/local/servers/php/bin/php /usr/local/bin/php
+源码编译、安装、配置 LAMP
 
-安装Apache
+<!--more-->
 
-    Extract
-        $ gzip -d httpd-NN.tar.gz
-        $ tar xvf httpd-NN.tar
-        $ cd httpd-NN
-    Configure
-        $ ./configure --prefix=PREFIX
-    Compile
-        $ make
-    Install
-        $ make install
-    Customize
-        $ vi PREFIX/conf/httpd.conf
-    Test
-        $ PREFIX/bin/apachectl -k start
+## 安装 PHP
+
+解压
+
+    tar -zxvf php-5.5.11.tar.gz
+
+配置安装变量
+
+    ./configure --prefix=/usr/local/servers/php 
+
+编译
+
+    make
+
+安装
+
+    make install
+
+创建软链接
+
+    ln -s /usr/local/servers/php/bin/php /usr/local/bin/php
+
+## 安装 Apache
+
+Extract
+
+    $ gzip -d httpd-NN.tar.gz
+    $ tar xvf httpd-NN.tar
+    $ cd httpd-NN
+
+Configure
+
+    $ ./configure --prefix=PREFIX
+
+Compile
+
+    $ make
+
+Install
+
+    $ make install
+
+Customize
+
+    $ vi PREFIX/conf/httpd.conf
+
+Test
+
+    $ PREFIX/bin/apachectl -k start
 
 
-Problems
---------------------------------------------------------------
+### Problems
+
 Apache Portable Runtime (APR)
 Apache Portable Runtime Utility Library(APR-util)
 PCRE - Perl Compatible Regular Expressions
 
-
 mkdir -p
 
 
-实机安装过程
---------------------------------------------------------------
+## Apache
+
+```bash
 $bunzip2 -k httpd-2.4.25.tar.bz2
+
 $tar -xf httpd-2.4.25.tar
+
 $configure --prefix=/usr/local/apache2.4.25
     -bash: configure: command not found
+
 $./configure --prefix=/usr/local/apache2.4.25
     checking for chosen layout... Apache
     checking for working mkdir -p... yes
@@ -58,10 +93,13 @@ $./configure --prefix=/usr/local/apache2.4.25
     configure: 
     checking for APR... no
     configure: error: APR not found.  Please read the documentation.
+
 $wget -P ~ http://mirrors.hust.edu.cn/apache//apr/apr-1.5.2.tar.gz
+
 $bunzip2 -k ~/apr-1.5.2.tar.gz 
-    bunzip2: Can't guess original name for /home/ssy/apr-1.5.2.tar.gz -- using /home/ssy/apr-1.5.2.tar.gz.out
+    bunzip2: Cant guess original name for /home/ssy/apr-1.5.2.tar.gz -- using /home/ssy/apr-1.5.2.tar.gz.out
     bunzip2: /home/ssy/apr-1.5.2.tar.gz is not a bzip2 file.
+
 $./configure --prefix=/usr/local/apr1.5.2
     checking build system type... i686-pc-linux-gnu
     checking host system type... i686-pc-linux-gnu
@@ -77,6 +115,7 @@ $./configure --prefix=/usr/local/apr1.5.2
     configure: error: in `/home/ssy/apr-1.5.2':
     configure: error: no acceptable C compiler found in $PATH
     See `config.log' for more details
+
 $rpm -qa|grep gcc
     libgcc-4.2
 $rpm -q gcc
@@ -448,15 +487,11 @@ $sudo make install
     ………………………………
 [ssy@localhost ~/pcre-8.40]$sudo make & sudo make install
     libtool: warning: relinking 'libpcreposix.la'
+```
 
+## PHP
 
-
-
-=======================Apache完成=================================
-
-
-
-
+```bash
 [ssy@localhost ~/php-7.1.5]$./configure --prefix=/usr/local/php-7.1.5
     ………………………………
     ………………………………

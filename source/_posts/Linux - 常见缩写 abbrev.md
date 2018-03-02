@@ -1,12 +1,15 @@
 ---
-title: linux - 常见缩写 abbrev
+title: Linux - 常见缩写 abbrev
 categories:
   - Linux
 tags:
   - Linux
-  - linux 常见缩写
+  - Linux-abbrev
 ---
 
+Linux 常见缩写 abbrev
+
+<!--more-->
 
 最常见的缩写，取每个单词的首字母
 

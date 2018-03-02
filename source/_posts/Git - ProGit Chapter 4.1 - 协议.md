@@ -1,17 +1,18 @@
-﻿title: chapter 4.1 - Git 协议
+﻿---
+title: chapter 4.1 - Git 协议
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
-
 ---
 
 git 可以使用四种协议来传输数据：
-本地协议（Local Protocal）
-HTTP协议
-SSH协议（Secure SHell）
-Git协议
+
+    本地协议（Local Protocal）
+    HTTP协议
+    SSH协议（Secure SHell）
+    Git协议
 
 <!--more-->
 

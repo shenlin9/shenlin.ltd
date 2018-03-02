@@ -1,11 +1,15 @@
-﻿title: chapter 2.2 - Git 提交历史
+﻿---
+title: chapter 2.2 - Git 提交历史
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
-
 ---
+
+Git 提交历史
+
+<!--more-->
 
 ## 提交历史
 

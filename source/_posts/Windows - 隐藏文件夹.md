@@ -10,6 +10,8 @@ tags:
 
 但可以通过直接输入路径访问到
 
+<!--more-->
+
 隐藏文件夹
 ```
 attrib +a +s +r +h d:/private-folder

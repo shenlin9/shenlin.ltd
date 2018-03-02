@@ -6,6 +6,10 @@ categories:
 tags: C 语言
 ---
 
+数组
+
+<!--more-->
+
 VLA : Variable Length Array 可变长度数组，C99 允许声明数组时长度使用变量
 
 数组定义：像结构体一样初始化，未赋值的元素初始化为 0

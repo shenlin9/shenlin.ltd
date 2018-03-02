@@ -7,9 +7,9 @@ tags:
   - LSB
 ---
 
+LSB : Linux Standard Base
 
 <!--more-->
-
 
 什么是LSB
 

@@ -19,10 +19,12 @@ Bash 的配置文件
 :    shell的输入来自文件，如执行shell脚本
 
 # 交互式Shell
+
 用户登录后的默认shell定义在：
 > /etc/passwd
 
 ## 登录前
+
 在用户获得控制权之前，bashell会顺序运行下列文件：
 > 
 1. /etc/profile

@@ -1,9 +1,9 @@
 ---
-title: mysql - 高性能mysql - chapter 1 - 架构和历史
+title: MySQL - 高性能mysql - chapter 1 - 架构和历史
 categories: 
- - mysql
+ - MySQL
 tags: 
- - mysql
+ - MySQL
 ---
 
 正则表达式必知必会（修订版）高清带书签

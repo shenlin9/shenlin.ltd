@@ -1,8 +1,14 @@
-﻿# linux 磁盘和分区
-
-tags ： AAA linux disk partition
-
+﻿---
+title: Linux - 磁盘和分区
+categories:
+  - Linux
+tags:
+  - Linux
 ---
+
+Linux 磁盘和分区
+
+<!--more-->
 
 Filesystem                      Size  Used Avail Use% Mounted on
 /dev/mapper/VolGroup-lv_root    3.0G  2.8G  116M  97% /
@@ -12,10 +18,7 @@ tmpfs                           250M     0  250M   0% /dev/shm
 
 VBoxManage internalcommands sethduuid "D:\VirtualBox VMs\CenterOS\CenterOS 5.5.vdi"
 
-
 http://blog.sina.com.cn/s/blog_165c04adb0102wn8x.html
-
-
 
 /dev/mapper/VolGroup-lv_root
 
@@ -23,7 +26,6 @@ http://blog.sina.com.cn/s/blog_165c04adb0102wn8x.html
 分区		文件系统		挂载点
 /dev/sda1   	ext4
 /dev/sda2   	lvm2 pv 	VolGroup
-
 
 先用virtualbox命令调整虚拟硬盘空间
 再用gparted软件分配空间到分区

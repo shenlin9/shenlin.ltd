@@ -1,3 +1,15 @@
+---
+title: Linux - LAMP 兄弟连 Linux 教程
+categories:
+  - Linux
+tags:
+  - Linux
+---
+
+LAMP 兄弟连 Linux 教程
+
+<!--more-->
+
 操作系统主要提供以下基本服务程序：
 	
 	1、文件系统

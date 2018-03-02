@@ -1,3 +1,4 @@
+---
 title: chapter 7.9 - Git Rerere
 categories:
   - Git
@@ -5,7 +6,6 @@ categories:
 tags:
   - Git
   - Git-Rerere
-
 ---
 
 Rerere : reuse recorded resolution

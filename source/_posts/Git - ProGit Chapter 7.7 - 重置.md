@@ -1,3 +1,4 @@
+---
 title: chapter 7.7 - Git 重置
 categories:
   - Git
@@ -6,7 +7,6 @@ tags:
   - Git
   - Git-Reset
   - Git-Checkout
-
 ---
 
 reset 和 checkout 都是在操作 Git 的三棵树。

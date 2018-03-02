@@ -1,8 +1,14 @@
-﻿# phpstorm
-
-标签（空格分隔）： AAA phpstorm
-
+﻿---
+title: PHP - PHPStorm
+categories:
+  - PHP
+tags:
+  - PHPStorm
 ---
+
+PHPStorm
+
+<!--more-->
 
 PHPStorm EAP（Early Access Program）
 

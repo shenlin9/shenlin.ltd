@@ -1,3 +1,4 @@
+---
 title: chapter 7.3 - Git 储藏和清理
 categories:
   - Git
@@ -5,7 +6,6 @@ categories:
 tags:
   - Git
   - Git-Stash
-
 ---
 
 在一个项目上开发一段时间后，一切进入混乱状态，这时因为 debug 等原因需要进入另一个分支，

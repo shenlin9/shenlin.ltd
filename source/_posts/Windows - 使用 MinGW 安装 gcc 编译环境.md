@@ -11,6 +11,8 @@ tags:
 
 什么是gcc / g++
 
+<!--more-->
+
 首先说明：小写的 gcc 和大写的 GCC 是两个不同的东西
 
 GCC:GNU Compiler Collection(GNU 编译器集合)，它可以编译C、C++、JAV、Fortran、Pascal、Object-C、Ada等语言。

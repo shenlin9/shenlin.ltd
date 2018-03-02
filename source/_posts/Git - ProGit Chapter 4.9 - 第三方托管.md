@@ -1,11 +1,15 @@
-﻿title: chapter 4.9 - Git 第三方托管
+﻿---
+title: chapter 4.9 - Git 第三方托管
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
-
 ---
+
+Git 第三方托管
+
+<!--more-->
 
 ## 远程库简介
 

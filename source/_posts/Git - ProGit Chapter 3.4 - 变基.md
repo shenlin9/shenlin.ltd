@@ -1,18 +1,18 @@
-﻿title: chapter 3.4 - Git 变基
+---
+title: chapter 3.4 - Git 变基
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
   - Git-Rebase
-
 ---
+
+git 中整合分支主要两个方法：合并 和 变基。
 
 <!--more-->
 
 ## 合并和变基
-
-git 中整合分支主要两个方法：合并 和 变基。
 
 举例说明：开发任务分叉到两个不同分支： experiment 和 master
 

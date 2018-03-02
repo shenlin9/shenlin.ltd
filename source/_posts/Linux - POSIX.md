@@ -9,6 +9,8 @@ tags:
 
 POSIX 基本上是 Portable Operating System Interface（可移植操作系统接口）的缩写，
 
+<!--more-->
+
 而 X 则表明其对Unix API的传承。
 
 POSIX 是IEEE为要在各种UNIX操作系统上运行软件，而定义API的一系列互相关联的标准的总称，

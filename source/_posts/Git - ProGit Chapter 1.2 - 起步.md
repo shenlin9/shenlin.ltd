@@ -1,10 +1,10 @@
-﻿title: chapter 1.2 - Git 起步
+﻿---
+title: chapter 1.2 - Git 起步
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
-
 ---
 
 git 是一个 DVCS.

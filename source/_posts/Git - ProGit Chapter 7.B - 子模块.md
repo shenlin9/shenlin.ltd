@@ -1,11 +1,11 @@
-﻿title: chapter 7.11 - Git 子模块
+﻿---
+title: chapter 7.11 - Git 子模块
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
   - Git-Submodule
-
 ---
 
 Git 子模块常用于当项目需要外部依赖如第三方库时。

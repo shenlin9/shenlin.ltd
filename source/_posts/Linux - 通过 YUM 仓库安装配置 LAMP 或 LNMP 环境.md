@@ -10,6 +10,10 @@ tags:
   - PHP
 ---
 
+通过 YUM 仓库安装配置 LAMP 或 LNMP 环境
+
+<!--more-->
+
 安装 Apache/Nginx + MySQL + PHP 的正确顺序应该是：LMPA（MySQL、PHP、Apache）。
 
 原因很简单：后面的软件（有可能）依赖前面的软件，即自底向上安装是一般的规律。

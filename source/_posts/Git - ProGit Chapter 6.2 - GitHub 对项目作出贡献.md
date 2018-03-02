@@ -1,3 +1,4 @@
+---
 title: chapter 6.2 - GitHub 对项目作出贡献
 categories:
   - Git
@@ -5,7 +6,6 @@ categories:
 tags:
   - Git
   - GitHub
-
 ---
 
 向一个项目贡献内容，主要包括 Fork 派生项目副本和 Pull Request 合并请求两部分内容。

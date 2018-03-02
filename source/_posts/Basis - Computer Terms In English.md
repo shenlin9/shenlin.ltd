@@ -6,6 +6,10 @@ tags:
   - Basis
 ---
 
+Terms
+
+<!--more-->
+
 ## 兼容
 
 Backward Compatibility 缩写 BC，向后兼容，也写作 Downward Compatibility 向下兼容

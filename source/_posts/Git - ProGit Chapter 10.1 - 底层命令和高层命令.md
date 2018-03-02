@@ -1,11 +1,15 @@
-﻿title: chapter 10.1 - Git 底层命令和高层命令
+﻿---
+title: chapter 10.1 - Git 底层命令和高层命令
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
-
 ---
+
+Git 底层命令和高层命令
+
+<!--more-->
 
 ## 本质概述
 

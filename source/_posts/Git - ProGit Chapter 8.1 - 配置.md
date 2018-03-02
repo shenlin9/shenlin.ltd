@@ -1,10 +1,10 @@
+---
 title: chapter 8.1 - Git 设置
 categories:
   - Git
   - Book-ProGit
 tags:
   - Git
-
 ---
 
 git 的设置项分为客户端设置和服务器端设置，都保存在 git 配置文件中，大部分属于客户端设置。

@@ -1,8 +1,16 @@
-﻿# linux 主机名由 localhost 自动变为了 bogon？
-
-标签（空格分隔）： AAA linux bogon
-
+﻿---
+title: Linux - linux 主机名由 localhost 自动变为了 bogon？
+categories:
+  - Linux
+tags:
+  - bogon
 ---
+
+转载自：http://blog.csdn.net/poechant/article/details/7216892
+
+用sudo来执行cd、ls等命令时，会出现command not found的提示：
+
+<!--more-->
 
 bogon['bɔɡən] n. 虚伪的人
 

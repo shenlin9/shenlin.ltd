@@ -1,8 +1,10 @@
-﻿title: chapter 10.7 - Git 维护与数据恢复
+﻿---
+title: chapter 10.7 - Git 维护与数据恢复
 categories: Git
 tags: Git
-
 ---
+
+Git 维护与数据恢复
 
 <!--more-->
 
