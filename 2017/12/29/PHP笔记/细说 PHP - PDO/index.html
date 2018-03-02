@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="PHP," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="PDO的介绍安装及对象初使化 PDO:PHP Data Object  php处理不同的数据库需要调用不同的数据库扩展，如mysql,mysqli,orace,mssql等，这些扩展的调用方法虽然类似但不尽相同，在需要将数据从一个类型数据库移植到另一个类型数据库时，首先要使用工具将数据移动过去，然后最重要的是要修改程序中的数据调用方法，这是最烦琐最大量的工作，也因此，跨数据库的pdo应运而生，类似">
+<meta name="keywords" content="PHP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="细说 PHP - PDO">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/12/29/PHP笔记/细说 PHP - PDO/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="PDO的介绍安装及对象初使化 PDO:PHP Data Object  php处理不同的数据库需要调用不同的数据库扩展，如mysql,mysqli,orace,mssql等，这些扩展的调用方法虽然类似但不尽相同，在需要将数据从一个类型数据库移植到另一个类型数据库时，首先要使用工具将数据移动过去，然后最重要的是要修改程序中的数据调用方法，这是最烦琐最大量的工作，也因此，跨数据库的pdo应运而生，类似">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-29T02:24:12.958Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="细说 PHP - PDO">
+<meta name="twitter:description" content="PDO的介绍安装及对象初使化 PDO:PHP Data Object  php处理不同的数据库需要调用不同的数据库扩展，如mysql,mysqli,orace,mssql等，这些扩展的调用方法虽然类似但不尽相同，在需要将数据从一个类型数据库移植到另一个类型数据库时，首先要使用工具将数据移动过去，然后最重要的是要修改程序中的数据调用方法，这是最烦琐最大量的工作，也因此，跨数据库的pdo应运而生，类似">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/12/29/PHP笔记/细说 PHP - PDO/"/>
+
+
+
+
+
+  <title>细说 PHP - PDO | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/12/29/PHP笔记/细说 PHP - PDO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">细说 PHP - PDO</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T10:24:12+08:00">
+                2017-12-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>PDO的介绍安装及对象初使化</p>
+<pre><code>PDO:PHP Data Object
+
+php处理不同的数据库需要调用不同的数据库扩展，如mysql,mysqli,orace,mssql等，这些扩展的调用方法虽然类似但不尽相同，在需要将数据从一个类型数据库移植到另一个类型数据库时，首先要使用工具将数据移动过去，然后最重要的是要修改程序中的数据调用方法，这是最烦琐最大量的工作，也因此，跨数据库的pdo应运而生，类似的技术还有adodb和mdb2，但pdo相对来说更高效。
+
+pdo是基于驱动的(adodb不是)，并不是pdo扩展本身去访问不同的数据库，而是安装对应数据库的pdo驱动，如pdo_mysql对应mysql的驱动
+
+启用pdo：
+    安装pdo扩展
+    安装对应数据库的驱动
+    php配置文件中打开对应的驱动
+
+pdo的三个类
+    PDO
+        和数据库连接有关的类
+    PDOStatement
+        处理准备语句和结果集
+    PDOException
+        处理异常
+
+PDO很多常量
+
+创建PDO对象
+    $pdo=new PDO($dsn,$username,$pwd);
+        dsn data source name 
+
+        数据源，包括主机位置、库名、连接哪种数据库驱动三种信息
+        各数据库dsn的写法不同，可参考帮助
+        可将dsn写入文件中或写入配置文件中，用户切换数据库时方便：
+            pdo.dsn.mysqlpdo=mysql:host=localhost;dbname=demo
+
+    try{
+
+        $pdo=new PDO(&quot;mysql:host=localhost;dbname=demo&quot;,&quot;root&quot;,&quot;123456&quot;);
+
+    }catch(PDOException $e){
+
+        echo $e-&gt;getMessage();
+        exit;
+    }
+
+    echo $pdo-&gt;getAttribute(PDO::ATTR_CLIENT_VERSION).&quot;&lt;br&gt;&quot;;
+
+    $pdo-&gt;setAttribute(PDO::ATTR_AUTOCOMMIT,0);
+
+    也可用第四个参数设置PDO的常量：
+
+        $pdo=new PDO($dsn,$username,$pwd,array(PDO::ATTR_AUTOCOMMIT-&gt;0));
+</code></pre><p>PDO对象中方法的使用详细介绍</p>
+<pre><code>exec()
+    执行有影响行数的sql
+    返回影响的行数
+
+    获取最后自增长ID：$pdo-&gt;lastInsertId();
+query()
+    执行有结果集的sql
+    返回的是预声明对象???，支持foreach遍历
+prepare()
+
+
+三种错误模式：？？？
+    PDO::ERRMODE_SILENT
+        默认模式下sql有错误不提示，需要使用错误函数获取错误信息
+        errorcode
+        errorinfo
+    PDO::ERRMODE_WARNING
+        警告模式下trycatch不会捕获到异常
+    PDO::EXCEPTION
+        异常模式下可以抓取到异常
+
+事务：
+    $pdo-&gt;setAttribute(PDO::ATTR_AUTOCOMMIT,0);
+    $pdo-&gt;beginTransaction();
+    $pdo-&gt;commit();
+    $pdo-&gt;rollback();
+    $pdo-&gt;setAttribute(PDO::ATTR_AUTOCOMMIT,1);
+</code></pre><p>使用PDO进行SQL语句预处理</p>
+<pre><code>//准备好了一条sql语句，并放到服务器端编译过了
+$stmt=$pdo-&gt;prepare(&quot;insert into t1(id,name,age,sex) values(?,?,?,?)&quot;);    
+$stmt=$pdo-&gt;prepare(&quot;insert into t1(id,name,age,sex) values(:id,:name,:age,:sex)&quot;);    
+    返回的就是预处理类PDOStatement对象
+    和mysqli的占位符只支持?占位符不同，这里也支持名字占位符
+    ?占位符是按索引顺序使用，名字占位符则是按名称使用，和顺序无关
+
+//绑定名字参数
+$pdo-&gt;bindParam(&quot;:id&quot;,$id,PDO::PARAM_INT);    //后面的类型是可选的，系统会自动转换
+$pdo-&gt;bindParam(&quot;:name&quot;,$name);
+$pdo-&gt;bindParam(&quot;:age&quot;,$age);
+$pdo-&gt;bindParam(&quot;:sex&quot;,$sex);
+
+//绑定问号参数
+$pdo-&gt;bindParam(1,$id);
+$pdo-&gt;bindParam(2,$name);
+$pdo-&gt;bindParam(3,$age);
+$pdo-&gt;bindParam(4,$sex);
+
+//为参数连续赋值和执行
+$id=1;
+$name=&quot;lisi&quot;;
+$age=10;
+$sex=&quot;boy&quot;;
+
+if($stmt-&gt;execute()){
+    //获取最后插入ID
+    echo $pdo-&gt;lastInsertId();
+}
+
+$id=2;
+$name=&quot;wangwu&quot;;
+$age=12;
+$sex=&quot;girl&quot;;
+
+if($stmt-&gt;execute()){
+    //获取最后插入ID
+    echo $pdo-&gt;lastInsertId();
+}
+
+//使用另一种方式执行，通过传递数组
+$stmt=$pdo-&gt;prepare(&quot;insert into t1(id,name,age,sex) values(:id,:name,:age,:sex)&quot;);    
+$stmt-&gt;execute(array(&quot;:id&quot;=&gt;1,&quot;:name&quot;=&gt;&quot;lisi&quot;,&quot;:age&quot;=&gt;10,&quot;:sex&quot;=&gt;&quot;boy&quot;));//和数组元素顺序无关
+$stmt-&gt;execute(array(&quot;:id&quot;=&gt;2,&quot;:name&quot;=&gt;&quot;wangwu&quot;,&quot;:age&quot;=&gt;12,&quot;:sex&quot;=&gt;&quot;girl&quot;));
+
+$stmt=$pdo-&gt;prepare(&quot;insert into t1(id,name,age,sex) values(?,?,?,?)&quot;);    
+$stmt-&gt;execute(array(1,&quot;lisi&quot;,10,&quot;boy&quot;));//按占位符顺序传值
+$stmt-&gt;execute(array(2,&quot;wuli&quot;,12,&quot;girl&quot;));
+</code></pre><p>使用PDO操作结果集</p>
+<pre><code>$stmt=$pdo-&gt;prepare(&quot;select * from t1 where id &gt; :id&quot;);
+$stmt-&gt;execute(array(&quot;:id&quot;=&gt;12));
+
+$stmt-&gt;setFetchMode(PDO::FETCH_NUM);
+
+//逐条获取
+while ($row = $stmt-&gt;fetch(PDO::FETCH_NUM)) {
+    foreach($row as $item){
+        echo $item;
+    }
+}
+
+//一次性全部获取
+$data=$stmt-&gt;fetchAll(PDO::FETCH_NUM);
+echo print_r($data);
+
+//通过绑定列的方式获取
+$stmt-&gt;bindColumn(&quot;id&quot;,$id,PDO::PARAM_INT);    //按名字绑定
+$stmt-&gt;bindColumn(&quot;name&quot;,$name);
+$stmt-&gt;bindColumn(3,$age);    //按顺序绑定
+$stmt-&gt;bindColumn(4,$sex);
+
+while($stmt-&gt;fetch()){
+    echo $id.$name.$age.$sex;
+}
+
+//获取总行数
+echo $stmt-&gt;rowCount();
+
+//获取总列数
+echo $stmt-&gt;columnCount();
+
+//获取列信息
+for($i=0;$i&lt;$stmt-&gt;columnCount;$i++){
+    $field=$stmt-&gt;getColumnMeta($i);
+    echo $field[&quot;name&quot;];
+}
+
+fetch()
+    默认返回的数据包含了索引和关联数组
+    通过制定常量参数可以设置返回的数组
+        PDO::FETCH_NUM
+        PDO::FETCH_ASSOC
+        PDO::FETCH_BOTH
+    也可以通过设置获取模式来设置
+        $stmt-&gt;setFetchMode(PDO::FETCH_NUM);
+
+fetchColumn
+    获取单列
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PHP/" rel="tag"># PHP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/29/PHP笔记/细说 PHP - 会话控制 Cookie 和 Session/" rel="next" title="细说 PHP - 会话控制 Cookie 和 Session">
+                <i class="fa fa-chevron-left"></i> 细说 PHP - 会话控制 Cookie 和 Session
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/29/PHP笔记/细说 PHP - MySQLi/" rel="prev" title="细说 PHP - MySQLi">
+                细说 PHP - MySQLi <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">218</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

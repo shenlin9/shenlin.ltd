@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="CodeIgniter," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一个控制器就是一个类文件，是以一种能够和 URI 关联在一起的方式来命名的">
+<meta name="keywords" content="CodeIgniter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP - CodeIgniter 控制器">
+<meta property="og:url" content="http://www.shenlin.ltd/2018/02/04/PHP - CodeIgniter 控制器/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="一个控制器就是一个类文件，是以一种能够和 URI 关联在一起的方式来命名的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-04T09:09:34.584Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP - CodeIgniter 控制器">
+<meta name="twitter:description" content="一个控制器就是一个类文件，是以一种能够和 URI 关联在一起的方式来命名的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2018/02/04/PHP - CodeIgniter 控制器/"/>
+
+
+
+
+
+  <title>PHP - CodeIgniter 控制器 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/02/04/PHP - CodeIgniter 控制器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PHP - CodeIgniter 控制器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-04T17:09:34+08:00">
+                2018-02-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/CodeIgniter/" itemprop="url" rel="index">
+                    <span itemprop="name">CodeIgniter</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>一个控制器就是一个类文件，是以一种能够和 URI 关联在一起的方式来命名的</p>
+<a id="more"></a>
+<h2 id="名称"><a href="#名称" class="headerlink" title="名称"></a>名称</h2><p>当控制器的名称和 URI 的第一段匹配上时，它将会被加载。</p>
+<pre><code>example.com/index.php/blog/
+</code></pre><p>控制器的文件名必须是大写字母开头，即上面的控制器文件应该是 <code>Blog.php</code></p>
+<p>控制器的类名也必须以大写字母开头，且继承了父控制器类，这样它才能使用父类的方法</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Blog</span> <span class="keyword">extends</span> <span class="title">CI_Controller</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="默认控制器"><a href="#默认控制器" class="headerlink" title="默认控制器"></a>默认控制器</h2><p>当 URI 没有分段时将加载默认控制器，在文件 <code>application/config/routes.php</code> 中设置</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$route[<span class="string">'default_controller'</span>] = <span class="string">'blog'</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="子目录"><a href="#子目录" class="headerlink" title="子目录"></a>子目录</h2><p>控制器文件也可放入子目录，即在 <code>application/controllers/</code> 下建立子目录，这时 URI 的</p>
+<p>第一段必须指定目录，如控制器目录如下：</p>
+<pre><code>application/controllers/products/Shoes.php
+</code></pre><p>则 URI 应该像下面这样:</p>
+<pre><code>example.com/index.php/products/shoes/show/123
+</code></pre><p>每个子目录都应该包含有一个和 <code>$route[&#39;default_controller&#39;</code> 设置匹配的默认控制器文件</p>
+<p>因为会有这样的 URI:</p>
+<pre><code>example.com/index.php/products/
+</code></pre><h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>URI 中的第二段用于决定调用控制器中的哪个方法，为空时则总是调用 “index” 方法。</p>
+<p>被声明为 private 或 protected 的方法是不能被 URL 访问到的。</p>
+<p>为了向后兼容原有的功能，在方法名前加上一个下划线前缀也可以让方法无法访问。</p>
+<p>如果 URI 多于两个段，则多余的段将作为参数传递到你的方法中</p>
+<p>例如 ：example.com/index.php/products/shoes/sandals/123</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Products</span> <span class="keyword">extends</span> <span class="title">CI_Controller</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">shoes</span><span class="params">($sandals, $id)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> $sandals;</span><br><span class="line">        <span class="keyword">echo</span> $id;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果使用了 URI 路由，传递到方法的参数将是路由后的参数。 ???</li>
+</ul>
+<p>如果要改变这种使用 URI 第二段来决定调用哪个方法的规则 CodeIgniter 也是允许的，</p>
+<p>可以使用 <code>_remap()</code> 方法来重写该规则 : </p>
+<pre><code>如果控制包含一个 `_remap()` 方法， 那么无论 URI 中包含什么参数时都会调用该方法。 
+</code></pre><p>它允许定义自己的路由规则，重写默认的这种行为。</p>
+<p>被重写的方法（通常是 URI 的第二段）将被作为参数传递到 <code>_remap()</code> 方法:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">_remap</span><span class="params">($method)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ($method === <span class="string">'some_method'</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;$method();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;default_method();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>方法名之后的所有其他段将作为 <code>_remap()</code> 方法的第二个参数，它是可选的。</p>
+<p>这个参数可以使用 PHP 的 <code>call_user_func_array()</code> 函数来模拟 CodeIgniter 的默认行为。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">_remap</span><span class="params">($method, $params = array<span class="params">()</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $method = <span class="string">'process_'</span>.$method;</span><br><span class="line">    <span class="keyword">if</span> (method_exists(<span class="keyword">$this</span>, $method))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> call_user_func_array(<span class="keyword">array</span>(<span class="keyword">$this</span>, $method), $params);</span><br><span class="line">    &#125;</span><br><span class="line">    show_404();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><p>在控制器构造函数中必须调用父类的构造函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Blog extends CI_Controller &#123;</span><br><span class="line"></span><br><span class="line">    public function __construct()</span><br><span class="line">    &#123;</span><br><span class="line">        parent::__construct();</span><br><span class="line">        // Your own constructor code</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="保留名称"><a href="#保留名称" class="headerlink" title="保留名称"></a>保留名称</h2><p>因为你的控制器类继承了 CI 的控制器，所以你的方法命名一定不能和 CI 控制器类中的</p>
+<p>方法名相同，否则你的方法将会覆盖他们。 已经保留的名称有：</p>
+<p>控制器：</p>
+<pre><code>CI_Controller
+Default
+index
+</code></pre><p>函数</p>
+<pre><code>is_php()
+is_really_writable()
+load_class()
+is_loaded()
+get_config()
+config_item()
+show_error()
+show_404()
+log_message()
+set_status_header()
+get_mimes()
+html_escape()
+remove_invisible_characters()
+is_https()
+function_usable()
+get_instance()
+_error_handler()
+_exception_handler()
+_stringify_attributes()
+</code></pre><p>变量</p>
+<pre><code>$config
+$db
+$lang
+</code></pre><p>常量</p>
+<pre><code>ENVIRONMENT
+FCPATH
+SELF
+BASEPATH
+APPPATH
+VIEWPATH
+CI_VERSION
+MB_ENABLED
+ICONV_ENABLED
+UTF8_ENABLED
+FILE_READ_MODE
+FILE_WRITE_MODE
+DIR_READ_MODE
+DIR_WRITE_MODE
+FOPEN_READ
+FOPEN_READ_WRITE
+FOPEN_WRITE_CREATE_DESTRUCTIVE
+FOPEN_READ_WRITE_CREATE_DESTRUCTIVE
+FOPEN_WRITE_CREATE
+FOPEN_READ_WRITE_CREATE
+FOPEN_WRITE_CREATE_STRICT
+FOPEN_READ_WRITE_CREATE_STRICT
+SHOW_DEBUG_BACKTRACE
+EXIT_SUCCESS
+EXIT_ERROR
+EXIT_CONFIG
+EXIT_UNKNOWN_FILE
+EXIT_UNKNOWN_CLASS
+EXIT_UNKNOWN_METHOD
+EXIT_USER_INPUT
+EXIT_DATABASE
+EXIT__AUTO_MIN
+EXIT__AUTO_MAX
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CodeIgniter/" rel="tag"># CodeIgniter</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/02/Windows - PowerShell - 安装 git/" rel="next" title="Windows - PowerShell - 安装 git">
+                <i class="fa fa-chevron-left"></i> Windows - PowerShell - 安装 git
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/05/PHP - CodeIgniter 模型/" rel="prev" title="PHP - CodeIgniter 模型">
+                PHP - CodeIgniter 模型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">218</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#名称"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x540D;&#x79F0;" class="headerlink" title="&#x540D;&#x79F0;"></a>&#x540D;&#x79F0;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#默认控制器"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x9ED8;&#x8BA4;&#x63A7;&#x5236;&#x5668;" class="headerlink" title="&#x9ED8;&#x8BA4;&#x63A7;&#x5236;&#x5668;"></a>&#x9ED8;&#x8BA4;&#x63A7;&#x5236;&#x5668;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子目录"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x5B50;&#x76EE;&#x5F55;" class="headerlink" title="&#x5B50;&#x76EE;&#x5F55;"></a>&#x5B50;&#x76EE;&#x5F55;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x65B9;&#x6CD5;" class="headerlink" title="&#x65B9;&#x6CD5;"></a>&#x65B9;&#x6CD5;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造函数"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x6784;&#x9020;&#x51FD;&#x6570;" class="headerlink" title="&#x6784;&#x9020;&#x51FD;&#x6570;"></a>&#x6784;&#x9020;&#x51FD;&#x6570;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#保留名称"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x4FDD;&#x7559;&#x540D;&#x79F0;" class="headerlink" title="&#x4FDD;&#x7559;&#x540D;&#x79F0;"></a>&#x4FDD;&#x7559;&#x540D;&#x79F0;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

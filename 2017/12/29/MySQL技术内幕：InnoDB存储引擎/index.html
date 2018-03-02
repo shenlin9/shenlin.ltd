@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="————————————–数据库和数据库实例—————————————————— 数据库 database：是一个个文件的集合，是按照某种数据模型组织起来并存放在存储器中的数据集合。 实例 instance：数据库实例是应用程序，由数据库后台进程/线程和共享内存区组成，数据库实例是真正用来操作数据库文件的，其他程序或用户都只能通过数据库实例才能和数据库打交道。 MySQL是单进程多线程的架构设计，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shenlin&#39;s blog">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/12/29/MySQL技术内幕：InnoDB存储引擎/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="————————————–数据库和数据库实例—————————————————— 数据库 database：是一个个文件的集合，是按照某种数据模型组织起来并存放在存储器中的数据集合。 实例 instance：数据库实例是应用程序，由数据库后台进程/线程和共享内存区组成，数据库实例是真正用来操作数据库文件的，其他程序或用户都只能通过数据库实例才能和数据库打交道。 MySQL是单进程多线程的架构设计，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2015-03-13T04:14:24.719Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="shenlin&#39;s blog">
+<meta name="twitter:description" content="————————————–数据库和数据库实例—————————————————— 数据库 database：是一个个文件的集合，是按照某种数据模型组织起来并存放在存储器中的数据集合。 实例 instance：数据库实例是应用程序，由数据库后台进程/线程和共享内存区组成，数据库实例是真正用来操作数据库文件的，其他程序或用户都只能通过数据库实例才能和数据库打交道。 MySQL是单进程多线程的架构设计，">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/12/29/MySQL技术内幕：InnoDB存储引擎/"/>
+
+
+
+
+
+  <title> | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/12/29/MySQL技术内幕：InnoDB存储引擎/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T06:21:12+08:00">
+                2017-12-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>————————————–数据库和数据库实例——————————————————</p>
+<p>数据库 database：是一个个文件的集合，是按照某种数据模型组织起来并存放在存储器中的数据集合。</p>
+<p>实例 instance：数据库实例是应用程序，由数据库后台进程/线程和共享内存区组成，数据库实例是真正用来操作数据库文件的，其他程序或用户都只能通过数据库实例才能和数据库打交道。</p>
+<pre><code>MySQL是单进程多线程的架构设计，所以MySQL数据库实例在系统上的的表现就是一个进程。
+</code></pre><p>MySQL的实例和数据库通常是一一对应的，但在集群的情况下可能存在一个数据库被多个实例使用的情况。</p>
+<p>Default options are read from the following files in the given order:<br>C:\Windows\my.ini C:\Windows\my.cnf C:\my.ini C:\my.cnf C:\wamp\bin\mysql\mysql5<br>.6.12\my.ini C:\wamp\bin\mysql\mysql5.6.12\my.cnf</p>
+<p>MVCC: 多版本并发控制</p>
+<p>————————————–MySQL体系结构———————————————————–</p>
+<p>————————————–MySQL表存储引擎———————————————————</p>
+<p>————————————–连接MySQL—————————————————————</p>
+<p>连接MySQL是将连接进程和MySQL数据库实例进行通信，本质上是进程通信。</p>
+<p>常用的进程通信方式：管道、命名管道、命名字、TCP/IP套接字、Unix域名套接字</p>
+<pre><code>TCP/IP套接字：是网络中使用的最多的一种方式，也是MySQL在任何平台上都提供的连接方式，一般情况下客户端和服务器部署在不同的机器上。
+
+              mysql -h192.168.0.101 -u david -p
+
+              通过TCP/IP套接字连接MySQL实例时，MySQL会先检查mysql库下的user表，确认权限
+
+                    mysql&gt; select host,user,password from use
+                    +-----------+------+----------+
+                    | host      | user | password |
+                    +-----------+------+----------+
+                    | localhost | root |          |
+                    | 127.0.0.1 | root |          |
+                    | ::1       | root |          |
+                    | localhost |      |          |
+                    +-----------+------+----------+
+                    4 rows in set (0.00 sec)
+
+命名管道：windows2000以后的windows系统，如果需要通信的进程在同一台服务器上，可以使用命名管道。
+
+          SQLServer默认安装后的本地连接也使用命名管道的通信方式，需在配置文件中启用--enable-named-pipe选项
+
+共享内存：MySQL4.1之后的版本，需要通信的进程在同一台服务器上，则可使用共享内存的通信方式。
+
+          在配置文件中添加--shared-memory，客户端使用-protocol=memory选项
+
+Unix域套接字：Linux或Unix环境下，如果需要通信的进程在同一台服务器上，可以使用Unix域套接字。
+
+              Unix域套接字不是网络协议，只能是通信双方在同一台服务器上时使用。
+
+              可以在配置文件中指定套接字文件的路径，如：-socket=/tmp/mysql.sock
+
+              首先使用下列命令查找Unix域套接字文件：
+
+                    mysql&gt; show variables like &apos;socket&apos;;
+                    +---------------+-----------------+
+                    | Variable_name | Value           |
+                    +---------------+-----------------+
+                    | socket        | /tmp/mysql.sock |
+                    +---------------+-----------------+
+                    1 row in set (0.00 sec)
+
+              然后使用文件进行连接：
+
+                C:\wamp\bin\mysql\mysql5.6.12\bin&gt;mysql -uroot -S /tmp/mysql.sock
+                Welcome to the MySQL monitor.  Commands end with ; or \g.
+                Your MySQL connection id is 2
+                Server version: 5.6.12-log MySQL Community Server (GPL)                        
+
+                ???上面的是windows下也可以使用
+
+                ???上面的查找套接字文件命令是在已经登录mysql的情况下了
+</code></pre><p>————————————–备份与恢复————————————————————-</p>
+<p>按备份方法分为：Hot Backup（热备）  Cold Backup（冷备） Warm Backup（温备）</p>
+<pre><code>热备：指在数据库运行中直接备份，对正在运行的数据库没有任何影响，MySQL官方手册称为Online Backup（在线备份）
+
+冷备：指在数据库停止的情况下进行备份，这种备份最简单，一般只需要复制相关的数据库物理文件即可，MySQL官方手册称为Offline Backup（离线备份）
+
+温备：指在数据库运行中备份，但会对当前数据库的操作有所影响，如加一个全局读锁以保证备份数据的一致性
+</code></pre><p>按备份文件的内容分为：逻辑备份  裸文件备份</p>
+<p>按备份数据库的内容分：完全备份、增量备份、日志备份</p>
+<p>————————————–性能调优—————————————————————</p>
+<p>数据应用一般分为两类：OLAP和OLTP</p>
+<p>OLAP: Online Analytical Processing 在线分析处理</p>
+<pre><code>OLAP多用在数据仓库或数据集市中，数据量大，一般需要执行复杂的SQL语句来进行查询
+
+OLAP的数据库应用对CPU的要求比较高，因为复杂的查询可能需要执行比较、排序，连接等非常耗CPU的操作
+
+OLAP是CPU密集型的操作
+</code></pre><p>OLTP: Online Transaction Processing 在线事务处理</p>
+<pre><code>OLTP多用在日常的实物处理应用中，数据量小，如银行交易，在线商品交易。
+
+OLTP的复杂查询较少，对CPU的要求不高
+
+OLTP是IO密集型的操作，采购设备时应注意提高IO的配置
+</code></pre><p>InnoDB存储引擎一般应用于OLTP的数据库应用，特点：</p>
+<pre><code>用户操作的并发量大
+
+事务处理的时间一般比较短
+
+查询的语句较为简单，一般都走索引
+
+复杂的查询较少
+</code></pre><p>InnoDB Buffer Pool：</p>
+<pre><code>InnoDB缓存池，大小直接影响数据库的性能，既缓存了数据，又缓存了索引
+
+当缓冲池容量超过数据文件和索引文件的总大小时，性能是最高的，再继续调大缓冲池并不能再提高性能
+
+在开发应用前应该预估“活跃”数据库的大小可能会是多少，并以此确定数据库服务器的内存大小（可能需要64位操作系统的支持）
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/29/bash - linux shell 脚本攻略 - chapter 5.2 - wget/" rel="next" title="bash - linux shell 脚本攻略 - chapter 5.2 - wget">
+                <i class="fa fa-chevron-left"></i> bash - linux shell 脚本攻略 - chapter 5.2 - wget
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/29/PHP笔记/PHP手册笔记/04语言参考/归纳整理/test/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">165</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

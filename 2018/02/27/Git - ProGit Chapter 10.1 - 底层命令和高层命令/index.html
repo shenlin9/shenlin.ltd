@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Git," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Git 底层命令和高层命令">
+<meta name="keywords" content="Git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter 10.1 - Git 底层命令和高层命令">
+<meta property="og:url" content="http://www.shenlin.ltd/2018/02/27/Git - ProGit Chapter 10.1 - 底层命令和高层命令/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="Git 底层命令和高层命令">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-27T01:55:52.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter 10.1 - Git 底层命令和高层命令">
+<meta name="twitter:description" content="Git 底层命令和高层命令">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2018/02/27/Git - ProGit Chapter 10.1 - 底层命令和高层命令/"/>
+
+
+
+
+
+  <title>chapter 10.1 - Git 底层命令和高层命令 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/02/27/Git - ProGit Chapter 10.1 - 底层命令和高层命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">chapter 10.1 - Git 底层命令和高层命令</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-27T09:55:52+08:00">
+                2018-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/Book-ProGit/" itemprop="url" rel="index">
+                    <span itemprop="name">Book-ProGit</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Git 底层命令和高层命令</p>
+<a id="more"></a>
+<h2 id="本质概述"><a href="#本质概述" class="headerlink" title="本质概述"></a>本质概述</h2><p>从根本上来讲 Git 是一个内容寻址（content-addressable）文件系统，并在此之上提供了一个版本控制系统的用户界面，但它同时也是一个非常强大且易用的工具。</p>
+<p>Git 是内容寻址文件系统，表示Git 的核心部分是一个简单的<strong>键值对数据库（key-value data store）</strong>。</p>
+<p>你可以向该数据库插入任意类型的内容，它会返回一个键值，通过该键值可以在任意时刻再次检索（retrieve）该内容。 </p>
+<h2 id="底层命令和高层命令"><a href="#底层命令和高层命令" class="headerlink" title="底层命令和高层命令"></a>底层命令和高层命令</h2><p>Git 最初是一套面向版本控制系统的工具集，而不是一个完整的、用户友好的版本控制系统，所以它还包含了一部分用于完成底层工作的命令。</p>
+<p>这些命令被设计成以 UNIX 命令行的风格连接在一起，抑或藉由脚本调用，来完成工作。</p>
+<p>这部分命令一般被称作“底层（plumbing）”命令，而那些更友好的命令则被称作“高层（porcelain）”命令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">//查看索引文件</span><br><span class="line">$ git ls-files -s</span><br><span class="line"></span><br><span class="line">//合并冲突时查看索引中记录的冲突文件</span><br><span class="line">$ git ls-files -u</span><br><span class="line"></span><br><span class="line">//查看冲突文件的内容</span><br><span class="line">$ git show :1:test.txt</span><br><span class="line"></span><br><span class="line">//手工三方合并文件</span><br><span class="line">$ git merge-file -p test.ours.txt test.common.txt test.theirs.txt &gt; test.txt</span><br><span class="line"></span><br><span class="line">//查看类型</span><br><span class="line">$ git cat-file -t HEAD</span><br><span class="line">commit</span><br><span class="line"></span><br><span class="line">//查看内容</span><br><span class="line">$ git cat-file -p HEAD</span><br><span class="line">tree af8c345b595d21dc202d9673dd6d0f50c78ba4e1</span><br><span class="line">parent f1c74ad1942ec4c77a3cd1cb34585b9e833271ec</span><br><span class="line">author shenlin9 &lt;bitbite@foxmail.com&gt; 1501926645 +0800</span><br><span class="line">committer shenlin9 &lt;bitbite@foxmail.com&gt; 1501926645 +0800</span><br><span class="line"></span><br><span class="line">增加 Git打包 笔记</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//反向解析获取 HEAD 的 SHA</span><br><span class="line">$ git rev-parse HEAD</span><br><span class="line">ac5a2498d263114d59685470d89e095af011cf46</span><br><span class="line"></span><br><span class="line">//获取内容，和上面的一样</span><br><span class="line">$ git cat-file -p ac5a2498d263114d59685470d89e095af011cf46</span><br><span class="line">tree af8c345b595d21dc202d9673dd6d0f50c78ba4e1</span><br><span class="line">parent f1c74ad1942ec4c77a3cd1cb34585b9e833271ec</span><br><span class="line">author shenlin9 &lt;bitbite@foxmail.com&gt; 1501926645 +0800</span><br><span class="line">committer shenlin9 &lt;bitbite@foxmail.com&gt; 1501926645 +0800</span><br><span class="line"></span><br><span class="line">增加 Git打包 笔记</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//查看树对象的文件列表</span><br><span class="line">$ git cat-file -p af8c345b595d21dc202d9673dd6d0f50c78ba4e1</span><br><span class="line">100644 blob 063b0e4ce79bbd23403f7e8ebfb71fb7779f869a    .gitignore</span><br><span class="line">100644 blob adcee722021221c79611774c2df0b2b89548e504    .gitmodules</span><br><span class="line">100644 blob 2a7ae0322c3770cde5cc5cbd8c01bcca2ccb0ddc    README.md</span><br><span class="line">100644 blob dfb68d9133f43824e999af4b8be2a22fd304495d    _config.yml</span><br><span class="line">100644 blob ce8a1edfece3d0e0ad08c30d38b386daf5274bd5    package.json</span><br><span class="line">040000 tree fadf7ab7818d6053c708c5133a560cb3b4759281    scaffolds</span><br><span class="line">040000 tree b0b001a9959f93704a3b95f516fe892f16d271c0    source</span><br><span class="line">040000 tree 488f28d1e47c90cac01ccb1097d48b96aaf17d16    themes</span><br><span class="line"></span><br><span class="line">//更直接简单的查看方式</span><br><span class="line">$ git ls-tree HEAD</span><br><span class="line">100644 blob 063b0e4ce79bbd23403f7e8ebfb71fb7779f869a    .gitignore</span><br><span class="line">100644 blob adcee722021221c79611774c2df0b2b89548e504    .gitmodules</span><br><span class="line">100644 blob 2a7ae0322c3770cde5cc5cbd8c01bcca2ccb0ddc    README.md</span><br><span class="line">100644 blob dfb68d9133f43824e999af4b8be2a22fd304495d    _config.yml</span><br><span class="line">100644 blob ce8a1edfece3d0e0ad08c30d38b386daf5274bd5    package.json</span><br><span class="line">040000 tree fadf7ab7818d6053c708c5133a560cb3b4759281    scaffolds</span><br><span class="line">040000 tree b0b001a9959f93704a3b95f516fe892f16d271c0    source</span><br><span class="line">040000 tree 488f28d1e47c90cac01ccb1097d48b96aaf17d16    themes</span><br></pre></td></tr></table></figure>
+<h2 id="关于名字"><a href="#关于名字" class="headerlink" title="关于名字"></a>关于名字</h2><p>以前有个软件叫GNU Interactive Tools，简称也是GIT，于是git就只能叫git-core了。</p>
+<p>但由于git名气实在太大，后来就把 GNU Interactive Tools 改成 gnuit，git-core 正式改为 git。</p>
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><p><code>git init</code> 时，Git 会创建一个 .git 目录。 这个目录包含了几乎所有 Git 存储和操作的对象。 如若想备份或复制一个版本库，只需把这个目录拷贝至另一处即可。</p>
+<p><code>.git</code> 默认目录结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ ls -F1</span><br><span class="line">HEAD</span><br><span class="line">config*</span><br><span class="line">description</span><br><span class="line">hooks/</span><br><span class="line">info/</span><br><span class="line">objects/</span><br><span class="line">refs/</span><br></pre></td></tr></table></figure>
+<p>Git 核心部分：</p>
+<blockquote>
+<p>HEAD 文件<br>index 文件（尚待创建）<br>objects 目录<br>refs 目录</p>
+</blockquote>
+<p>Git 目录说明：</p>
+<table>
+<thead>
+<tr>
+<th>目录</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>description文件</td>
+<td>仅供 GitWeb 程序使用</td>
+</tr>
+<tr>
+<td>config文件</td>
+<td>包含项目特有的配置选项</td>
+</tr>
+<tr>
+<td>info目录</td>
+<td>包含一个全局性排除（global exclude）文件，用以放置那些不希望被记录在 .gitignore 文件中的忽略模式（ignored patterns）</td>
+</tr>
+<tr>
+<td>hooks目录</td>
+<td>包含客户端或服务端的钩子脚本（hook scripts）</td>
+</tr>
+<tr>
+<td>objects目录</td>
+<td>存储所有数据内容</td>
+</tr>
+<tr>
+<td>refs目录</td>
+<td>存储指向数据（分支）的提交对象的指针</td>
+</tr>
+<tr>
+<td>HEAD文件</td>
+<td>指示目前被检出的分支</td>
+</tr>
+<tr>
+<td>index文件</td>
+<td>保存暂存区信息</td>
+</tr>
+</tbody>
+</table>
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><h3 id="全局配置文件"><a href="#全局配置文件" class="headerlink" title="全局配置文件"></a>全局配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">$ cat .git/config</span><br><span class="line">[core]</span><br><span class="line">        repositoryformatversion = 0</span><br><span class="line">        filemode = false</span><br><span class="line">        bare = false</span><br><span class="line">        logallrefupdates = true</span><br><span class="line">        symlinks = false</span><br><span class="line">        ignorecase = true</span><br><span class="line">[remote &quot;origin&quot;]</span><br><span class="line">        url = git@github.com:bitbiteme/gitgo</span><br><span class="line">        fetch = +refs/heads/*:refs/remotes/origin/*</span><br><span class="line">[branch &quot;master&quot;]</span><br><span class="line">        remote = origin</span><br><span class="line">        merge = refs/heads/master</span><br><span class="line">[branch &quot;origin&quot;]</span><br><span class="line">        remote = .</span><br><span class="line">        merge = refs/heads/dev</span><br><span class="line">[branch &quot;dev&quot;]</span><br><span class="line">[branch &quot;dev&quot;]</span><br><span class="line">[branch &quot;dev&quot;]</span><br><span class="line">        remote = origin</span><br><span class="line">        merge = refs/heads/dev</span><br><span class="line">[branch &quot;dev-beta&quot;]</span><br><span class="line">        remote = origin</span><br><span class="line">        merge = refs/heads/dev-beta</span><br></pre></td></tr></table></figure>
+<h3 id="用户配置文件"><a href="#用户配置文件" class="headerlink" title="用户配置文件"></a>用户配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cat ~/.gitconfig</span><br><span class="line">[user]</span><br><span class="line">        name = bitbite</span><br><span class="line">        email = bitbite@foxmail.com</span><br></pre></td></tr></table></figure>
+<h3 id="配置命令别名"><a href="#配置命令别名" class="headerlink" title="配置命令别名"></a>配置命令别名</h3><p>可在配置文件增加<code>[alias]</code>，配置命令别名<br>–global参数表示命令在所有git仓库下都起作用</p>
+<p>简化命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global alias.st status</span><br><span class="line">$ git config --global alias.co checkout</span><br><span class="line">$ git config --global alias.ci commit</span><br><span class="line">$ git config --global alias.br branch</span><br></pre></td></tr></table></figure></p>
+<p>设置unstage命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global alias.unstage &apos;reset HEAD&apos;</span><br></pre></td></tr></table></figure></p>
+<p>则下面两条命令等价<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git reset HEAD file2</span><br><span class="line">$ git unstage file2</span><br></pre></td></tr></table></figure></p>
+<p>显示最后一条信息<code>git last</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global alias.last &apos;log -1&apos;</span><br></pre></td></tr></table></figure></p>
+<p>更改log信息显示样式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global alias.lg &quot;log --color --graph --pretty=format:&apos;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset&apos; --abbrev-commit&quot;</span><br></pre></td></tr></table></figure></p>
+<h2 id="忽略文件"><a href="#忽略文件" class="headerlink" title="忽略文件"></a>忽略文件</h2><h3 id="PROJECT-git-info-exclude-文件"><a href="#PROJECT-git-info-exclude-文件" class="headerlink" title="PROJECT/.git/info/exclude 文件"></a>PROJECT/.git/info/exclude 文件</h3><p>用于放置不希望被放置在.gitignore文件中的忽略模式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ cat .git/info/exclude</span><br><span class="line"># git ls-files --others --exclude-from=.git/info/exclude</span><br><span class="line"># Lines that start with &apos;#&apos; are comments.</span><br><span class="line"># For a project mostly in C, the following would be a good set of</span><br><span class="line"># exclude patterns (uncomment them if you want to use them):</span><br><span class="line"># *.[oa]</span><br><span class="line"># *~</span><br></pre></td></tr></table></figure>
+<h3 id="PROJECT-gitignore"><a href="#PROJECT-gitignore" class="headerlink" title="PROJECT/.gitignore"></a>PROJECT/.gitignore</h3><p>工作区下的有些儿文件是需要的但又不适合加入git，如composer安装的依赖库等，则每次都会显示“Untracked files”<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br><span class="line">On branch dev-beta</span><br><span class="line">Your branch is up-to-date with &apos;origin/dev-beta&apos;.</span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line"></span><br><span class="line">        4.txt</span><br><span class="line">        5.txt</span><br><span class="line">        6.txt</span><br><span class="line">        vendor/</span><br><span class="line"></span><br><span class="line">nothing added to commit but untracked files present (use &quot;git add&quot; to track)</span><br></pre></td></tr></table></figure></p>
+<p>解决此问题的方法是在 <strong>项目</strong> 根目录下建立.gitignore文件，把需要忽略的文件填进去<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">4.txt</span><br><span class="line">vendor/</span><br></pre></td></tr></table></figure></p>
+<h3 id="忽略文件的原则是："><a href="#忽略文件的原则是：" class="headerlink" title="忽略文件的原则是："></a>忽略文件的原则是：</h3><ol>
+<li>忽略自动生成的文件，包括操作系统生成的文件，如缩略图，编译生成的中间文件，目标文件，可执行文件</li>
+<li>忽略带有敏感信息的文件，如存放密码的配置文件等</li>
+</ol>
+<h3 id="ignore相关网址"><a href="#ignore相关网址" class="headerlink" title="ignore相关网址"></a>ignore相关网址</h3><ul>
+<li><p>自动生成 ignore 文件<br><a href="https://www.gitignore.io/" target="_blank" rel="noopener">https://www.gitignore.io/</a><br>如生成phpstorm的ignore文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"># Created by https://www.gitignore.io/api/phpstorm</span><br><span class="line"></span><br><span class="line">### PhpStorm ###</span><br><span class="line"># Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm</span><br><span class="line"># Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839</span><br><span class="line"></span><br><span class="line"># User-specific stuff:</span><br><span class="line">.idea/**/workspace.xml</span><br><span class="line">.idea/**/tasks.xml</span><br><span class="line">.idea/dictionaries</span><br><span class="line"></span><br><span class="line"># Sensitive or high-churn files:</span><br><span class="line">.idea/**/dataSources/</span><br><span class="line">.idea/**/dataSources.ids</span><br><span class="line">.idea/**/dataSources.xml</span><br><span class="line">.idea/**/dataSources.local.xml</span><br><span class="line">.idea/**/sqlDataSources.xml</span><br><span class="line">.idea/**/dynamic.xml</span><br><span class="line">.idea/**/uiDesigner.xml</span><br><span class="line"></span><br><span class="line"># Gradle:</span><br><span class="line">.idea/**/gradle.xml</span><br><span class="line">.idea/**/libraries</span><br><span class="line"></span><br><span class="line"># CMake</span><br><span class="line">cmake-build-debug/</span><br><span class="line"></span><br><span class="line"># Mongo Explorer plugin:</span><br><span class="line">.idea/**/mongoSettings.xml</span><br><span class="line"></span><br><span class="line">## File-based project format:</span><br><span class="line">*.iws</span><br><span class="line"></span><br><span class="line">## Plugin-specific files:</span><br><span class="line"></span><br><span class="line"># IntelliJ</span><br><span class="line">/out/</span><br><span class="line"></span><br><span class="line"># mpeltonen/sbt-idea plugin</span><br><span class="line">.idea_modules/</span><br><span class="line"></span><br><span class="line"># JIRA plugin</span><br><span class="line">atlassian-ide-plugin.xml</span><br><span class="line"></span><br><span class="line"># Cursive Clojure plugin</span><br><span class="line">.idea/replstate.xml</span><br><span class="line"></span><br><span class="line"># Crashlytics plugin (for Android Studio and IntelliJ)</span><br><span class="line">com_crashlytics_export_strings.xml</span><br><span class="line">crashlytics.properties</span><br><span class="line">crashlytics-build.properties</span><br><span class="line">fabric.properties</span><br><span class="line"></span><br><span class="line">### PhpStorm Patch ###</span><br><span class="line"># Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721</span><br><span class="line"></span><br><span class="line"># *.iml</span><br><span class="line"># modules.xml</span><br><span class="line"># .idea/misc.xml</span><br><span class="line"># *.ipr</span><br><span class="line"></span><br><span class="line"># Sonarlint plugin</span><br><span class="line">.idea/sonarlint</span><br><span class="line"></span><br><span class="line"># End of https://www.gitignore.io/api/phpstorm</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>github上的 ignore 文件<br><a href="https://github.com/github/gitignore" target="_blank" rel="noopener">https://github.com/github/gitignore</a><br>如laravel的.gitignore文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">vendor/</span><br><span class="line">node_modules/</span><br><span class="line">npm-debug.log</span><br><span class="line"></span><br><span class="line"># Laravel 4 specific</span><br><span class="line">bootstrap/compiled.php</span><br><span class="line">app/storage/</span><br><span class="line"></span><br><span class="line"># Laravel 5 &amp; Lumen specific</span><br><span class="line">public/storage</span><br><span class="line">public/hot</span><br><span class="line">storage/*.key</span><br><span class="line">.env.*.php</span><br><span class="line">.env.php</span><br><span class="line">.env</span><br><span class="line">Homestead.yaml</span><br><span class="line">Homestead.json</span><br><span class="line"></span><br><span class="line"># Rocketeer PHP task runner and deployment package. https://github.com/rocketeers/rocketeer</span><br><span class="line">.rocketeer/</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="相关命令"><a href="#相关命令" class="headerlink" title="相关命令"></a>相关命令</h3><p>检查.gitignore文件的书写是否有问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git check-ignore -v .gitignore</span><br></pre></td></tr></table></figure></p>
+<p>加入.gitignore的文件不允许添加到库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ echo 4.txt &gt;&gt; .gitignore</span><br><span class="line"></span><br><span class="line">$ git add 4.txt</span><br><span class="line">The following paths are ignored by one of your .gitignore files:</span><br><span class="line">4.txt</span><br><span class="line">Use -f if you really want to add them.</span><br></pre></td></tr></table></figure></p>
+<p>可以强制加入，不影响.gitigore文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git add -f 4.txt</span><br><span class="line"></span><br><span class="line">$ cat .gitignore</span><br><span class="line">4.txt</span><br></pre></td></tr></table></figure></p>
+<h2 id="本地分支和远程分支建立关联"><a href="#本地分支和远程分支建立关联" class="headerlink" title="本地分支和远程分支建立关联"></a>本地分支和远程分支建立关联</h2><p>//建立本地分支dev和远程分支的关联<br><code>git branch --set-upstream-to=origin/&lt;branch&gt; dev</code><br><del>git branch –set-upstream 被弃用</del><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git branch --set-upstream-to=origin/dev dev</span><br><span class="line">Branch dev set up to track remote branch dev from origin.</span><br></pre></td></tr></table></figure></p>
+<p>//建立关联后可直接push和pull<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git pull</span><br><span class="line">Already up-to-date.</span><br><span class="line"></span><br><span class="line">$ git push</span><br><span class="line">Everything up-to-date</span><br></pre></td></tr></table></figure></p>
+<p>//取消关联<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch --unset-upstream</span><br></pre></td></tr></table></figure></p>
+<p>pull没有建立关联的方法<br>但push有建立关联方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git push --set-upstream origin dev</span><br><span class="line">Everything up-to-date</span><br><span class="line">Branch dev set up to track remote branch dev from origin.</span><br></pre></td></tr></table></figure></p>
+<p>没有建立关联则push和pull需要指出远程分支和本地分支名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br><span class="line">git pull origin master</span><br></pre></td></tr></table></figure></p>
+<p>–allow-unrelated-histories允许不同父目录分支的合并<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull origin master --allow-unrelated-histories</span><br></pre></td></tr></table></figure></p>
+<p>本地分支和远程分支的名字不一致时，需要明确指明push到哪个分支<br>HEAD:dev指原来的远程库上的dev分支<br>dev-beat指在远程库上重新建立个和本地分支一样名称的dev-beta分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ git push</span><br><span class="line">fatal: The upstream branch of your current branch does not match</span><br><span class="line">the name of your current branch.  To push to the upstream branch</span><br><span class="line">on the remote, use</span><br><span class="line"></span><br><span class="line">    git push origin HEAD:dev</span><br><span class="line"></span><br><span class="line">To push to the branch of the same name on the remote, use</span><br><span class="line"></span><br><span class="line">    git push origin dev-beta</span><br><span class="line"></span><br><span class="line">To choose either option permanently, see push.default in &apos;git help config&apos;.</span><br><span class="line"></span><br><span class="line">$ git push origin dev-beta</span><br><span class="line">Total 0 (delta 0), reused 0 (delta 0)</span><br><span class="line">To github.com:bitbiteme/gitgo</span><br><span class="line"> * [new branch]      dev-beta -&gt; dev-beta</span><br></pre></td></tr></table></figure></p>
+<p>远程库版本新导致push失败<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin HEAD:dev</span><br><span class="line">To github.com:bitbiteme/gitgo</span><br><span class="line"> ! [rejected]        HEAD -&gt; dev (fetch first)</span><br><span class="line">error: failed to push some refs to &apos;git@github.com:bitbiteme/gitgo&apos;</span><br><span class="line">hint: Updates were rejected because the remote contains work that you do</span><br><span class="line">hint: not have locally. This is usually caused by another repository pushing</span><br><span class="line">hint: to the same ref. You may want to first integrate the remote changes</span><br><span class="line">hint: (e.g., &apos;git pull ...&apos;) before pushing again.</span><br><span class="line">hint: See the &apos;Note about fast-forwards&apos; in &apos;git push --help&apos; for details.</span><br></pre></td></tr></table></figure></p>
+<p>因为远程库的版本比本地版新，需要先pull下来进行合并，然后再push。如果合并时有冲突，则需要手工解决冲突，然后在本地分支里先add、commit之后再push。</p>
+<h2 id="查看远程库信息"><a href="#查看远程库信息" class="headerlink" title="查看远程库信息"></a>查看远程库信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git remote</span><br><span class="line">origin</span><br><span class="line"></span><br><span class="line">$ git remote -v</span><br><span class="line">origin  git@github.com:bitbiteme/gitgo (fetch)</span><br><span class="line">origin  git@github.com:bitbiteme/gitgo (push)</span><br></pre></td></tr></table></figure>
+<h2 id="克隆远程库"><a href="#克隆远程库" class="headerlink" title="克隆远程库"></a>克隆远程库</h2><p>使用clone命令克隆远程库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git clone git@github.com:bitbiteme/gitgo</span><br><span class="line">Cloning into &apos;gitgo&apos;...</span><br><span class="line">remote: Counting objects: 3, done.</span><br><span class="line">remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0</span><br><span class="line">Receiving objects: 100% (3/3), done.</span><br></pre></td></tr></table></figure></p>
+<p>克隆的库默认只有master分支，若需要dev分支，则：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b dev-beta origin/dev</span><br><span class="line">Switched to a new branch &apos;dev-beta&apos;</span><br><span class="line">Branch dev-beta set up to track remote branch dev from origin.</span><br></pre></td></tr></table></figure></p>
+<p>并且默认已建立关联</p>
+<h2 id="标签tag"><a href="#标签tag" class="headerlink" title="标签tag"></a>标签tag</h2><p>git的版本号为40位长SHA值，标签则增加了许多便利。</p>
+<p>查看tag列表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git tag</span><br><span class="line">0.8</span><br><span class="line">0.9</span><br><span class="line">1.0</span><br></pre></td></tr></table></figure></p>
+<p>查看某个tag具体信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ git show 0.9</span><br><span class="line">commit 856e7f30f208e1512d4e0a63257bfede1e2bedf7 (tag: 0.9, tag: 0.8)</span><br><span class="line">Author: bitbite &lt;bitbite@foxmail.com&gt;</span><br><span class="line">Date:   Sun Jun 11 11:21:31 2017 +0800</span><br><span class="line"></span><br><span class="line">    append new line in branch dev</span><br><span class="line"></span><br><span class="line">diff --git a/test.txt b/test.txt</span><br><span class="line">index e538ede..d518d3e 100644</span><br><span class="line">--- a/test.txt</span><br><span class="line">+++ b/test.txt</span><br><span class="line">@@ -1,3 +1,4 @@</span><br><span class="line"> just a test file</span><br><span class="line"> don&apos;t want say anything</span><br><span class="line"> branch test</span><br><span class="line">+append new line in branch dev</span><br></pre></td></tr></table></figure></p>
+<p>默认给当前最新的commit建立tag<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git tag 1.0</span><br></pre></td></tr></table></figure></p>
+<p>给指定commit建立tag<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git tag 1.0 fec145a</span><br></pre></td></tr></table></figure></p>
+<p>建立tag并增加说明<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git tag -a 1.0 -m &quot;1.0 online now&quot;</span><br></pre></td></tr></table></figure></p>
+<p>建立tag使用PGP签名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git tag -s 1.0 -m &quot;signed version 1.0 released&quot;</span><br></pre></td></tr></table></figure></p>
+<p>推送指定tag和全部tag<br>git的push命令默认不推送tag，需要额外推送<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin 1.0</span><br><span class="line">Total 0 (delta 0), reused 0 (delta 0)</span><br><span class="line">To github.com:bitbiteme/gitgo</span><br><span class="line"> * [new tag]         1.0 -&gt; 1.0</span><br><span class="line"></span><br><span class="line">$ git push origin --tags</span><br><span class="line">Total 0 (delta 0), reused 0 (delta 0)</span><br><span class="line">To github.com:bitbiteme/gitgo</span><br><span class="line"> * [new tag]         0.8 -&gt; 0.8</span><br><span class="line"> * [new tag]         0.9 -&gt; 0.9</span><br></pre></td></tr></table></figure></p>
+<p>删除tag<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git tag -d 0.7</span><br><span class="line">Deleted tag &apos;0.7&apos; (was 89086a5)</span><br></pre></td></tr></table></figure></p>
+<p>删除远程分支tag<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin :refs/tags/0.8</span><br><span class="line">To github.com:bitbiteme/gitgo</span><br><span class="line"> - [deleted]         0.8</span><br></pre></td></tr></table></figure></p>
+<h2 id="config"><a href="#config" class="headerlink" title="config"></a>config</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br></pre></td><td class="code"><pre><span class="line">git config -l</span><br><span class="line">git config --global user.name &quot;bitbite&quot;</span><br><span class="line">git config --global user.email &quot;bitbite@foxmail.com&quot;</span><br><span class="line"></span><br><span class="line">$ git init</span><br><span class="line">Initialized empty Git repository in D:/learngit/.git/</span><br><span class="line"></span><br><span class="line">$ git add readme.txt</span><br><span class="line"></span><br><span class="line">$ git commit -m &apos;wrote a readme file&apos;</span><br><span class="line">[master (root-commit) f503d8b] wrote a readme file</span><br><span class="line"> 1 file changed, 2 insertions(+)</span><br><span class="line"> create mode 100644 readme.txt</span><br><span class="line"> </span><br><span class="line">$ vim readme.txt</span><br><span class="line"></span><br><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">        modified:   readme.txt</span><br><span class="line"></span><br><span class="line">no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ git diff</span><br><span class="line">diff --git a/readme.txt b/readme.txt</span><br><span class="line">index db83a04..2fdf0c4 100644</span><br><span class="line">--- a/readme.txt</span><br><span class="line">+++ b/readme.txt</span><br><span class="line">@@ -1,2 +1,2 @@</span><br><span class="line">-Git is version control system</span><br><span class="line">+Git is a distributed version control system</span><br><span class="line"> Git is free software</span><br><span class="line"></span><br><span class="line">$ git add readme.txt</span><br><span class="line"></span><br><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">        modified:   readme.txt</span><br><span class="line">        </span><br><span class="line">$ git commit -m &quot;add distributed&quot;</span><br><span class="line">[master 6ffe09e] add distributed</span><br><span class="line"> 1 file changed, 1 insertion(+), 1 deletion(-)</span><br><span class="line"></span><br><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">nothing to commit, working tree clean</span><br><span class="line"></span><br><span class="line">$ git log</span><br><span class="line">commit ac4b8d9ce8d56be4791e322c2802e9d70bfe2503 (HEAD -&gt; master)</span><br><span class="line">Author: bitbite &lt;bitbite@foxmail.com&gt;</span><br><span class="line">Date:   Sun Jun 11 06:35:35 2017 +0800</span><br><span class="line"></span><br><span class="line">    modified 2.txt and write some words</span><br><span class="line"></span><br><span class="line">commit f9441dcc0e6b382396cc0e4c7a09a32d59d628a6</span><br><span class="line">Author: bitbite &lt;bitbite@foxmail.com&gt;</span><br><span class="line">Date:   Sun Jun 11 06:27:08 2017 +0800</span><br><span class="line"></span><br><span class="line">    add 1.txt 2.txt and modified redmetxt</span><br><span class="line"></span><br><span class="line">commit 6ffe09e1d1ce8226d2a54f7b0493fac5f46edf64</span><br><span class="line">Author: bitbite &lt;bitbite@foxmail.com&gt;</span><br><span class="line">Date:   Sat Jun 10 22:39:15 2017 +0800</span><br><span class="line"></span><br><span class="line">    add distributed</span><br><span class="line"></span><br><span class="line">commit f503d8b4a8be20a351e8b35ee1ea7ed574236a8d</span><br><span class="line">Author: bitbite &lt;bitbite@foxmail.com&gt;</span><br><span class="line">Date:   Sat Jun 10 22:26:13 2017 +0800</span><br><span class="line"></span><br><span class="line">    wrote a readme file</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ git reset --hard HEAD^</span><br><span class="line">HEAD is now at f9441dc add 1.txt 2.txt and modified redmetxt</span><br><span class="line"></span><br><span class="line">$ git log</span><br><span class="line">commit f9441dcc0e6b382396cc0e4c7a09a32d59d628a6 (HEAD -&gt; master)</span><br><span class="line">Author: bitbite &lt;bitbite@foxmail.com&gt;</span><br><span class="line">Date:   Sun Jun 11 06:27:08 2017 +0800</span><br><span class="line"></span><br><span class="line">    add 1.txt 2.txt and modified redmetxt</span><br><span class="line"></span><br><span class="line">commit 6ffe09e1d1ce8226d2a54f7b0493fac5f46edf64</span><br><span class="line">Author: bitbite &lt;bitbite@foxmail.com&gt;</span><br><span class="line">Date:   Sat Jun 10 22:39:15 2017 +0800</span><br><span class="line"></span><br><span class="line">    add distributed</span><br><span class="line"></span><br><span class="line">commit f503d8b4a8be20a351e8b35ee1ea7ed574236a8d</span><br><span class="line">Author: bitbite &lt;bitbite@foxmail.com&gt;</span><br><span class="line">Date:   Sat Jun 10 22:26:13 2017 +0800</span><br><span class="line"></span><br><span class="line">    wrote a readme file</span><br><span class="line"></span><br><span class="line">$ cat 2.txt</span><br><span class="line"></span><br><span class="line">$ git reset --hard ac4b8d9</span><br><span class="line">HEAD is now at ac4b8d9 modified 2.txt and write some words</span><br><span class="line"></span><br><span class="line">$ cat 2.txt</span><br><span class="line">let us do sth in this txt file number 2</span><br><span class="line"></span><br><span class="line">$ git reflog</span><br><span class="line">ac4b8d9 (HEAD -&gt; master) HEAD@&#123;0&#125;: reset: moving to ac4b8d9</span><br><span class="line">f9441dc HEAD@&#123;1&#125;: reset: moving to HEAD^</span><br><span class="line">ac4b8d9 (HEAD -&gt; master) HEAD@&#123;2&#125;: commit: modified 2.txt and write some words</span><br><span class="line">f9441dc HEAD@&#123;3&#125;: commit: add 1.txt 2.txt and modified redmetxt</span><br><span class="line">6ffe09e HEAD@&#123;4&#125;: commit: add distributed</span><br><span class="line">f503d8b HEAD@&#123;5&#125;: commit (initial): wrote a readme file</span><br><span class="line"></span><br><span class="line">$ echo new line again &gt;&gt; 3.txt</span><br><span class="line"></span><br><span class="line">ssl@sslnotebook MINGW32 /d/learngit (master)</span><br><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">        modified:   3.txt</span><br><span class="line"></span><br><span class="line">no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</span><br><span class="line"></span><br><span class="line">$ cat 3.txt</span><br><span class="line">3.txt modified</span><br><span class="line">new line</span><br><span class="line">stage line</span><br><span class="line">new line again</span><br><span class="line"></span><br><span class="line">$ git checkout -- 3.txt</span><br><span class="line"></span><br><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">nothing to commit, working tree clean</span><br><span class="line"></span><br><span class="line">$ cat 3.txt</span><br><span class="line">3.txt modified</span><br><span class="line">new line</span><br><span class="line">stage line</span><br><span class="line"></span><br><span class="line">$ echo new line come again &gt;&gt; 3.txt</span><br><span class="line"></span><br><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">        modified:   3.txt</span><br><span class="line"></span><br><span class="line">no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</span><br><span class="line"></span><br><span class="line">$ git add 3.txt</span><br><span class="line"></span><br><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">        modified:   3.txt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ git reset HEAD 3.txt</span><br><span class="line">Unstaged changes after reset:</span><br><span class="line">M       3.txt</span><br><span class="line"></span><br><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">        modified:   3.txt</span><br><span class="line"></span><br><span class="line">no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</span><br></pre></td></tr></table></figure>
+<p>git add 的各种区别:</p>
+<p>git add -A   // 添加所有改动</p>
+<p>git add *     // 添加新建文件和修改，但是不包括删除</p>
+<p>git add .    // 添加新建文件和修改，但是不包括删除</p>
+<p>git add -u   // 添加修改和删除，但是不包括新建文件<br>在 commit 前撤销 add:</p>
+<p>git reset <file> // 撤销提交单独文件</file></p>
+<p>git reset        // unstage all due changes<br>add/commit 前撤销对文件的修改:</p>
+<p>git checkout – README.md  // 注意, add添加后(同commit提交后)就无法通过这种方式撤销修改</p>
+<p>git reset 2.txt  //从stage删除</p>
+<p>git log 2.txt</p>
+<p>git log</p>
+<p>在Git中，用HEAD表示当前版本，上一个版本就是HEAD^，上上一个版本就是HEAD^^，当然往上100个版本写100个^比较容易数不过来，所以写成HEAD~100</p>
+<p>Git的版本回退速度非常快，因为Git在内部有个指向当前版本的HEAD指针，当你回退版本的时候，Git仅仅是把HEAD从指向</p>
+<p>git diff            #是工作区(working directory)和暂存区(stage)的比较<br>git diff –cached    #是暂存区(stage)和分支(master)的比较<br>git diff HEAD       #工作区和版本库的比较<br>git diff HEAD – 3.txt</p>
+<p>Git的版本回退速度非常快，因为Git在内部有个指向当前版本的HEAD指针，当你回退版本的时候，Git仅仅是把HEAD从指向</p>
+<p>git checkout – file1 直接丢弃工作区的修改，从stage或branch取回最近的版本<br>git reset HEAD file1  unstage file1</p>
+<p>git rm file1<br>相当于<br>rm file1<br>git add file1</p>
+<h2 id="合并两个没有共同上级的分支"><a href="#合并两个没有共同上级的分支" class="headerlink" title="合并两个没有共同上级的分支"></a>合并两个没有共同上级的分支</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">$ git pull origin master</span><br><span class="line">From github.com:bitbiteme/hello-world</span><br><span class="line"> * branch            master     -&gt; FETCH_HEAD</span><br><span class="line">fatal: refusing to merge unrelated histories</span><br><span class="line"></span><br><span class="line">$ git pull origin master --allow-unrelated-histories</span><br><span class="line">From github.com:bitbiteme/hello-world</span><br><span class="line"> * branch            master     -&gt; FETCH_HEAD</span><br><span class="line">Merge made by the &apos;recursive&apos; strategy.</span><br><span class="line"> README.md | 6 ++++++</span><br><span class="line"> 1 file changed, 6 insertions(+)</span><br><span class="line"> create mode 100644 README.md</span><br><span class="line"></span><br><span class="line">ssl@sslnotebook MINGW32 /d/learngit (master)</span><br><span class="line">$ git pull origin master --allow-unrelated-histories</span><br><span class="line">From github.com:bitbiteme/hello-world</span><br><span class="line"> * branch            master     -&gt; FETCH_HEAD</span><br><span class="line">Already up-to-date.</span><br><span class="line"></span><br><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">nothing to commit, working tree clean</span><br><span class="line"></span><br><span class="line">$ git push -u origin master</span><br><span class="line">Counting objects: 27, done.</span><br><span class="line">Delta compression using up to 2 threads.</span><br><span class="line">Compressing objects: 100% (21/21), done.</span><br><span class="line">Writing objects: 100% (27/27), 2.50 KiB | 0 bytes/s, done.</span><br><span class="line">Total 27 (delta 3), reused 0 (delta 0)</span><br><span class="line">remote: Resolving deltas: 100% (3/3), done.</span><br><span class="line">To github.com:bitbiteme/hello-world.git</span><br><span class="line">   f3b43b0..415940c  master -&gt; master</span><br><span class="line">Branch master set up to track remote branch master from origin.</span><br><span class="line"></span><br><span class="line">$ git push origin master</span><br><span class="line">Everything up-to-date</span><br><span class="line"></span><br><span class="line">$ git log</span><br><span class="line">commit 415940c73b228cb01a408b55ea2c0b5127f17a1a (HEAD -&gt; master, origin/master)</span><br><span class="line">Merge: ce0daa8 f3b43b0</span><br><span class="line">Author: bitbite &lt;bitbite@foxmail.com&gt;</span><br><span class="line">Date:   Sun Jun 11 10:14:36 2017 +0800</span><br><span class="line"></span><br><span class="line">    Merge branch &apos;master&apos; of github.com:bitbiteme/hello-world</span><br><span class="line"></span><br><span class="line">$ git reflog</span><br><span class="line">415940c (HEAD -&gt; master, origin/master) HEAD@&#123;0&#125;: pull origin master --allow-unrelated-histories: Merge made by the &apos;recursive&apos; strategy.</span><br></pre></td></tr></table></figure>
+<h2 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h2><h3 id="创建分支"><a href="#创建分支" class="headerlink" title="创建分支"></a>创建分支</h3><p>创建dev分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b dev</span><br><span class="line"></span><br><span class="line">//等同于下面两条命令</span><br><span class="line">git branch dev</span><br><span class="line">git checkout dev</span><br><span class="line"></span><br><span class="line">//切换到master分支</span><br><span class="line">git checkout master</span><br><span class="line">//合并dev分支到master</span><br><span class="line">git merge dev</span><br><span class="line">//删除dev分支</span><br><span class="line">git branch -d dev</span><br><span class="line">//查看分支列表</span><br><span class="line">git branch</span><br><span class="line"></span><br><span class="line">//有冲突时无法切换分支</span><br><span class="line">$ git checkout dev</span><br><span class="line">error: you need to resolve your current index first</span><br><span class="line">test.txt: needs merge</span><br><span class="line"></span><br><span class="line">//没有提交时也无法切换分支</span><br><span class="line">$ git checkout dev</span><br><span class="line">Switched to branch &apos;dev&apos;</span><br><span class="line"></span><br><span class="line">$ vi test.txt</span><br><span class="line"></span><br><span class="line">$ git checkout master</span><br><span class="line">error: Your local changes to the following files would be overwritten by checkout:</span><br><span class="line">        test.txt</span><br><span class="line">Please commit your changes or stash them before you switch branches.</span><br><span class="line">Aborting</span><br><span class="line"></span><br><span class="line">//查看合并和commit的图形表示，快捷键b上翻f下翻q退出h帮助</span><br><span class="line">$ git log --graph</span><br><span class="line">*   commit a11aed78491dff564a79a3a49b6e24d33dfc487d (HEAD -&gt; master)</span><br><span class="line">|\  Merge: 59d4a43 4a1c5c6</span><br><span class="line">| | Author: bitbite &lt;bitbite@foxmail.com&gt;</span><br><span class="line">| | Date:   Sun Jun 11 11:40:35 2017 +0800</span><br><span class="line">| |</span><br><span class="line">| |     merge user master version</span><br><span class="line">| |</span><br><span class="line">| * commit 4a1c5c6738d89357afdc145664498e9647cfbdd3 (dev)</span><br><span class="line">| | Author: bitbite &lt;bitbite@foxmail.com&gt;</span><br><span class="line">| | Date:   Sun Jun 11 11:35:21 2017 +0800</span><br><span class="line">| |</span><br><span class="line">| |     modified branch dev again</span><br><span class="line">| |</span><br><span class="line">* | commit 59d4a43b655068c0ae8d5d0d1408e8f9e35583fc</span><br><span class="line">| | Author: bitbite &lt;bitbite@foxmail.com&gt;</span><br><span class="line">| | Date:   Sun Jun 11 11:37:27 2017 +0800</span><br><span class="line">| |</span><br><span class="line">| |     modified not the same lien in branch master</span><br><span class="line">| |</span><br><span class="line">* |   commit 7ede7d8ec9b59b6fb4bec2cf90b0de6568d951b3 (origin/master, origin/HEAD)</span><br><span class="line">|\ \  Merge: 2933a4a 856e7f3</span><br><span class="line">| |/  Author: bitbite &lt;bitbite@foxmail.com&gt;</span><br><span class="line">| |   Date:   Sun Jun 11 11:29:45 2017 +0800</span><br><span class="line">| |</span><br><span class="line">| |       resolve the  conflict</span><br><span class="line">| |</span><br><span class="line">| * commit 856e7f30f208e1512d4e0a63257bfede1e2bedf7</span><br><span class="line">| | Author: bitbite &lt;bitbite@foxmail.com&gt;</span><br><span class="line">| | Date:   Sun Jun 11 11:21:31 2017 +0800</span><br><span class="line">| |</span><br><span class="line">| |     append new line in branch dev</span><br><span class="line">| |</span><br><span class="line">* | commit 2933a4a539e449398e779fa847614edb4a71e782</span><br><span class="line">|/  Author: bitbite &lt;bitbite@foxmail.com&gt;</span><br><span class="line">|   Date:   Sun Jun 11 11:23:00 2017 +0800</span><br><span class="line">|</span><br><span class="line">|       append new line in branch master</span><br><span class="line">|</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//查看合并分支的图形表示 --abbrev-commit表示缩写SHA版本号</span><br><span class="line">$ git log --graph --pretty=oneline --abbrev-commit</span><br><span class="line">*   a11aed7 (HEAD -&gt; master) merge user master version</span><br><span class="line">|\</span><br><span class="line">| * 4a1c5c6 (dev) modified branch dev again</span><br><span class="line">* | 59d4a43 modified not the same lien in branch master</span><br><span class="line">* |   7ede7d8 (origin/master, origin/HEAD) resolve the  conflict</span><br><span class="line">|\ \</span><br><span class="line">| |/</span><br><span class="line">| * 856e7f3 append new line in branch dev</span><br><span class="line">* | 2933a4a append new line in branch master</span><br><span class="line">|/</span><br><span class="line">* c73e52f append branch test content</span><br><span class="line">* cfcec50 append one line on the github.com throught the net</span><br><span class="line">* a69642a create test.txt and one line content</span><br><span class="line">* f26fdbd Initial commit</span><br></pre></td></tr></table></figure></p>
+<p>查看分支 git branch<br>新建分支 git branch branch-name<br>删除分支 git branch -d branch-name<br>删除未被合并过的分支  git branch -D branch-name<br>合并分支 git merge branch-name  将branch-name分支合并到当前分支<br>切换分支 git checkout branch-name<br>新建并切换到分支 git checkout -b branch-name<br>查看合并的图形<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git log --graph</span><br><span class="line">$ git log --graph --pretty=oneline --abbrev-commit</span><br></pre></td></tr></table></figure></p>
+<h4 id="强制禁用-fast-forward-模式"><a href="#强制禁用-fast-forward-模式" class="headerlink" title="强制禁用 fast forward 模式"></a>强制禁用 fast forward 模式</h4><p>通常，合并分支时，如果可能，Git会用Fast forward模式，但这种模式下，删除分支后，会丢掉分支信息。</p>
+<p>如果要强制禁用Fast forward模式，Git就会在merge时生成一个新的commit，这样，从分支历史上就可以看出分支信息。</p>
+<p>使用参数 –no-ff 强制禁用 fast forward 模式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git merge --no-ff -m &quot;merge with no-ff&quot; dev</span><br></pre></td></tr></table></figure></p>
+<h4 id="把工作区用-stash-存放起来"><a href="#把工作区用-stash-存放起来" class="headerlink" title="把工作区用 stash 存放起来"></a>把工作区用 stash 存放起来</h4><p>如果需要另开一个分支进行其他工作，如修复bug等，但开发还未完成一个阶段没有提交，这时切换分支被禁止，可以使用 stash 功能把工作区存放起来，修复完 bug 后再把存放的工作区恢复。</p>
+<p>没有提交不允许切换分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout dev</span><br><span class="line">error: Your local changes to the following files would be overwritten by checkout:</span><br><span class="line">        test.txt</span><br><span class="line">Please commit your changes or stash them before you switch branches.</span><br><span class="line">Aborting</span><br></pre></td></tr></table></figure></p>
+<p>把工作区存放起来<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git stash</span><br><span class="line">Saved working directory and index state WIP on master: a11aed7 merge user master version</span><br></pre></td></tr></table></figure></p>
+<p>然后工作区就clean了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Your branch is ahead of &apos;origin/master&apos; by 3 commits.</span><br><span class="line">  (use &quot;git push&quot; to publish your local commits)</span><br><span class="line">nothing to commit, working tree clean</span><br></pre></td></tr></table></figure></p>
+<p>查看存放的列表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git stash list</span><br><span class="line">stash@&#123;0&#125;: WIP on master: a11aed7 merge user master version</span><br></pre></td></tr></table></figure></p>
+<p>新建修复bug分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b issue-101</span><br><span class="line">Switched to a new branch &apos;issue-101&apos;</span><br><span class="line">//do some modify and commit...</span><br></pre></td></tr></table></figure></p>
+<p>修复完后切回原分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master</span><br><span class="line">Switched to branch &apos;master&apos;</span><br><span class="line">Your branch is ahead of &apos;origin/master&apos; by 3 commits.</span><br><span class="line">  (use &quot;git push&quot; to publish your local commits)</span><br></pre></td></tr></table></figure></p>
+<p>把存放的工作区恢复<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ git stash apply</span><br><span class="line">On branch master</span><br><span class="line">Your branch is ahead of &apos;origin/master&apos; by 3 commits.</span><br><span class="line">  (use &quot;git push&quot; to publish your local commits)</span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">        modified:   test.txt</span><br></pre></td></tr></table></figure></p>
+<p>并没有自动删除存放<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git stash list</span><br><span class="line">stash@&#123;0&#125;: WIP on master: a11aed7 merge user master version</span><br></pre></td></tr></table></figure></p>
+<p>删除存放的工作区<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git stash drop</span><br><span class="line">Dropped refs/stash@&#123;0&#125; (024c6a4ab4410ef0154d769f75c03f32ea88a5d5)</span><br></pre></td></tr></table></figure></p>
+<p>git stash<br>git stash list<br>git stash apply<br>git stash drop<br>git stash pop  等同于先 apply 再 drop</p>
+<h3 id="分支策略"><a href="#分支策略" class="headerlink" title="分支策略"></a>分支策略</h3><p>在实际开发中，我们应该按照几个基本原则进行分支管理：</p>
+<p>首先，master分支应该是非常稳定的，也就是仅用来发布新版本，平时不能在上面干活；</p>
+<p>干活都在dev分支上，也就是说，dev分支是不稳定的，到某个时候，比如1.0版本发布时，再把dev分支合并到master上，在master分支发布1.0版本；</p>
+<p>你和你的小伙伴们每个人都在dev分支上干活，每个人又有个人自己的分支，时不时地往dev分支上合并就可以了。</p>
+<p>bug修复时应该建立独立的分支，如issue-101，修复完毕后再合并到dev分支</p>
+<p>新功能应该建立feature分支</p>
+<ol>
+<li>master分支</li>
+<li>dev分支</li>
+<li>成员个人分支</li>
+<li>bug分支</li>
+<li>feature分支</li>
+</ol>
+<h2 id="搭建git服务器"><a href="#搭建git服务器" class="headerlink" title="搭建git服务器"></a>搭建git服务器</h2>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/27/Git - ProGit Chapter 1.2 - 起步/" rel="next" title="chapter 1.2 - Git 起步">
+                <i class="fa fa-chevron-left"></i> chapter 1.2 - Git 起步
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/27/Git - ProGit Chapter 10.2 - 对象/" rel="prev" title="chapter 10.2 - Git 对象">
+                chapter 10.2 - Git 对象 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">218</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#本质概述"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x672C;&#x8D28;&#x6982;&#x8FF0;" class="headerlink" title="&#x672C;&#x8D28;&#x6982;&#x8FF0;"></a>&#x672C;&#x8D28;&#x6982;&#x8FF0;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#底层命令和高层命令"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5E95;&#x5C42;&#x547D;&#x4EE4;&#x548C;&#x9AD8;&#x5C42;&#x547D;&#x4EE4;" class="headerlink" title="&#x5E95;&#x5C42;&#x547D;&#x4EE4;&#x548C;&#x9AD8;&#x5C42;&#x547D;&#x4EE4;"></a>&#x5E95;&#x5C42;&#x547D;&#x4EE4;&#x548C;&#x9AD8;&#x5C42;&#x547D;&#x4EE4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于名字"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x5173;&#x4E8E;&#x540D;&#x5B57;" class="headerlink" title="&#x5173;&#x4E8E;&#x540D;&#x5B57;"></a>&#x5173;&#x4E8E;&#x540D;&#x5B57;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目录结构"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x76EE;&#x5F55;&#x7ED3;&#x6784;" class="headerlink" title="&#x76EE;&#x5F55;&#x7ED3;&#x6784;"></a>&#x76EE;&#x5F55;&#x7ED3;&#x6784;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置文件"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x914D;&#x7F6E;&#x6587;&#x4EF6;" class="headerlink" title="&#x914D;&#x7F6E;&#x6587;&#x4EF6;"></a>&#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#全局配置文件"><span class="nav-number">5.1.</span> <span class="nav-text"><a href="#&#x5168;&#x5C40;&#x914D;&#x7F6E;&#x6587;&#x4EF6;" class="headerlink" title="&#x5168;&#x5C40;&#x914D;&#x7F6E;&#x6587;&#x4EF6;"></a>&#x5168;&#x5C40;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户配置文件"><span class="nav-number">5.2.</span> <span class="nav-text"><a href="#&#x7528;&#x6237;&#x914D;&#x7F6E;&#x6587;&#x4EF6;" class="headerlink" title="&#x7528;&#x6237;&#x914D;&#x7F6E;&#x6587;&#x4EF6;"></a>&#x7528;&#x6237;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置命令别名"><span class="nav-number">5.3.</span> <span class="nav-text"><a href="#&#x914D;&#x7F6E;&#x547D;&#x4EE4;&#x522B;&#x540D;" class="headerlink" title="&#x914D;&#x7F6E;&#x547D;&#x4EE4;&#x522B;&#x540D;"></a>&#x914D;&#x7F6E;&#x547D;&#x4EE4;&#x522B;&#x540D;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#忽略文件"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x5FFD;&#x7565;&#x6587;&#x4EF6;" class="headerlink" title="&#x5FFD;&#x7565;&#x6587;&#x4EF6;"></a>&#x5FFD;&#x7565;&#x6587;&#x4EF6;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PROJECT-git-info-exclude-文件"><span class="nav-number">6.1.</span> <span class="nav-text"><a href="#PROJECT-git-info-exclude-&#x6587;&#x4EF6;" class="headerlink" title="PROJECT/.git/info/exclude &#x6587;&#x4EF6;"></a>PROJECT/.git/info/exclude &#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PROJECT-gitignore"><span class="nav-number">6.2.</span> <span class="nav-text"><a href="#PROJECT-gitignore" class="headerlink" title="PROJECT/.gitignore"></a>PROJECT/.gitignore</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#忽略文件的原则是："><span class="nav-number">6.3.</span> <span class="nav-text"><a href="#&#x5FFD;&#x7565;&#x6587;&#x4EF6;&#x7684;&#x539F;&#x5219;&#x662F;&#xFF1A;" class="headerlink" title="&#x5FFD;&#x7565;&#x6587;&#x4EF6;&#x7684;&#x539F;&#x5219;&#x662F;&#xFF1A;"></a>&#x5FFD;&#x7565;&#x6587;&#x4EF6;&#x7684;&#x539F;&#x5219;&#x662F;&#xFF1A;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ignore相关网址"><span class="nav-number">6.4.</span> <span class="nav-text"><a href="#ignore&#x76F8;&#x5173;&#x7F51;&#x5740;" class="headerlink" title="ignore&#x76F8;&#x5173;&#x7F51;&#x5740;"></a>ignore&#x76F8;&#x5173;&#x7F51;&#x5740;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关命令"><span class="nav-number">6.5.</span> <span class="nav-text"><a href="#&#x76F8;&#x5173;&#x547D;&#x4EE4;" class="headerlink" title="&#x76F8;&#x5173;&#x547D;&#x4EE4;"></a>&#x76F8;&#x5173;&#x547D;&#x4EE4;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地分支和远程分支建立关联"><span class="nav-number">7.</span> <span class="nav-text"><a href="#&#x672C;&#x5730;&#x5206;&#x652F;&#x548C;&#x8FDC;&#x7A0B;&#x5206;&#x652F;&#x5EFA;&#x7ACB;&#x5173;&#x8054;" class="headerlink" title="&#x672C;&#x5730;&#x5206;&#x652F;&#x548C;&#x8FDC;&#x7A0B;&#x5206;&#x652F;&#x5EFA;&#x7ACB;&#x5173;&#x8054;"></a>&#x672C;&#x5730;&#x5206;&#x652F;&#x548C;&#x8FDC;&#x7A0B;&#x5206;&#x652F;&#x5EFA;&#x7ACB;&#x5173;&#x8054;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看远程库信息"><span class="nav-number">8.</span> <span class="nav-text"><a href="#&#x67E5;&#x770B;&#x8FDC;&#x7A0B;&#x5E93;&#x4FE1;&#x606F;" class="headerlink" title="&#x67E5;&#x770B;&#x8FDC;&#x7A0B;&#x5E93;&#x4FE1;&#x606F;"></a>&#x67E5;&#x770B;&#x8FDC;&#x7A0B;&#x5E93;&#x4FE1;&#x606F;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#克隆远程库"><span class="nav-number">9.</span> <span class="nav-text"><a href="#&#x514B;&#x9686;&#x8FDC;&#x7A0B;&#x5E93;" class="headerlink" title="&#x514B;&#x9686;&#x8FDC;&#x7A0B;&#x5E93;"></a>&#x514B;&#x9686;&#x8FDC;&#x7A0B;&#x5E93;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标签tag"><span class="nav-number">10.</span> <span class="nav-text"><a href="#&#x6807;&#x7B7E;tag" class="headerlink" title="&#x6807;&#x7B7E;tag"></a>&#x6807;&#x7B7E;tag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#config"><span class="nav-number">11.</span> <span class="nav-text"><a href="#config" class="headerlink" title="config"></a>config</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#合并两个没有共同上级的分支"><span class="nav-number">12.</span> <span class="nav-text"><a href="#&#x5408;&#x5E76;&#x4E24;&#x4E2A;&#x6CA1;&#x6709;&#x5171;&#x540C;&#x4E0A;&#x7EA7;&#x7684;&#x5206;&#x652F;" class="headerlink" title="&#x5408;&#x5E76;&#x4E24;&#x4E2A;&#x6CA1;&#x6709;&#x5171;&#x540C;&#x4E0A;&#x7EA7;&#x7684;&#x5206;&#x652F;"></a>&#x5408;&#x5E76;&#x4E24;&#x4E2A;&#x6CA1;&#x6709;&#x5171;&#x540C;&#x4E0A;&#x7EA7;&#x7684;&#x5206;&#x652F;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分支管理"><span class="nav-number">13.</span> <span class="nav-text"><a href="#&#x5206;&#x652F;&#x7BA1;&#x7406;" class="headerlink" title="&#x5206;&#x652F;&#x7BA1;&#x7406;"></a>&#x5206;&#x652F;&#x7BA1;&#x7406;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建分支"><span class="nav-number">13.1.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;&#x5206;&#x652F;" class="headerlink" title="&#x521B;&#x5EFA;&#x5206;&#x652F;"></a>&#x521B;&#x5EFA;&#x5206;&#x652F;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#强制禁用-fast-forward-模式"><span class="nav-number">13.1.1.</span> <span class="nav-text"><a href="#&#x5F3A;&#x5236;&#x7981;&#x7528;-fast-forward-&#x6A21;&#x5F0F;" class="headerlink" title="&#x5F3A;&#x5236;&#x7981;&#x7528; fast forward &#x6A21;&#x5F0F;"></a>&#x5F3A;&#x5236;&#x7981;&#x7528; fast forward &#x6A21;&#x5F0F;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#把工作区用-stash-存放起来"><span class="nav-number">13.1.2.</span> <span class="nav-text"><a href="#&#x628A;&#x5DE5;&#x4F5C;&#x533A;&#x7528;-stash-&#x5B58;&#x653E;&#x8D77;&#x6765;" class="headerlink" title="&#x628A;&#x5DE5;&#x4F5C;&#x533A;&#x7528; stash &#x5B58;&#x653E;&#x8D77;&#x6765;"></a>&#x628A;&#x5DE5;&#x4F5C;&#x533A;&#x7528; stash &#x5B58;&#x653E;&#x8D77;&#x6765;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分支策略"><span class="nav-number">13.2.</span> <span class="nav-text"><a href="#&#x5206;&#x652F;&#x7B56;&#x7565;" class="headerlink" title="&#x5206;&#x652F;&#x7B56;&#x7565;"></a>&#x5206;&#x652F;&#x7B56;&#x7565;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建git服务器"><span class="nav-number">14.</span> <span class="nav-text"><a href="#&#x642D;&#x5EFA;git&#x670D;&#x52A1;&#x5668;" class="headerlink" title="&#x642D;&#x5EFA;git&#x670D;&#x52A1;&#x5668;"></a>&#x642D;&#x5EFA;git&#x670D;&#x52A1;&#x5668;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

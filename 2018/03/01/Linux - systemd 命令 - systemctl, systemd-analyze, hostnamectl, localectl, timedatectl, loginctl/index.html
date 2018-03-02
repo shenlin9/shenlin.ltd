@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux,timedatectl,systemd,systemctl,systemd-analyze,hostnamectl,localectl,loginctl," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="systemd">
+<meta name="keywords" content="Linux,timedatectl,systemd,systemctl,systemd-analyze,hostnamectl,localectl,loginctl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux - systemd 命令 - systemctl, systemd-analyze, hostnamectl, localectl, timedatectl, loginctl">
+<meta property="og:url" content="http://www.shenlin.ltd/2018/03/01/Linux - systemd 命令 - systemctl, systemd-analyze, hostnamectl, localectl, timedatectl, loginctl/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="systemd">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-01T06:46:46.563Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux - systemd 命令 - systemctl, systemd-analyze, hostnamectl, localectl, timedatectl, loginctl">
+<meta name="twitter:description" content="systemd">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2018/03/01/Linux - systemd 命令 - systemctl, systemd-analyze, hostnamectl, localectl, timedatectl, loginctl/"/>
+
+
+
+
+
+  <title>Linux - systemd 命令 - systemctl, systemd-analyze, hostnamectl, localectl, timedatectl, loginctl | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/03/01/Linux - systemd 命令 - systemctl, systemd-analyze, hostnamectl, localectl, timedatectl, loginctl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux - systemd 命令 - systemctl, systemd-analyze, hostnamectl, localectl, timedatectl, loginctl</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-01T14:46:46+08:00">
+                2018-03-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>systemd</p>
+<a id="more"></a>
+<p>systemctl list-units命令可以查看当前系统的所有 Unit 。</p>
+<pre><code># 列出正在运行的 Unit
+$ systemctl list-units
+
+# 列出所有Unit，包括没有找到配置文件的或者启动失败的
+$ systemctl list-units --all
+
+# 列出所有没有运行的 Unit
+$ systemctl list-units --all --state=inactive
+
+# 列出所有加载失败的 Unit
+$ systemctl list-units --failed
+
+# 列出所有正在运行的、类型为 service 的 Unit
+$ systemctl list-units --type=service
+</code></pre><p>4.2 Unit 的状态</p>
+<p>systemctl status命令用于查看系统状态和单个 Unit 的状态。</p>
+<pre><code># 显示系统状态
+$ systemctl status
+
+# 显示单个 Unit 的状态
+$ sysystemctl status bluetooth.service
+
+# 显示远程主机的某个 Unit 的状态
+$ systemctl -H root@rhel7.example.com status httpd.service
+</code></pre><p>除了status命令，systemctl还提供了三个查询状态的简单方法，主要供脚本内部的判断语句使用。</p>
+<pre><code># 显示某个 Unit 是否正在运行
+$ systemctl is-active application.service
+
+# 显示某个 Unit 是否处于启动失败状态
+$ systemctl is-failed application.service
+
+# 显示某个 Unit 服务是否建立了启动链接
+$ systemctl is-enabled application.service
+</code></pre><p>4.3 Unit 管理</p>
+<p>对于用户来说，最常用的是下面这些命令，用于启动和停止 Unit（主要是 service）。</p>
+<pre><code># 立即启动一个服务
+$ sudo systemctl start apache.service
+
+# 立即停止一个服务
+$ sudo systemctl stop apache.service
+
+# 重启一个服务
+$ sudo systemctl restart apache.service
+
+# 杀死一个服务的所有子进程
+$ sudo systemctl kill apache.service
+
+# 重新加载一个服务的配置文件
+$ sudo systemctl reload apache.service
+
+# 重载所有修改过的配置文件
+$ sudo systemctl daemon-reload
+
+# 显示某个 Unit 的所有底层参数
+$ systemctl show httpd.service
+
+# 显示某个 Unit 的指定属性的值
+$ systemctl show -p CPUShares httpd.service
+
+# 设置某个 Unit 的指定属性
+$ sudo systemctl set-property httpd.service CPUShares=500
+</code></pre><p>4.4 依赖关系</p>
+<p>Unit 之间存在依赖关系：A 依赖于 B，就意味着 Systemd 在启动 A 的时候，同时会去启动 B。</p>
+<p>systemctl list-dependencies命令列出一个 Unit 的所有依赖。</p>
+<pre><code>$ systemctl list-dependencies nginx.service
+</code></pre><p>上面命令的输出结果之中，有些依赖是 Target 类型（详见下文），默认不会展开显示。如果要展开 Target，就需要使用–all参数。</p>
+<pre><code>$ systemctl list-dependencies --all nginx.service
+</code></pre><h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><p>systemd 用目标（target）替代了运行级别的概念，提供了更大的灵活性，如您可以继承一个已有的目标，并添加其它服务，来创建自己的目标。下表列举了 systemd 下的目标和常见 runlevel 的对应关系：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sudo systemctl list-units –type=target</td>
+<td>查询当前target</td>
+</tr>
+<tr>
+<td>sudo systemctl isolate graphical.target</td>
+<td>改变当前target，重启无效</td>
+</tr>
+<tr>
+<td>sudo systemctl enable multi-user.target</td>
+<td>改变启动时默认target</td>
+</tr>
+<tr>
+<td>sudo systemctl enable kdm.service</td>
+<td>graphical是默认target，指定使用的display manager</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sysvinit 运行级别和 systemd 目标的对应表</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sysvinit 运行级别</th>
+<th>Systemd 目标</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>runlevel0.target, poweroff.target</td>
+<td>关闭系统。</td>
+</tr>
+<tr>
+<td>1, s, single</td>
+<td>runlevel1.target, rescue.target</td>
+<td>单用户模式。</td>
+</tr>
+<tr>
+<td>2, 4</td>
+<td>runlevel2.target, runlevel4.target, multi-user.target</td>
+<td>用户定义/域特定运行级别。默认等同于 3。</td>
+</tr>
+<tr>
+<td>3</td>
+<td>runlevel3.target, multi-user.target</td>
+<td>多用户，非图形化。用户可以通过多个控制台或网络登录。</td>
+</tr>
+<tr>
+<td>5</td>
+<td>runlevel5.target, graphical.target</td>
+<td>多用户，图形化。通常为所有运行级别 3 的服务外加图形化登录。</td>
+</tr>
+<tr>
+<td>6</td>
+<td>runlevel6.target, reboot.target</td>
+<td>重启</td>
+</tr>
+<tr>
+<td>emergency</td>
+<td>emergency.target</td>
+<td>紧急 Shell</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Systemd-管理"><a href="#Systemd-管理" class="headerlink" title="Systemd 管理"></a>Systemd 管理</h2><p>systemd 的主要命令行工具是 systemctl。</p>
+<p>多数管理员应该都已经非常熟悉系统服务和 init 系统的管理，比如 service、chkconfig 以及 telinit 命令的使用。</p>
+<p>systemd 也完成同样的管理任务，只是命令工具 systemctl 的语法有所不同而已，因此用表格来对比 systemctl 和传统的系统管理命令会非常清晰。</p>
+<p><strong>systemd服务管理</strong></p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sudo systemctl is-enabled .service</td>
+<td>查询服务是否开机启动</td>
+</tr>
+<tr>
+<td>sudo systemctl enable .service</td>
+<td>开机运行服务</td>
+</tr>
+<tr>
+<td>sudo systemctl disable .service</td>
+<td>取消开机运行</td>
+</tr>
+<tr>
+<td>sudo systemctl start .service</td>
+<td>启动服务</td>
+</tr>
+<tr>
+<td>sudo systemctl stop .service</td>
+<td>停止服务</td>
+</tr>
+<tr>
+<td>sudo systemctl restart .service</td>
+<td>重启服务</td>
+</tr>
+<tr>
+<td>sudo systemctl reload .service</td>
+<td>重新加载服务配置文件</td>
+</tr>
+<tr>
+<td>sudo systemctl status .service</td>
+<td>查询服务运行状态</td>
+</tr>
+<tr>
+<td>sudo systemctl –failed</td>
+<td>显示启动失败的服务</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Systemd 命令和 sysvinit 命令的对照表</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sysvinit 命令</th>
+<th>Systemd 命令</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>service foo start</td>
+<td>systemctl start foo.service</td>
+<td>用来启动一个服务 (并不会重启现有的)</td>
+</tr>
+<tr>
+<td>service foo stop</td>
+<td>systemctl stop foo.service</td>
+<td>用来停止一个服务 (并不会重启现有的)。</td>
+</tr>
+<tr>
+<td>service foo restart</td>
+<td>systemctl restart foo.service</td>
+<td>用来停止并启动一个服务。</td>
+</tr>
+<tr>
+<td>service foo reload</td>
+<td>systemctl reload foo.service</td>
+<td>当支持时，重新装载配置文件而不中断等待操作。</td>
+</tr>
+<tr>
+<td>service foo condrestart</td>
+<td>systemctl condrestart foo.service</td>
+<td>如果服务正在运行那么重启它。</td>
+</tr>
+<tr>
+<td>service foo status</td>
+<td>systemctl status foo.service</td>
+<td>汇报服务是否正在运行。</td>
+</tr>
+<tr>
+<td>ls /etc/rc.d/init.d/</td>
+<td>systemctl list-unit-files –type=service</td>
+<td>用来列出可以启动或停止的服务列表。</td>
+</tr>
+<tr>
+<td>chkconfig foo on</td>
+<td>systemctl enable foo.service</td>
+<td>在下次启动时或满足其他触发条件时设置服务为启用</td>
+</tr>
+<tr>
+<td>chkconfig foo off</td>
+<td>systemctl disable foo.service</td>
+<td>在下次启动时或满足其他触发条件时设置服务为禁用</td>
+</tr>
+<tr>
+<td>chkconfig foo</td>
+<td>systemctl is-enabled foo.service</td>
+<td>用来检查一个服务在当前环境下被配置为启用还是禁用。</td>
+</tr>
+<tr>
+<td>chkconfig –list</td>
+<td>systemctl list-unit-files –type=service</td>
+<td>输出在各个运行级别下服务的启用和禁用情况</td>
+</tr>
+<tr>
+<td>chkconfig foo –list</td>
+<td>ls /etc/systemd/system/*.wants/foo.service</td>
+<td>用来列出该服务在哪些运行级别下启用和禁用。</td>
+</tr>
+<tr>
+<td>chkconfig foo –add</td>
+<td>systemctl daemon-reload</td>
+<td>当您创建新服务文件或者变更设置时使用。</td>
+</tr>
+<tr>
+<td>telinit 3</td>
+<td>systemctl isolate multi-user.target (OR systemctl isolate runlevel3.target OR telinit 3)</td>
+<td>改变至多用户运行级别。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>systemd 电源管理命令</strong></p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>systemctl reboot</td>
+<td>重启机器</td>
+</tr>
+<tr>
+<td>systemctl poweroff</td>
+<td>关机</td>
+</tr>
+<tr>
+<td>systemctl suspend</td>
+<td>待机</td>
+</tr>
+<tr>
+<td>systemctl hibernate</td>
+<td>休眠</td>
+</tr>
+<tr>
+<td>systemctl hybrid-sleep</td>
+<td>混合休眠模式（同时休眠到硬盘并待机）</td>
+</tr>
+</tbody>
+</table>
+<p>关机不是每个登录用户在任何情况下都可以执行的，一般只有管理员才可以关机。<br>正常情况下系统不应该允许 SSH 远程登录的用户执行关机命令。否则其他用户正在工作，一个用户把系统关了就不好了。<br>为了解决这个问题，传统的 Linux 系统使用 ConsoleKit 跟踪用户登录情况，并决定是否赋予其关机的权限。<br>现在 ConsoleKit 已经被 systemd 的 logind 所替代。</p>
+<p>logind 不是 pid-1 的 init 进程。它的作用和 UpStart 的 session init 类似，但功能要丰富很多，它能够管理几乎所有用户会话(session)相关的事情。logind 不仅是 ConsoleKit 的替代，它可以：</p>
+<pre><code>维护，跟踪会话和用户登录情况。如上所述，为了决定关机命令是否可行，系统需要了解当前用户登录情况，如果用户从 SSH 登录，不允许其执行关机命令；如果普通用户从本地登录，且该用户是系统中的唯一会话，则允许其执行关机命令；这些判断都需要 logind 维护所有的用户会话和登录情况。
+Logind 也负责统计用户会话是否长时间没有操作，可以执行休眠/关机等相应操作。
+为用户会话的所有进程创建 CGroup。这不仅方便统计所有用户会话的相关进程，也可以实现会话级别的系统资源控制。
+负责电源管理的组合键处理，比如用户按下电源键，将系统切换至睡眠状态。
+多席位(multi-seat) 管理。如今的电脑，即便一台笔记本电脑，也完全可以提供多人同时使用的计算能力。多席位就是一台电脑主机管理多个外设，比如两个屏幕和两个鼠标/键盘。席位一使用屏幕 1 和键盘 1；席位二使用屏幕 2 和键盘 2，但他们都共享一台主机。用户会话可以自由在多个席位之间切换。或者当插入新的键盘，屏幕等物理外设时，自动启动 gdm 用户登录界面等。所有这些都是多席位管理的内容。ConsoleKit 始终没有实现这个功能，systemd 的 logind 能够支持多席位。
+</code></pre><p>以上描述的这些管理功能仅仅是 systemd 的部分功能，除此之外，systemd 还负责系统其他的管理配置，比如配置网络，Locale 管理，管理系统内核模块加载等，完整地描述它们已经超出了本人的能力。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看版本</span></span><br><span class="line">$ systemctl --version</span><br></pre></td></tr></table></figure>
+<h2 id="Systemd-命令"><a href="#Systemd-命令" class="headerlink" title="Systemd 命令"></a>Systemd 命令</h2><p>Systemd 并不是一个命令，而是一组命令，涉及到系统管理的方方面面。<br>3.1 systemctl</p>
+<p>systemctl是 Systemd 的主命令，用于管理系统。</p>
+<pre><code># 重启系统
+$ sudo systemctl reboot
+
+# 关闭系统，切断电源
+$ sudo systemctl poweroff
+
+# CPU停止工作
+$ sudo systemctl halt
+
+# 暂停系统
+$ sudo systemctl suspend
+
+# 让系统进入冬眠状态
+$ sudo systemctl hibernate
+
+# 让系统进入交互式休眠状态
+$ sudo systemctl hybrid-sleep
+
+# 启动进入救援状态（单用户状态）
+$ sudo systemctl rescue
+</code></pre><p>3.2 systemd-analyze</p>
+<p>systemd-analyze命令用于查看启动耗时。</p>
+<pre><code># 查看启动耗时
+$ systemd-analyze                                                                                       
+
+# 查看每个服务的启动耗时
+$ systemd-analyze blame
+
+# 显示瀑布状的启动过程流
+$ systemd-analyze critical-chain
+
+# 显示指定服务的启动流
+$ systemd-analyze critical-chain atd.service
+</code></pre><p>3.3 hostnamectl</p>
+<p>hostnamectl命令用于查看当前主机的信息。</p>
+<pre><code># 显示当前主机的信息
+$ hostnamectl
+
+# 设置主机名。
+$ sudo hostnamectl set-hostname rhel7
+</code></pre><p>3.4 localectl</p>
+<p>localectl命令用于查看本地化设置。</p>
+<pre><code># 查看本地化设置
+$ localectl
+
+# 设置本地化参数。
+$ sudo localectl set-locale LANG=en_GB.utf8
+$ sudo localectl set-keymap en_GB
+</code></pre><p>3.5 timedatectl</p>
+<p>timedatectl命令用于查看当前时区设置。</p>
+<pre><code># 查看当前时区设置
+$ timedatectl
+
+# 显示所有可用的时区
+$ timedatectl list-timezones                                                                                   
+
+# 设置当前时区
+$ sudo timedatectl set-timezone America/New_York
+$ sudo timedatectl set-time YYYY-MM-DD
+$ sudo timedatectl set-time HH:MM:SS
+</code></pre><p>3.6 loginctl</p>
+<p>loginctl命令用于查看当前登录的用户。</p>
+<pre><code># 列出当前session
+$ loginctl list-sessions
+
+# 列出当前登录用户
+$ loginctl list-users
+
+# 列出显示指定用户的信息
+$ loginctl show-user ruanyf
+</code></pre><p>systemctl命令在enable、disable和mask子命令中增加了–now选项，可以实现激活的同时启动服务，取消激活的同时停止服务。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[shenlin@t460p /usr/local/src]$ systemctl enable --now mysqld.service</span><br><span class="line">==== AUTHENTICATING FOR org.freedesktop.systemd1.manage-unit-files ===</span><br><span class="line">Authentication is required to manage system service or unit files.</span><br><span class="line">Authenticating as: shenlin</span><br><span class="line">Password:</span><br><span class="line">==== AUTHENTICATION COMPLETE ===</span><br><span class="line"></span><br><span class="line">==== AUTHENTICATING FOR org.freedesktop.systemd1.reload-daemon ===</span><br><span class="line">Authentication is required to reload the systemd state.</span><br><span class="line">Authenticating as: shenlin</span><br><span class="line">Password:</span><br><span class="line">==== AUTHENTICATION COMPLETE ===</span><br><span class="line"></span><br><span class="line">==== AUTHENTICATING FOR org.freedesktop.systemd1.manage-units ===</span><br><span class="line">Authentication is required to manage system services or units.</span><br><span class="line">Authenticating as: shenlin</span><br><span class="line">Password:</span><br><span class="line">==== AUTHENTICATION COMPLETE ===</span><br></pre></td></tr></table></figure></p>
+<h2 id="Temp"><a href="#Temp" class="headerlink" title="Temp"></a>Temp</h2><p>chkconfig<br>查询或设置系统服务的运行级别信息<br>实际操作的是这些儿文件夹：/etc/rc[0-6].d</p>
+<p>字体名字前有@的是横向文字</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/timedatectl/" rel="tag"># timedatectl</a>
+          
+            <a href="/tags/systemd/" rel="tag"># systemd</a>
+          
+            <a href="/tags/systemctl/" rel="tag"># systemctl</a>
+          
+            <a href="/tags/systemd-analyze/" rel="tag"># systemd-analyze</a>
+          
+            <a href="/tags/hostnamectl/" rel="tag"># hostnamectl</a>
+          
+            <a href="/tags/localectl/" rel="tag"># localectl</a>
+          
+            <a href="/tags/loginctl/" rel="tag"># loginctl</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/01/Linux - scp、rsync 命令/" rel="next" title="Linux - scp, rsync">
+                <i class="fa fa-chevron-left"></i> Linux - scp, rsync
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/01/Linux - tar/" rel="prev" title="linux - tar">
+                linux - tar <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">218</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#目标"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x76EE;&#x6807;" class="headerlink" title="&#x76EE;&#x6807;"></a>&#x76EE;&#x6807;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Systemd-管理"><span class="nav-number"></span> <span class="nav-text"><a href="#Systemd-&#x7BA1;&#x7406;" class="headerlink" title="Systemd &#x7BA1;&#x7406;"></a>Systemd &#x7BA1;&#x7406;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Systemd-命令"><span class="nav-number"></span> <span class="nav-text"><a href="#Systemd-&#x547D;&#x4EE4;" class="headerlink" title="Systemd &#x547D;&#x4EE4;"></a>Systemd &#x547D;&#x4EE4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Temp"><span class="nav-number"></span> <span class="nav-text"><a href="#Temp" class="headerlink" title="Temp"></a>Temp</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

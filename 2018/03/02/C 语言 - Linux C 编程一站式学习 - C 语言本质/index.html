@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="C 语言," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="C 语言本质">
+<meta name="keywords" content="C 语言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C 语言 - Linux C 编程一站式学习 - C 语言本质">
+<meta property="og:url" content="http://www.shenlin.ltd/2018/03/02/C 语言 - Linux C 编程一站式学习 - C 语言本质/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="C 语言本质">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-02T00:45:48.268Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C 语言 - Linux C 编程一站式学习 - C 语言本质">
+<meta name="twitter:description" content="C 语言本质">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2018/03/02/C 语言 - Linux C 编程一站式学习 - C 语言本质/"/>
+
+
+
+
+
+  <title>C 语言 - Linux C 编程一站式学习 - C 语言本质 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/03/02/C 语言 - Linux C 编程一站式学习 - C 语言本质/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C 语言 - Linux C 编程一站式学习 - C 语言本质</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-02T08:45:48+08:00">
+                2018-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-语言/" itemprop="url" rel="index">
+                    <span itemprop="name">C 语言</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>C 语言本质</p>
+<a id="more"></a>
+<h2 id="计算机中数的表示"><a href="#计算机中数的表示" class="headerlink" title="计算机中数的表示"></a>计算机中数的表示</h2><p>二进制转十进制<br>1101<br>=1x2[0]+0x2[1]+1x2[2]+1x2[3]<br>=1x2[3]+1x2[2]+0x2[1]+1x2[0]<br>=1x2[1]x2[1]x2[1]+1x2[1]x2[1]+0x2[1]+1x2[0]<br>=(1x2[1]x2[1]+1x2[1]+0)x2[1]+1x2[0]<br>=((1x2[1]+1)x2[1]+0)x2[1]+1x2[0]<br>=((1x2[1]+1)x2[1]+0)x2[1]+1<br>=(((0x2[1]+1)x2[1]+1)x2[1]+0)x2[1]+1<br>=13</p>
+<p>0.011<br>=0x2[-1]+1x2[-2]+1x2[-3]<br>=1x2[-3]+1x2[-2]+0x2[-1]<br>=1x2[-1]x2[-1]x2[-1]+1x2[-1]x2[-1]+0x2[-1]<br>=(1x2[-1]x2[-1]+1x2[-1]+0)x2[-1]<br>=((1x2[-1]+1)x2[-1]+0)x2[-1]<br>=(((0x2[-1]+1)x2[-1]+1)x2[-1]+0)x2[-1]<br>=0.375</p>
+<p>十六进制转十进制<br>CA7D = (((((0x16+C)x16)+A)x16+7)x16)+D = 51837</p>
+<p>八进制转十进制<br>237 = ((0x8+2)x8+3)x8+7 = 159</p>
+<p>N 进制数 abcd 转为 10 进制<br>abcd = (((a <em> N) + b) </em> N + c) * N + d</p>
+<p>10 进制数 abcd 转为 N 进制，除以 N 取余数<br>abcd = (abcd % N)</p>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><h2 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h2><h2 id="计算机体系结构"><a href="#计算机体系结构" class="headerlink" title="计算机体系结构"></a>计算机体系结构</h2><h2 id="x86-汇编程序"><a href="#x86-汇编程序" class="headerlink" title="x86 汇编程序"></a>x86 汇编程序</h2><h3 id="目标文件"><a href="#目标文件" class="headerlink" title="目标文件"></a>目标文件</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">$ readelf -a max.o</span><br><span class="line"></span><br><span class="line">ELF Header:</span><br><span class="line">    Magic: <span class="number">7f</span> <span class="number">45</span> <span class="number">4</span>c <span class="number">46</span> <span class="number">01</span> <span class="number">01</span> <span class="number">01</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span></span><br><span class="line">    Class: ELF32</span><br><span class="line">    Data: <span class="number">2'</span>s complement, little endian</span><br><span class="line">    Version: <span class="number">1</span> (current)</span><br><span class="line">    OS/ABI: UNIX - System V</span><br><span class="line">    ABI Version: <span class="number">0</span></span><br><span class="line">    Type: REL (Relocatable file)</span><br><span class="line">    Machine: Intel <span class="number">80386</span></span><br><span class="line">    Version: <span class="number">0x1</span></span><br><span class="line">    Entry point address: <span class="number">0x0</span></span><br><span class="line">    Start of program headers: <span class="number">0</span> (bytes into file)</span><br><span class="line">    Start of section headers: <span class="number">200</span> (bytes into file)</span><br><span class="line">    Flags: <span class="number">0x0</span></span><br><span class="line">    Size of <span class="keyword">this</span> header: <span class="number">52</span> (bytes)</span><br><span class="line">    Size of program headers: <span class="number">0</span> (bytes)</span><br><span class="line">    <span class="number">283</span></span><br><span class="line">    Number of program headers: <span class="number">0</span></span><br><span class="line">    Size of section headers: <span class="number">40</span> (bytes)</span><br><span class="line">    Number of section headers: <span class="number">8</span></span><br><span class="line">    Section header <span class="built_in">string</span> table index: <span class="number">5</span></span><br><span class="line"></span><br><span class="line">Section Headers:</span><br><span class="line">    [Nr] Name Type Addr Off Size ES Flg Lk Inf Al</span><br><span class="line">    [ <span class="number">0</span>] <span class="literal">NULL</span> <span class="number">00000000</span> <span class="number">000000</span> <span class="number">000000</span> <span class="number">00</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line">    [ <span class="number">1</span>] .text PROGBITS <span class="number">00000000</span> <span class="number">000034</span> <span class="number">00002</span>a <span class="number">00</span> AX <span class="number">0</span> <span class="number">0</span> <span class="number">4</span></span><br><span class="line">    [ <span class="number">2</span>] .rel.text REL <span class="number">00000000</span> <span class="number">0002b</span>0 <span class="number">000010</span> <span class="number">08</span> <span class="number">6</span> <span class="number">1</span> <span class="number">4</span></span><br><span class="line">    [ <span class="number">3</span>] .data PROGBITS <span class="number">00000000</span> <span class="number">000060</span> <span class="number">000038</span> <span class="number">00</span> WA <span class="number">0</span> <span class="number">0</span> <span class="number">4</span></span><br><span class="line">    [ <span class="number">4</span>] .bss NOBITS <span class="number">00000000</span> <span class="number">000098</span> <span class="number">000000</span> <span class="number">00</span> WA <span class="number">0</span> <span class="number">0</span> <span class="number">4</span></span><br><span class="line">    [ <span class="number">5</span>] .shstrtab STRTAB <span class="number">00000000</span> <span class="number">000098</span> <span class="number">000030</span> <span class="number">00</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span></span><br><span class="line">    [ <span class="number">6</span>] .symtab SYMTAB <span class="number">00000000</span> <span class="number">000208</span> <span class="number">000080</span> <span class="number">10</span> <span class="number">7</span> <span class="number">7</span> <span class="number">4</span></span><br><span class="line">    [ <span class="number">7</span>] .strtab STRTAB <span class="number">00000000</span> <span class="number">000288</span> <span class="number">000028</span> <span class="number">00</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line">Key to Flags:</span><br><span class="line">    W (write), A (alloc), X (execute), M (merge), S (strings)</span><br><span class="line">    I (info), L (link order), G (group), x (unknown)</span><br><span class="line">    O (extra OS processing required) o (OS specific), p (processor specific)</span><br><span class="line"></span><br><span class="line">There are no section groups in <span class="keyword">this</span> file.</span><br><span class="line"></span><br><span class="line">There are no program headers in <span class="keyword">this</span> file.</span><br><span class="line"></span><br><span class="line">Relocation section '.rel.text' at offset 0x2b0 contains 2 entries:</span><br><span class="line">    Offset Info Type Sym.Value Sym. Name</span><br><span class="line">    <span class="number">00000008</span> <span class="number">00000201</span> R_386_32 <span class="number">00000000</span> .data</span><br><span class="line">    <span class="number">00000017</span> <span class="number">00000201</span> R_386_32 <span class="number">00000000</span> .data</span><br><span class="line"></span><br><span class="line">There are no unwind sections in <span class="keyword">this</span> file.</span><br><span class="line"></span><br><span class="line">Symbol table '.symtab' contains 8 entries:</span><br><span class="line">    Num: Value Size Type Bind Vis Ndx Name</span><br><span class="line">    <span class="number">0</span>: <span class="number">00000000</span> <span class="number">0</span> NOTYPE LOCAL DEFAULT UND</span><br><span class="line">    <span class="number">1</span>: <span class="number">00000000</span> <span class="number">0</span> SECTION LOCAL DEFAULT <span class="number">1</span></span><br><span class="line">    <span class="number">2</span>: <span class="number">00000000</span> <span class="number">0</span> SECTION LOCAL DEFAULT <span class="number">3</span></span><br><span class="line">    <span class="number">3</span>: <span class="number">00000000</span> <span class="number">0</span> SECTION LOCAL DEFAULT <span class="number">4</span></span><br><span class="line">    <span class="number">4</span>: <span class="number">00000000</span> <span class="number">0</span> NOTYPE LOCAL DEFAULT <span class="number">3</span> data_items</span><br><span class="line">    <span class="number">5</span>: <span class="number">0000000</span>e <span class="number">0</span> NOTYPE LOCAL DEFAULT <span class="number">1</span> start_loop</span><br><span class="line">    <span class="number">6</span>: <span class="number">00000023</span> <span class="number">0</span> NOTYPE LOCAL DEFAULT <span class="number">1</span> loop_exit</span><br><span class="line">    <span class="number">7</span>: <span class="number">00000000</span> <span class="number">0</span> NOTYPE GLOBAL DEFAULT <span class="number">1</span> _start</span><br><span class="line"></span><br><span class="line">No version information found in <span class="keyword">this</span> file.</span><br></pre></td></tr></table></figure>
+<h3 id="可执行文件"><a href="#可执行文件" class="headerlink" title="可执行文件"></a>可执行文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">$ readelf -a max</span><br><span class="line"></span><br><span class="line">ELF Header:</span><br><span class="line">    Magic: 7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00</span><br><span class="line">    Class: ELF32</span><br><span class="line">    Data: 2&apos;s complement, little endian</span><br><span class="line">    Version: 1 (current)</span><br><span class="line">    OS/ABI: UNIX - System V</span><br><span class="line">    ABI Version: 0</span><br><span class="line">    Type: EXEC (Executable file)</span><br><span class="line">    Machine: Intel 80386</span><br><span class="line">    Version: 0x1</span><br><span class="line">    Entry point address: 0x8048074</span><br><span class="line">    Start of program headers: 52 (bytes into file)</span><br><span class="line">    Start of section headers: 256 (bytes into file)</span><br><span class="line">    Flags: 0x0</span><br><span class="line">    Size of this header: 52 (bytes)</span><br><span class="line">    Size of program headers: 32 (bytes)</span><br><span class="line">    Number of program headers: 2</span><br><span class="line">    Size of section headers: 40 (bytes)</span><br><span class="line">    Number of section headers: 6</span><br><span class="line">    Section header string table index: 3</span><br><span class="line"></span><br><span class="line">Section Headers:</span><br><span class="line">    [Nr] Name Type Addr Off Size ES Flg Lk Inf Al</span><br><span class="line">    [ 0] NULL 00000000 000000 000000 00 0 0 0</span><br><span class="line">    [ 1] .text PROGBITS 08048074 000074 00002a 00 AX 0 0 4</span><br><span class="line">    [ 2] .data PROGBITS 080490a0 0000a0 000038 00 WA 0 0 4</span><br><span class="line">    [ 3] .shstrtab STRTAB 00000000 0000d8 000027 00 0 0 1 288</span><br><span class="line">    [ 4] .symtab SYMTAB 00000000 0001f0 0000a0 10 5 6 4</span><br><span class="line">    [ 5] .strtab STRTAB 00000000 000290 000040 00 0 0 1</span><br><span class="line"></span><br><span class="line">Key to Flags:</span><br><span class="line">    W (write), A (alloc), X (execute), M (merge), S (strings)</span><br><span class="line">    I (info), L (link order), G (group), x (unknown)</span><br><span class="line">    O (extra OS processing required) o (OS specific), p (processor specific)</span><br><span class="line"></span><br><span class="line">There are no section groups in this file.</span><br><span class="line"></span><br><span class="line">Program Headers:</span><br><span class="line">    Type Offset VirtAddr PhysAddr FileSiz MemSiz Flg Align</span><br><span class="line">    LOAD 0x000000 0x08048000 0x08048000 0x0009e 0x0009e R E 0x1000</span><br><span class="line">    LOAD 0x0000a0 0x080490a0 0x080490a0 0x00038 0x00038 RW 0x1000</span><br><span class="line"></span><br><span class="line">Section to Segment mapping:</span><br><span class="line">    Segment Sections...</span><br><span class="line">    00 .text</span><br><span class="line">    01 .data</span><br><span class="line"></span><br><span class="line">There is no dynamic section in this file.</span><br><span class="line"></span><br><span class="line">There are no relocations in this file.</span><br><span class="line"></span><br><span class="line">There are no unwind sections in this file.</span><br><span class="line"></span><br><span class="line">Symbol table &apos;.symtab&apos; contains 10 entries:</span><br><span class="line">    Num: Value Size Type Bind Vis Ndx Name</span><br><span class="line">    0: 00000000 0 NOTYPE LOCAL DEFAULT UND</span><br><span class="line">    1: 08048074 0 SECTION LOCAL DEFAULT 1</span><br><span class="line">    2: 080490a0 0 SECTION LOCAL DEFAULT 2</span><br><span class="line">    3: 080490a0 0 NOTYPE LOCAL DEFAULT 2 data_items</span><br><span class="line">    4: 08048082 0 NOTYPE LOCAL DEFAULT 1 start_loop</span><br><span class="line">    5: 08048097 0 NOTYPE LOCAL DEFAULT 1 loop_exit</span><br><span class="line">    6: 08048074 0 NOTYPE GLOBAL DEFAULT 1 _start</span><br><span class="line">    7: 080490d8 0 NOTYPE GLOBAL DEFAULT ABS __bss_start</span><br><span class="line">    8: 080490d8 0 NOTYPE GLOBAL DEFAULT ABS _edata</span><br><span class="line">    9: 080490d8 0 NOTYPE GLOBAL DEFAULT ABS _end</span><br><span class="line"></span><br><span class="line">No version information found in this file.</span><br></pre></td></tr></table></figure>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><h2 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h2><h2 id="MakeFile"><a href="#MakeFile" class="headerlink" title="MakeFile"></a>MakeFile</h2><h2 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int i = 10, j = 11;</span><br><span class="line"></span><br><span class="line">int *p = &amp;i;    // 初始化时 *p 表示定义指针变量 p，??? 这里的 * 号也是指针间接寻址运算符吗</span><br><span class="line">p = &amp;j;         // 这里 p 就表示指针变量本身</span><br><span class="line">*p = 11;        // 这里 *p 表示指针变量指向的变量的值，* 号是指针间接寻址运算符</span><br></pre></td></tr></table></figure>
+<h2 id="函数接口"><a href="#函数接口" class="headerlink" title="函数接口"></a>函数接口</h2><h2 id="C-标准库"><a href="#C-标准库" class="headerlink" title="C 标准库"></a>C 标准库</h2><h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><h2 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h2><h2 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h2>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C-语言/" rel="tag"># C 语言</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/02/C 语言 - Linux C 编程一站式学习 - Linux 系统编程/" rel="next" title="C 语言 - Linux C 编程一站式学习 - Linux 系统编程">
+                <i class="fa fa-chevron-left"></i> C 语言 - Linux C 编程一站式学习 - Linux 系统编程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/02/C 语言 - Linux C 编程一站式学习 - C 语言基础/" rel="prev" title="C 语言 - Linux C 编程一站式学习 - C 语言基础">
+                C 语言 - Linux C 编程一站式学习 - C 语言基础 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">218</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#计算机中数的表示"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x8BA1;&#x7B97;&#x673A;&#x4E2D;&#x6570;&#x7684;&#x8868;&#x793A;" class="headerlink" title="&#x8BA1;&#x7B97;&#x673A;&#x4E2D;&#x6570;&#x7684;&#x8868;&#x793A;"></a>&#x8BA1;&#x7B97;&#x673A;&#x4E2D;&#x6570;&#x7684;&#x8868;&#x793A;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x6570;&#x636E;&#x7C7B;&#x578B;" class="headerlink" title="&#x6570;&#x636E;&#x7C7B;&#x578B;"></a>&#x6570;&#x636E;&#x7C7B;&#x578B;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运算符"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x8FD0;&#x7B97;&#x7B26;" class="headerlink" title="&#x8FD0;&#x7B97;&#x7B26;"></a>&#x8FD0;&#x7B97;&#x7B26;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算机体系结构"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x8BA1;&#x7B97;&#x673A;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;" class="headerlink" title="&#x8BA1;&#x7B97;&#x673A;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;"></a>&#x8BA1;&#x7B97;&#x673A;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#x86-汇编程序"><span class="nav-number">5.</span> <span class="nav-text"><a href="#x86-&#x6C47;&#x7F16;&#x7A0B;&#x5E8F;" class="headerlink" title="x86 &#x6C47;&#x7F16;&#x7A0B;&#x5E8F;"></a>x86 &#x6C47;&#x7F16;&#x7A0B;&#x5E8F;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#目标文件"><span class="nav-number">5.1.</span> <span class="nav-text"><a href="#&#x76EE;&#x6807;&#x6587;&#x4EF6;" class="headerlink" title="&#x76EE;&#x6807;&#x6587;&#x4EF6;"></a>&#x76EE;&#x6807;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可执行文件"><span class="nav-number">5.2.</span> <span class="nav-text"><a href="#&#x53EF;&#x6267;&#x884C;&#x6587;&#x4EF6;" class="headerlink" title="&#x53EF;&#x6267;&#x884C;&#x6587;&#x4EF6;"></a>&#x53EF;&#x6267;&#x884C;&#x6587;&#x4EF6;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链接"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x94FE;&#x63A5;" class="headerlink" title="&#x94FE;&#x63A5;"></a>&#x94FE;&#x63A5;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#预处理"><span class="nav-number">7.</span> <span class="nav-text"><a href="#&#x9884;&#x5904;&#x7406;" class="headerlink" title="&#x9884;&#x5904;&#x7406;"></a>&#x9884;&#x5904;&#x7406;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MakeFile"><span class="nav-number">8.</span> <span class="nav-text"><a href="#MakeFile" class="headerlink" title="MakeFile"></a>MakeFile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指针"><span class="nav-number">9.</span> <span class="nav-text"><a href="#&#x6307;&#x9488;" class="headerlink" title="&#x6307;&#x9488;"></a>&#x6307;&#x9488;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数接口"><span class="nav-number">10.</span> <span class="nav-text"><a href="#&#x51FD;&#x6570;&#x63A5;&#x53E3;" class="headerlink" title="&#x51FD;&#x6570;&#x63A5;&#x53E3;"></a>&#x51FD;&#x6570;&#x63A5;&#x53E3;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-标准库"><span class="nav-number">11.</span> <span class="nav-text"><a href="#C-&#x6807;&#x51C6;&#x5E93;" class="headerlink" title="C &#x6807;&#x51C6;&#x5E93;"></a>C &#x6807;&#x51C6;&#x5E93;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链表"><span class="nav-number">12.</span> <span class="nav-text"><a href="#&#x94FE;&#x8868;" class="headerlink" title="&#x94FE;&#x8868;"></a>&#x94FE;&#x8868;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二叉树"><span class="nav-number">13.</span> <span class="nav-text"><a href="#&#x4E8C;&#x53C9;&#x6811;" class="headerlink" title="&#x4E8C;&#x53C9;&#x6811;"></a>&#x4E8C;&#x53C9;&#x6811;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#哈希表"><span class="nav-number">14.</span> <span class="nav-text"><a href="#&#x54C8;&#x5E0C;&#x8868;" class="headerlink" title="&#x54C8;&#x5E0C;&#x8868;"></a>&#x54C8;&#x5E0C;&#x8868;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

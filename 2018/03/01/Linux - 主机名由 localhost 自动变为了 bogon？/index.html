@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="bogon," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="转载自：http://blog.csdn.net/poechant/article/details/7216892 用sudo来执行cd、ls等命令时，会出现command not found的提示：">
+<meta name="keywords" content="bogon">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux - linux 主机名由 localhost 自动变为了 bogon？">
+<meta property="og:url" content="http://www.shenlin.ltd/2018/03/01/Linux - 主机名由 localhost 自动变为了 bogon？/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="转载自：http://blog.csdn.net/poechant/article/details/7216892 用sudo来执行cd、ls等命令时，会出现command not found的提示：">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-01T06:54:00.717Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux - linux 主机名由 localhost 自动变为了 bogon？">
+<meta name="twitter:description" content="转载自：http://blog.csdn.net/poechant/article/details/7216892 用sudo来执行cd、ls等命令时，会出现command not found的提示：">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2018/03/01/Linux - 主机名由 localhost 自动变为了 bogon？/"/>
+
+
+
+
+
+  <title>Linux - linux 主机名由 localhost 自动变为了 bogon？ | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/03/01/Linux - 主机名由 localhost 自动变为了 bogon？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux - linux 主机名由 localhost 自动变为了 bogon？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-01T14:54:00+08:00">
+                2018-03-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>转载自：<a href="http://blog.csdn.net/poechant/article/details/7216892" target="_blank" rel="noopener">http://blog.csdn.net/poechant/article/details/7216892</a></p>
+<p>用sudo来执行cd、ls等命令时，会出现command not found的提示：</p>
+<a id="more"></a>
+<p>bogon[‘bɔɡən] n. 虚伪的人</p>
+<p>主机名改变会导致一些儿错误，如数据库启动失败，username@localhost变成了username@bogon</p>
+<p>linux 的主机名在未修改的情况下，自动从 localhost.localdomain 变为了 bogon，什么原因？</p>
+<p>简单来说，是在 linux 启动的过程中，执行的一个脚本发现主机名是 localhost 或 localhost.localdomain 时会进行反向解析，即根据当前的 IP 地址去 DNS 服务器上获取对应的主机名，而有些儿 DNS 服务器会把保留地址、私有地址的主机名解析为bogon</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">//配置文件里仍然是localhost</span><br><span class="line">ssy@bogon ~</span><br><span class="line">&gt;&gt; vi /etc/sysconfig/network</span><br><span class="line">NETWORKING=yes</span><br><span class="line">HOSTNAME=localhost</span><br><span class="line"></span><br><span class="line">//在rc.sysinit文件中进行了ip到域名的反向解析</span><br><span class="line">//这段代码判断主机名如果是localhost或者localhost.localdomain，则获取主机IP地址并执行DNS逆向解析，将解析到的结果赋值给HOSTNAME。</span><br><span class="line">ssy@bogon ~</span><br><span class="line">&gt;&gt; vi /etc/rc.sysinit </span><br><span class="line">......</span><br><span class="line">ipaddr=</span><br><span class="line">if [ &quot;$HOSTNAME&quot; = &quot;localhost&quot; -o &quot;$HOSTNAME&quot; = &quot;localhost.localdomain&quot; ]; then</span><br><span class="line">        ipaddr=$(ip addr show to 0.0.0.0/0 scope global | awk &apos;/[[:space:]]inet / &#123; print gensub(&quot;/.*&quot;,&quot;&quot;,&quot;g&quot;,$2) &#125;&apos;)</span><br><span class="line">        for ip in $ipaddr ; do</span><br><span class="line">                HOSTNAME=</span><br><span class="line">                eval $(ipcalc -h $ip 2&gt;/dev/null)</span><br><span class="line">                [ -n &quot;$HOSTNAME&quot; ] &amp;&amp; &#123; hostname $&#123;HOSTNAME&#125; ; break; &#125;</span><br><span class="line">        done</span><br><span class="line">fi</span><br><span class="line">......</span><br><span class="line"></span><br><span class="line">//反向解析举例</span><br><span class="line">ssy@bogon ~</span><br><span class="line">&gt;&gt; ipcalc -h 127.0.0.1</span><br><span class="line">HOSTNAME=localhost</span><br><span class="line"></span><br><span class="line">ssy@bogon ~</span><br><span class="line">&gt;&gt; ipcalc -h 10.61.3.1</span><br><span class="line">HOSTNAME=bogon</span><br><span class="line"></span><br><span class="line">ssy@bogon ~</span><br><span class="line">&gt;&gt; ipcalc -h 114.241.251.125</span><br><span class="line">ipcalc: cannot find hostname for 114.241.251.125: Unknown host</span><br><span class="line"></span><br><span class="line">//dns解析服务器配置文件</span><br><span class="line">ssy@bogon ~</span><br><span class="line">&gt;&gt; vi /etc/resolv.conf</span><br><span class="line">; generated by /sbin/dhclient-script</span><br><span class="line">nameserver 172.30.204.111</span><br><span class="line">nameserver 123.125.81.6</span><br><span class="line">search bogon</span><br><span class="line"></span><br><span class="line">//查看主机名</span><br><span class="line">ssy@bogon ~</span><br><span class="line">&gt;&gt; hostname</span><br><span class="line">bogon</span><br><span class="line"></span><br><span class="line">//更改主机名，临时</span><br><span class="line">ssy@bogon ~</span><br><span class="line">&gt;&gt; sudo hostname e42.matrix</span><br><span class="line"></span><br><span class="line">//改完了提示符没有变</span><br><span class="line">ssy@bogon ~</span><br><span class="line">&gt;&gt; hostname</span><br><span class="line">e42.matrix</span><br></pre></td></tr></table></figure>
+<p>解决方法：</p>
+<p>推荐的最佳解决方案，是修改主机名，只要主机名不是localhost或者localhost.localdomain，那么操作系统就不会执行DNS反向解析等操作，问题自然也不会出现。具体操作就是修改/etc/sysconfig/network文件中HOSTNAME键值。</p>
+<p>而且并不推荐使用默认主机名进行系统安装。</p>
+<p>再有就是更改DNS域名服务器，有些域名服务器会对bogon进行过滤。<br>而有些DNS服务器，会将私有地址，保留地址这样的不应该出现在网络上的IP地址解析成bogon</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/bogon/" rel="tag"># bogon</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/01/Linux - tar/" rel="next" title="linux - tar">
+                <i class="fa fa-chevron-left"></i> linux - tar
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/01/Linux - 安装配置LAMP/" rel="prev" title="Linux - 源码编译、安装、配置 LAMP">
+                Linux - 源码编译、安装、配置 LAMP <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">218</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Vim,SpaceVim," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="https://github.com/SpaceVim/SpaceVim">
+<meta name="keywords" content="Vim,SpaceVim">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpaceVim">
+<meta property="og:url" content="http://www.shenlin.ltd/2018/01/03/Vim - SpaceVim/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="https://github.com/SpaceVim/SpaceVim">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://user-images.githubusercontent.com/13142418/27549426-8141bd86-5ace-11e7-9082-eb86b398acdc.png">
+<meta property="og:image" content="https://github.com/SpaceVim/SpaceVim/raw/dev/docs/img/unite_mappings.png">
+<meta property="og:updated_time" content="2018-01-03T00:03:51.308Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpaceVim">
+<meta name="twitter:description" content="https://github.com/SpaceVim/SpaceVim">
+<meta name="twitter:image" content="https://user-images.githubusercontent.com/13142418/27549426-8141bd86-5ace-11e7-9082-eb86b398acdc.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2018/01/03/Vim - SpaceVim/"/>
+
+
+
+
+
+  <title>SpaceVim | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/01/03/Vim - SpaceVim/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SpaceVim</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-03T08:03:51+08:00">
+                2018-01-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vim/" itemprop="url" rel="index">
+                    <span itemprop="name">Vim</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vim/SpaceVim/" itemprop="url" rel="index">
+                    <span itemprop="name">SpaceVim</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://github.com/SpaceVim/SpaceVim" target="_blank" rel="noopener">https://github.com/SpaceVim/SpaceVim</a></p>
+<a id="more"></a>
+<h2 id="依赖包"><a href="#依赖包" class="headerlink" title="依赖包"></a>依赖包</h2><ul>
+<li><p>vim 或 neovim</p>
+<ul>
+<li>vim 需支持 python, python3 和 lua 特性</li>
+<li>lua 特性是因为用到的插件 neocomplete 需要</li>
+</ul>
+</li>
+<li><p>git </p>
+<ul>
+<li>SpaceVim 要通过 git 自动安装插件</li>
+</ul>
+</li>
+<li><p>nerd fonts 和 true colors</p>
+<ul>
+<li>SpaceVim 有 basic mode 和 awesome mode，使用后一种模式要安装 nerd fonts，终端也要支持 true colors</li>
+</ul>
+</li>
+</ul>
+<h2 id="安装-SpaceVim"><a href="#安装-SpaceVim" class="headerlink" title="安装 SpaceVim"></a>安装 SpaceVim</h2><p>linux<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sLf https://spacevim.org/install.sh | bash</span><br></pre></td></tr></table></figure></p>
+<p>windows<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//进入用户家目录</span><br><span class="line">cd %HOME%</span><br><span class="line"></span><br><span class="line">//原来的配置文件要改名禁用</span><br><span class="line">mv _vimrc _vimrc_bak</span><br><span class="line"></span><br><span class="line">//原来的 vimfiles 改名禁用</span><br><span class="line">mv vimfiles vimfiles_bak</span><br><span class="line"></span><br><span class="line">//克隆库文件到 vimfiles 目录</span><br><span class="line">git clone https://github.com/SpaceVim/SpaceVim.git vimfiles</span><br><span class="line"></span><br><span class="line">//如果是 neovim 则执行这句克隆</span><br><span class="line">git clone https://github.com/SpaceVim/SpaceVim.git AppData\Local\nvim</span><br></pre></td></tr></table></figure></p>
+<h2 id="自动安装插件"><a href="#自动安装插件" class="headerlink" title="自动安装插件"></a>自动安装插件</h2><p>打开vim时会自动安装插件</p>
+<p>自动执行了 cmd 命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">C:\Windows\system32\cmd.exe /c git clone https://github.com/Shougo/dein.vim &quot;C:\</span><br><span class="line">Users\ssl\.cache\vimfiles\repos\github.com\Shougo\dein.vim&quot;</span><br><span class="line"></span><br><span class="line">Cloning into &apos;C:\Users\ssl\.cache\vimfiles\repos\github.com\Shougo\dein.vim&apos;...</span><br><span class="line">remote: Counting objects: 4458, done.</span><br><span class="line">remote: Total 4458 (delta 0), reused 0 (delta 0), pack-reused 4458</span><br><span class="line">Receiving objects: 100% (4458/4458), 842.14 KiB | 159.00 KiB/s, done.</span><br><span class="line">Resolving deltas: 100% (2564/2564), done.</span><br><span class="line">Hit any key to close this window...</span><br></pre></td></tr></table></figure></p>
+<p>按任意键后接着又给出了 vim 提示框<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:!git clone https://github.com/Shougo/dein.vim &quot;C:\Users\ssl\.cache\vimfiles\repos\github.com\Shougo\dein.vim&quot;</span><br></pre></td></tr></table></figure></p>
+<p>vim 打开文件后会自动执行 Updating plugins，第一次其实是安装插件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Updating plugins (153/154)</span><br></pre></td></tr></table></figure></p>
+<p>安装失败则手动安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:call dein#install()</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>dein 是 SpaceVim 的默认插件管理器</li>
+</ul>
+<h2 id="Leader-key"><a href="#Leader-key" class="headerlink" title="Leader key"></a>Leader key</h2><p><img src="https://user-images.githubusercontent.com/13142418/27549426-8141bd86-5ace-11e7-9082-eb86b398acdc.png" alt=""></p>
+<p><img src="https://github.com/SpaceVim/SpaceVim/raw/dev/docs/img/unite_mappings.png" alt=""></p>
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><p>全局配置文件：<code>~/.SpaceVim.d/init.vim</code></p>
+<p>项目配置文件：<code>ProjectRoot/.SpaceVim.d/init.vim</code></p>
+<p>更改配置项语法：let itme_name = value</p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>说明</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>g:spacevim_error_symbol</td>
+<td>Set the error symbol for SpaceVim’s syntax maker</td>
+<td>✖</td>
+</tr>
+<tr>
+<td>g:spacevim_warning_symbol</td>
+<td>Set the warning symbol for SpaceVim’s syntax maker</td>
+<td>⚠</td>
+</tr>
+<tr>
+<td>g:spacevim_enable_debug</td>
+<td>启用调试模式</td>
+<td>0</td>
+</tr>
+<tr>
+<td>g:spacevim_auto_disable_touchpad</td>
+<td>插入模式自动禁用触摸板</td>
+<td></td>
+</tr>
+<tr>
+<td>g:spacevim_debug_level</td>
+<td>debug 级别</td>
+<td>1</td>
+</tr>
+<tr>
+<td>g:spacevim_buffer_index_type</td>
+<td>设定buffer索引类型，取值0,1,2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>g:spacevim_windows_index_type</td>
+<td>设定窗口索引类型，取值0,1,2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>g:spacevim_enable_tabline_filetype_icon</td>
+<td>是否启用tabline的文件类型图标</td>
+<td>0</td>
+</tr>
+<tr>
+<td>g:spacevim_enable_os_fileformat_icon</td>
+<td>是否启用操作系统的文件类型图标</td>
+<td>0</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>g:spacevim_default_indent</td>
+<td>缩进默认值</td>
+<td>2</td>
+</tr>
+<tr>
+<td>g:spacevim_relativenumber</td>
+<td>光标行上下显示相对数字</td>
+<td>1</td>
+</tr>
+<tr>
+<td>g:spacevim_max_column</td>
+<td>列最大数</td>
+<td>120</td>
+</tr>
+<tr>
+<td>g:spacevim_enable_guicolors</td>
+<td>终端是否支持true colors</td>
+<td>1</td>
+</tr>
+<tr>
+<td>g:spacevim_enable_googlesuggest</td>
+<td>neocomplete插件是否提供google建议</td>
+<td>0</td>
+</tr>
+<tr>
+<td>g:spacevim_windows_leader</td>
+<td>Window 函数的 leader 键，为空则表示禁用</td>
+<td>s</td>
+</tr>
+<tr>
+<td>g:spacevim_unite_leader</td>
+<td>Unite 工作流的 leader 键，为空则表示禁用</td>
+<td>f</td>
+</tr>
+<tr>
+<td>g:spacevim_denite_leader</td>
+<td>Denite 工作流的 leader 键，为空则表示禁用</td>
+<td>F</td>
+</tr>
+<tr>
+<td>g:spacevim_enable_insert_leader</td>
+<td>是否启用插入模式 leader 键</td>
+<td>1</td>
+</tr>
+<tr>
+<td>g:spacevim_plugin_bundle_dir</td>
+<td>插件的缓存目录</td>
+<td><code>~/.cache/vimfiles</code></td>
+</tr>
+<tr>
+<td>g:spacevim_realtime_leader_guide</td>
+<td>是否启用实时的 leaer 键向导</td>
+<td>1</td>
+</tr>
+<tr>
+<td>g:spacevim_enable_key_frequency</td>
+<td>Enable/Disable key frequency catching of SpaceVim.</td>
+<td>0</td>
+</tr>
+<tr>
+<td>g:spacevim_enable_neomake</td>
+<td>是否启用 neomake 作为 checker，不启用则自动改用 syntastic</td>
+<td>1</td>
+</tr>
+<tr>
+<td>g:spacevim_guifont</td>
+<td>设置字体</td>
+<td>空</td>
+</tr>
+<tr>
+<td>g:spacevim_enable_ycm</td>
+<td>是否启用 YouCompleteMe</td>
+<td>0</td>
+</tr>
+<tr>
+<td>g:spacevim_sidebar_width</td>
+<td>侧边栏的宽度，会被 tagbar 和 vimfiler 使用</td>
+<td>30</td>
+</tr>
+<tr>
+<td>g:spacevim_snippet_engine</td>
+<td>设定 snippet engine，选项：neosnippet,ultisnips</td>
+<td>neosnippet</td>
+</tr>
+<tr>
+<td>g:spacevim_statusline_separator</td>
+<td>设置状态栏的分割符，选项：1. arrow 2. curve 3. slant 4. nil 5. fire</td>
+<td>arrow</td>
+</tr>
+<tr>
+<td>g:spacevim_enable_cursorline</td>
+<td>是否高亮光标行</td>
+<td>1</td>
+</tr>
+<tr>
+<td>g:spacevim_enable_cursorcolumn</td>
+<td>是否高亮光标列</td>
+<td>0</td>
+</tr>
+<tr>
+<td>g:spacevim_terminal_cursor_shape</td>
+<td>设置终端里的光标样式: 0 表示禁止nvim改变样式 1 表示不闪烁对模式敏感 2 表示闪烁对模式敏感</td>
+<td>1</td>
+</tr>
+<tr>
+<td>g:spacevim_vim_help_language</td>
+<td>设定vim帮助的语言， let g:spacevim_vim_help_language = ‘chinese’</td>
+<td>en</td>
+</tr>
+<tr>
+<td>g:spacevim_language</td>
+<td>设定vim提示信息的语言</td>
+<td>en_US.UTF-8</td>
+</tr>
+<tr>
+<td>g:spacevim_colorscheme</td>
+<td>默认的 colorscheme</td>
+<td>gruvbox</td>
+</tr>
+<tr>
+<td>g:spacevim_colorscheme_bg</td>
+<td>colorscheme 的背景色</td>
+<td>dark</td>
+</tr>
+<tr>
+<td>g:spacevim_colorscheme_default</td>
+<td>如果 g:spacevim_colorscheme 设定的 colorscheme 没安装时的默认 colorscheme</td>
+<td>desert</td>
+</tr>
+<tr>
+<td>g:spacevim_github_username</td>
+<td>github 用户名，用来获取用户收藏的库，和模糊查找库</td>
+<td></td>
+</tr>
+<tr>
+<td>g:spacevim_force_global_config</td>
+<td>有项目配置文件时，全局配置文件则不加载，设为 1 则在加载项目配置文件后再加载全局配置文件</td>
+<td>0</td>
+</tr>
+<tr>
+<td>g:spacevim_enable_powerline_fonts</td>
+<td>Enable/Disable powerline symbols. Default is 1.</td>
+<td>1</td>
+</tr>
+<tr>
+<td>g:spacevim_lint_on_save</td>
+<td>Enable/Disable lint on save feature of SpaceVim’s maker.</td>
+<td>1</td>
+</tr>
+<tr>
+<td>g:spacevim_lint_on_the_fly</td>
+<td>Enable/Disable lint on the fly feature of SpaceVim’s maker.</td>
+<td>0</td>
+</tr>
+<tr>
+<td>g:spacevim_enable_vimfiler_welcome</td>
+<td>在欢迎窗口显示 vimfiler ，文件过多时会使得vim启动变慢</td>
+<td>1</td>
+</tr>
+<tr>
+<td>g:spacevim_enable_vimfiler_gitstatus</td>
+<td>在vimfiler 和 buffer 中显示 git 状态列</td>
+<td>0</td>
+</tr>
+<tr>
+<td>g:spacevim_enable_vimfiler_filetypeicon</td>
+<td>在vimfiler 和 buffer 中显示文件类型图标列</td>
+<td>0</td>
+</tr>
+<tr>
+<td>g:spacevim_hosts_url</td>
+<td>host 文件 url， 是为了不能使用 Google 和 Twitter 的国内用户</td>
+<td></td>
+</tr>
+<tr>
+<td>g:spacevim_filemanager</td>
+<td>默认的文件管理器</td>
+<td>vimfiler</td>
+</tr>
+<tr>
+<td>g:spacevim_plugin_manager</td>
+<td>默认的插件管理器，选项包括：dein, neobundle, vim-plug</td>
+<td>dein</td>
+</tr>
+<tr>
+<td>g:spacevim_plugin_manager_max_processes</td>
+<td>插件管理器的最大进程数</td>
+<td></td>
+</tr>
+<tr>
+<td>g:spacevim_checkinstall</td>
+<td>启动时检测安装</td>
+<td>1</td>
+</tr>
+<tr>
+<td>g:spacevim_simple_mode</td>
+<td>是否启用简单模式，这种模式下只安装少数插件</td>
+<td>0</td>
+</tr>
+<tr>
+<td>g:spacevim_plugin_groups</td>
+<td>要加载的插件群  let g:spacevim_plugin_groups = [‘core’, ‘lang’]</td>
+<td></td>
+</tr>
+<tr>
+<td>g:spacevim_disabled_plugins</td>
+<td>通过名字禁用插件 let g:spacevim_disabled_plugins = [‘vim-foo’, ‘vim-bar’]</td>
+<td></td>
+</tr>
+<tr>
+<td>g:spacevim_custom_plugins</td>
+<td>添加自定义插件</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let g:spacevim_custom_plugins = [</span><br><span class="line">            \ [&apos;plasticboy/vim-markdown&apos;, &apos;on_ft&apos; : &apos;markdown&apos;],</span><br><span class="line">            \ [&apos;wsdjeg/GitHub.vim&apos;],</span><br><span class="line">            \ ]</span><br></pre></td></tr></table></figure>
+<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><p>区分大小写</p>
+<p>加载已有的 layer，可为 layer 的名字字符串或列表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:SPLayer &#123;layers&#125;</span><br></pre></td></tr></table></figure></p>
+<p>显示版本号，+ - 号分别表示是否启用了某个特性<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:SPVersion</span><br></pre></td></tr></table></figure></p>
+<p>获取或设置选项值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:SPSet &#123;opt&#125; [value]</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><code>{opt}</code> 为上面的配置项去掉前面的<code>g:spacevim_</code></li>
+<li>SPSet plugin_manager 插件管理器</li>
+<li>SPSet plugin_groups 已安装插件</li>
+</ul>
+<p>输出 debug 信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:SPDebugInfo[!]</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>[!] 强制输出到新的 buffer</li>
+</ul>
+<p>编辑配置文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:SPConfig</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>-g 选项或者默认都是编辑全局配置文件</li>
+<li>-l 选项表示项目配置文件</li>
+</ul>
+<p>更新插件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:SPUpdate</span><br></pre></td></tr></table></figure></p>
+<p>安装插件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:SPInstall</span><br></pre></td></tr></table></figure></p>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>加载 layer<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SpaceVim#layers#load(&#123;layer&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">call SpaceVim#layers#load(&quot;lang#php&quot;)</span><br><span class="line">call SpaceVim#layers#load(&quot;lang#php&quot;,&quot;lang#markdown&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>设置 debug 级别，默认是1<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SpaceVim#logger#setLevel(&#123;level&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>  1 : 所有记录</p>
+<p>  2 : 警告和错误记录</p>
+<p>  3 : 只有错误记录</p>
+<p>设置日志输出文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SpaceVim#logger#setOutput(&#123;file&#125;)</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>默认文件 <code>~/.SpaceVim/.SpaceVim.log</code>.</li>
+<li>runtime log: <code>~/.cache/SpaceVim/SpaceVim.log</code></li>
+</ul>
+<h2 id="Layer"><a href="#Layer" class="headerlink" title="Layer"></a>Layer</h2><pre><code>default         better default for vim and neovim
+checkers        checking in vim
+autocomplete    autocomplete in vim
+chinese         layer for chinese vimer
+colorscheme     all colorscheme in spacevim
+chat            chatting in vim
+lang#java       java development in vim
+lang#lisp       lisp development in vim
+lang#markdown   layer for editing markdown in vim
+lang#php        php development in vim
+</code></pre><h3 id="default"><a href="#default" class="headerlink" title="default"></a>default</h3><p>SpaceVim default layer contains none plugins, but it has some better default config for vim and neovim.</p>
+<h3 id="checkers"><a href="#checkers" class="headerlink" title="checkers"></a>checkers</h3><p>This layer provides syntax checking feature.<br>checkers layer is loaded by default.</p>
+<p>g:spacevim_enable_neomake     1     Use neomake as default checking tools, to use syntastic, set this option to 0.<br>g:spacevim_lint_on_the_fly     0     Syntax checking on the fly feature, disabled by default.</p>
+<h3 id="colorscheme"><a href="#colorscheme" class="headerlink" title="colorscheme"></a>colorscheme</h3><p>This layer provides many Vim colorschemes for SpaceVim, the default colorscheme is gruvbox.</p>
+<p>Some colorschemes offer dark and light styles. Most of them are set by changing Vim background color. </p>
+<h3 id="autocomplete"><a href="#autocomplete" class="headerlink" title="autocomplete"></a>autocomplete</h3><p>SpaceVim uses neocomplete as the default completion engine if vim has lua support. If there is no lua support, neocomplcache will be used for the completion engine. Spacevim uses deoplete as the default completion engine for neovim. Deoplete requires neovim to be compiled with python support. For more information about python support in neovim, please read neovim’s documentation :h provider-python.</p>
+<p>SpaceVim use neosnippet as the default snippet engine. The default snippets are provided by Shougo/neosnippet-snippets. For more information, please read :h neosnippet. Neosnippet support custom snippets, and the default snippets directory is ~/.SpaceVim/snippets/. If g:spacevim_force_global_config = 1, SpaceVim will not append ./.SpaceVim/snippets as default snippets directory.</p>
+<h3 id="lang-markdown"><a href="#lang-markdown" class="headerlink" title="lang#markdown"></a>lang#markdown</h3><p>Key         mode     description<br>SPC l ft     Normal     Format table under cursor<br>SPC l p     Normal     Real-time markdown preview</p>
+<h3 id="lang-php"><a href="#lang-php" class="headerlink" title="lang#php"></a>lang#php</h3><p>需安装:<code>SPLayer &#39;lang#php&#39;</code></p>
+<p>Requirement</p>
+<pre><code>PHP 5.3+
+PCNTL Extension
+Msgpack 0.5.7+(for NeoVim) Extension or JSON(for Vim 7.4+) Extension
+Composer Project
+</code></pre><h3 id="chat"><a href="#chat" class="headerlink" title="chat"></a>chat</h3><p>安装的是 vim-chat 插件</p>
+<p>Alt + x : open chatting buffer for qq. Alt + w : open chatting buffer for weixin.</p>
+<p>within chatting buffer:</p>
+<p>Alt + Left/Right : switch between buffer. Alt + 1-9 : jump to specified channel.</p>
+<p>for more mappings in chatting buffer, please read :h vim-chat.</p>
+<h2 id="编译-vimproc"><a href="#编译-vimproc" class="headerlink" title="编译 vimproc"></a>编译 vimproc</h2><p>SpaceVim 启动时总是有下列提示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[vimproc]vimproc&apos;s DLL:&quot;C:/users/ssl/.cache/vimfiles/repos/github.com/Shougo...m/lib/vimproc_win32.dll&quot; is not found.</span><br><span class="line">Please read :help vimproc and make it.</span><br></pre></td></tr></table></figure>
+<p>需要自己编译生成 vimproc_win32.dll</p>
+<p>先使用 Mingw 安装 gcc 编译环境，具体步骤参见文章：<a href="Windows 下使用 MinGW 安装 gcc 编译环境.md">Windows 下使用 MinGW 安装 gcc 编译环境</a></p>
+<p>下载 vimproc 库，SpaceVim 已下载，省略</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">//进入 vimproc 库目录</span><br><span class="line">cd C:\Users\ssl\.cache\vimfiles\repos\github.com\Shougo\vimproc.vim\src</span><br><span class="line"></span><br><span class="line">//编译</span><br><span class="line">λ mingw32-make -f make_mingw32.mak</span><br><span class="line"></span><br><span class="line">    提示丢失 libmingwex-0.dll,有几乎同名的 libmingwex.a，但不管用，搜索发现真有 libmingwex 这个包</span><br><span class="line"></span><br><span class="line">//安装这个库</span><br><span class="line">λ mingw-get install libmingwex</span><br><span class="line"></span><br><span class="line">//再次编译成功</span><br><span class="line">λ mingw32-make -f make_mingw32.mak</span><br><span class="line"></span><br><span class="line">//复制文件到 SpaceVim 的 runtimepath</span><br><span class="line">λ cp auload/* plugin/* lib/* $HOME/.SpaceVim.d/</span><br></pre></td></tr></table></figure>
+<h2 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Vim/" rel="tag"># Vim</a>
+          
+            <a href="/tags/SpaceVim/" rel="tag"># SpaceVim</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/01/Linux - RTC 时钟 hwclock date timedatectl rtcwake/" rel="next" title="Linux - RTC 时钟 hwclock date timedatectl rtcwake">
+                <i class="fa fa-chevron-left"></i> Linux - RTC 时钟 hwclock date timedatectl rtcwake
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/05/Linux - 关机 shutdown poweroff 重启 reboot 挂起 suspend 定时唤醒 rtcwake 休眠 hibernate/" rel="prev" title="Linux - 关机 shutdown poweroff 重启 reboot 挂起 suspend 定时唤醒 rtcwake 休眠 hibernate">
+                Linux - 关机 shutdown poweroff 重启 reboot 挂起 suspend 定时唤醒 rtcwake 休眠 hibernate <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">218</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#依赖包"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x4F9D;&#x8D56;&#x5305;" class="headerlink" title="&#x4F9D;&#x8D56;&#x5305;"></a>&#x4F9D;&#x8D56;&#x5305;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-SpaceVim"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;-SpaceVim" class="headerlink" title="&#x5B89;&#x88C5; SpaceVim"></a>&#x5B89;&#x88C5; SpaceVim</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动安装插件"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x81EA;&#x52A8;&#x5B89;&#x88C5;&#x63D2;&#x4EF6;" class="headerlink" title="&#x81EA;&#x52A8;&#x5B89;&#x88C5;&#x63D2;&#x4EF6;"></a>&#x81EA;&#x52A8;&#x5B89;&#x88C5;&#x63D2;&#x4EF6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Leader-key"><span class="nav-number">4.</span> <span class="nav-text"><a href="#Leader-key" class="headerlink" title="Leader key"></a>Leader key</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置文件"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x914D;&#x7F6E;&#x6587;&#x4EF6;" class="headerlink" title="&#x914D;&#x7F6E;&#x6587;&#x4EF6;"></a>&#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x547D;&#x4EE4;" class="headerlink" title="&#x547D;&#x4EE4;"></a>&#x547D;&#x4EE4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法"><span class="nav-number">7.</span> <span class="nav-text"><a href="#&#x65B9;&#x6CD5;" class="headerlink" title="&#x65B9;&#x6CD5;"></a>&#x65B9;&#x6CD5;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Layer"><span class="nav-number">8.</span> <span class="nav-text"><a href="#Layer" class="headerlink" title="Layer"></a>Layer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#default"><span class="nav-number">8.1.</span> <span class="nav-text"><a href="#default" class="headerlink" title="default"></a>default</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#checkers"><span class="nav-number">8.2.</span> <span class="nav-text"><a href="#checkers" class="headerlink" title="checkers"></a>checkers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#colorscheme"><span class="nav-number">8.3.</span> <span class="nav-text"><a href="#colorscheme" class="headerlink" title="colorscheme"></a>colorscheme</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#autocomplete"><span class="nav-number">8.4.</span> <span class="nav-text"><a href="#autocomplete" class="headerlink" title="autocomplete"></a>autocomplete</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lang-markdown"><span class="nav-number">8.5.</span> <span class="nav-text"><a href="#lang-markdown" class="headerlink" title="lang#markdown"></a>lang#markdown</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lang-php"><span class="nav-number">8.6.</span> <span class="nav-text"><a href="#lang-php" class="headerlink" title="lang#php"></a>lang#php</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chat"><span class="nav-number">8.7.</span> <span class="nav-text"><a href="#chat" class="headerlink" title="chat"></a>chat</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译-vimproc"><span class="nav-number">9.</span> <span class="nav-text"><a href="#&#x7F16;&#x8BD1;-vimproc" class="headerlink" title="&#x7F16;&#x8BD1; vimproc"></a>&#x7F16;&#x8BD1; vimproc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-amp-A"><span class="nav-number">10.</span> <span class="nav-text"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

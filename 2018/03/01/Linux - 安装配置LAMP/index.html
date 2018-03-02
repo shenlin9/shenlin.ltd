@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="LAMP," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="源码编译、安装、配置 LAMP">
+<meta name="keywords" content="LAMP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux - 源码编译、安装、配置 LAMP">
+<meta property="og:url" content="http://www.shenlin.ltd/2018/03/01/Linux - 安装配置LAMP/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="源码编译、安装、配置 LAMP">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-01T07:06:04.752Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux - 源码编译、安装、配置 LAMP">
+<meta name="twitter:description" content="源码编译、安装、配置 LAMP">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2018/03/01/Linux - 安装配置LAMP/"/>
+
+
+
+
+
+  <title>Linux - 源码编译、安装、配置 LAMP | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/03/01/Linux - 安装配置LAMP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux - 源码编译、安装、配置 LAMP</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-01T15:06:04+08:00">
+                2018-03-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>源码编译、安装、配置 LAMP</p>
+<a id="more"></a>
+<h2 id="安装-PHP"><a href="#安装-PHP" class="headerlink" title="安装 PHP"></a>安装 PHP</h2><p>解压</p>
+<pre><code>tar -zxvf php-5.5.11.tar.gz
+</code></pre><p>配置安装变量</p>
+<pre><code>./configure --prefix=/usr/local/servers/php 
+</code></pre><p>编译</p>
+<pre><code>make
+</code></pre><p>安装</p>
+<pre><code>make install
+</code></pre><p>创建软链接</p>
+<pre><code>ln -s /usr/local/servers/php/bin/php /usr/local/bin/php
+</code></pre><h2 id="安装-Apache"><a href="#安装-Apache" class="headerlink" title="安装 Apache"></a>安装 Apache</h2><p>Extract</p>
+<pre><code>$ gzip -d httpd-NN.tar.gz
+$ tar xvf httpd-NN.tar
+$ cd httpd-NN
+</code></pre><p>Configure</p>
+<pre><code>$ ./configure --prefix=PREFIX
+</code></pre><p>Compile</p>
+<pre><code>$ make
+</code></pre><p>Install</p>
+<pre><code>$ make install
+</code></pre><p>Customize</p>
+<pre><code>$ vi PREFIX/conf/httpd.conf
+</code></pre><p>Test</p>
+<pre><code>$ PREFIX/bin/apachectl -k start
+</code></pre><h3 id="Problems"><a href="#Problems" class="headerlink" title="Problems"></a>Problems</h3><p>Apache Portable Runtime (APR)<br>Apache Portable Runtime Utility Library(APR-util)<br>PCRE - Perl Compatible Regular Expressions</p>
+<p>mkdir -p</p>
+<h2 id="Apache"><a href="#Apache" class="headerlink" title="Apache"></a>Apache</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$bunzip2</span> -k httpd-2.4.25.tar.bz2</span><br><span class="line"></span><br><span class="line"><span class="variable">$tar</span> -xf httpd-2.4.25.tar</span><br><span class="line"></span><br><span class="line"><span class="variable">$configure</span> --prefix=/usr/<span class="built_in">local</span>/apache2.4.25</span><br><span class="line">    -bash: configure: <span class="built_in">command</span> not found</span><br><span class="line"></span><br><span class="line">$./configure --prefix=/usr/<span class="built_in">local</span>/apache2.4.25</span><br><span class="line">    checking <span class="keyword">for</span> chosen layout... Apache</span><br><span class="line">    checking <span class="keyword">for</span> working mkdir -p... yes</span><br><span class="line">    checking <span class="keyword">for</span> grep that handles long lines and -e... /bin/grep</span><br><span class="line">    checking <span class="keyword">for</span> egrep... /bin/grep -E</span><br><span class="line">    checking build system <span class="built_in">type</span>... i686-pc-linux-gnu</span><br><span class="line">    checking host system <span class="built_in">type</span>... i686-pc-linux-gnu</span><br><span class="line">    checking target system <span class="built_in">type</span>... i686-pc-linux-gnu</span><br><span class="line">    configure: </span><br><span class="line">    configure: Configuring Apache Portable Runtime library...</span><br><span class="line">    configure: </span><br><span class="line">    checking <span class="keyword">for</span> APR... no</span><br><span class="line">    configure: error: APR not found.  Please <span class="built_in">read</span> the documentation.</span><br><span class="line"></span><br><span class="line"><span class="variable">$wget</span> -P ~ http://mirrors.hust.edu.cn/apache//apr/apr-1.5.2.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="variable">$bunzip2</span> -k ~/apr-1.5.2.tar.gz </span><br><span class="line">    bunzip2: Cant guess original name <span class="keyword">for</span> /home/ssy/apr-1.5.2.tar.gz -- using /home/ssy/apr-1.5.2.tar.gz.out</span><br><span class="line">    bunzip2: /home/ssy/apr-1.5.2.tar.gz is not a bzip2 file.</span><br><span class="line"></span><br><span class="line">$./configure --prefix=/usr/<span class="built_in">local</span>/apr1.5.2</span><br><span class="line">    checking build system <span class="built_in">type</span>... i686-pc-linux-gnu</span><br><span class="line">    checking host system <span class="built_in">type</span>... i686-pc-linux-gnu</span><br><span class="line">    checking target system <span class="built_in">type</span>... i686-pc-linux-gnu</span><br><span class="line">    Configuring APR library</span><br><span class="line">    Platform: i686-pc-linux-gnu</span><br><span class="line">    checking <span class="keyword">for</span> working mkdir -p... yes</span><br><span class="line">    APR Version: 1.5.2</span><br><span class="line">    checking <span class="keyword">for</span> chosen layout... apr</span><br><span class="line">    checking <span class="keyword">for</span> gcc... no</span><br><span class="line">    checking <span class="keyword">for</span> cc... no</span><br><span class="line">    checking <span class="keyword">for</span> cl.exe... no</span><br><span class="line">    configure: error: <span class="keyword">in</span> `/home/ssy/apr-1.5.2<span class="string">':</span></span><br><span class="line"><span class="string">    configure: error: no acceptable C compiler found in $PATH</span></span><br><span class="line"><span class="string">    See `config.log'</span> <span class="keyword">for</span> more details</span><br><span class="line"></span><br><span class="line"><span class="variable">$rpm</span> -qa|grep gcc</span><br><span class="line">    libgcc-4.2</span><br><span class="line"><span class="variable">$rpm</span> -q gcc</span><br><span class="line">    package gcc is not installed</span><br><span class="line"><span class="variable">$rpm</span> -q libgcc</span><br><span class="line">    libgcc-4.4.7-18.el6.i686</span><br><span class="line"><span class="variable">$yum</span> -y install gcc</span><br><span class="line">    解决依赖关系</span><br><span class="line">    --&gt; 执行事务检查</span><br><span class="line">    ---&gt; Package gcc.i686 0:4.4.7-18.el6 will be 安装</span><br><span class="line">    --&gt; 处理依赖关系 libgomp = 4.4.7-18.el6，它被软件包 gcc-4.4.7-18.el6.i686 需要</span><br><span class="line">    --&gt; 处理依赖关系 cpp = 4.4.7-18.el6，它被软件包 gcc-4.4.7-18.el6.i686 需要</span><br><span class="line">    --&gt; 处理依赖关系 glibc-devel &gt;= 2.2.90-12，它被软件包 gcc-4.4.7-18.el6.i686 需要</span><br><span class="line">    --&gt; 处理依赖关系 cloog-ppl &gt;= 0.15，它被软件包 gcc-4.4.7-18.el6.i686 需要</span><br><span class="line">    --&gt; 处理依赖关系 libgomp.so.1，它被软件包 gcc-4.4.7-18.el6.i686 需要</span><br><span class="line">    --&gt; 执行事务检查</span><br><span class="line">    ---&gt; Package cloog-ppl.i686 0:0.15.7-1.2.el6 will be 安装</span><br><span class="line">    --&gt; 处理依赖关系 libppl_c.so.2，它被软件包 cloog-ppl-0.15.7-1.2.el6.i686 需要</span><br><span class="line">    --&gt; 处理依赖关系 libppl.so.7，它被软件包 cloog-ppl-0.15.7-1.2.el6.i686 需要</span><br><span class="line">    ---&gt; Package cpp.i686 0:4.4.7-18.el6 will be 安装</span><br><span class="line">    --&gt; 处理依赖关系 libmpfr.so.1，它被软件包 cpp-4.4.7-18.el6.i686 需要</span><br><span class="line">    ---&gt; Package glibc-devel.i686 0:2.12-1.209.el6_9.1 will be 安装</span><br><span class="line">    --&gt; 处理依赖关系 glibc-headers = 2.12-1.209.el6_9.1，它被软件包 glibc-devel-2.12-1.209.el6_9.1.i686 需要</span><br><span class="line">    --&gt; 处理依赖关系 glibc = 2.12-1.209.el6_9.1，它被软件包 glibc-devel-2.12-1.209.el6_9.1.i686 需要</span><br><span class="line">    --&gt; 处理依赖关系 glibc-headers，它被软件包 glibc-devel-2.12-1.209.el6_9.1.i686 需要</span><br><span class="line">    ---&gt; Package libgomp.i686 0:4.4.7-18.el6 will be 安装</span><br><span class="line">    --&gt; 执行事务检查</span><br><span class="line">    ---&gt; Package glibc.i686 0:2.12-1.209.el6 will be 升级</span><br><span class="line">    --&gt; 处理依赖关系 glibc = 2.12-1.209.el6，它被软件包 glibc-common-2.12-1.209.el6.i686 需要</span><br><span class="line">    ---&gt; Package glibc.i686 0:2.12-1.209.el6_9.1 will be an update</span><br><span class="line">    ---&gt; Package glibc-headers.i686 0:2.12-1.209.el6_9.1 will be 安装</span><br><span class="line">    --&gt; 处理依赖关系 kernel-headers &gt;= 2.2.1，它被软件包 glibc-headers-2.12-1.209.el6_9.1.i686 需要</span><br><span class="line">    --&gt; 处理依赖关系 kernel-headers，它被软件包 glibc-headers-2.12-1.209.el6_9.1.i686 需要</span><br><span class="line">    ---&gt; Package mpfr.i686 0:2.4.1-6.el6 will be 安装</span><br><span class="line">    ---&gt; Package ppl.i686 0:0.10.2-11.el6 will be 安装</span><br><span class="line">    --&gt; 执行事务检查</span><br><span class="line">    ---&gt; Package glibc-common.i686 0:2.12-1.209.el6 will be 升级</span><br><span class="line">    ---&gt; Package glibc-common.i686 0:2.12-1.209.el6_9.1 will be an update</span><br><span class="line">    ---&gt; Package kernel-headers.i686 0:2.6.32-696.1.1.el6 will be 安装</span><br><span class="line">    --&gt; 完成依赖关系计算</span><br><span class="line"></span><br><span class="line">    依赖关系解决</span><br><span class="line"></span><br><span class="line">    ============================================================================================================================================================</span><br><span class="line">     软件包                                  架构                          版本                                          仓库                              大小</span><br><span class="line">    ============================================================================================================================================================</span><br><span class="line">    正在安装:</span><br><span class="line">     gcc                                     i686                          4.4.7-18.el6                                  base                             8.2 M</span><br><span class="line">    为依赖而安装:</span><br><span class="line">     cloog-ppl                               i686                          0.15.7-1.2.el6                                base                              93 k</span><br><span class="line">     cpp                                     i686                          4.4.7-18.el6                                  base                             3.4 M</span><br><span class="line">     glibc-devel                             i686                          2.12-1.209.el6_9.1                            updates                          991 k</span><br><span class="line">     glibc-headers                           i686                          2.12-1.209.el6_9.1                            updates                          628 k</span><br><span class="line">     kernel-headers                          i686                          2.6.32-696.1.1.el6                            updates                          4.5 M</span><br><span class="line">     libgomp                                 i686                          4.4.7-18.el6                                  base                             136 k</span><br><span class="line">     mpfr                                    i686                          2.4.1-6.el6                                   base                             153 k</span><br><span class="line">     ppl                                     i686                          0.10.2-11.el6                                 base                             1.3 M</span><br><span class="line">    为依赖而更新:</span><br><span class="line">     glibc                                   i686                          2.12-1.209.el6_9.1                            updates                          4.4 M</span><br><span class="line">     glibc-common                            i686                          2.12-1.209.el6_9.1                            updates                           14 M</span><br><span class="line"></span><br><span class="line">    事务概要</span><br><span class="line">    ============================================================================================================================================================</span><br><span class="line">    Install       9 Package(s)</span><br><span class="line">    Upgrade       2 Package(s)</span><br><span class="line"></span><br><span class="line">    总下载量：38 M</span><br><span class="line">    下载软件包：</span><br><span class="line">    (1/11): cloog-ppl-0.15.7-1.2.el6.i686.rpm                                                                                            |  93 kB     00:00     </span><br><span class="line">    (2/11): cpp-4.4.7-18.el6.i686.rpm                                                                                                    | 3.4 MB     00:01     </span><br><span class="line">    (3/11): gcc-4.4.7-18.el6.i686.rpm                                                                                                    | 8.2 MB     00:04     </span><br><span class="line">    http://mirrors.nwsuaf.edu.cn/centos/6.9/updates/i386/Packages/glibc-2.12-1.209.el6_9.1.i686.rpm: [Errno 12] Timeout on http://mirrors.nwsuaf.edu.cn/centos/6.9/updates/i386/Packages/glibc-2.12-1.209.el6_9.1.i686.rpm: (28, <span class="string">'Operation too slow. Less than 1 bytes/sec transfered the last 30 seconds'</span>)</span><br><span class="line">    尝试其他镜像。</span><br><span class="line">    (4/11): glibc-2.12-1.209.el6_9.1.i686.rpm                                                                                            | 4.4 MB     00:02     </span><br><span class="line">    (5/11): glibc-common-2.12-1.209.el6_9.1.i686.rpm                                                                                     |  14 MB     00:08     </span><br><span class="line">    (6/11): glibc-devel-2.12-1.209.el6_9.1.i686.rpm                                                                                      | 991 kB     00:00     </span><br><span class="line">    (7/11): glibc-headers-2.12-1.209.el6_9.1.i686.rpm                                                                                    | 628 kB     00:00     </span><br><span class="line">    http://mirror.lzu.edu.cn/centos/6.9/updates/i386/Packages/kernel-headers-2.6.32-696.1.1.el6.i686.rpm: [Errno 14] PYCURL ERROR 18 - <span class="string">"transfer closed with 4127652 bytes remaining to read"</span></span><br><span class="line">    尝试其他镜像。</span><br><span class="line">    http://mirrors.njupt.edu.cn/centos/6.9/updates/i386/Packages/kernel-headers-2.6.32-696.1.1.el6.i686.rpm: [Errno 12] Timeout on http://mirrors.njupt.edu.cn/centos/6.9/updates/i386/Packages/kernel-headers-2.6.32-696.1.1.el6.i686.rpm: (28, <span class="string">'Operation too slow. Less than 1 bytes/sec transfered the last 30 seconds'</span>)</span><br><span class="line">    尝试其他镜像。</span><br><span class="line">    (8/11): kernel-headers-2.6.32-696.1.1.el6.i686.rpm                                                                                   | 4.5 MB     00:03     </span><br><span class="line">    (9/11): libgomp-4.4.7-18.el6.i686.rpm                                                                                                | 136 kB     00:00     </span><br><span class="line">    (10/11): mpfr-2.4.1-6.el6.i686.rpm                                                                                                   | 153 kB     00:00     </span><br><span class="line">    (11/11): ppl-0.10.2-11.el6.i686.rpm                                                                                                  | 1.3 MB     00:00     </span><br><span class="line">    ------------------------------------------------------------------------------------------------------------------------------------------------------------</span><br><span class="line">    总计                                                                                                                        281 kB/s |  38 MB     02:17     </span><br><span class="line">    运行 rpm_check_debug </span><br><span class="line">    执行事务测试</span><br><span class="line">    事务测试成功</span><br><span class="line">    执行事务</span><br><span class="line">      正在安装   : kernel-headers-2.6.32-696.1.1.el6.i686                                                                                                  1/13 </span><br><span class="line">      正在升级   : glibc-common-2.12-1.209.el6_9.1.i686                                                                                                    2/13 </span><br><span class="line">      正在升级   : glibc-2.12-1.209.el6_9.1.i686                                                                                                           3/13 </span><br><span class="line">      正在安装   : glibc-headers-2.12-1.209.el6_9.1.i686                                                                                                   4/13 </span><br><span class="line">      正在安装   : glibc-devel-2.12-1.209.el6_9.1.i686                                                                                                     5/13 </span><br><span class="line">      正在安装   : libgomp-4.4.7-18.el6.i686                                                                                                               6/13 </span><br><span class="line">      正在安装   : mpfr-2.4.1-6.el6.i686                                                                                                                   7/13 </span><br><span class="line">      正在安装   : cpp-4.4.7-18.el6.i686                                                                                                                   8/13 </span><br><span class="line">      正在安装   : ppl-0.10.2-11.el6.i686                                                                                                                  9/13 </span><br><span class="line">      正在安装   : cloog-ppl-0.15.7-1.2.el6.i686                                                                                                          10/13 </span><br><span class="line">      正在安装   : gcc-4.4.7-18.el6.i686                                                                                                                  11/13 </span><br><span class="line">      清理       : glibc-common-2.12-1.209.el6.i686                                                                                                       12/13 </span><br><span class="line">      清理       : glibc-2.12-1.209.el6.i686                                                                                                              13/13 </span><br><span class="line">      Verifying  : kernel-headers-2.6.32-696.1.1.el6.i686                                                                                                  1/13 </span><br><span class="line">      Verifying  : glibc-devel-2.12-1.209.el6_9.1.i686                                                                                                     2/13 </span><br><span class="line">      Verifying  : libgomp-4.4.7-18.el6.i686                                                                                                               3/13 </span><br><span class="line">      Verifying  : gcc-4.4.7-18.el6.i686                                                                                                                   4/13 </span><br><span class="line">      Verifying  : glibc-2.12-1.209.el6_9.1.i686                                                                                                           5/13 </span><br><span class="line">      Verifying  : glibc-common-2.12-1.209.el6_9.1.i686                                                                                                    6/13 </span><br><span class="line">      Verifying  : mpfr-2.4.1-6.el6.i686                                                                                                                   7/13 </span><br><span class="line">      Verifying  : ppl-0.10.2-11.el6.i686                                                                                                                  8/13 </span><br><span class="line">      Verifying  : cpp-4.4.7-18.el6.i686                                                                                                                   9/13 </span><br><span class="line">      Verifying  : glibc-headers-2.12-1.209.el6_9.1.i686                                                                                                  10/13 </span><br><span class="line">      Verifying  : cloog-ppl-0.15.7-1.2.el6.i686                                                                                                          11/13 </span><br><span class="line">      Verifying  : glibc-common-2.12-1.209.el6.i686                                                                                                       12/13 </span><br><span class="line">      Verifying  : glibc-2.12-1.209.el6.i686                                                                                                              13/13 </span><br><span class="line"></span><br><span class="line">    已安装:</span><br><span class="line">      gcc.i686 0:4.4.7-18.el6                                                                                                                                   </span><br><span class="line"></span><br><span class="line">    作为依赖被安装:</span><br><span class="line">      cloog-ppl.i686 0:0.15.7-1.2.el6            cpp.i686 0:4.4.7-18.el6       glibc-devel.i686 0:2.12-1.209.el6_9.1   glibc-headers.i686 0:2.12-1.209.el6_9.1  </span><br><span class="line">      kernel-headers.i686 0:2.6.32-696.1.1.el6   libgomp.i686 0:4.4.7-18.el6   mpfr.i686 0:2.4.1-6.el6                 ppl.i686 0:0.10.2-11.el6                 </span><br><span class="line"></span><br><span class="line">    作为依赖被升级:</span><br><span class="line">      glibc.i686 0:2.12-1.209.el6_9.1                                           glibc-common.i686 0:2.12-1.209.el6_9.1                                          </span><br><span class="line"></span><br><span class="line">    完毕！</span><br><span class="line"><span class="variable">$rpm</span> -i|grep gcc</span><br><span class="line">    rpm: no packages given <span class="keyword">for</span> install</span><br><span class="line"><span class="variable">$rpm</span> -qi|grep gcc</span><br><span class="line">    rpm: no arguments given <span class="keyword">for</span> query</span><br><span class="line"><span class="variable">$rpm</span> -qa|grep gcc</span><br><span class="line">    libgcc-4.4.7-18.el6.i686</span><br><span class="line">    gcc-4.4.7-18.el6.i686</span><br><span class="line">$./configure --prefix=/usr/<span class="built_in">local</span>/apr-1.5.2</span><br><span class="line">    checking build system <span class="built_in">type</span>... i686-pc-linux-gnu</span><br><span class="line">    checking host system <span class="built_in">type</span>... i686-pc-linux-gnu</span><br><span class="line">    checking target system <span class="built_in">type</span>... i686-pc-linux-gnu</span><br><span class="line">    Configuring APR library</span><br><span class="line">    Platform: i686-pc-linux-gnu</span><br><span class="line">    checking <span class="keyword">for</span> working mkdir -p... yes</span><br><span class="line">    APR Version: 1.5.2</span><br><span class="line">    checking <span class="keyword">for</span> chosen layout... apr</span><br><span class="line">    checking <span class="keyword">for</span> gcc... gcc</span><br><span class="line">    checking whether the C compiler works... yes</span><br><span class="line">    checking <span class="keyword">for</span> C compiler default output file name... a.out</span><br><span class="line">    checking <span class="keyword">for</span> suffix of executables... </span><br><span class="line">    checking whether we are cross compiling... no</span><br><span class="line">    checking <span class="keyword">for</span> suffix of object files... o</span><br><span class="line">    …………………………………………</span><br><span class="line">    …………………………………………</span><br><span class="line">    ………………好多checking………………………</span><br><span class="line">    …………………………………………</span><br><span class="line">    …………………………………………</span><br><span class="line">    checking <span class="keyword">for</span> working getaddrinfo... yes</span><br><span class="line">    checking <span class="keyword">for</span> negative error codes <span class="keyword">for</span> getaddrinfo... yes</span><br><span class="line">    checking <span class="keyword">for</span> working getnameinfo... yes</span><br><span class="line">    checking <span class="keyword">for</span> sockaddr_in6... yes</span><br><span class="line">    checking <span class="keyword">for</span> sockaddr_storage... yes</span><br><span class="line">    checking <span class="keyword">for</span> working AI_ADDRCONFIG... yes</span><br><span class="line">    checking <span class="keyword">if</span> APR supports IPv6... yes</span><br><span class="line">    checking langinfo.h usability... yes</span><br><span class="line">    checking langinfo.h presence... yes</span><br><span class="line">    checking <span class="keyword">for</span> langinfo.h... yes</span><br><span class="line">    checking <span class="keyword">for</span> nl_langinfo... yes</span><br><span class="line">      setting have_unicode_fs to <span class="string">"0"</span></span><br><span class="line">      setting apr_has_xthread_files to <span class="string">"0"</span></span><br><span class="line">      setting apr_procattr_user_set_requires_password to <span class="string">"0"</span></span><br><span class="line">      setting apr_thread_func to <span class="string">""</span></span><br><span class="line">      setting apr_has_user to <span class="string">"1"</span></span><br><span class="line"></span><br><span class="line">    Restore user-defined environment settings...</span><br><span class="line">      restoring CPPFLAGS to <span class="string">""</span></span><br><span class="line">      setting EXTRA_CPPFLAGS to <span class="string">"-DLINUX -D_REENTRANT -D_GNU_SOURCE -D_LARGEFILE64_SOURCE"</span></span><br><span class="line">      restoring CFLAGS to <span class="string">""</span></span><br><span class="line">      setting EXTRA_CFLAGS to <span class="string">"-g -O2 -pthread"</span></span><br><span class="line">      restoring LDFLAGS to <span class="string">""</span></span><br><span class="line">      setting EXTRA_LDFLAGS to <span class="string">""</span></span><br><span class="line">      restoring LIBS to <span class="string">""</span></span><br><span class="line">      setting EXTRA_LIBS to <span class="string">"-lrt -lcrypt  -lpthread"</span></span><br><span class="line">      restoring INCLUDES to <span class="string">""</span></span><br><span class="line">      setting EXTRA_INCLUDES to <span class="string">""</span></span><br><span class="line">    configure: creating ./config.status</span><br><span class="line">    config.status: creating Makefile</span><br><span class="line">    config.status: creating include/apr.h</span><br><span class="line">    config.status: creating build/apr_rules.mk</span><br><span class="line">    config.status: creating build/pkg/pkginfo</span><br><span class="line">    config.status: creating apr-1-config</span><br><span class="line">    config.status: creating apr.pc</span><br><span class="line">    config.status: creating <span class="built_in">test</span>/Makefile</span><br><span class="line">    config.status: creating <span class="built_in">test</span>/internal/Makefile</span><br><span class="line">    config.status: creating include/arch/unix/apr_private.h</span><br><span class="line">    config.status: executing libtool commands</span><br><span class="line">    rm: cannot remove `libtoolT<span class="string">': No such file or directory</span></span><br><span class="line"><span class="string">    config.status: executing default commands</span></span><br><span class="line"><span class="string">$make</span></span><br><span class="line"><span class="string">    make[1]: Entering directory `/home/ssy/apr-1.5.2'</span></span><br><span class="line">    /home/ssy/apr-1.5.2/build/mkdir.sh tools</span><br><span class="line">    /bin/sh /home/ssy/apr-1.5.2/libtool --silent --mode=compile gcc -g -O2 -pthread   -DHAVE_CONFIG_H  -DLINUX -D_REENTRANT -D_GNU_SOURCE -D_LARGEFILE64_SOURCE   -I./include -I/home/ssy/apr-1.5.2/include/arch/unix -I./include/arch/unix -I/home/ssy/apr-1.5.2/include/arch/unix -I/home/ssy/apr-1.5.2/include -I/home/ssy/apr-1.5.2/include/private -I/home/ssy/apr-1.5.2/include/private  -o tools/gen_test_char.lo -c tools/gen_test_char.c &amp;&amp; touch tools/gen_test_char.lo</span><br><span class="line">    /bin/sh /home/ssy/apr-1.5.2/libtool --silent --mode=link gcc -g -O2 -pthread   -DHAVE_CONFIG_H  -DLINUX -D_REENTRANT -D_GNU_SOURCE -D_LARGEFILE64_SOURCE   -I./include -I/home/ssy/apr-1.5.2/include/arch/unix -I./include/arch/unix -I/home/ssy/apr-1.5.2/include/arch/unix -I/home/ssy/apr-1.5.2/include -I/home/ssy/apr-1.5.2/include/private -I/home/ssy/apr-1.5.2/include/private   -no-install    -o tools/gen_test_char tools/gen_test_char.lo    -lrt -lcrypt  -lpthread</span><br><span class="line">    /home/ssy/apr-1.5.2/build/mkdir.sh include/private</span><br><span class="line">    tools/gen_test_char &gt; include/private/apr_escape_test_char.h</span><br><span class="line">    ……………………………………</span><br><span class="line">    ……………………………………</span><br><span class="line">    ……………………………………</span><br><span class="line">    ……………………………………</span><br><span class="line">    make[1]: Leaving directory `/home/ssy/apr-1.5.2<span class="string">'</span></span><br><span class="line"><span class="string">$make install</span></span><br><span class="line"><span class="string">    make[1]: Entering directory `/home/ssy/apr-1.5.2'</span></span><br><span class="line">    make[1]: Nothing to be <span class="keyword">done</span> <span class="keyword">for</span> `<span class="built_in">local</span>-all<span class="string">'.</span></span><br><span class="line"><span class="string">    make[1]: Leaving directory `/home/ssy/apr-1.5.2'</span></span><br><span class="line">    /home/ssy/apr-1.5.2/build/mkdir.sh /usr/<span class="built_in">local</span>/apr-1.5.2/lib /usr/<span class="built_in">local</span>/apr-1.5.2/bin /usr/<span class="built_in">local</span>/apr-1.5.2/build-1 \</span><br><span class="line">                 /usr/<span class="built_in">local</span>/apr-1.5.2/lib/pkgconfig /usr/<span class="built_in">local</span>/apr-1.5.2/include/apr-1</span><br><span class="line">    mkdir /usr/<span class="built_in">local</span>/apr-1.5.2</span><br><span class="line">    mkdir: 无法创建目录<span class="string">"/usr/local/apr-1.5.2"</span>: 权限不够</span><br><span class="line">    mkdir /usr/<span class="built_in">local</span>/apr-1.5.2/lib</span><br><span class="line">    mkdir: 无法创建目录<span class="string">"/usr/local/apr-1.5.2/lib"</span>: 没有那个文件或目录</span><br><span class="line">    mkdir /usr/<span class="built_in">local</span>/apr-1.5.2</span><br><span class="line">    mkdir: 无法创建目录<span class="string">"/usr/local/apr-1.5.2"</span>: 权限不够</span><br><span class="line">    mkdir /usr/<span class="built_in">local</span>/apr-1.5.2/bin</span><br><span class="line">    mkdir: 无法创建目录<span class="string">"/usr/local/apr-1.5.2/bin"</span>: 没有那个文件或目录</span><br><span class="line">    mkdir /usr/<span class="built_in">local</span>/apr-1.5.2</span><br><span class="line">    mkdir: 无法创建目录<span class="string">"/usr/local/apr-1.5.2"</span>: 权限不够</span><br><span class="line">    mkdir /usr/<span class="built_in">local</span>/apr-1.5.2/build-1</span><br><span class="line">    mkdir: 无法创建目录<span class="string">"/usr/local/apr-1.5.2/build-1"</span>: 没有那个文件或目录</span><br><span class="line">    mkdir /usr/<span class="built_in">local</span>/apr-1.5.2</span><br><span class="line">    mkdir: 无法创建目录<span class="string">"/usr/local/apr-1.5.2"</span>: 权限不够</span><br><span class="line">    mkdir /usr/<span class="built_in">local</span>/apr-1.5.2/lib</span><br><span class="line">    mkdir: 无法创建目录<span class="string">"/usr/local/apr-1.5.2/lib"</span>: 没有那个文件或目录</span><br><span class="line">    mkdir /usr/<span class="built_in">local</span>/apr-1.5.2/lib/pkgconfig</span><br><span class="line">    mkdir: 无法创建目录<span class="string">"/usr/local/apr-1.5.2/lib/pkgconfig"</span>: 没有那个文件或目录</span><br><span class="line">    mkdir /usr/<span class="built_in">local</span>/apr-1.5.2</span><br><span class="line">    mkdir: 无法创建目录<span class="string">"/usr/local/apr-1.5.2"</span>: 权限不够</span><br><span class="line">    mkdir /usr/<span class="built_in">local</span>/apr-1.5.2/include</span><br><span class="line">    mkdir: 无法创建目录<span class="string">"/usr/local/apr-1.5.2/include"</span>: 没有那个文件或目录</span><br><span class="line">    mkdir /usr/<span class="built_in">local</span>/apr-1.5.2/include/apr-1</span><br><span class="line">    mkdir: 无法创建目录<span class="string">"/usr/local/apr-1.5.2/include/apr-1"</span>: 没有那个文件或目录</span><br><span class="line">    make: *** [install] 错误 1</span><br><span class="line"><span class="variable">$sudo</span> make install</span><br><span class="line">password <span class="keyword">for</span> ssy: </span><br><span class="line">    make[1]: Entering directory `/home/ssy/apr-1.5.2<span class="string">'</span></span><br><span class="line"><span class="string">    make[1]: Nothing to be done for `local-all'</span>.</span><br><span class="line">    make[1]: Leaving directory `/home/ssy/apr-1.5.2<span class="string">'</span></span><br><span class="line"><span class="string">    /home/ssy/apr-1.5.2/build/mkdir.sh /usr/local/apr-1.5.2/lib /usr/local/apr-1.5.2/bin /usr/local/apr-1.5.2/build-1 \</span></span><br><span class="line"><span class="string">                 /usr/local/apr-1.5.2/lib/pkgconfig /usr/local/apr-1.5.2/include/apr-1</span></span><br><span class="line"><span class="string">    mkdir /usr/local/apr-1.5.2</span></span><br><span class="line"><span class="string">    mkdir /usr/local/apr-1.5.2/lib</span></span><br><span class="line"><span class="string">    mkdir /usr/local/apr-1.5.2/bin</span></span><br><span class="line"><span class="string">    mkdir /usr/local/apr-1.5.2/build-1</span></span><br><span class="line"><span class="string">    mkdir /usr/local/apr-1.5.2/lib/pkgconfig</span></span><br><span class="line"><span class="string">    mkdir /usr/local/apr-1.5.2/include</span></span><br><span class="line"><span class="string">    mkdir /usr/local/apr-1.5.2/include/apr-1</span></span><br><span class="line"><span class="string">    /usr/bin/install -c -m 644 /home/ssy/apr-1.5.2/include/apr.h /usr/local/apr-1.5.2/include/apr-1</span></span><br><span class="line"><span class="string">    for f in /home/ssy/apr-1.5.2/include/apr_*.h; do \</span></span><br><span class="line"><span class="string">            /usr/bin/install -c -m 644 $&#123;f&#125; /usr/local/apr-1.5.2/include/apr-1; \</span></span><br><span class="line"><span class="string">        done</span></span><br><span class="line"><span class="string">    /bin/sh /home/ssy/apr-1.5.2/libtool --mode=install /usr/bin/install -c -m 755 libapr-1.la /usr/local/apr-1.5.2/lib</span></span><br><span class="line"><span class="string">    libtool: install: /usr/bin/install -c -m 755 .libs/libapr-1.so.0.5.2 /usr/local/apr-1.5.2/lib/libapr-1.so.0.5.2</span></span><br><span class="line"><span class="string">    libtool: install: (cd /usr/local/apr-1.5.2/lib &amp;&amp; &#123; ln -s -f libapr-1.so.0.5.2 libapr-1.so.0 || &#123; rm -f libapr-1.so.0 &amp;&amp; ln -s libapr-1.so.0.5.2 libapr-1.so.0; &#125;; &#125;)</span></span><br><span class="line"><span class="string">    libtool: install: (cd /usr/local/apr-1.5.2/lib &amp;&amp; &#123; ln -s -f libapr-1.so.0.5.2 libapr-1.so || &#123; rm -f libapr-1.so &amp;&amp; ln -s libapr-1.so.0.5.2 libapr-1.so; &#125;; &#125;)</span></span><br><span class="line"><span class="string">    libtool: install: /usr/bin/install -c -m 755 .libs/libapr-1.lai /usr/local/apr-1.5.2/lib/libapr-1.la</span></span><br><span class="line"><span class="string">    libtool: install: /usr/bin/install -c -m 755 .libs/libapr-1.a /usr/local/apr-1.5.2/lib/libapr-1.a</span></span><br><span class="line"><span class="string">    libtool: install: chmod 644 /usr/local/apr-1.5.2/lib/libapr-1.a</span></span><br><span class="line"><span class="string">    libtool: install: ranlib /usr/local/apr-1.5.2/lib/libapr-1.a</span></span><br><span class="line"><span class="string">    libtool: finish: PATH="/sbin:/bin:/usr/sbin:/usr/bin:/sbin" ldconfig -n /usr/local/apr-1.5.2/lib</span></span><br><span class="line"><span class="string">    ----------------------------------------------------------------------</span></span><br><span class="line"><span class="string">    Libraries have been installed in:</span></span><br><span class="line"><span class="string">       /usr/local/apr-1.5.2/lib</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    If you ever happen to want to link against installed libraries</span></span><br><span class="line"><span class="string">    in a given directory, LIBDIR, you must either use libtool, and</span></span><br><span class="line"><span class="string">    specify the full pathname of the library, or use the `-LLIBDIR'</span></span><br><span class="line">    flag during linking and <span class="keyword">do</span> at least one of the following:</span><br><span class="line">       - add LIBDIR to the `LD_LIBRARY_PATH<span class="string">' environment variable</span></span><br><span class="line"><span class="string">         during execution</span></span><br><span class="line"><span class="string">       - add LIBDIR to the `LD_RUN_PATH'</span> environment variable</span><br><span class="line">         during linking</span><br><span class="line">       - use the `-Wl,-rpath -Wl,LIBDIR<span class="string">' linker flag</span></span><br><span class="line"><span class="string">       - have your system administrator add LIBDIR to `/etc/ld.so.conf'</span></span><br><span class="line"></span><br><span class="line">    See any operating system documentation about shared libraries <span class="keyword">for</span></span><br><span class="line">    more information, such as the ld(1) and ld.so(8) manual pages.</span><br><span class="line">    ----------------------------------------------------------------------</span><br><span class="line">    /usr/bin/install -c -m 644 apr.exp /usr/<span class="built_in">local</span>/apr-1.5.2/lib/apr.exp</span><br><span class="line">    /usr/bin/install -c -m 644 apr.pc /usr/<span class="built_in">local</span>/apr-1.5.2/lib/pkgconfig/apr-1.pc</span><br><span class="line">    <span class="keyword">for</span> f <span class="keyword">in</span> libtool shlibtool; <span class="keyword">do</span> \</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">test</span> -f <span class="variable">$&#123;f&#125;</span>; <span class="keyword">then</span> /usr/bin/install -c -m 755 <span class="variable">$&#123;f&#125;</span> /usr/<span class="built_in">local</span>/apr-1.5.2/build-1; <span class="keyword">fi</span>; \</span><br><span class="line">        <span class="keyword">done</span></span><br><span class="line">    /usr/bin/install -c -m 755 /home/ssy/apr-1.5.2/build/mkdir.sh /usr/<span class="built_in">local</span>/apr-1.5.2/build-1</span><br><span class="line">    <span class="keyword">for</span> f <span class="keyword">in</span> make_exports.awk make_var_export.awk; <span class="keyword">do</span> \</span><br><span class="line">            /usr/bin/install -c -m 644 /home/ssy/apr-1.5.2/build/<span class="variable">$&#123;f&#125;</span> /usr/<span class="built_in">local</span>/apr-1.5.2/build-1; \</span><br><span class="line">        <span class="keyword">done</span></span><br><span class="line">    /usr/bin/install -c -m 644 build/apr_rules.out /usr/<span class="built_in">local</span>/apr-1.5.2/build-1/apr_rules.mk</span><br><span class="line">    /usr/bin/install -c -m 755 apr-config.out /usr/<span class="built_in">local</span>/apr-1.5.2/bin/apr-1-config</span><br><span class="line"><span class="variable">$rpm</span> -q apr</span><br><span class="line">    package apr is not installed                                                <span class="comment">#####不是rpm安装，编译源代码安装的没有检测到</span></span><br><span class="line"><span class="variable">$rpm</span> -qa|grep apr</span><br><span class="line">    空</span><br><span class="line">$./configure prefix=/usr/<span class="built_in">local</span>/httpd-2.4.25 --with-apr=/usr/<span class="built_in">local</span>/apr-1.5.2     <span class="comment">####安装上还提示找不到APR，指定路径</span></span><br><span class="line">    checking <span class="keyword">for</span> chosen layout... Apache</span><br><span class="line">    checking <span class="keyword">for</span> working mkdir -p... yes</span><br><span class="line">    checking <span class="keyword">for</span> grep that handles long lines and -e... /bin/grep</span><br><span class="line">    checking <span class="keyword">for</span> egrep... /bin/grep -E</span><br><span class="line">    checking build system <span class="built_in">type</span>... i686-pc-linux-gnu</span><br><span class="line">    checking host system <span class="built_in">type</span>... i686-pc-linux-gnu</span><br><span class="line">    checking target system <span class="built_in">type</span>... i686-pc-linux-gnu</span><br><span class="line">    configure: </span><br><span class="line">    configure: Configuring Apache Portable Runtime library...</span><br><span class="line">    configure: </span><br><span class="line">    checking <span class="keyword">for</span> APR... yes</span><br><span class="line">      setting CC to <span class="string">"gcc"</span></span><br><span class="line">      setting CPP to <span class="string">"gcc -E"</span></span><br><span class="line">      setting CFLAGS to <span class="string">" -g -O2 -pthread"</span></span><br><span class="line">      setting CPPFLAGS to <span class="string">" -DLINUX -D_REENTRANT -D_GNU_SOURCE -D_LARGEFILE64_SOURCE"</span></span><br><span class="line">      setting LDFLAGS to <span class="string">" "</span></span><br><span class="line">    configure: </span><br><span class="line">    configure: Configuring Apache Portable Runtime Utility library...</span><br><span class="line">    configure: </span><br><span class="line">    checking <span class="keyword">for</span> APR-util... no</span><br><span class="line">    configure: error: APR-util not found.  Please <span class="built_in">read</span> the documentation.</span><br><span class="line"><span class="variable">$tar</span> -xvf apr-util-1.5.4.tar.gz</span><br><span class="line">    ………………</span><br><span class="line">$./configure prefix=/usr/<span class="built_in">local</span>/apr-util-1.5.4 --with-apr=/usr/<span class="built_in">local</span>/apr-1.5.2</span><br><span class="line">    ………………</span><br><span class="line"><span class="variable">$make</span></span><br><span class="line">    ………………</span><br><span class="line"><span class="variable">$sudo</span> make install</span><br><span class="line">    ………………</span><br><span class="line">[ssy@localhost ~/pcre-8.00]$./configure --prefix=/usr/<span class="built_in">local</span>/pcre-8.00</span><br><span class="line">    ………………</span><br><span class="line">[ssy@localhost ~/pcre-8.00]<span class="variable">$make</span> distclean          <span class="comment">###pcre版本安装的低了</span></span><br><span class="line">     rm -f pcretest pcretest</span><br><span class="line">     rm -f pcregrep pcregrep</span><br><span class="line">    <span class="built_in">test</span> -z <span class="string">"pcre_chartables.c testsavedregex teststderr testtry testNinput"</span> || rm -f pcre_chartables.c testsavedregex teststderr testtry testNinput</span><br><span class="line">    <span class="built_in">test</span> -z <span class="string">"libpcre.la libpcreposix.la libpcrecpp.la"</span> || rm -f libpcre.la libpcreposix.la libpcrecpp.la</span><br><span class="line">    rm -f <span class="string">"./so_locations"</span></span><br><span class="line">    rm -f <span class="string">"./so_locations"</span></span><br><span class="line">    rm -f <span class="string">"./so_locations"</span></span><br><span class="line">    rm -rf .libs _libs</span><br><span class="line">     rm -f pcrecpp_unittest pcrecpp_unittest</span><br><span class="line">     rm -f pcre_scanner_unittest pcre_scanner_unittest</span><br><span class="line">     rm -f pcre_stringpiece_unittest pcre_stringpiece_unittest</span><br><span class="line">    rm -f *.o</span><br><span class="line">    rm -f *.lo</span><br><span class="line">    rm -f *.tab.c</span><br><span class="line">    <span class="built_in">test</span> -z <span class="string">"libpcre.pc libpcreposix.pc libpcrecpp.pc pcre-config pcre.h pcre_stringpiece.h pcrecpparg.h"</span> || rm -f libpcre.pc libpcreposix.pc libpcrecpp.pc pcre-config pcre.h pcre_stringpiece.h pcrecpparg.h</span><br><span class="line">    rm -f config.h stamp-h1</span><br><span class="line">    rm -f libtool config.lt</span><br><span class="line">    rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags</span><br><span class="line">    rm -f config.status config.cache config.log configure.lineno config.status.lineno</span><br><span class="line">    rm -rf ./.deps</span><br><span class="line">    rm -f Makefile</span><br><span class="line">[ssy@localhost ~/pcre-8.00]<span class="variable">$make</span> distclean</span><br><span class="line">    make: *** 没有规则可以创建目标“distclean”。 停止。</span><br><span class="line">[ssy@localhost ~/pcre-8.00]<span class="variable">$gmake</span> confclean</span><br><span class="line">    gmake: *** 没有规则可以创建目标“confclean”。 停止。</span><br><span class="line">[ssy@localhost ~/pcre-8.40]$./configure --prefix=/usr/<span class="built_in">local</span>/pcre-8.40</span><br><span class="line">    ……………………</span><br><span class="line">    ……………………</span><br><span class="line">    configure: error: You need a C++ compiler <span class="keyword">for</span> C++ support.</span><br><span class="line">[ssy@localhost ~/pcre-8.40]<span class="variable">$sudo</span> yum -y install gcc-c++</span><br><span class="line">    已安装:</span><br><span class="line">    gcc-c++.i686 0:4.4.7-18.el6                                                                                                                               作为依赖被安装:</span><br><span class="line">    libstdc++-devel.i686 0:4.4.7-18.el6                                                                                                                       </span><br><span class="line">[ssy@localhost ~/pcre-8.40]$./configure --prefix=/usr/<span class="built_in">local</span>/pcre-8.40</span><br><span class="line">    ………………………………</span><br><span class="line">    ………………………………</span><br><span class="line">[ssy@localhost ~/pcre-8.40]<span class="variable">$sudo</span> make &amp; sudo make install</span><br><span class="line">    libtool: warning: relinking <span class="string">'libpcreposix.la'</span></span><br></pre></td></tr></table></figure>
+<h2 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</h2><p>```bash<br>[ssy@localhost ~/php-7.1.5]$./configure –prefix=/usr/local/php-7.1.5<br>    ………………………………<br>    ………………………………<br>    configure: error: xml2-config not found. Please check your libxml2 installation.<br>[ssy@localhost ~/php-7.1.5]$sudo yum -y install libxml2<br>    包 libxml2-2.7.6-21.el6_8.1.i686 已安装并且是最新版本<br>    无须任何处理<br>[ssy@localhost ~/php-7.1.5]$rpm -qa | grep xml<br>    libxml2-2.7.6-21.el6_8.1.i686<br>[ssy@localhost ~/php-7.1.5]$yum list|grep libxml2<br>    libxml2.i686                               2.7.6-21.el6_8.1              @anaconda-CentOS-201703281202.i386/6.9<br>    libxml2-devel.i686                         2.7.6-21.el6_8.1              base<br>    libxml2-python.i686                        2.7.6-21.el6_8.1              base<br>    libxml2-static.i686                        2.7.6-21.el6_8.1              base<br>[ssy@localhost ~/php-7.1.5]$sudo yum -y install libxml2-devel<br>    已安装:<br>      libxml2-devel.i686 0:2.7.6-21.el6_8.1<br>    作为依赖被安装:<br>      zlib-devel.i686 0:1.2.3-29.el6<br>[ssy@localhost ~/php-7.1.5]$sudo find / -name ‘xml2-config’<br>    /usr/bin/xml2-config         ###虽然libxml2相关有4个安装包，</p>
+<pre><code>###且提示的是libxml2安装包，
+###但装完libxml2-devel后，原来提示找不到的文件xml2-config已找到
+</code></pre><p>[ssy@localhost ~/php-7.1.5]$./configure –prefix=/usr/local/php-7.1.5<br>    Build complete.<br>    Don’t forget to run ‘make test’.<br>[ssy@localhost ~/php-7.1.5]$make test<br>    ……………………………………………………</p>
+<pre><code>……………………………………………………
+=====================================================================
+TEST RESULT SUMMARY
+---------------------------------------------------------------------
+Exts skipped    :   48
+Exts tested     :   26
+---------------------------------------------------------------------
+
+Number of tests : 15366             10253
+Tests skipped   : 5113 ( 33.3%) --------
+Tests warned    :    0 (  0.0%) (  0.0%)
+Tests failed    :    5 (  0.0%) (  0.0%)
+Expected fail   :   35 (  0.2%) (  0.3%)
+Tests passed    : 10213 ( 66.5%) ( 99.6%)
+---------------------------------------------------------------------
+Time taken      : 10633 seconds
+=====================================================================
+
+=====================================================================
+EXPECTED FAILED TEST SUMMARY
+---------------------------------------------------------------------
+Test open_basedir configuration [tests/security/open_basedir_linkinfo.phpt]  XFAIL REASON: BUG: open_basedir cannot delete symlink to prohibited file. See also
+bugs 48111 and 52176.
+
+=====================================================================
+FAILED TEST SUMMARY
+---------------------------------------------------------------------
+Concatenating many small strings should not slowdown allocations [Zend/tests/concat_003.phpt]
+array dns_get_record ( string $hostname [, int $type = DNS_ANY [, array &amp;$authns [, array &amp;$addtl [, bool &amp;$raw = false ]]]] ); [ext/standard/tests/dns_get_record.phpt]
+Bug #60120 proc_open hangs with stdin/out with 2048+ bytes [ext/standard/tests/streams/proc_open_bug60120.phpt]
+Bug #64438 proc_open hangs with stdin/out with 4097+ bytes [ext/standard/tests/streams/proc_open_bug64438.phpt]
+Bug #69900 Commandline input/output weird behaviour with STDIO [ext/standard/tests/streams/proc_open_bug69900.phpt]
+=====================================================================
+
+###make test 就是 PHP 的自动化测试
+###会出现许多 skip 和 fail 说明有一些扩展没有安装，相关环境的配置也需要优化
+###经测试，make test之后就无需make了，再make时还是会提示要make test，不知可否跳过make test，直接make install
+</code></pre><p>[ssy@localhost ~/php-7.1.5]$sudo make install</p>
+<p>============================PHP安装完成了===============================================</p>
+<p>============================开始安装MySQL===============================================</p>
+<p>版本：<br>    只有Community版本MySQL是免费的</p>
+<p>两种包：<br>    RPM BUNDLE  是把MySQL的所有RPM包都包括了</p>
+<pre><code>RPM PACKAGE 没个MySQL部件一个包，安装哪个下载哪个
+    如mysql-community-devel-5.7.18-1.el6.i686.rpm是开发库包devel---development library
+</code></pre><p>MySQL最基础安装需要四个MySQL包：</p>
+<pre><code>common
+    完整名：RPM Package, MySQL Configuration
+    文件名：mysql-community-common-5.7.18-1.el6.i686.rpm
+lib
+    完整名：RPM Package, Shared Libraries
+    文件名：mysql-community-libs-5.7.18-1.el6.i686.rpm
+    注：是Shared Libraries，不是Development Libraries
+client
+    完整名：RPM Package, Client Utilities
+    文件名：mysql-community-client-5.7.18-1.el6.i686.rpm
+server
+    完整名：RPM Package, MySQL Server
+    文件名：mysql-community-server-5.7.18-1.el6.i686.rpm
+</code></pre><p>还额外需要两个其他包：</p>
+<pre><code>per
+
+numactl - 用于控制 进程与共享存储的 NUMA 技术机制
+</code></pre><p>依赖关系如下：</p>
+<pre><code>common&lt;-lib&lt;-client&lt;-server
+            numactl&lt;-
+                per&lt;-
+</code></pre><p>所以安装顺序：</p>
+<pre><code>[ssy@localhost ~/mysql]$sudo rpm -ivh mysql-community-common-5.7.18-1.el6.i686.rpm 
+[ssy@localhost ~/mysql]$sudo rpm -ivh mysql-community-libs-5.7.18-1.el6.i686.rpm 
+[ssy@localhost ~/mysql]$sudo rpm -ivh mysql-community-client-5.7.18-1.el6.i686.rpm 
+[ssy@localhost ~/mysql]$sudo rpm -ivh mysql-community-server-5.7.18-1.el6.i686.rpm 
+[ssy@localhost ~/mysql]$sudo yum -y install numactl
+[ssy@localhost ~/mysql]$sudo yum -y install perl
+
+试一下本地yum，让yum自己解决依赖关系：
+
+[ssy@localhost ~/mysql]$sudo yum localinstall MySQL-server-5.6.21-1.el6.i686.rpm
+</code></pre><p>安装时会提示NOKEY，不过不影响安装</p>
+<pre><code>rpm -ivh mysql-community-common-5.7.18-1.el6.i686.rpm
+    warning: mysql-community-server-5.7.18-1.el6.i686.rpm: Header V3 DSA/SHA1 Signature, key ID 5072e1f5: NOKEY
+</code></pre><p>主动去验证签名也出错</p>
+<pre><code>rpm -K mysql-community-common-5.7.18-1.el6.i686.rpm
+    mysql-community-common-5.7.18-1.el6.i686.rpm: (SHA1) DSA sha1 md5 (GPG) NOT OK (MISSING KEYS: GPG#5072e1f5) 
+</code></pre><p>导入公钥到GPG库</p>
+<pre><code>1、
+    从上面的提示知道：MySQL的公钥ID是5072e1f5
+    可从http://pgp.mit.edu/找到MySQL的公钥：
+        命名的键为：mysql-build@oss.oracle.com
+        公钥ID为：5072E1F5
+        标注为：selfsig
+    找到后复制到剪贴板，执行命令
+
+    [ssy@localhost ~/mysql]$touch mysql_pubkey.asc 
+        #建立公钥文件
+    [ssy@localhost ~/mysql]$vi mysql_pubkey.asc 
+        #粘贴从网上下载的公共秘钥
+    [ssy@localhost ~/mysql]$gpg --import mysql_pubkey.asc 
+        gpg: /home/ssy/.gnupg/trustdb.gpg：建立了信任度数据库
+        gpg: 密钥 5072E1F5：公钥“MySQL Release Engineering &lt;mysql-build@oss.oracle.com&gt;”已导入
+        gpg: 合计被处理的数量：1
+        gpg:           已导入：1
+        gpg: 没有找到任何绝对信任的密钥
+2、
+    [ssy@localhost ~/mysql]$gpg --recv-keys 5072E1F5
+        gpg: 下载密钥‘5072E1F5’，从 hkp 服务器 keys.gnupg.net
+        gpg: 公钥服务器超时
+        gpg: 从公钥服务器接收失败：Keyserver error
+</code></pre><p>把公钥导入到RPM</p>
+<pre><code>1、从文件导入
+
+    没有公钥文件，则从PGP库导出到文件
+
+        [ssy@localhost ~/mysql]$sudo gpg --export -a 5072e1f5 &gt; 5072e1f5.asc
+
+    rpm从公钥文件导入
+        [ssy@localhost ~/mysql]$sudo rpm --import 5072e1f5.asc
+        #导入成功没有提示，出错才提示
+
+2、通过URL导入
+
+    [ssy@localhost ~/mysql]$rpm --import http://dev.mysql.com/doc/refman/5.7/en/checking-gpg-signature.html
+</code></pre><p>公钥导入RPM后再次验证OK</p>
+<pre><code>[ssy@localhost ~/mysql]$rpm -K mysql-community-common-5.7.18-1.el6.i686.rpm 
+    mysql-community-common-5.7.18-1.el6.i686.rpm: (sha1) dsa sha1 md5 gpg OK
+</code></pre><p>=====================mysql配置======================</p>
+<p>mysql安装过程中创建了名为’mysql’的用户和名为’mysql’的用户组</p>
+<p>mysql安装成功后服务已自动运行</p>
+<p>查看进程</p>
+<pre><code>[ssy@localhost ~]$ ps -le | grep mysql
+    4 S     0  1255     1  0  80   0 -  1568 ?      ?        00:00:00 mysqld_safe
+    4 S    27  1479  1255  4  80   0 - 154200 ?     ?        00:29:15 mysqld
+</code></pre><p>查看端口</p>
+<pre><code>[ssy@localhost ~]$ sudo netstat -tunlp
+    Active Internet connections (only servers)
+    Proto Recv-Q Send-Q Local Address               Foreign Address             State       PID/Program name   
+    tcp        0      0 0.0.0.0:22                  0.0.0.0:*                   LISTEN      1108/sshd           
+    tcp        0      0 :::3306                     :::*                        LISTEN      1479/mysqld         
+    tcp        0      0 :::22                       :::*                        LISTEN      1108/sshd           
+    udp        0      0 0.0.0.0:68                  0.0.0.0:*                               958/dhclient        
+[ssy@localhost ~]$ sudo netstat -tunlp | grep mysql
+    tcp        0      0 :::3306                     :::*                        LISTEN      1479/mysqld         
+</code></pre><p>mysql为root创建了临时密码，写入到了日志文件里/var/log/mysqld.log</p>
+<pre><code>[ssy@localhost ~]$ vi /var/log/mysqld.log
+    2017-05-22T22:39:51.124727Z 1 [Note] A temporary password is generated for root@localhost: fH_hdqJDS9rh
+</code></pre><p>先使用root账号和临时密码登录mysql</p>
+<pre><code>[ssy@localhost ~]$ mysql -u root -pfH_hdqJDS9rh
+    mysql: [Warning] Using a password on the command line interface can be insecure.
+</code></pre><p>然后发现执行什么命令都提示你改密码</p>
+<pre><code>mysql&gt; select 1;
+ERROR 1820 (HY000): You must reset your password using ALTER USER statement before executing this statement.
+</code></pre><p>修改的密码需要符合安全规范</p>
+<pre><code>mysql&gt; alter user &apos;root&apos;@&apos;localhost&apos; identified by &apos;123798&apos;;
+ERROR 1819 (HY000): Your password does not satisfy the current policy requirements
+</code></pre><p>改为复杂密码，注意是修改root账号的密码，不是mysql账号的密码</p>
+<pre><code>mysql&gt; alter user &apos;root&apos;@&apos;localhost&apos; identified by  &apos;(Shen99$)&apos;;
+Query OK, 0 rows affected (0.01 sec)
+</code></pre><p>可以执行了</p>
+<pre><code>mysql&gt; select 1;
++---+
+| 1 |
++---+
+| 1 |
++---+
+1 row in set (0.00 sec)
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/LAMP/" rel="tag"># LAMP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/01/Linux - 主机名由 localhost 自动变为了 bogon？/" rel="next" title="Linux - linux 主机名由 localhost 自动变为了 bogon？">
+                <i class="fa fa-chevron-left"></i> Linux - linux 主机名由 localhost 自动变为了 bogon？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/01/Linux - 常用命令/" rel="prev" title="Linux - 常用命令">
+                Linux - 常用命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">218</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-PHP"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;-PHP" class="headerlink" title="&#x5B89;&#x88C5; PHP"></a>&#x5B89;&#x88C5; PHP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-Apache"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;-Apache" class="headerlink" title="&#x5B89;&#x88C5; Apache"></a>&#x5B89;&#x88C5; Apache</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Problems"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#Problems" class="headerlink" title="Problems"></a>Problems</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Apache"><span class="nav-number">3.</span> <span class="nav-text"><a href="#Apache" class="headerlink" title="Apache"></a>Apache</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP"><span class="nav-number">4.</span> <span class="nav-text"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

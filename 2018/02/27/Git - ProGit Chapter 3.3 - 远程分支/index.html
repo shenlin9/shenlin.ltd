@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Git,Git-Remote," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="远程仓库是指托管在因特网或其他网络中的你的项目的版本库。 你可以有好几个远程仓库，通常有些仓库对你只读，有些则可以读写。">
+<meta name="keywords" content="Git,Git-Remote">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter 3.3 - Git 远程分支">
+<meta property="og:url" content="http://www.shenlin.ltd/2018/02/27/Git - ProGit Chapter 3.3 - 远程分支/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="远程仓库是指托管在因特网或其他网络中的你的项目的版本库。 你可以有好几个远程仓库，通常有些仓库对你只读，有些则可以读写。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://git-scm.com/book/en/v2/images/remote-branches-1.png">
+<meta property="og:image" content="https://git-scm.com/book/en/v2/images/remote-branches-2.png">
+<meta property="og:image" content="https://git-scm.com/book/en/v2/images/remote-branches-3.png">
+<meta property="og:image" content="https://git-scm.com/book/en/v2/images/remote-branches-4.png">
+<meta property="og:image" content="https://git-scm.com/book/en/v2/images/remote-branches-5.png">
+<meta property="og:updated_time" content="2018-02-27T02:45:10.894Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter 3.3 - Git 远程分支">
+<meta name="twitter:description" content="远程仓库是指托管在因特网或其他网络中的你的项目的版本库。 你可以有好几个远程仓库，通常有些仓库对你只读，有些则可以读写。">
+<meta name="twitter:image" content="https://git-scm.com/book/en/v2/images/remote-branches-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2018/02/27/Git - ProGit Chapter 3.3 - 远程分支/"/>
+
+
+
+
+
+  <title>chapter 3.3 - Git 远程分支 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/02/27/Git - ProGit Chapter 3.3 - 远程分支/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">chapter 3.3 - Git 远程分支</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-27T10:45:10+08:00">
+                2018-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/Book-ProGit/" itemprop="url" rel="index">
+                    <span itemprop="name">Book-ProGit</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>远程仓库是指托管在因特网或其他网络中的你的项目的版本库。</p>
+<p>你可以有好几个远程仓库，通常有些仓库对你只读，有些则可以读写。</p>
+<a id="more"></a>
+<h3 id="添加远程库"><a href="#添加远程库" class="headerlink" title="添加远程库"></a>添加远程库</h3><p>命令：<code>git remote add &lt;shortname&gt; &lt;url&gt;</code></p>
+<p>shorname 是远程库的简写<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote add pb https://github.com/paulboone/ticgit</span><br></pre></td></tr></table></figure></p>
+<h3 id="查看远程库"><a href="#查看远程库" class="headerlink" title="查看远程库"></a>查看远程库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">//联网查看远程库的完整**引用**列表</span><br><span class="line">$ git ls-remote</span><br><span class="line">From git@github.com:bitbiteme/gitgo.git</span><br><span class="line">c4b5281e4843ee6dfcdeb3af281e5842104ca8d2        HEAD</span><br><span class="line">a3b00c3d3d5d23789d258747e4e4685ce6e15fa6        refs/heads/dev</span><br><span class="line">a3b00c3d3d5d23789d258747e4e4685ce6e15fa6        refs/heads/dev-beta</span><br><span class="line">c4b5281e4843ee6dfcdeb3af281e5842104ca8d2        refs/heads/master</span><br><span class="line">d0135c011d58a1081cc944b05fecc9fa8398a8ea        refs/heads/monster</span><br><span class="line">856e7f30f208e1512d4e0a63257bfede1e2bedf7        refs/tags/0.9</span><br><span class="line">4a1c5c6738d89357afdc145664498e9647cfbdd3        refs/tags/1.0</span><br><span class="line"></span><br><span class="line">//联网查看远程库 origin 的 heads 列表</span><br><span class="line">$ git ls-remote --heads origin</span><br><span class="line">a3b00c3d3d5d23789d258747e4e4685ce6e15fa6        refs/heads/dev</span><br><span class="line">a3b00c3d3d5d23789d258747e4e4685ce6e15fa6        refs/heads/dev-beta</span><br><span class="line">c4b5281e4843ee6dfcdeb3af281e5842104ca8d2        refs/heads/master</span><br><span class="line">d0135c011d58a1081cc944b05fecc9fa8398a8ea        refs/heads/monster</span><br><span class="line"></span><br><span class="line">//查看本地已添加的远程库，只显示简写</span><br><span class="line">$ git remote</span><br><span class="line">origin</span><br><span class="line"></span><br><span class="line">//查看本地已添加的远程库，显示远程库简写及对应url</span><br><span class="line">$ git remote -v</span><br><span class="line">origin	https://github.com/schacon/ticgit (fetch)</span><br><span class="line">origin	https://github.com/schacon/ticgit (push)</span><br><span class="line">pb	https://github.com/paulboone/ticgit (fetch)</span><br><span class="line">pb	https://github.com/paulboone/ticgit (push)</span><br><span class="line"></span><br><span class="line">//查看某个远程库的详细信息</span><br><span class="line">//会显示远程库和本地库的对应关系</span><br><span class="line">$ git remote show origin</span><br><span class="line">* remote origin</span><br><span class="line">  URL: https://github.com/my-org/complex-project</span><br><span class="line">  Fetch URL: https://github.com/my-org/complex-project</span><br><span class="line">  Push  URL: https://github.com/my-org/complex-project</span><br><span class="line">  HEAD branch: master</span><br><span class="line">  Remote branches:</span><br><span class="line">    master                           tracked</span><br><span class="line">    dev-branch                       tracked</span><br><span class="line">    markdown-strip                   tracked</span><br><span class="line">    issue-43                         new (next fetch will store in remotes/origin)</span><br><span class="line">    issue-45                         new (next fetch will store in remotes/origin)</span><br><span class="line">    refs/remotes/origin/issue-11     stale (use &apos;git remote prune&apos; to remove)</span><br><span class="line">  Local branches configured for &apos;git pull&apos;:</span><br><span class="line">    dev-branch merges with remote dev-branch</span><br><span class="line">    master     merges with remote master</span><br><span class="line">  Local refs configured for &apos;git push&apos;:</span><br><span class="line">    dev-branch                     pushes to dev-branch                     (up to date)</span><br><span class="line">    markdown-strip                 pushes to markdown-strip                 (up to date)</span><br><span class="line">    master                         pushes to master                         (up to date)</span><br></pre></td></tr></table></figure>
+<p>最后一个命令<br>列出了在特定的分支上执行 git push 会自动地推送到哪一个远程分支<br>列出了哪些远程分支不在你的本地，<br>哪些远程分支已经从服务器上移除了，<br>还有当执行 git pull 时哪些分支会自动合并。</p>
+<h3 id="重命名远程库"><a href="#重命名远程库" class="headerlink" title="重命名远程库"></a>重命名远程库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote rename pb paul</span><br></pre></td></tr></table></figure>
+<h3 id="移除远程库"><a href="#移除远程库" class="headerlink" title="移除远程库"></a>移除远程库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote rm paul</span><br></pre></td></tr></table></figure>
+<h2 id="远程-引用-分支-跟踪"><a href="#远程-引用-分支-跟踪" class="headerlink" title="远程/引用/分支/跟踪"></a>远程/引用/分支/跟踪</h2><ul>
+<li><p>远程引用是远程仓库上的引用（指针），包括分支、标签等等。</p>
+</li>
+<li><p>远程分支是远程仓库上的普通分支。</p>
+</li>
+<li><p>远程跟踪分支是远程分支状态的引用。 </p>
+<ul>
+<li>以 <code>(remote)/(branch)</code> 形式命名。</li>
+<li>它们是你不能移动的本地引用，当你做任何网络通信操作时，它们会自动移动。 </li>
+<li>远程跟踪分支像是你上次连接到远程仓库时，那些分支所处状态的书签。</li>
+</ul>
+</li>
+<li><p>跟踪分支</p>
+<ul>
+<li>本地分支与远程分支建立直接关系后就成为跟踪分支，</li>
+<li>如从一个远程跟踪分支检出一个本地分支就自动创建了一个 “跟踪分支”</li>
+<li>而上例中被跟踪的远程跟踪分支称为上游分支。</li>
+</ul>
+</li>
+</ul>
+<h3 id="远程分支、远程跟踪分支、跟踪分支的工作流程"><a href="#远程分支、远程跟踪分支、跟踪分支的工作流程" class="headerlink" title="远程分支、远程跟踪分支、跟踪分支的工作流程"></a>远程分支、远程跟踪分支、跟踪分支的工作流程</h3><p><img src="https://git-scm.com/book/en/v2/images/remote-branches-1.png" alt=""></p>
+<ul>
+<li>有远程库 git.ourcompany.com，远程分支 master</li>
+<li>使用克隆功能拉取全部数据到本地 My Computer</li>
+<li>默认在本地建立远程库引用origin，远程跟踪分支 origin/master</li>
+<li>建立本地分支 master，也指向 origin/master 所指向的提交</li>
+</ul>
+<p><img src="https://git-scm.com/book/en/v2/images/remote-branches-2.png" alt=""></p>
+<ul>
+<li>服务器 git.ourcompany.com 上的远程分支 master 有人进行了提交更新，master 指针移动了</li>
+<li>本地计算机 My Computer 上 master 分支也进行了提交更新，master 指针也移动了</li>
+<li>本地计算机 My Computer 还未 fetch 远程库的数据，所以远程跟踪分支 origin/master 指针没有移动</li>
+</ul>
+<p><img src="https://git-scm.com/book/en/v2/images/remote-branches-3.png" alt=""></p>
+<ul>
+<li>本地计算机 My Computer 去 fetch 远程库的数据</li>
+<li>用远程跟踪分支 origin/master 去 merge 取回的数据，origin/master 指针这时才发生移动</li>
+<li>本地和远程在共同的分支基础上分别进行了开发，merge 后自然本地和远程分叉了</li>
+</ul>
+<p><img src="https://git-scm.com/book/en/v2/images/remote-branches-4.png" alt=""></p>
+<ul>
+<li>添加了新的远程库teamone git.team1.ourcompany.com</li>
+</ul>
+<p><img src="https://git-scm.com/book/en/v2/images/remote-branches-5.png" alt=""></p>
+<ul>
+<li>新远程库 teamone 的数据是原远程库 origin 数据的子集</li>
+<li>所以 git 不会拉取新远程库 teamone 数据</li>
+<li>而是直接创建远程跟踪分支 teamone/master，并指向提交对象</li>
+</ul>
+<h3 id="抓取-fetch-和拉取-pull"><a href="#抓取-fetch-和拉取-pull" class="headerlink" title="抓取(fetch)和拉取(pull)"></a>抓取(fetch)和拉取(pull)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git fetch pb</span><br></pre></td></tr></table></figure>
+<p>git fetch 命令会将数据拉取到你的本地仓库 - 它并不会自动合并或修改你当前的工作。 当准备好时你必须手动将其合并入你的工作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git merge origin/master</span><br></pre></td></tr></table></figure></p>
+<p><code>$ git pull</code>的含义是<code>$ git fetch; git merge</code><br>如果有一个分支设置为跟踪一个远程分支，可以使用 git pull 命令来自动的抓取并自动尝试合并到当前所在的分支</p>
+<p>由于 git pull 的魔法经常令人困惑所以通常单独显式地使用 fetch 与 merge 命令会更好一些。</p>
+<h3 id="推送到远程库"><a href="#推送到远程库" class="headerlink" title="推送到远程库"></a>推送到远程库</h3><p>本地分支不会与远程库自动同步，必须手动推送本地分支。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//推送本地的 master 分支来更新远程库 origin 上的 master 分支</span><br><span class="line">//都会被扩展为  refs/heads/master:refs/heads/master</span><br><span class="line">$ git push origin master</span><br><span class="line">$ git push origin master:master</span><br><span class="line"></span><br><span class="line">//推送本地的 master 分支来更新远程库 origin 上的 newmaster 分支</span><br><span class="line">$ git push origin master:newmaster</span><br></pre></td></tr></table></figure></p>
+<h3 id="跟踪分支"><a href="#跟踪分支" class="headerlink" title="跟踪分支"></a>跟踪分支</h3><p>跟踪分支是与远程分支有直接关系的本地分支，远程分支也称为上游分支。</p>
+<h4 id="创建跟踪分支"><a href="#创建跟踪分支" class="headerlink" title="创建跟踪分支"></a>创建跟踪分支</h4><p>当克隆一个仓库时，通常会自动地创建一个跟踪 origin/master 的 master 分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone git@github.com:bitbite/gito.git</span><br></pre></td></tr></table></figure></p>
+<p>从一个远程跟踪分支检出一个本地分支会自动创建一个叫做 “跟踪分支”<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b dev origin/dev</span><br><span class="line">$ git checkout -b newBranchName origin/dev</span><br></pre></td></tr></table></figure></p>
+<p>track 是上面操作的快捷方式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout --track origin/dev</span><br></pre></td></tr></table></figure></p>
+<p>设置已有的本地分支跟踪一个刚刚拉取下来的远程分支<br>或者修改正在跟踪的上游分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -u origin/dev</span><br><span class="line"></span><br><span class="line">$ git branch -u origin/master</span><br><span class="line"></span><br><span class="line">    Branch master set up to track remote branch master from origin.</span><br><span class="line"></span><br><span class="line">$ git push -u origin master</span><br></pre></td></tr></table></figure></p>
+<p>可以使用<code>@{u}</code>来表示上游分支，下面两个命令等效<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git merge origin/master</span><br><span class="line">$ git merge @&#123;u&#125;</span><br><span class="line"></span><br><span class="line">$ git merge origin/master --allow-unrelated-histories</span><br></pre></td></tr></table></figure></p>
+<h4 id="查看跟踪分支"><a href="#查看跟踪分支" class="headerlink" title="查看跟踪分支"></a>查看跟踪分支</h4><p>查看所有跟踪分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -vv</span><br><span class="line">  iss53     7e424c3 [origin/iss53: ahead 2] forgot the brackets</span><br><span class="line">  master    1ae2a45 [origin/master] deploying index fix</span><br><span class="line">* serverfix f8674d9 [teamone/server-fix-good: ahead 3, behind 1] this should do it</span><br><span class="line">  testing   5ea463a trying something new</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>iss53 分支正在跟踪 origin/iss53 并且 “ahead” 是 2，意味着本地有两个提交还没有推送到服务器上</li>
+<li>master 分支正在跟踪 origin/master 分支并且是最新的</li>
+<li>serverfix 分支正在跟踪 teamone 服务器上的 server-fix-good 分支并且领先 2 落后 1，意味着服务器上有一次提交还没有合并入同时本地有三次提交还没有推送</li>
+<li>最后看到 testing 分支并没有跟踪任何远程分支</li>
+</ul>
+<p>注意：ahead 3,behind 1 这些数字的值来自于你从每个服务器上最后一次抓取的数据。 这个命令并没有连接服务器，它只会告诉你关于本地缓存的服务器数据</p>
+<p>统计最新的领先与落后数字，需要在运行此命令前抓取所有的远程仓库。 可以像这样做：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git fetch --all; git branch -vv</span><br></pre></td></tr></table></figure></p>
+<h3 id="删除远程分支"><a href="#删除远程分支" class="headerlink" title="删除远程分支"></a>删除远程分支</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin --delete dev</span><br></pre></td></tr></table></figure>
+<p>基本上这个命令做的只是从服务器上移除这个指针。<br>Git 服务器通常会保留数据一段时间直到垃圾回收运行，所以如果不小心删除掉了，通常是很容易恢复的。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+            <a href="/tags/Git-Remote/" rel="tag"># Git-Remote</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/27/Git - ProGit Chapter 3.2 - 分支合并/" rel="next" title="chapter 3.2 - Git 分支合并">
+                <i class="fa fa-chevron-left"></i> chapter 3.2 - Git 分支合并
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/27/Git - ProGit Chapter 3.4 - 变基/" rel="prev" title="chapter 3.4 - Git 变基">
+                chapter 3.4 - Git 变基 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">218</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加远程库"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x6DFB;&#x52A0;&#x8FDC;&#x7A0B;&#x5E93;" class="headerlink" title="&#x6DFB;&#x52A0;&#x8FDC;&#x7A0B;&#x5E93;"></a>&#x6DFB;&#x52A0;&#x8FDC;&#x7A0B;&#x5E93;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看远程库"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x67E5;&#x770B;&#x8FDC;&#x7A0B;&#x5E93;" class="headerlink" title="&#x67E5;&#x770B;&#x8FDC;&#x7A0B;&#x5E93;"></a>&#x67E5;&#x770B;&#x8FDC;&#x7A0B;&#x5E93;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重命名远程库"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x91CD;&#x547D;&#x540D;&#x8FDC;&#x7A0B;&#x5E93;" class="headerlink" title="&#x91CD;&#x547D;&#x540D;&#x8FDC;&#x7A0B;&#x5E93;"></a>&#x91CD;&#x547D;&#x540D;&#x8FDC;&#x7A0B;&#x5E93;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移除远程库"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x79FB;&#x9664;&#x8FDC;&#x7A0B;&#x5E93;" class="headerlink" title="&#x79FB;&#x9664;&#x8FDC;&#x7A0B;&#x5E93;"></a>&#x79FB;&#x9664;&#x8FDC;&#x7A0B;&#x5E93;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远程-引用-分支-跟踪"><span class="nav-number"></span> <span class="nav-text"><a href="#&#x8FDC;&#x7A0B;-&#x5F15;&#x7528;-&#x5206;&#x652F;-&#x8DDF;&#x8E2A;" class="headerlink" title="&#x8FDC;&#x7A0B;/&#x5F15;&#x7528;/&#x5206;&#x652F;/&#x8DDF;&#x8E2A;"></a>&#x8FDC;&#x7A0B;/&#x5F15;&#x7528;/&#x5206;&#x652F;/&#x8DDF;&#x8E2A;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#远程分支、远程跟踪分支、跟踪分支的工作流程"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x8FDC;&#x7A0B;&#x5206;&#x652F;&#x3001;&#x8FDC;&#x7A0B;&#x8DDF;&#x8E2A;&#x5206;&#x652F;&#x3001;&#x8DDF;&#x8E2A;&#x5206;&#x652F;&#x7684;&#x5DE5;&#x4F5C;&#x6D41;&#x7A0B;" class="headerlink" title="&#x8FDC;&#x7A0B;&#x5206;&#x652F;&#x3001;&#x8FDC;&#x7A0B;&#x8DDF;&#x8E2A;&#x5206;&#x652F;&#x3001;&#x8DDF;&#x8E2A;&#x5206;&#x652F;&#x7684;&#x5DE5;&#x4F5C;&#x6D41;&#x7A0B;"></a>&#x8FDC;&#x7A0B;&#x5206;&#x652F;&#x3001;&#x8FDC;&#x7A0B;&#x8DDF;&#x8E2A;&#x5206;&#x652F;&#x3001;&#x8DDF;&#x8E2A;&#x5206;&#x652F;&#x7684;&#x5DE5;&#x4F5C;&#x6D41;&#x7A0B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抓取-fetch-和拉取-pull"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x6293;&#x53D6;-fetch-&#x548C;&#x62C9;&#x53D6;-pull" class="headerlink" title="&#x6293;&#x53D6;(fetch)&#x548C;&#x62C9;&#x53D6;(pull)"></a>&#x6293;&#x53D6;(fetch)&#x548C;&#x62C9;&#x53D6;(pull)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推送到远程库"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x63A8;&#x9001;&#x5230;&#x8FDC;&#x7A0B;&#x5E93;" class="headerlink" title="&#x63A8;&#x9001;&#x5230;&#x8FDC;&#x7A0B;&#x5E93;"></a>&#x63A8;&#x9001;&#x5230;&#x8FDC;&#x7A0B;&#x5E93;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跟踪分支"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x8DDF;&#x8E2A;&#x5206;&#x652F;" class="headerlink" title="&#x8DDF;&#x8E2A;&#x5206;&#x652F;"></a>&#x8DDF;&#x8E2A;&#x5206;&#x652F;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建跟踪分支"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;&#x8DDF;&#x8E2A;&#x5206;&#x652F;" class="headerlink" title="&#x521B;&#x5EFA;&#x8DDF;&#x8E2A;&#x5206;&#x652F;"></a>&#x521B;&#x5EFA;&#x8DDF;&#x8E2A;&#x5206;&#x652F;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看跟踪分支"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#&#x67E5;&#x770B;&#x8DDF;&#x8E2A;&#x5206;&#x652F;" class="headerlink" title="&#x67E5;&#x770B;&#x8DDF;&#x8E2A;&#x5206;&#x652F;"></a>&#x67E5;&#x770B;&#x8DDF;&#x8E2A;&#x5206;&#x652F;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除远程分支"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x5220;&#x9664;&#x8FDC;&#x7A0B;&#x5206;&#x652F;" class="headerlink" title="&#x5220;&#x9664;&#x8FDC;&#x7A0B;&#x5206;&#x652F;"></a>&#x5220;&#x9664;&#x8FDC;&#x7A0B;&#x5206;&#x652F;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

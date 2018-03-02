@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Git,SSH," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="搭建 Git 服务器">
+<meta name="keywords" content="Git,SSH">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter 4.2~4.6 - 搭建 Git 服务器">
+<meta property="og:url" content="http://www.shenlin.ltd/2018/02/27/Git - ProGit Chapter 4.2~4.6 - 搭建 Git 服务器/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="搭建 Git 服务器">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-27T02:59:58.659Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter 4.2~4.6 - 搭建 Git 服务器">
+<meta name="twitter:description" content="搭建 Git 服务器">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2018/02/27/Git - ProGit Chapter 4.2~4.6 - 搭建 Git 服务器/"/>
+
+
+
+
+
+  <title>chapter 4.2~4.6 - 搭建 Git 服务器 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/02/27/Git - ProGit Chapter 4.2~4.6 - 搭建 Git 服务器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">chapter 4.2~4.6 - 搭建 Git 服务器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-27T10:59:58+08:00">
+                2018-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/Book-ProGit/" itemprop="url" rel="index">
+                    <span itemprop="name">Book-ProGit</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>搭建 Git 服务器</p>
+<a id="more"></a>
+<h2 id="导出裸仓库"><a href="#导出裸仓库" class="headerlink" title="导出裸仓库"></a>导出裸仓库</h2><p>把现有仓库导出为裸仓库，按照惯例，裸仓库目录名以 .git 结尾</p>
+<p>导出裸仓库就是只取出 git 仓库自身，不要工作目录，并为裸仓库单独创建一个 .git 结尾目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">//不能在项目目录下导</span><br><span class="line">ssl@sslnotebook MINGW32 /d/gitgo (master)</span><br><span class="line">$ git clone --bare gitgo gitgo.git</span><br><span class="line">fatal: repository &apos;gitgo&apos; does not exist</span><br><span class="line"></span><br><span class="line">//进入项目上级目录</span><br><span class="line">ssl@sslnotebook MINGW32 /d/gitgo (master)</span><br><span class="line">$ cd ..</span><br><span class="line"></span><br><span class="line">//使用 --bare 选项导出裸仓库</span><br><span class="line">ssl@sslnotebook MINGW32 /d</span><br><span class="line">$ git clone --bare gitgo gitgo.git</span><br><span class="line">Cloning into bare repository &apos;gitgo.git&apos;...</span><br><span class="line">done.</span><br><span class="line"></span><br><span class="line">//导出的裸仓库和项目位于同级目录，内容是 gitgo/.git 的文件</span><br><span class="line">ssl@sslnotebook MINGW32 /d</span><br><span class="line">$ ll gitgo.git</span><br><span class="line">total 16</span><br><span class="line">-rw-r--r-- 1 ssl 197121 138 七月  5 06:50 config</span><br><span class="line">-rw-r--r-- 1 ssl 197121  73 七月  5 06:50 description</span><br><span class="line">-rw-r--r-- 1 ssl 197121  23 七月  5 06:50 HEAD</span><br><span class="line">drwxr-xr-x 1 ssl 197121   0 七月  5 06:50 hooks/</span><br><span class="line">drwxr-xr-x 1 ssl 197121   0 七月  5 06:50 info/</span><br><span class="line">drwxr-xr-x 1 ssl 197121   0 七月  5 06:50 objects/</span><br><span class="line">-rw-r--r-- 1 ssl 197121 542 七月  5 06:50 packed-refs</span><br><span class="line">drwxr-xr-x 1 ssl 197121   0 七月  5 06:50 refs/</span><br></pre></td></tr></table></figure>
+<p>效果和下面的命令大致相同，但不完全一样，下面的命令是完全复制，包含的文件比 <code>git clone --bare</code> 要多<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git cp -Rf gitgo/.git gitgo.git</span><br></pre></td></tr></table></figure></p>
+<h2 id="把裸仓库放服务器上"><a href="#把裸仓库放服务器上" class="headerlink" title="把裸仓库放服务器上"></a>把裸仓库放服务器上</h2><p>把裸仓库放到服务器<code>example.com</code>的<code>/opt/git</code>目录下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scp -r gitgo.git user@example.com:/opt/git</span><br></pre></td></tr></table></figure></p>
+<p>对目录 <code>/opt/git</code> 有读权限的用户可以通过 SSH 克隆仓库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone user@example.com:/opt/git/gitgo.git</span><br></pre></td></tr></table></figure></p>
+<p>对 <code>/opt/git</code> 目录有写权限的用户将自动拥有推送权限<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push</span><br></pre></td></tr></table></figure></p>
+<p>在该项目目录中运行 git init 命令，并加上 –shared 选项，那么 Git 会自动修改该仓库目录的组权限为可写。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ssh user@git.example.com</span><br><span class="line">$ cd /opt/git/gitgo.git</span><br><span class="line">$ git init --bare --shared</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>架设一个几个人拥有连接权的 git 服务器的简单步骤：</p>
+<ol>
+<li>导出裸仓库</li>
+<li>把裸仓库放入大家有读写权限的目录</li>
+<li>服务器上加入可以使用 SSH 协议访问的账号</li>
+</ol>
+<p>更多设定：<br>如何避免为每一个用户建立一个账户<br>给仓库添加公共读取权限<br>架设网页界面<br>……</p>
+<p>架设 Git 服务最复杂的地方在于用户管理。如果需要仓库对特定的用户可读，而给另一部分用户读写权限，那么访问和许可安排就会比较困难。</p>
+<p>给团队每个成员提供访问权的方法： </p>
+<ol>
+<li><p>给团队里的每个人创建账号，这种方法很直接但也很麻烦。要为每个人运行一次 adduser 并且设置临时密码，然后使用服务器操作系统的文件系统权限在仓库上设置更复杂的访问控制权限。</p>
+</li>
+<li><p>如果需要团队里的每个人都对仓库有写权限，又不能给每个人在服务器上建立账户，那么提供 SSH 连接就是唯一的选择了。 </p>
+<p> 2.1 在主机上建立一个 git 账户，让每个需要写权限的人发送一个 SSH 公钥，然后将其加入 git 账户的 ~/.ssh/authorized_keys 文件。这样所有人都将通过 git 账户访问主机。 这一点也不会影响提交的数据——访问主机用的身份不会影响提交对象的提交者信息。</p>
+<p> 2.2 让 SSH 服务器通过某个 LDAP 服务，或者其他已经设定好的集中授权机制，来进行授权。只要每个用户可以获得主机的 shell 访问权限，任何 SSH 授权机制都可视为是有效的。</p>
+</li>
+</ol>
+<hr>
+<h2 id="设置协议"><a href="#设置协议" class="headerlink" title="设置协议"></a>设置协议</h2><p><a href="https://help.github.com/articles/connecting-to-github-with-ssh/" target="_blank" rel="noopener">https://help.github.com/articles/connecting-to-github-with-ssh/</a></p>
+<h3 id="配置-SSH-协议"><a href="#配置-SSH-协议" class="headerlink" title="配置 SSH 协议"></a>配置 SSH 协议</h3><h4 id="设置-SSH-连接"><a href="#设置-SSH-连接" class="headerlink" title="设置 SSH 连接"></a>设置 SSH 连接</h4><h4 id="生成-SSH-公钥"><a href="#生成-SSH-公钥" class="headerlink" title="生成 SSH 公钥"></a>生成 SSH 公钥</h4><h5 id="公钥文件"><a href="#公钥文件" class="headerlink" title="公钥文件"></a>公钥文件</h5><ul>
+<li>私钥文件：id_dsa 或 id_rsa</li>
+<li>公钥文件：id_dsa_pub 或 id_rsa_pub</li>
+</ul>
+<h5 id="保存位置"><a href="#保存位置" class="headerlink" title="保存位置"></a>保存位置</h5><p>linux 一般位于 <code>~/.ssh</code><br>windows 一般位于 <code>$HOME\.ssh</code></p>
+<h5 id="生成公钥"><a href="#生成公钥" class="headerlink" title="生成公钥"></a>生成公钥</h5><p>确认当前用户是否已经有 SSH 公钥，查看 SSH 公钥的保存目录：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ll ~/.ssh</span><br></pre></td></tr></table></figure></p>
+<p>没有 SSH 公钥，则使用命令生成<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen</span><br><span class="line">Generating public/private rsa key pair.</span><br><span class="line">Enter file in which to save the key (/home/ssy/.ssh/id_rsa): </span><br><span class="line">/home/ssy/.ssh/id_rsa already exists.</span><br><span class="line">Overwrite (y/n)? y</span><br><span class="line">Enter passphrase (empty for no passphrase): </span><br><span class="line">Enter same passphrase again: </span><br><span class="line">Your identification has been saved in /home/ssy/.ssh/id_rsa.</span><br><span class="line">Your public key has been saved in /home/ssy/.ssh/id_rsa.pub.</span><br><span class="line">The key fingerprint is:</span><br><span class="line">ca:dc:d4:50:cf:06:e6:10:2b:cf:62:11:c8:8a:5e:52 ssy@e42.matrix</span><br><span class="line">The key&apos;s randomart image is:</span><br><span class="line">+--[ RSA 2048]----+</span><br><span class="line">|   . .. o.+      |</span><br><span class="line">|   Eo  . * +     |</span><br><span class="line">| ...  o o . +    |</span><br><span class="line">|....   = o .     |</span><br><span class="line">|. o   o S .      |</span><br><span class="line">| .   + =         |</span><br><span class="line">|      + .        |</span><br><span class="line">|                 |</span><br><span class="line">|                 |</span><br><span class="line">+-----------------+</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>可重复生成，会提示你是否覆盖</li>
+<li>生成的过程中会要求输入秘钥口令，如果不想使用秘钥的过程中输入口令，直接回车即可</li>
+</ul>
+<p>查看 SSH 公钥<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cat .ssh/id_rsa.pub</span><br><span class="line">ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAvjO/J+qlOOr7Hd7x4gpJoZ2DU7gtI8V6juE60ULXzMGezQFce56JB2dGOp5iUgAXzLVv8p40KURjiOO8El1UVC6baibsTzDTP9hUu1oHA/a9R6iuz03P43hYYPtuCZu34sMHAlaj+ufzAR6loPeD3ubtKgjKH+nR0A8BsZGSdzyiofhJSz+APYxvtOovWCkjZ09t5qffmcLcZ/S53LguXvLnirgmxMzSruJJ3Y8y6YpEKDdkeIWThV+kojIOxsudVWGVxXYInZe0te/LzwvHITtlJh7tzFnKgSwwQIxuyETqLacbWKg4qsnmuAc22M5aGzI3X2DIMLRGnSSREctl0Q== ssy@bogon</span><br></pre></td></tr></table></figure></p>
+<p>生成后可使用邮件等方式把公钥发送给 git 管理员</p>
+<h4 id="配置-SSH-访问"><a href="#配置-SSH-访问" class="headerlink" title="配置 SSH 访问"></a>配置 SSH 访问</h4><p>使用 authorized_keys 方法对用户进行认证。</p>
+<p>创建用户 git，并建立目录 .ssh<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ sudo adduser git</span><br><span class="line">$ su git</span><br><span class="line">$ cd ~</span><br><span class="line">$ mkdir .ssh &amp;&amp; chmod 700 .ssh</span><br><span class="line">$ touch .ssh/authorized_keys &amp;&amp; chmod 600 .ssh/authorized_keys</span><br></pre></td></tr></table></figure></p>
+<p>把公钥文件导入 authorized_keys 文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cat /tmp/id_rsa.john.pub &gt;&gt; ~/.ssh/authorized_keys</span><br><span class="line">$ cat /tmp/id_rsa.mike.pub &gt;&gt; ~/.ssh/authorized_keys</span><br><span class="line">$ cat /tmp/id_rsa.jessica.pub &gt;&gt; ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure></p>
+<p>建立裸仓库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ cd /opt/git</span><br><span class="line">$ mkdir project.git</span><br><span class="line">$ cd project.git</span><br><span class="line">$ git init --bare</span><br><span class="line">Initialized empty Git repository in /opt/git/project.git/</span><br></pre></td></tr></table></figure></p>
+<p>john把自己的推送文件到裸库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cd johnProject</span><br><span class="line">$ git init</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m &apos;initial commit&apos;</span><br><span class="line">$ git remote add origin git@gitserver:/opt/git/project.git</span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure></p>
+<p>其他开发者可以克隆仓库并推送自己的改动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git clone git@gitserver:/opt/git/project.git</span><br><span class="line">$ cd project</span><br><span class="line">$ vim readme</span><br><span class="line">$ git commit -m &apos;modified the readme file&apos;</span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure></p>
+<h4 id="关于-shell-权限"><a href="#关于-shell-权限" class="headerlink" title="关于 shell 权限"></a>关于 shell 权限</h4><p>上述例子中所有的开发者都是以 linux 系统用户 git 身份访问 git 仓库，这意味着他们也可以使用这个 git 身份登录服务器并执行 bash 命令，通常我们只想让开发者凭借 git 这个身份使用 SSH 协议连接到服务器推送和拉取 git 仓库……</p>
+<p>这时可以使用 <code>chsh</code> 命令修改 git 用户的 shell：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//两个命令效果相同</span><br><span class="line">$ sudo chsh -s $(which git-shell) git</span><br><span class="line">$ sudo chsh -s /usr/bin/git-shell git</span><br><span class="line">Changing shell for git.</span><br><span class="line">Shell changed.</span><br><span class="line"></span><br><span class="line">//也可直接修改passwd文件</span><br><span class="line">$ sudo vi /etc/passwd</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>git-shell 是一个受限 shell 工具，可以把 git 用户的活动限制在 git 相关的范围之内</li>
+<li>git-shell 由 git 软件包提供</li>
+<li>更改 shell 前需要把 git-shell 的路径加入 /etc/shells 文件，否则会提示 Warning: “/usr/bin/git-shell” is not listed in /etc/shells.</li>
+</ul>
+<p>再次用 git 登录则会提示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ ssh git@gitserver</span><br><span class="line">fatal: Interactive git shell is not enabled</span><br><span class="line">hint: ~/git-shell-commands should exist and have read and execute access.</span><br><span class="line">Connection to gitserver closed.</span><br><span class="line"></span><br><span class="line">$ su git</span><br><span class="line">fatal: What do you think I am? A shell?</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>可以在 git 用户的家目录下面建立 git-shell-commands 目录</li>
+<li>此目录允许你对 git-shell 命令进行一定程度的自定义<ul>
+<li>可以限制掉某些本应被服务器接受的 Git 命令</li>
+<li>对 SSH 拒绝登录信息进行自定义</li>
+</ul>
+</li>
+</ul>
+<h3 id="配置-git-协议的守护进程"><a href="#配置-git-协议的守护进程" class="headerlink" title="配置 git 协议的守护进程"></a>配置 git 协议的守护进程</h3><p>使用 git 协议的仓库是基于守护进程的。</p>
+<p>git-daemon 是独立于 git 的另外一个软件包。</p>
+<h4 id="git-daemon-export-ok-和-whitelist"><a href="#git-daemon-export-ok-和-whitelist" class="headerlink" title="git-daemon-export-ok 和 whitelist"></a>git-daemon-export-ok 和 whitelist</h4><p>守护进程 git daemon 默认会寻找 git 库根目录下的一个神奇文件 git-daemon-export-ok，当有这个文件时，表示允许 git 协议无授权的访问，但是如果 git daemon 使用了选项 –export-all，则无论目录是否有此神奇文件，只要目录包含了objects和refs两个子目录看起来像 git 库都会允许无授权的访问</p>
+<p>git daemon 命令后面可有多个空格隔开的目录，如<code>git daemon /pub/bar /pub/foo</code>这是白名单目录，是明确允许无授权访问的目录</p>
+<p>git daemon 如果使用了 –strict-paths 选项，但没有指定白名单，则 git daemon 不会启动</p>
+<p>???测试有了白名单，神奇文件是否还起作用</p>
+<h4 id="运行守护进程"><a href="#运行守护进程" class="headerlink" title="运行守护进程"></a>运行守护进程</h4><ul>
+<li><p><strong>注意</strong>：使用交互式命令行直接运行下面命令则会停留在此处，不会出现新的命令提示符，Ctrl+c 结束此命令则 git-daemon 进程结束，也可以先用 Ctrl+z 把命令放入挂起到后台，然后用<code>jobs</code>查看其任务号 n，再用<code>bg n</code>让命令在后台运行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git daemon --reuseaddr --base-path=/opt/git /opt/git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>–reuseaddr</p>
+<ul>
+<li>绑定监听套接字时使用 SO_REUSEADDR </li>
+<li>允许服务器在无需等待旧连接超时的情况下重启</li>
+</ul>
+</li>
+<li>–base-path<ul>
+<li>指定 git 仓库的根路径，用户 git 协议中的路径被作为相对路径来看待</li>
+<li>如 git://exmaple.com/hello.git，则将被解释为 /opt/git/hello.git </li>
+</ul>
+</li>
+<li>结尾的路径是白名单告诉 Git 守护进程从何处寻找仓库来导出。</li>
+<li>如果有防火墙正在运行，需要开放端口 9418 的通信权限</li>
+<li>出于安全考虑，强烈建议使用一个对仓库拥有只读权限的用户身份来运行该守护进程，如新建用户git-ro</li>
+</ul>
+<h4 id="创建-git-daemon-export-ok-文件"><a href="#创建-git-daemon-export-ok-文件" class="headerlink" title="创建 git-daemon-export-ok 文件"></a>创建 git-daemon-export-ok 文件</h4><p>告诉 Git 哪些仓库允许基于服务器的无授权访问<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd /path/to/project.git</span><br><span class="line">$ touch git-daemon-export-ok</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>有 git-daemon-export-ok 文件的仓库表示允许 Git 提供无需授权的项目访问服务</li>
+</ul>
+<h3 id="配置-Smart-HTTP-协议"><a href="#配置-Smart-HTTP-协议" class="headerlink" title="配置 Smart HTTP 协议"></a>配置 Smart HTTP 协议</h3><p>git 自带的 CGI 脚本 git-http-backend 会读取由 git fetch 或 git push 命令发送的 HTTP 请求路径和头部信息，来判断该客户端是否支持 HTTP 智能（Smart）模式，若支持 git 将会以智能模式与客户端进行通信，否则会回落到哑（Dumb）模式下（对某些老的客户端实现向下兼容）。</p>
+<h4 id="安装-CGI-服务器和相关模块"><a href="#安装-CGI-服务器和相关模块" class="headerlink" title="安装 CGI 服务器和相关模块"></a>安装 CGI 服务器和相关模块</h4><p>安装 Apache 作为 CGI 服务器，并启用所需的模块：mod_cgi, mod_alias, mod_env<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install -y apache2 apache2-utils</span><br><span class="line">$ a2enmod cgi alias env</span><br></pre></td></tr></table></figure></p>
+<h4 id="配置-CGI-服务器"><a href="#配置-CGI-服务器" class="headerlink" title="配置 CGI 服务器"></a>配置 CGI 服务器</h4><ol>
+<li>配置 apache 文件让 git-http-backend 来处理 /git 路径的请求<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SetEnv GIT_PROJECT_ROOT /opt/git</span><br><span class="line">SetEnv GIT_HTTP_EXPORT_ALL</span><br><span class="line">ScriptAlias /git/ /usr/lib/git-core/git-http-backend/</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ul>
+<li>留空 GIT_HTTP_EXPORT_ALL 这个环境变量，Git 将只对无授权客户端提供带 git-daemon-export-ok 文件的版本库，就像 Git 守护进程一样</li>
+</ul>
+<p><strong>下面的2，3步中英文不一样啊，应该是殊途同归，英文版的库路径是/srv/git</strong></p>
+<ol>
+<li>英文版<br>You’ll also need to set the Unix user group of the /srv/git directories to www-data so your web server can read- and write-access the repositories, because the Apache instance running the CGI script will (by default) be running as that user:</li>
+</ol>
+<p>apache 运行 CGI 脚本默认是以用户组 www-data 身份运行，所以要设置 git 库目录的所属用户组为 www-data 用户组，才有读写权限<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ chgrp -R www-data /srv/git</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>我的没有这个用户组???</li>
+</ul>
+<ol>
+<li><p>中文版<br>让 Apache 接受通过该路径的请求</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;Directory &quot;/usr/lib/git-core*&quot;&gt;</span><br><span class="line">   Options ExecCGI Indexes</span><br><span class="line">   Order allow,deny</span><br><span class="line">   Allow from all</span><br><span class="line">   Require all granted</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>中文版<br>实现写操作授权验证</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;LocationMatch &quot;^/git/.*/git-receive-pack$&quot;&gt;</span><br><span class="line">    AuthType Basic</span><br><span class="line">    AuthName &quot;Git Access&quot;</span><br><span class="line">    AuthUserFile /opt/git/.htpasswd</span><br><span class="line">    Require valid-user</span><br><span class="line">&lt;/LocationMatch&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ul>
+<li>需要创建一个包含所有合法用户密码的 .htpasswd 文件。</li>
+<li>下面是添加 “schacon” 用户到此文件的例子：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//中文版</span><br><span class="line">$ htdigest -c /opt/git/.htpasswd &quot;Git Access&quot; schacon</span><br><span class="line"></span><br><span class="line">//英文版</span><br><span class="line">$ htpasswd -c /srv/git/.htpasswd schacon</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ol>
+<li>英文版<br>tell Apache to allow requests to git-http-backend and make writes be authenticated somehow, possibly with an Auth block like this:</li>
+</ol>
+<p>让 Apache 允许访问 git-http-backend，并且实现写操作授权<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;Files &quot;git-http-backend&quot;&gt;</span><br><span class="line">    AuthType Basic</span><br><span class="line">    AuthName &quot;Git Access&quot;</span><br><span class="line">    AuthUserFile /srv/git/.htpasswd</span><br><span class="line">    Require expr !(%&#123;QUERY_STRING&#125; -strmatch &apos;*service=git-receive-pack*&apos; || %&#123;REQUEST_URI&#125; =~ m#/git-receive-pack$#)</span><br><span class="line">    Require valid-user</span><br><span class="line">&lt;/Files&gt;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+            <a href="/tags/SSH/" rel="tag"># SSH</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/27/Git - ProGit Chapter 2.1 - 基础/" rel="next" title="chapter 2.1 - Git 基础">
+                <i class="fa fa-chevron-left"></i> chapter 2.1 - Git 基础
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/27/Git - ProGit Chapter 4.7,4.8 - GitWeb & GitLab/" rel="prev" title="chapter 4.7,4.8 - GitWeb & GitLab">
+                chapter 4.7,4.8 - GitWeb & GitLab <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">218</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#导出裸仓库"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5BFC;&#x51FA;&#x88F8;&#x4ED3;&#x5E93;" class="headerlink" title="&#x5BFC;&#x51FA;&#x88F8;&#x4ED3;&#x5E93;"></a>&#x5BFC;&#x51FA;&#x88F8;&#x4ED3;&#x5E93;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#把裸仓库放服务器上"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x628A;&#x88F8;&#x4ED3;&#x5E93;&#x653E;&#x670D;&#x52A1;&#x5668;&#x4E0A;" class="headerlink" title="&#x628A;&#x88F8;&#x4ED3;&#x5E93;&#x653E;&#x670D;&#x52A1;&#x5668;&#x4E0A;"></a>&#x628A;&#x88F8;&#x4ED3;&#x5E93;&#x653E;&#x670D;&#x52A1;&#x5668;&#x4E0A;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置协议"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x8BBE;&#x7F6E;&#x534F;&#x8BAE;" class="headerlink" title="&#x8BBE;&#x7F6E;&#x534F;&#x8BAE;"></a>&#x8BBE;&#x7F6E;&#x534F;&#x8BAE;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-SSH-协议"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x914D;&#x7F6E;-SSH-&#x534F;&#x8BAE;" class="headerlink" title="&#x914D;&#x7F6E; SSH &#x534F;&#x8BAE;"></a>&#x914D;&#x7F6E; SSH &#x534F;&#x8BAE;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#设置-SSH-连接"><span class="nav-number">3.1.1.</span> <span class="nav-text"><a href="#&#x8BBE;&#x7F6E;-SSH-&#x8FDE;&#x63A5;" class="headerlink" title="&#x8BBE;&#x7F6E; SSH &#x8FDE;&#x63A5;"></a>&#x8BBE;&#x7F6E; SSH &#x8FDE;&#x63A5;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成-SSH-公钥"><span class="nav-number">3.1.2.</span> <span class="nav-text"><a href="#&#x751F;&#x6210;-SSH-&#x516C;&#x94A5;" class="headerlink" title="&#x751F;&#x6210; SSH &#x516C;&#x94A5;"></a>&#x751F;&#x6210; SSH &#x516C;&#x94A5;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#公钥文件"><span class="nav-number">3.1.2.1.</span> <span class="nav-text"><a href="#&#x516C;&#x94A5;&#x6587;&#x4EF6;" class="headerlink" title="&#x516C;&#x94A5;&#x6587;&#x4EF6;"></a>&#x516C;&#x94A5;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#保存位置"><span class="nav-number">3.1.2.2.</span> <span class="nav-text"><a href="#&#x4FDD;&#x5B58;&#x4F4D;&#x7F6E;" class="headerlink" title="&#x4FDD;&#x5B58;&#x4F4D;&#x7F6E;"></a>&#x4FDD;&#x5B58;&#x4F4D;&#x7F6E;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#生成公钥"><span class="nav-number">3.1.2.3.</span> <span class="nav-text"><a href="#&#x751F;&#x6210;&#x516C;&#x94A5;" class="headerlink" title="&#x751F;&#x6210;&#x516C;&#x94A5;"></a>&#x751F;&#x6210;&#x516C;&#x94A5;</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-SSH-访问"><span class="nav-number">3.1.3.</span> <span class="nav-text"><a href="#&#x914D;&#x7F6E;-SSH-&#x8BBF;&#x95EE;" class="headerlink" title="&#x914D;&#x7F6E; SSH &#x8BBF;&#x95EE;"></a>&#x914D;&#x7F6E; SSH &#x8BBF;&#x95EE;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于-shell-权限"><span class="nav-number">3.1.4.</span> <span class="nav-text"><a href="#&#x5173;&#x4E8E;-shell-&#x6743;&#x9650;" class="headerlink" title="&#x5173;&#x4E8E; shell &#x6743;&#x9650;"></a>&#x5173;&#x4E8E; shell &#x6743;&#x9650;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-git-协议的守护进程"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x914D;&#x7F6E;-git-&#x534F;&#x8BAE;&#x7684;&#x5B88;&#x62A4;&#x8FDB;&#x7A0B;" class="headerlink" title="&#x914D;&#x7F6E; git &#x534F;&#x8BAE;&#x7684;&#x5B88;&#x62A4;&#x8FDB;&#x7A0B;"></a>&#x914D;&#x7F6E; git &#x534F;&#x8BAE;&#x7684;&#x5B88;&#x62A4;&#x8FDB;&#x7A0B;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#git-daemon-export-ok-和-whitelist"><span class="nav-number">3.2.1.</span> <span class="nav-text"><a href="#git-daemon-export-ok-&#x548C;-whitelist" class="headerlink" title="git-daemon-export-ok &#x548C; whitelist"></a>git-daemon-export-ok &#x548C; whitelist</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行守护进程"><span class="nav-number">3.2.2.</span> <span class="nav-text"><a href="#&#x8FD0;&#x884C;&#x5B88;&#x62A4;&#x8FDB;&#x7A0B;" class="headerlink" title="&#x8FD0;&#x884C;&#x5B88;&#x62A4;&#x8FDB;&#x7A0B;"></a>&#x8FD0;&#x884C;&#x5B88;&#x62A4;&#x8FDB;&#x7A0B;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建-git-daemon-export-ok-文件"><span class="nav-number">3.2.3.</span> <span class="nav-text"><a href="#&#x521B;&#x5EFA;-git-daemon-export-ok-&#x6587;&#x4EF6;" class="headerlink" title="&#x521B;&#x5EFA; git-daemon-export-ok &#x6587;&#x4EF6;"></a>&#x521B;&#x5EFA; git-daemon-export-ok &#x6587;&#x4EF6;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-Smart-HTTP-协议"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#&#x914D;&#x7F6E;-Smart-HTTP-&#x534F;&#x8BAE;" class="headerlink" title="&#x914D;&#x7F6E; Smart HTTP &#x534F;&#x8BAE;"></a>&#x914D;&#x7F6E; Smart HTTP &#x534F;&#x8BAE;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-CGI-服务器和相关模块"><span class="nav-number">3.3.1.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;-CGI-&#x670D;&#x52A1;&#x5668;&#x548C;&#x76F8;&#x5173;&#x6A21;&#x5757;" class="headerlink" title="&#x5B89;&#x88C5; CGI &#x670D;&#x52A1;&#x5668;&#x548C;&#x76F8;&#x5173;&#x6A21;&#x5757;"></a>&#x5B89;&#x88C5; CGI &#x670D;&#x52A1;&#x5668;&#x548C;&#x76F8;&#x5173;&#x6A21;&#x5757;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-CGI-服务器"><span class="nav-number">3.3.2.</span> <span class="nav-text"><a href="#&#x914D;&#x7F6E;-CGI-&#x670D;&#x52A1;&#x5668;" class="headerlink" title="&#x914D;&#x7F6E; CGI &#x670D;&#x52A1;&#x5668;"></a>&#x914D;&#x7F6E; CGI &#x670D;&#x52A1;&#x5668;</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

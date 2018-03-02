@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="RegExp," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="转载自：http://www.linuxidc.com/Linux/2017-10/147742.htm">
+<meta name="keywords" content="RegExp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RegExp - PCRE和正则表达式的误点">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/12/28/RegExp - PCRE 和正则表达式的误点/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="转载自：http://www.linuxidc.com/Linux/2017-10/147742.htm">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-28T00:58:21.828Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RegExp - PCRE和正则表达式的误点">
+<meta name="twitter:description" content="转载自：http://www.linuxidc.com/Linux/2017-10/147742.htm">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/12/28/RegExp - PCRE 和正则表达式的误点/"/>
+
+
+
+
+
+  <title>RegExp - PCRE和正则表达式的误点 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/12/28/RegExp - PCRE 和正则表达式的误点/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RegExp - PCRE和正则表达式的误点</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T08:58:21+08:00">
+                2017-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RegExp/" itemprop="url" rel="index">
+                    <span itemprop="name">RegExp</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>转载自：<a href="http://www.linuxidc.com/Linux/2017-10/147742.htm" target="_blank" rel="noopener">http://www.linuxidc.com/Linux/2017-10/147742.htm</a></p>
+<a id="more"></a>
+<p>1.正则中所有的匹配模式，都应该理解为”匹配了某字符或字符串后，紧跟着再匹配”。这个概念很重要。</p>
+<p>2.中括号首部使用脱字符时，表示的是紧跟着匹配不含给定字符的字符，而不是允许不匹配给定的字符。</p>
+<pre><code>它们大多数时候是等价的，但在匹配行尾时，意义不同，例如：Aa[^bcd]$ 所匹配的行允许是Aaa$或Aax$，但不允许仅是Aa$。
+这就是正则中&quot;紧跟着匹配&quot;的意思。
+</code></pre><p>3.(.[0-9]+)? 可匹配小数点部分，不能写成 (.?[0-9]*) ，后者即使不能匹配小数点，也能匹配原本处于小数点后的数值</p>
+<p>4.perl正则括号分组时，使用(?:替代左括号(，可以表示只分组不捕获。所谓的捕获表示的是可以反向引用或保存到正则外部的变量中</p>
+<pre><code>([-+]?[0-9]+(\.[0-9]+)?) *(cm|mm) ：(cm|mm)将保存为$3
+([-+]?[0-9]+(?:\.[0-9]+)?) *(cm|mm) : (cm|mm)将保存为$2
+</code></pre><p>5.特殊锚定符，锚定所匹配的是位置，而非字符，行首^和行尾$同样如此。</p>
+<pre><code>注意某些程序对单词的理解和边界定义不一样，且有些程序并不完全支持下列所有的特殊元字符
+例如gnu grep 2.6版本就不支持\s和\d，而gnu grep 2.20支持\s但不支持\d
+
+&apos;\b&apos;：匹配单词边界处的空字符Match the empty string at the edge of a word.
+&apos;\B&apos;：匹配单词边界处的非空字符Match the empty string provided it&apos;s not at the edge of a word.
+&apos;\&lt;&apos;：匹配单词开头处的空字符Match the empty string at the beginning of word.
+&apos;\&gt;&apos;：匹配单词结尾处的空字符Match the empty string at the end of word.
+&apos;\w&apos;：匹配单词构成部分Match word constituent, it is a synonym for `[_[:alnum:]]&apos;.
+&apos;\W&apos;：匹配单词非构成部分Match non-word constituent, it is a synonym for `[^_[:alnum:]]&apos;.
+&apos;\s&apos;：匹配空白字符Match whitespace, it is a synonym for `[[:space:]]&apos;.
+&apos;\S&apos;：匹配非空白字符Match non-whitespace, it is a synonym for `[^[:space:]]&apos;.
+&apos;\d&apos;：匹配数字it is a synonym for `[0-9]&apos;.
+&apos;\D&apos;：匹配非数字it is a synonym for `[^0-9]&apos;.
+
+For example, &apos;\brat\b&apos; matches the separate word &apos;rat&apos;, &apos;\Brat\B&apos; matches &apos;crate&apos; but not &apos;furry rat&apos;.
+</code></pre><p>6.字符类，注意某些程序并不完全支持下列所有的字符类</p>
+<pre><code>&apos;[:alnum:]&apos; ：same as &apos;[0-9A-Za-z]&apos;.
+&apos;[:alpha:]&apos; ：&apos;[:lower:]&apos; and &apos;[:upper:]&apos;， same as &apos;[A-Za-z]&apos;.
+&apos;[:lower:]&apos; ：
+&apos;[:upper:]&apos; ：
+&apos;[:digit:]&apos; ：&apos;0 1 2 3 4 5 6 7 8 9&apos;.
+&apos;[:xdigit:]&apos; ：Hex digits: `0 1 2 3 4 5 6 7 8 9 A B C D E F a b c d e f&apos;.
+
+&apos;[:blank:]&apos; ：space and tab.
+&apos;[:space:]&apos; ：tab, newline, vertical tab, form feed, carriage return, and space.
+&apos;[:punct:]&apos; ：Punctuation characters; this is &apos;! &quot; # $ % &amp; &apos; ( ) * + , - . / : ; &lt; = &gt; ? @ [ \ ] ^ _ ` { | } ~&apos;.
+&apos;[:print:]&apos; ：&apos;[:alnum:]&apos;, &apos;[:punct:]&apos;, and space.
+&apos;[:graph:]&apos; ：Graphical characters: &apos;[:alnum:]&apos; and &apos;[:punct:]&apos;.
+
+&apos;[:cntrl:]&apos; ：Control characters. octal codes 000 through 037, and 177 (`DEL&apos;).
+</code></pre><p>7.同一个表达式中，被匹配过的字符无法被第二次匹配。因为正则的宗旨是：匹配了某字符或字符串后，紧跟着再匹配。</p>
+<pre><code>例如字符串&quot;#c#&quot;，正则表达式&quot;(#.)(.#)&quot;无法匹配。
+再例如字符串&quot;#cc#&quot;，正则表达式&quot;(.#)(.*)(.#)&quot;能匹配成功，只不过第二个分组只能匹配空。
+</code></pre><p>8.”环视”锚定，即lookaround anchor。</p>
+<pre><code>以 (?= 替代左括号表示从左向右的顺序环视，例如(?=\d)表示当前字符的右边是一个数字时就满足条件
+以 (?&lt;= 替代左括号表示从右向左的逆序环视，例如(?&lt;=\d)表示当前字符的左边是一个数字时就满足条件
+
+正向环视：(?=...)和(?!...)
+逆向环视：(?&lt;=...)和(?&lt;!...)
+
+逆向环视的表达式必须只能表示固定长度的字符串，例如(?&lt;=word)或(?&lt;=word|word)可以，但(?&lt;=word?)不可以，因为?匹配0或1长度，长度不定。
+在PCRE中，可重写为(?&lt;=word|words)，但perl中不允许，因为perl严格要求长度必须固定。
+</code></pre><p>9.关于”环视”锚定，最需要注意的一点是匹配的结果不占用任何字符，它仅仅只是锚定位置。</p>
+<pre><code>例如：your name is longshuai MA 和 your name is longfei MA
+使用(?=longshuai)将能锚定第一个句子中单词&quot;longshuai&quot;前面的空字符，但它的匹配结果是&quot;longshuai&quot;前的空白字符，
+所以(?=longshuai)long才能代表&quot;long&quot;这几个字符串
+所以仅对于此处的两个句子，long(?=shuai)和(?=longshuai)long是等价的
+</code></pre><p>10.贪婪匹配、惰性匹配和占有优先匹配</p>
+<pre><code>默认情况下，对于重复次数的表达式都是贪婪匹配，表示尽可能多的匹配。
+有些高级正则引擎支持惰性匹配，表示尽可能少的匹配，只要能满足条件就立即停止。
+
+* + ? {M,N} ：都是贪婪匹配(lazy)
+*? +? ?? {M,N}? ：都是惰性匹配(greedy)
+*+ ++ ?++ {M,N}+ ：都是占有优先匹配(possessive)
+
+占有优先和固化分组是相同的，只要占有了就不再交换，不允许进行回溯。示例见下面的(?&gt;...)固化分组方式
+</code></pre><p>11.匹配模式</p>
+<pre><code>(?i)：不区分大小写，可使用(?-i)取消该模式。例如&quot;(?i)abc(?-i)cdB&quot;只对中间的abc进行不区分大小写的匹配
+    由于(?i)遇到闭括号就失效，可以将需要不区分大小写匹配的部分写入分组括号中，例如&quot;((?i)abc)cdB&quot;，(?:(?i)abc)cdB=(?i:abc)cdB
+
+(?x)：extend模式，将忽略多个连续空格和注释符到行尾的字符
+
+(?m)：(multiline)多行模式，改变^和$的匹配模式。默认模式下，它们匹配字符串首部和尾部。此模式下：
+    ^将匹配字符串首部和换行符。若要仅匹配字符串首部，使用\A。
+    $将匹配字符串尾部、换行符和换行符前的空字符。若要仅匹配字符串尾部和行尾，使用\Z，若要仅匹配字符串尾部，使用\z
+
+(?s)：(singleline或dotall)单行模式，改变&quot;.&quot;的匹配模式，默认模式下，点&quot;.&quot;无法匹配换行符，dotall模式下可以
+
+(?U)：lazy匹配模式。默认是greedy匹配。
+</code></pre><p>12.强制字面解释：\Q…\E。该序列将其中间的所有字符强制解释为字面符号，强制性极强。</p>
+<pre><code>但perl和pcre有所不同。perl中，该序列中间可引用变量进行变量替换，而pcre中变量符号也被当作普通字符。
+</code></pre><p>13.普通分组和捕获</p>
+<pre><code>(),$1,$2,$3,$4...有些地方使用\1,\2,\3,\4，sed中使用&amp;表示所有匹配，perl中则使用$&amp;
+\g1,\g2,\g3或\g{1},\g{2},\g{3}。
+
+其中$1,$2, ...用于正则外面，而&quot;\g1&quot;, &quot;\g2&quot;, ... 用于正则内部
+</code></pre><p>14.命名分组和捕获</p>
+<pre><code>(?:...)：非命名捕获，仅用于分组，不可用于引用，也称为非捕获型括号。例如&quot;(1|one)(?:2|two)(3|three)&quot;，$1=(1|one)，$2=(3|three)
+
+(?&lt;NAME&gt;...)：命名捕获，分组捕获后还命名，就像变量赋值一样。可以使用\k&lt;NAME&gt;或\k&apos;NAME&apos;或\g{NAME}的方法来引用
+
+(?&gt;...)：固化分组。一匹配成功就永不交回内容(用回溯的想法理解很容易)。
+例如&quot;hello world&quot;可以被&quot;hel.* world&quot;进行匹配，但不能被&quot;hel(?&gt;.*) world&quot;匹配。
+因为正常情况下，&quot;.*&quot;匹配到所有内容，然后回溯释放一匹配内容直到空格&quot; &quot;字符。而固化分组后，已匹配的内容绝不交回，也就无法回溯。
+</code></pre><p>Linux通配符与正则表达式  <a href="http://www.linuxidc.com/Linux/2017-05/144126.htm" target="_blank" rel="noopener">http://www.linuxidc.com/Linux/2017-05/144126.htm</a></p>
+<p>Linux基础之-正则表达式（grep，sed，awk）  <a href="http://www.linuxidc.com/Linux/2017-05/144221.htm" target="_blank" rel="noopener">http://www.linuxidc.com/Linux/2017-05/144221.htm</a></p>
+<p>正则表达式语法速查表  <a href="http://www.linuxidc.com/Linux/2017-01/139561.htm" target="_blank" rel="noopener">http://www.linuxidc.com/Linux/2017-01/139561.htm</a></p>
+<p>正则表达式总结  <a href="http://www.linuxidc.com/Linux/2017-05/144319.htm" target="_blank" rel="noopener">http://www.linuxidc.com/Linux/2017-05/144319.htm</a></p>
+<p>本文永久更新链接地址：<a href="http://www.linuxidc.com/Linux/2017-10/147742.htm" target="_blank" rel="noopener">http://www.linuxidc.com/Linux/2017-10/147742.htm</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RegExp/" rel="tag"># RegExp</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/27/Linux - 包/" rel="next" title="linux - 软件包格式">
+                <i class="fa fa-chevron-left"></i> linux - 软件包格式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/29/PHP笔记/PHP手册笔记/04语言参考/归纳整理/test/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">218</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

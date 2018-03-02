@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Git," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="git 的设置项分为客户端设置和服务器端设置，都保存在 git 配置文件中，大部分属于客户端设置。">
+<meta name="keywords" content="Git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter 8.1 - Git 设置">
+<meta property="og:url" content="http://www.shenlin.ltd/2018/02/27/Git - ProGit Chapter 8.1 - 配置/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="git 的设置项分为客户端设置和服务器端设置，都保存在 git 配置文件中，大部分属于客户端设置。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-27T08:18:40.729Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter 8.1 - Git 设置">
+<meta name="twitter:description" content="git 的设置项分为客户端设置和服务器端设置，都保存在 git 配置文件中，大部分属于客户端设置。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2018/02/27/Git - ProGit Chapter 8.1 - 配置/"/>
+
+
+
+
+
+  <title>chapter 8.1 - Git 设置 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/02/27/Git - ProGit Chapter 8.1 - 配置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">chapter 8.1 - Git 设置</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-27T16:18:40+08:00">
+                2018-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/Book-ProGit/" itemprop="url" rel="index">
+                    <span itemprop="name">Book-ProGit</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>git 的设置项分为客户端设置和服务器端设置，都保存在 git 配置文件中，大部分属于客户端设置。</p>
+<a id="more"></a>
+<h2 id="设置文件"><a href="#设置文件" class="headerlink" title="设置文件"></a>设置文件</h2><h3 id="1-系统设置文件-gitconfig"><a href="#1-系统设置文件-gitconfig" class="headerlink" title="1.系统设置文件 gitconfig"></a>1.系统设置文件 gitconfig</h3><pre><code>包含当前系统上每一个用户和每一个仓库的通用设置
+
+linux: /etc/gitconfig
+
+windows: git安装目录/etc/gitconfig
+
+--system 选项对应此文件
+</code></pre><h3 id="2-用户设置文件-gitconfig"><a href="#2-用户设置文件-gitconfig" class="headerlink" title="2.用户设置文件 .gitconfig"></a>2.用户设置文件 .gitconfig</h3><pre><code>只针对当前用户
+
+linux:  ~/.gitconfig 或 ~/.config/git/config
+
+windows: C:/users/$user/.gitconfig
+
+--global 选项对应此文件
+</code></pre><h3 id="3-当前库设置文件-config"><a href="#3-当前库设置文件-config" class="headerlink" title="3.当前库设置文件 config"></a>3.当前库设置文件 config</h3><pre><code>针对当前仓库
+
+当前项目/.git/config
+
+--local 选项对应此文件
+</code></pre><p><strong>每一级的设置会覆盖上一级的设置</strong></p>
+<h2 id="读写设置文件"><a href="#读写设置文件" class="headerlink" title="读写设置文件"></a>读写设置文件</h2><p>使用<code>git config</code>命令来读写设置文件</p>
+<h3 id="1-列表设置"><a href="#1-列表设置" class="headerlink" title="1. 列表设置"></a>1. 列表设置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">//系统设置文件</span><br><span class="line">$ git config --system --list</span><br><span class="line">$ git config --system --l</span><br><span class="line"></span><br><span class="line">//用户设置文件</span><br><span class="line">$ git config --global --list</span><br><span class="line">$ git config --global --l</span><br><span class="line"></span><br><span class="line">//当前库设置文件</span><br><span class="line">$ git config --local --list</span><br><span class="line">$ git config --local --l</span><br><span class="line"></span><br><span class="line">//所有设置信息，会有重复项目</span><br><span class="line">$ git config --list</span><br><span class="line">$ git config --l</span><br></pre></td></tr></table></figure>
+<h3 id="2-单项设置"><a href="#2-单项设置" class="headerlink" title="2. 单项设置"></a>2. 单项设置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git config user.name</span><br><span class="line">$ git config --get user.name</span><br><span class="line">$ git config --unset user.name</span><br><span class="line">$ git config --remove-section user</span><br></pre></td></tr></table></figure>
+<h2 id="客户端常用设置项"><a href="#客户端常用设置项" class="headerlink" title="客户端常用设置项"></a>客户端常用设置项</h2><h3 id="1-设置用户名和邮件地址"><a href="#1-设置用户名和邮件地址" class="headerlink" title="1. 设置用户名和邮件地址"></a>1. 设置用户名和邮件地址</h3><p>这是应该最先设置的信息，它们会被写入每一次的提交信息中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name &quot;John Doe&quot;</span><br><span class="line">$ git config --global user.email johndoe@example.com</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-设置文本编辑器"><a href="#2-设置文本编辑器" class="headerlink" title="2. 设置文本编辑器"></a>2. 设置文本编辑器</h3><p>git 需要用户输入信息时会调用文本编辑器，</p>
+<p>默认调用环境变量（$VISUAL 或 $EDITOR）设置的编辑器，</p>
+<p>没有设置则使用 vi</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global core.editor vim</span><br></pre></td></tr></table></figure>
+<h3 id="3-设置提交信息模板"><a href="#3-设置提交信息模板" class="headerlink" title="3. 设置提交信息模板"></a>3. 设置提交信息模板</h3><p>如果团队对提交信息的格式有要求，可以设置提交信息的模板格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global commit.template ~/.gitmessage.txt</span><br></pre></td></tr></table></figure>
+<h3 id="4-设置默认分页器"><a href="#4-设置默认分页器" class="headerlink" title="4. 设置默认分页器"></a>4. 设置默认分页器</h3><p>默认是 less，设置为 ‘’ 将不使用分页一次性显示完毕</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global core.pager &apos;&apos;</span><br></pre></td></tr></table></figure>
+<h3 id="5-设置签署秘钥"><a href="#5-设置签署秘钥" class="headerlink" title="5. 设置签署秘钥"></a>5. 设置签署秘钥</h3><p>设置 GPG 签署秘钥为设置项，创建签署的附注标签时则无需定义秘钥</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.signingkey &lt;gpg-key-id&gt;</span><br><span class="line"></span><br><span class="line">$ git tag -s &lt;tag-name&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="6-设置全局-gitignore-文件"><a href="#6-设置全局-gitignore-文件" class="headerlink" title="6. 设置全局 .gitignore 文件"></a>6. 设置全局 .gitignore 文件</h3><p>有些儿文件对于所有库都是需要忽略的，如 vim 的 <code>~</code> 结尾的文件，</p>
+<p>虽然 <code>.gitignore</code> 文件可以包含不被跟踪的忽略文件，但仅对当前库有效，</p>
+<p><code>core.excludesfile</code> 则对全局有效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.excludesfile ~/.gitignore_global</span><br></pre></td></tr></table></figure>
+<p><code>~/.gitignore_global</code> 是自定义的文件，其格式要求和 <code>.gitignore</code> 文件一样</p>
+<h3 id="7-自动模糊执行"><a href="#7-自动模糊执行" class="headerlink" title="7. 自动模糊执行"></a>7. 自动模糊执行</h3><p>git 输入命令错误会进行模糊匹配并提醒，如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git checkut dev</span><br><span class="line">git: &apos;checkut&apos; is not a git command. See &apos;git --help&apos;.</span><br><span class="line"></span><br><span class="line">Did you mean this?</span><br><span class="line">        checkout</span><br></pre></td></tr></table></figure>
+<p>但并不会按模糊匹配的结果自动执行，若设置 <code>help.autocorrect</code> 则会自动执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git config help.autocorrect 100</span><br><span class="line"></span><br><span class="line">$ git checkut dev</span><br><span class="line">WARNING: You called a Git command named &apos;checkut&apos;, which does not exist.</span><br><span class="line">Continuing under the assumption that you meant &apos;checkout&apos;</span><br><span class="line">in 10.0 seconds automatically...</span><br></pre></td></tr></table></figure>
+<p>help.autocorrect 后面的参数单位是0.1秒，即10代表1秒，100代表10秒，设置为0则关闭</p>
+<h3 id="8-设置输出颜色"><a href="#8-设置输出颜色" class="headerlink" title="8. 设置输出颜色"></a>8. 设置输出颜色</h3><h4 id="8-1-开启关闭颜色"><a href="#8-1-开启关闭颜色" class="headerlink" title="8.1 开启关闭颜色"></a>8.1 开启关闭颜色</h4><p>git 默认会自动着色大部分输出，但也可以关闭输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global color.ui false</span><br></pre></td></tr></table></figure>
+<p><code>color.ui</code> 取值 :</p>
+<p><code>false</code> 关闭着色</p>
+<p><code>auto</code>  默认值，直接输出到终端的内容会被着色，而当内容被重定向到一个管道或文件时，则不着色</p>
+<p><code>always</code> 永远着色，忽略终端和管道的不同</p>
+<p>默认值 <code>auto</code> 已经满足大多数情况的需求，如果临时需要着色，还可以使用 <code>--color</code> 参数临时开启</p>
+<h4 id="8-2-具体命令颜色"><a href="#8-2-具体命令颜色" class="headerlink" title="8.2 具体命令颜色"></a>8.2 具体命令颜色</h4><p>指定具体的命令是否显示颜色</p>
+<p><code>color.&lt;command&gt; &lt;value&gt;</code></p>
+<ul>
+<li><code>&lt;command&gt;</code> 为 git 子命令，如 branch, diff, status</li>
+<li><code>&lt;value&gt;</code> 取值 false, true, always</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global color.diff always</span><br></pre></td></tr></table></figure>
+<p>设置某个命令的具体颜色和字体</p>
+<p><code>color.&lt;command&gt;.meta &quot;&lt;fg&gt; &lt;bg&gt; &lt;font&gt;&quot;</code></p>
+<ul>
+<li><code>&lt;command&gt;</code> 为 git 子命令，如 branch, diff, status</li>
+<li><code>&lt;fg&gt;</code> 为前景色，取值：normal、black、red、green、yellow、blue、magenta、cyan、white</li>
+<li><code>&lt;bg&gt;</code> 为背景色，取值：</li>
+<li><code>&lt;font&gt;</code> 为字体，取值：bold、dim、ul（下划线）、blink、reverse（交换前景色和背景色）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global color.diff.meta &quot;blue black bold&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="9-回车换行"><a href="#9-回车换行" class="headerlink" title="9. 回车换行"></a>9. 回车换行</h3><p>跨平台时会遇到 CRLF 问题。</p>
+<p>这是因为 Windows 使用回车（CR）和换行（LF）两个字符来结束一行，而 Mac 和 Linux 只使用换行（LF）一个字符。</p>
+<p>Git 有相关的回车换行转换设置。</p>
+<p>在提交时自动地把回车和换行转换成换行，在检出代码时把换行转换成回车和换行（适用于 : windows 编辑器，git 服务器运行在 linux）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global core.autocrlf true</span><br></pre></td></tr></table></figure></p>
+<p>在提交时自动把回车和换行转换成换行，在检出时不转换（适用于 : linux 编辑器，git 服务器运行在 linux，但需偶尔打开 windows 文件）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global core.autocrlf input</span><br></pre></td></tr></table></figure></p>
+<p>关闭自动转换<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global core.autocrlf false</span><br></pre></td></tr></table></figure></p>
+<h3 id="A-多余空白"><a href="#A-多余空白" class="headerlink" title="A. 多余空白"></a>A. 多余空白</h3><p>git 提供了 6 个处理多余空白的选项</p>
+<p>3 个默认打开的：</p>
+<ul>
+<li>trailing-space 包含下面两个<ul>
+<li>blank-at-eol，行尾的空格作为错误对待</li>
+<li>blank-at-eof，文件底部的空行作为错误对待</li>
+</ul>
+</li>
+<li>space-before-tab，行头 tab 前面的空格作为错误对待</li>
+</ul>
+<p>3 个默认关闭的：</p>
+<ul>
+<li>indent-with-non-tab，以8个以上空格而非 tab 缩进的行作为错误对待（空格数由 tabwidth 选项控制）</li>
+<li>tab-in-indent，在行头表示缩进的 tab 作为错误对待</li>
+<li>cr-at-eol，行尾的回车是合法的</li>
+</ul>
+<p>1 个辅助选项：</p>
+<ul>
+<li>tabwidth=<n> 指定 tab 的宽度，默认是 8，取值范围 1 到 63，和 <code>tab-in-indent</code>、<code>indent-with-non-tab</code> 关联</n></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global core.whitespace trailing-space,space-before-tab,indent-with-non-tab</span><br></pre></td></tr></table></figure>
+<ul>
+<li>设置时选项之间以逗号分隔</li>
+<li>不指定的设置项即表示关闭，设置项前面加 <code>-</code> 也表示关闭</li>
+</ul>
+<p>设置后影响的命令：</p>
+<ul>
+<li><p>git diff</p>
+<p>  输出并着色时会注意到空白问题</p>
+</li>
+<li><p>git apply</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//对有空白问题的补丁发出警告</span><br><span class="line">$ git apply --whitespace=warn &lt;patch&gt;</span><br><span class="line"></span><br><span class="line">//打补丁前自动修正空白问题</span><br><span class="line">$ git apply --whitespace=warn &lt;patch&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>git rebase</p>
+<p>  如果提交了有空白问题的文件，但还没推送到上游，可以让 Git 在重写补丁时自动修正它们</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase --whitespace=fix</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="B-命令别名"><a href="#B-命令别名" class="headerlink" title="B. 命令别名"></a>B. 命令别名</h3><p>Git 只是简单地将别名替换为对应的命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global alias.unstage &apos;reset HEAD --&apos;</span><br></pre></td></tr></table></figure></p>
+<p>下面两条命令等价<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git unstage fileA</span><br><span class="line">$ git reset HEAD -- fileA</span><br></pre></td></tr></table></figure></p>
+<p>其他简化命令举例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global alias.co checkout</span><br><span class="line">$ git config --global alias.br branch</span><br><span class="line">$ git config --global alias.ci commit</span><br><span class="line">$ git config --global alias.st status</span><br></pre></td></tr></table></figure></p>
+<p>执行外部命令，在命令前面加<code>!</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global alias.visual &apos;!gitk&apos;</span><br></pre></td></tr></table></figure></p>
+<h3 id="C-比较合并工具"><a href="#C-比较合并工具" class="headerlink" title="C. 比较合并工具"></a>C. 比较合并工具</h3><h4 id="C-1-使用预设工具"><a href="#C-1-使用预设工具" class="headerlink" title="C.1 使用预设工具"></a>C.1 使用预设工具</h4><p>Git 预设了许多合并和解决冲突的工具，无需特别的设置就可以使用</p>
+<p>查看预设合并工具、比较工具</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">$ git mergetool --tool-help</span><br><span class="line">&apos;git mergetool --tool=&lt;tool&gt;&apos; may be set to one of the following:</span><br><span class="line">                gvimdiff</span><br><span class="line">                gvimdiff2</span><br><span class="line">                gvimdiff3</span><br><span class="line">                meld</span><br><span class="line">                vimdiff</span><br><span class="line">                vimdiff2</span><br><span class="line">                vimdiff3</span><br><span class="line">                winmerge</span><br><span class="line"></span><br><span class="line">The following tools are valid, but not currently available:</span><br><span class="line">                araxis</span><br><span class="line">                bc</span><br><span class="line">                bc3</span><br><span class="line">                codecompare</span><br><span class="line">                deltawalker</span><br><span class="line">                diffmerge</span><br><span class="line">                diffuse</span><br><span class="line">                ecmerge</span><br><span class="line">                emerge</span><br><span class="line">                examdiff</span><br><span class="line">                kdiff3</span><br><span class="line">                opendiff</span><br><span class="line">                p4merge</span><br><span class="line">                tkdiff</span><br><span class="line">                tortoisemerge</span><br><span class="line">                xxdiff</span><br><span class="line"></span><br><span class="line">Some of the tools listed above only work in a windowed</span><br><span class="line">environment. If run in a terminal-only session, they will fail.</span><br><span class="line"></span><br><span class="line">$ git difftool --tool-help</span><br><span class="line">//和上面的的 mergetool 稍有不同</span><br></pre></td></tr></table></figure>
+<p>设置合并工具为 kdiff3</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global merge.tool kdiff3</span><br></pre></td></tr></table></figure>
+<h4 id="C-2-使用预设外工具"><a href="#C-2-使用预设外工具" class="headerlink" title="C.2 使用预设外工具"></a>C.2 使用预设外工具</h4><p>Git 使用预设外工具稍微麻烦，需要通过全局包装脚本来传递参数和运行命令。</p>
+<p>以 P4Merge 为例，首先下载 P4Merge 并安装，然后要编写一个全局包装脚本来运行命令。</p>
+<p>Git 共传递了 7 个参数给 diff 工具：</p>
+<pre><code>path old-file old-hex old-mode new-file new-hex new-mode
+</code></pre><p>但 diff 和 merge 只需要 old-file 和 new-file 两个参数，</p>
+<p>由包装 diff 的脚本来转发给 merge 的参数</p>
+<h5 id="C-2-1-创建全局包装脚本"><a href="#C-2-1-创建全局包装脚本" class="headerlink" title="C.2.1. 创建全局包装脚本"></a>C.2.1. 创建全局包装脚本</h5><p>包装 diff 的脚本 : /usr/local/bin/extDiff<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cat /usr/local/bin/extDiff</span><br><span class="line">#!/bin/sh</span><br><span class="line">[ $# -eq 7 ] &amp;&amp; /usr/local/bin/extMerge &quot;$2&quot; &quot;$5&quot;</span><br></pre></td></tr></table></figure></p>
+<p>使用脚本安装 merge 工具 : /usr/local/bin/extMerge<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cat /usr/local/bin/extMerge</span><br><span class="line">#!/bin/sh</span><br><span class="line">/Applications/p4merge.app/Contents/MacOS/p4merge $*</span><br></pre></td></tr></table></figure></p>
+<p>使用包装脚本的好处是在改变比较和合并工具时很方便，</p>
+<p>如 p4merge 改为 meld 直接修改脚本内容即可</p>
+<h5 id="C-2-2-添加权限"><a href="#C-2-2-添加权限" class="headerlink" title="C.2.2. 添加权限"></a>C.2.2. 添加权限</h5><p>为脚本添加可执行权限<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo chmod +x /usr/local/bin/extMerge</span><br><span class="line">$ sudo chmod +x /usr/local/bin/extDiff</span><br></pre></td></tr></table></figure></p>
+<h5 id="C-2-3-修改配置"><a href="#C-2-3-修改配置" class="headerlink" title="C.2.3. 修改配置"></a>C.2.3. 修改配置</h5><p>使用命令行方式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//通知 Git 使用哪个合并工具</span><br><span class="line">$ git config --global merge.tool extMerge</span><br><span class="line"></span><br><span class="line">//规定命令运行的方式</span><br><span class="line">$ git config --global mergetool.extMerge.cmd &apos;extMerge \&quot;$BASE\&quot; \&quot;$LOCAL\&quot; \&quot;$REMOTE\&quot; \&quot;$MERGED\&quot;&apos;</span><br><span class="line"></span><br><span class="line">//通知 Git 程序的返回值是否表示合并操作成功</span><br><span class="line">$ git config --global mergetool.extMerge.trustExitCode false</span><br><span class="line"></span><br><span class="line">//通知 Git 该用什么命令做比较</span><br><span class="line">$ git config --global diff.external extDiff</span><br></pre></td></tr></table></figure></p>
+<p>或直接编辑 <code>~\.gitconfig</code> 文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[merge]</span><br><span class="line">  tool = extMerge</span><br><span class="line">[mergetool &quot;extMerge&quot;]</span><br><span class="line">  cmd = extMerge &quot;$BASE&quot; &quot;$LOCAL&quot; &quot;$REMOTE&quot; &quot;$MERGED&quot;</span><br><span class="line">  trustExitCode = false</span><br><span class="line">[diff]</span><br><span class="line">  external = extDiff</span><br></pre></td></tr></table></figure></p>
+<h5 id="C-2-4-运行命令"><a href="#C-2-4-运行命令" class="headerlink" title="C.2.4. 运行命令"></a>C.2.4. 运行命令</h5><p>这样的方式运行命令将直接启动 P4Merge<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git diff 32d1776b1^ 32d1776b1</span><br></pre></td></tr></table></figure></p>
+<p>或在合并冲突时，手工启动 mergetool<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git mergetool</span><br></pre></td></tr></table></figure></p>
+<h2 id="服务器端设置"><a href="#服务器端设置" class="headerlink" title="服务器端设置"></a>服务器端设置</h2><h3 id="1-检验对象有效性"><a href="#1-检验对象有效性" class="headerlink" title="1. 检验对象有效性"></a>1. 检验对象有效性</h3><p>git 可以检验对象的有效性以及 SHA-1 校验和是否保持一致，但比较耗费时间，特别是库很大或推送内容很大时，</p>
+<p>默认关闭，开启后将在每次推送生效前检验库的完整性，可以避免被有问题的客户端破坏</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --system receive.fsckObjects true</span><br></pre></td></tr></table></figure>
+<h3 id="2-禁用强制更新"><a href="#2-禁用强制更新" class="headerlink" title="2. 禁用强制更新"></a>2. 禁用强制更新</h3><p>如果推送到远程库的提交不是一次快进合并，则 git 默认禁止提交，但用户可以使用 <code>git push -f</code> 进行强制提交，</p>
+<p>如果要禁用强制提交：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --system receive.denyNonFastForwards true</span><br></pre></td></tr></table></figure>
+<p>服务器端的钩子也可以实现，而且可以做到更精细的控制，如只禁止某一类用户非快进提交。</p>
+<h3 id="3-禁止推送删除"><a href="#3-禁止推送删除" class="headerlink" title="3. 禁止推送删除"></a>3. 禁止推送删除</h3><p>有一些方法可以绕过 <code>denyNonFastForwards</code> 策略。</p>
+<p>其中一种是先删除某个分支，再连同新的引用一起推送回该分支。</p>
+<p>可以堵上这个漏洞：</p>
+<p>禁止通过推送删除分支和标签，要删除标签则必须从服务器手动删除引用文件，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --system receive.denyDeletes true</span><br></pre></td></tr></table></figure>
+<p>通过用户访问控制列表（ACL）也能够在用户级的粒度上实现同样的功能</p>
+<h2 id="设置帮助"><a href="#设置帮助" class="headerlink" title="设置帮助"></a>设置帮助</h2><p>以命令<code>config</code>举例</p>
+<p>显示可用选项<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config -h</span><br></pre></td></tr></table></figure></p>
+<p>打开命令手册（随同 git 安装的本地手册，无需联网）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --help</span><br><span class="line">$ git help config</span><br></pre></td></tr></table></figure></p>
+<p>打开man帮助文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ man git-config</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/27/Git - ProGit Chapter 7.D - 替换/" rel="next" title="chapter 7.D - Git 替换">
+                <i class="fa fa-chevron-left"></i> chapter 7.D - Git 替换
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/27/Git - ProGit Chapter 8.2 - 属性/" rel="prev" title="chapter 8.2 - Git 属性">
+                chapter 8.2 - Git 属性 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">218</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#设置文件"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x8BBE;&#x7F6E;&#x6587;&#x4EF6;" class="headerlink" title="&#x8BBE;&#x7F6E;&#x6587;&#x4EF6;"></a>&#x8BBE;&#x7F6E;&#x6587;&#x4EF6;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-系统设置文件-gitconfig"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#1-&#x7CFB;&#x7EDF;&#x8BBE;&#x7F6E;&#x6587;&#x4EF6;-gitconfig" class="headerlink" title="1.&#x7CFB;&#x7EDF;&#x8BBE;&#x7F6E;&#x6587;&#x4EF6; gitconfig"></a>1.&#x7CFB;&#x7EDF;&#x8BBE;&#x7F6E;&#x6587;&#x4EF6; gitconfig</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-用户设置文件-gitconfig"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#2-&#x7528;&#x6237;&#x8BBE;&#x7F6E;&#x6587;&#x4EF6;-gitconfig" class="headerlink" title="2.&#x7528;&#x6237;&#x8BBE;&#x7F6E;&#x6587;&#x4EF6; .gitconfig"></a>2.&#x7528;&#x6237;&#x8BBE;&#x7F6E;&#x6587;&#x4EF6; .gitconfig</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-当前库设置文件-config"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#3-&#x5F53;&#x524D;&#x5E93;&#x8BBE;&#x7F6E;&#x6587;&#x4EF6;-config" class="headerlink" title="3.&#x5F53;&#x524D;&#x5E93;&#x8BBE;&#x7F6E;&#x6587;&#x4EF6; config"></a>3.&#x5F53;&#x524D;&#x5E93;&#x8BBE;&#x7F6E;&#x6587;&#x4EF6; config</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读写设置文件"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x8BFB;&#x5199;&#x8BBE;&#x7F6E;&#x6587;&#x4EF6;" class="headerlink" title="&#x8BFB;&#x5199;&#x8BBE;&#x7F6E;&#x6587;&#x4EF6;"></a>&#x8BFB;&#x5199;&#x8BBE;&#x7F6E;&#x6587;&#x4EF6;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-列表设置"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#1-&#x5217;&#x8868;&#x8BBE;&#x7F6E;" class="headerlink" title="1. &#x5217;&#x8868;&#x8BBE;&#x7F6E;"></a>1. &#x5217;&#x8868;&#x8BBE;&#x7F6E;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-单项设置"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#2-&#x5355;&#x9879;&#x8BBE;&#x7F6E;" class="headerlink" title="2. &#x5355;&#x9879;&#x8BBE;&#x7F6E;"></a>2. &#x5355;&#x9879;&#x8BBE;&#x7F6E;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端常用设置项"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x5BA2;&#x6237;&#x7AEF;&#x5E38;&#x7528;&#x8BBE;&#x7F6E;&#x9879;" class="headerlink" title="&#x5BA2;&#x6237;&#x7AEF;&#x5E38;&#x7528;&#x8BBE;&#x7F6E;&#x9879;"></a>&#x5BA2;&#x6237;&#x7AEF;&#x5E38;&#x7528;&#x8BBE;&#x7F6E;&#x9879;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-设置用户名和邮件地址"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#1-&#x8BBE;&#x7F6E;&#x7528;&#x6237;&#x540D;&#x548C;&#x90AE;&#x4EF6;&#x5730;&#x5740;" class="headerlink" title="1. &#x8BBE;&#x7F6E;&#x7528;&#x6237;&#x540D;&#x548C;&#x90AE;&#x4EF6;&#x5730;&#x5740;"></a>1. &#x8BBE;&#x7F6E;&#x7528;&#x6237;&#x540D;&#x548C;&#x90AE;&#x4EF6;&#x5730;&#x5740;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-设置文本编辑器"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#2-&#x8BBE;&#x7F6E;&#x6587;&#x672C;&#x7F16;&#x8F91;&#x5668;" class="headerlink" title="2. &#x8BBE;&#x7F6E;&#x6587;&#x672C;&#x7F16;&#x8F91;&#x5668;"></a>2. &#x8BBE;&#x7F6E;&#x6587;&#x672C;&#x7F16;&#x8F91;&#x5668;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-设置提交信息模板"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#3-&#x8BBE;&#x7F6E;&#x63D0;&#x4EA4;&#x4FE1;&#x606F;&#x6A21;&#x677F;" class="headerlink" title="3. &#x8BBE;&#x7F6E;&#x63D0;&#x4EA4;&#x4FE1;&#x606F;&#x6A21;&#x677F;"></a>3. &#x8BBE;&#x7F6E;&#x63D0;&#x4EA4;&#x4FE1;&#x606F;&#x6A21;&#x677F;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-设置默认分页器"><span class="nav-number">3.4.</span> <span class="nav-text"><a href="#4-&#x8BBE;&#x7F6E;&#x9ED8;&#x8BA4;&#x5206;&#x9875;&#x5668;" class="headerlink" title="4. &#x8BBE;&#x7F6E;&#x9ED8;&#x8BA4;&#x5206;&#x9875;&#x5668;"></a>4. &#x8BBE;&#x7F6E;&#x9ED8;&#x8BA4;&#x5206;&#x9875;&#x5668;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-设置签署秘钥"><span class="nav-number">3.5.</span> <span class="nav-text"><a href="#5-&#x8BBE;&#x7F6E;&#x7B7E;&#x7F72;&#x79D8;&#x94A5;" class="headerlink" title="5. &#x8BBE;&#x7F6E;&#x7B7E;&#x7F72;&#x79D8;&#x94A5;"></a>5. &#x8BBE;&#x7F6E;&#x7B7E;&#x7F72;&#x79D8;&#x94A5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-设置全局-gitignore-文件"><span class="nav-number">3.6.</span> <span class="nav-text"><a href="#6-&#x8BBE;&#x7F6E;&#x5168;&#x5C40;-gitignore-&#x6587;&#x4EF6;" class="headerlink" title="6. &#x8BBE;&#x7F6E;&#x5168;&#x5C40; .gitignore &#x6587;&#x4EF6;"></a>6. &#x8BBE;&#x7F6E;&#x5168;&#x5C40; .gitignore &#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-自动模糊执行"><span class="nav-number">3.7.</span> <span class="nav-text"><a href="#7-&#x81EA;&#x52A8;&#x6A21;&#x7CCA;&#x6267;&#x884C;" class="headerlink" title="7. &#x81EA;&#x52A8;&#x6A21;&#x7CCA;&#x6267;&#x884C;"></a>7. &#x81EA;&#x52A8;&#x6A21;&#x7CCA;&#x6267;&#x884C;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-设置输出颜色"><span class="nav-number">3.8.</span> <span class="nav-text"><a href="#8-&#x8BBE;&#x7F6E;&#x8F93;&#x51FA;&#x989C;&#x8272;" class="headerlink" title="8. &#x8BBE;&#x7F6E;&#x8F93;&#x51FA;&#x989C;&#x8272;"></a>8. &#x8BBE;&#x7F6E;&#x8F93;&#x51FA;&#x989C;&#x8272;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8-1-开启关闭颜色"><span class="nav-number">3.8.1.</span> <span class="nav-text"><a href="#8-1-&#x5F00;&#x542F;&#x5173;&#x95ED;&#x989C;&#x8272;" class="headerlink" title="8.1 &#x5F00;&#x542F;&#x5173;&#x95ED;&#x989C;&#x8272;"></a>8.1 &#x5F00;&#x542F;&#x5173;&#x95ED;&#x989C;&#x8272;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-2-具体命令颜色"><span class="nav-number">3.8.2.</span> <span class="nav-text"><a href="#8-2-&#x5177;&#x4F53;&#x547D;&#x4EE4;&#x989C;&#x8272;" class="headerlink" title="8.2 &#x5177;&#x4F53;&#x547D;&#x4EE4;&#x989C;&#x8272;"></a>8.2 &#x5177;&#x4F53;&#x547D;&#x4EE4;&#x989C;&#x8272;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-回车换行"><span class="nav-number">3.9.</span> <span class="nav-text"><a href="#9-&#x56DE;&#x8F66;&#x6362;&#x884C;" class="headerlink" title="9. &#x56DE;&#x8F66;&#x6362;&#x884C;"></a>9. &#x56DE;&#x8F66;&#x6362;&#x884C;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A-多余空白"><span class="nav-number">3.10.</span> <span class="nav-text"><a href="#A-&#x591A;&#x4F59;&#x7A7A;&#x767D;" class="headerlink" title="A. &#x591A;&#x4F59;&#x7A7A;&#x767D;"></a>A. &#x591A;&#x4F59;&#x7A7A;&#x767D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B-命令别名"><span class="nav-number">3.11.</span> <span class="nav-text"><a href="#B-&#x547D;&#x4EE4;&#x522B;&#x540D;" class="headerlink" title="B. &#x547D;&#x4EE4;&#x522B;&#x540D;"></a>B. &#x547D;&#x4EE4;&#x522B;&#x540D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-比较合并工具"><span class="nav-number">3.12.</span> <span class="nav-text"><a href="#C-&#x6BD4;&#x8F83;&#x5408;&#x5E76;&#x5DE5;&#x5177;" class="headerlink" title="C. &#x6BD4;&#x8F83;&#x5408;&#x5E76;&#x5DE5;&#x5177;"></a>C. &#x6BD4;&#x8F83;&#x5408;&#x5E76;&#x5DE5;&#x5177;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#C-1-使用预设工具"><span class="nav-number">3.12.1.</span> <span class="nav-text"><a href="#C-1-&#x4F7F;&#x7528;&#x9884;&#x8BBE;&#x5DE5;&#x5177;" class="headerlink" title="C.1 &#x4F7F;&#x7528;&#x9884;&#x8BBE;&#x5DE5;&#x5177;"></a>C.1 &#x4F7F;&#x7528;&#x9884;&#x8BBE;&#x5DE5;&#x5177;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#C-2-使用预设外工具"><span class="nav-number">3.12.2.</span> <span class="nav-text"><a href="#C-2-&#x4F7F;&#x7528;&#x9884;&#x8BBE;&#x5916;&#x5DE5;&#x5177;" class="headerlink" title="C.2 &#x4F7F;&#x7528;&#x9884;&#x8BBE;&#x5916;&#x5DE5;&#x5177;"></a>C.2 &#x4F7F;&#x7528;&#x9884;&#x8BBE;&#x5916;&#x5DE5;&#x5177;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#C-2-1-创建全局包装脚本"><span class="nav-number">3.12.2.1.</span> <span class="nav-text"><a href="#C-2-1-&#x521B;&#x5EFA;&#x5168;&#x5C40;&#x5305;&#x88C5;&#x811A;&#x672C;" class="headerlink" title="C.2.1. &#x521B;&#x5EFA;&#x5168;&#x5C40;&#x5305;&#x88C5;&#x811A;&#x672C;"></a>C.2.1. &#x521B;&#x5EFA;&#x5168;&#x5C40;&#x5305;&#x88C5;&#x811A;&#x672C;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#C-2-2-添加权限"><span class="nav-number">3.12.2.2.</span> <span class="nav-text"><a href="#C-2-2-&#x6DFB;&#x52A0;&#x6743;&#x9650;" class="headerlink" title="C.2.2. &#x6DFB;&#x52A0;&#x6743;&#x9650;"></a>C.2.2. &#x6DFB;&#x52A0;&#x6743;&#x9650;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#C-2-3-修改配置"><span class="nav-number">3.12.2.3.</span> <span class="nav-text"><a href="#C-2-3-&#x4FEE;&#x6539;&#x914D;&#x7F6E;" class="headerlink" title="C.2.3. &#x4FEE;&#x6539;&#x914D;&#x7F6E;"></a>C.2.3. &#x4FEE;&#x6539;&#x914D;&#x7F6E;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#C-2-4-运行命令"><span class="nav-number">3.12.2.4.</span> <span class="nav-text"><a href="#C-2-4-&#x8FD0;&#x884C;&#x547D;&#x4EE4;" class="headerlink" title="C.2.4. &#x8FD0;&#x884C;&#x547D;&#x4EE4;"></a>C.2.4. &#x8FD0;&#x884C;&#x547D;&#x4EE4;</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器端设置"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x670D;&#x52A1;&#x5668;&#x7AEF;&#x8BBE;&#x7F6E;" class="headerlink" title="&#x670D;&#x52A1;&#x5668;&#x7AEF;&#x8BBE;&#x7F6E;"></a>&#x670D;&#x52A1;&#x5668;&#x7AEF;&#x8BBE;&#x7F6E;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-检验对象有效性"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#1-&#x68C0;&#x9A8C;&#x5BF9;&#x8C61;&#x6709;&#x6548;&#x6027;" class="headerlink" title="1. &#x68C0;&#x9A8C;&#x5BF9;&#x8C61;&#x6709;&#x6548;&#x6027;"></a>1. &#x68C0;&#x9A8C;&#x5BF9;&#x8C61;&#x6709;&#x6548;&#x6027;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-禁用强制更新"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#2-&#x7981;&#x7528;&#x5F3A;&#x5236;&#x66F4;&#x65B0;" class="headerlink" title="2. &#x7981;&#x7528;&#x5F3A;&#x5236;&#x66F4;&#x65B0;"></a>2. &#x7981;&#x7528;&#x5F3A;&#x5236;&#x66F4;&#x65B0;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-禁止推送删除"><span class="nav-number">4.3.</span> <span class="nav-text"><a href="#3-&#x7981;&#x6B62;&#x63A8;&#x9001;&#x5220;&#x9664;" class="headerlink" title="3. &#x7981;&#x6B62;&#x63A8;&#x9001;&#x5220;&#x9664;"></a>3. &#x7981;&#x6B62;&#x63A8;&#x9001;&#x5220;&#x9664;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置帮助"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x8BBE;&#x7F6E;&#x5E2E;&#x52A9;" class="headerlink" title="&#x8BBE;&#x7F6E;&#x5E2E;&#x52A9;"></a>&#x8BBE;&#x7F6E;&#x5E2E;&#x52A9;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

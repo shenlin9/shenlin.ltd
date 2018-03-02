@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="文件 /etc/sysconfig/network-scripts/ifcfg-eth0存放的是网络接口（网卡）的脚本文件（控制文件），ifcfg-eth0是默认的第一个网络接口，如果机器中有多网络接口，那么名字就将依此类推ifcfg-eth1,ifcfg-eth2,ifcfg-eth3……（这里面的文件是相当重要的，涉及到网络能否正常工作）。 ====设定形式：设定值=值==== 设定项目项目如">
+<meta name="description" content="linux 网络设置标签（空格分隔）： AAA linux ifconfig  http://www.cnblogs.com/Jtianlin/p/4655831.htmlhttp://xtbao.blog.51cto.com/7482722/1671739http://www.iyunv.com/thread-269695-1-1.htmlhttp://www.linuxidc.com/Linu">
 <meta property="og:type" content="article">
 <meta property="og:title" content="shenlin&#39;s blog">
 <meta property="og:url" content="http://www.shenlin.ltd/2017/11/19/Linux - 网络设置/index.html">
 <meta property="og:site_name" content="shenlin&#39;s blog">
-<meta property="og:description" content="文件 /etc/sysconfig/network-scripts/ifcfg-eth0存放的是网络接口（网卡）的脚本文件（控制文件），ifcfg-eth0是默认的第一个网络接口，如果机器中有多网络接口，那么名字就将依此类推ifcfg-eth1,ifcfg-eth2,ifcfg-eth3……（这里面的文件是相当重要的，涉及到网络能否正常工作）。 ====设定形式：设定值=值==== 设定项目项目如">
+<meta property="og:description" content="linux 网络设置标签（空格分隔）： AAA linux ifconfig  http://www.cnblogs.com/Jtianlin/p/4655831.htmlhttp://xtbao.blog.51cto.com/7482722/1671739http://www.iyunv.com/thread-269695-1-1.htmlhttp://www.linuxidc.com/Linu">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-19T07:25:35.560Z">
+<meta property="og:updated_time" content="2017-11-19T07:25:35.553Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shenlin&#39;s blog">
-<meta name="twitter:description" content="文件 /etc/sysconfig/network-scripts/ifcfg-eth0存放的是网络接口（网卡）的脚本文件（控制文件），ifcfg-eth0是默认的第一个网络接口，如果机器中有多网络接口，那么名字就将依此类推ifcfg-eth1,ifcfg-eth2,ifcfg-eth3……（这里面的文件是相当重要的，涉及到网络能否正常工作）。 ====设定形式：设定值=值==== 设定项目项目如">
+<meta name="twitter:description" content="linux 网络设置标签（空格分隔）： AAA linux ifconfig  http://www.cnblogs.com/Jtianlin/p/4655831.htmlhttp://xtbao.blog.51cto.com/7482722/1671739http://www.iyunv.com/thread-269695-1-1.htmlhttp://www.linuxidc.com/Linu">
 
 
 
@@ -299,31 +299,47 @@
       
 
       
-        <p>文件 /etc/sysconfig/network-scripts/ifcfg-eth0存放的是网络接口（网卡）的脚本文件（控制文件），ifcfg-eth0是默认的第一个网络接口，如果机器中有多网络接口，那么名字就将依此类推ifcfg-eth1,ifcfg-eth2,ifcfg-eth3……（这里面的文件是相当重要的，涉及到网络能否正常工作）。</p>
-<p>====设定形式：设定值=值====</p>
-<p>设定项目项目如下：</p>
-<p>  *DEVICE        接口名（设备,网卡）</p>
-<p>  *USERCTL      [yes|no]（非root用户是否可以控制该设备）</p>
-<p>  *BOOTPROTO    IP的配置方法[none|static|bootp|dhcp]（引导时不使用协议|静态分配IP|BOOTP协议|DHCP协议）</p>
-<p>  *HWADDR        MAC地址   </p>
-<p>  *ONBOOT        系统启动的时候网络接口是否有效，是否启动这个网卡 （yes/no）   </p>
-<p>  *TYPE        网络类型（通常是Ethernet）   </p>
-<p>  *NETMASK        网络掩码   </p>
-<p>  *IPADDR        IP地址   </p>
-<p>  *IPV6INIT    IPV6是否有效（yes/no）   </p>
-<p>  *GATEWAY        默认网关IP地址</p>
-<p>  *BROADCAST     广播地址</p>
-<p>  *NETWORK  网络地址</p>
-<p>====可参照下面的例子====</p>
-<p>  *DEVICE=eth0        </p>
-<p>  *BOOTPROTO=static        </p>
-<p>  *BROADCAST=192.168.1.255        </p>
-<p>  *HWADDR=00:0C:2x:6x:0x:xx        </p>
-<p>  *IPADDR=192.168.1.23        </p>
-<p>  *NETMASK=255.255.255.0        </p>
-<p>  *NETWORK=192.168.1.0        </p>
-<p>  *ONBOOT=yes        </p>
-<p>  *TYPE=Ethernet</p>
+        <h1 id="linux-网络设置"><a href="#linux-网络设置" class="headerlink" title="linux 网络设置"></a>linux 网络设置</h1><p>标签（空格分隔）： AAA linux ifconfig</p>
+<hr>
+<p><a href="http://www.cnblogs.com/Jtianlin/p/4655831.html" target="_blank" rel="noopener">http://www.cnblogs.com/Jtianlin/p/4655831.html</a><br><a href="http://xtbao.blog.51cto.com/7482722/1671739" target="_blank" rel="noopener">http://xtbao.blog.51cto.com/7482722/1671739</a><br><a href="http://www.iyunv.com/thread-269695-1-1.html" target="_blank" rel="noopener">http://www.iyunv.com/thread-269695-1-1.html</a><br><a href="http://www.linuxidc.com/Linux/2013-08/88809.htm" target="_blank" rel="noopener">http://www.linuxidc.com/Linux/2013-08/88809.htm</a></p>
+<h2 id="网络基本命令"><a href="#网络基本命令" class="headerlink" title="网络基本命令"></a>网络基本命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">//网卡信息配置文件</span><br><span class="line">$ sudo vi /etc/udev/rules.d/70-persistent-net.rules</span><br><span class="line"></span><br><span class="line"># PCI device 0x8086:0x100f (e1000)</span><br><span class="line">SUBSYSTEM==&quot;net&quot;, ACTION==&quot;add&quot;, DRIVERS==&quot;?*&quot;, ATTR&#123;address&#125;==&quot;eth0-MAC&quot;, ATTR&#123;type&#125;==&quot;1&quot;, KERNEL==&quot;eth*&quot;, NAME=&quot;eth0&quot;</span><br><span class="line"></span><br><span class="line"># PCI device 0x8086:0x100f (e1000)</span><br><span class="line">SUBSYSTEM==&quot;net&quot;, ACTION==&quot;add&quot;, DRIVERS==&quot;?*&quot;, ATTR&#123;address&#125;==&quot;eth1-MAC&quot;, ATTR&#123;type&#125;==&quot;1&quot;, KERNEL==&quot;eth*&quot;, NAME=&quot;eth1&quot;</span><br><span class="line"></span><br><span class="line">//</span><br><span class="line">$ sudo vi /etc/sysconfig/network-scripts/ifcfg-eth0</span><br><span class="line"></span><br><span class="line">//查看所有网卡</span><br><span class="line">$ ifconfig -a</span><br><span class="line"></span><br><span class="line">//</span><br><span class="line">$ ifconfig eth0</span><br><span class="line"></span><br><span class="line">//</span><br><span class="line">$ sudo ifup ifcfg-eth0</span><br></pre></td></tr></table></figure>
+<p>windows 网络命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -ano | findstr 2222</span><br></pre></td></tr></table></figure></p>
+<h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; ps -ef|grep httpd</span><br><span class="line">ssy       2001  1546 21 10:37 pts/1    00:00:00 grep httpd</span><br><span class="line"></span><br><span class="line">&gt;&gt; netstat -le</span><br><span class="line"></span><br><span class="line">&gt;&gt; service httpd status</span><br><span class="line">httpd: 未被识别的服务</span><br><span class="line"></span><br><span class="line">&gt;&gt; sudo /usr/local/httpd-2.4.25/bin/apachectl start</span><br></pre></td></tr></table></figure>
+<h2 id="VirtualBox-导致的问题"><a href="#VirtualBox-导致的问题" class="headerlink" title="VirtualBox 导致的问题"></a>VirtualBox 导致的问题</h2><p>device eth0 does not seem to present</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; ifconfig eth3</span><br><span class="line">eth3: error fetching interface information: Device not found</span><br></pre></td></tr></table></figure>
+<p>在KVM中克隆出新的CentOS虚拟机时，出现如下问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">service network restart</span><br><span class="line">Shutting down loopback insterface: [ OK ]</span><br><span class="line">Bringing up loopback insterface: [ OK ]</span><br><span class="line">Bringing up interface eth0: Device eth0 does not seem to be present,delaying initialization. [FAILED]</span><br></pre></td></tr></table></figure></p>
+<p>用ifconfig查看发现缺少eth0，只有lo；用ifconfig -a查看发现多出了eth1的信息。</p>
+<p>解决办法1：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv /etc/sysconfig/network-scripts/ifcfg-eth0  /etcsysconfig/network-scripts/ifcfg-eth1</span><br></pre></td></tr></table></figure></p>
+<p>将eth0的mac地址改为eth1的mac地址，同时改变其DEVICE名称为eth1，再重启网络即可。</p>
+<p>解决办法2：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /etc/udev/rules.d/70-persistent-net.rules</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure></p>
+<p>总之，只要保证/etc/sysconfig/network-scripts/ifcfg-eth0 与/etc/udev/rules.d/70-persistent-net.rules的信息一致即可，即网卡地址与网卡编号一致，这样service network restart 就可以配置成功。</p>
+<h2 id="NetworkManager"><a href="#NetworkManager" class="headerlink" title="NetworkManager"></a>NetworkManager</h2><p>查看 nmcli 命令由哪个软件包提供<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum provides &quot;*/nmcli&quot;</span><br></pre></td></tr></table></figure></p>
+<p>安装对应的软件包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum -y install NetworkManager</span><br></pre></td></tr></table></figure></p>
+<h2 id="uuid"><a href="#uuid" class="headerlink" title="uuid"></a>uuid</h2><p>不小心将/etc/sysconfig/network-scripts/ifcfg-eth0(可以通过此文件进行查看UUID)删除或者损坏，要重新编辑ifcfg-eth0文件时不知道网卡的UUID是什么(当然也可以不写)，那我们还有什么方法可以查看网卡的UUID呢？在这里我们使用的方法是使用nmcli命令查看<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmcli con | sed -n &apos;1,2p&apos;</span><br></pre></td></tr></table></figure></p>
+<h2 id="uuidgen"><a href="#uuidgen" class="headerlink" title="uuidgen"></a>uuidgen</h2><p>-t 每次后面都是网卡的MAC地址<br>-r 每次全变<br>不加任何参数则默认是 -r<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; uuidgen -t eth0</span><br><span class="line">209997dc-61e1-11e7-8670-08002708bab0</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix ~</span><br><span class="line">&gt;&gt; uuidgen -t eth0</span><br><span class="line">245c40ae-61e1-11e7-a5f3-08002708bab0</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix ~</span><br><span class="line">&gt;&gt; uuidgen -t eth0</span><br><span class="line">27e4ea82-61e1-11e7-bd8f-08002708bab0</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix ~</span><br><span class="line">&gt;&gt; uuidgen -r eth0</span><br><span class="line">d02d1ef5-2b35-41bc-a9b1-f854d8cf29d5</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix ~</span><br><span class="line">&gt;&gt; uuidgen -r eth0</span><br><span class="line">7ce3c5ef-b172-4643-8b78-961ce4fb0ecc</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix ~</span><br><span class="line">&gt;&gt; uuidgen -r eth0</span><br><span class="line">7d39b85e-f748-40d7-a6db-979ad1d150bc</span><br></pre></td></tr></table></figure></p>
+<h2 id="dbus"><a href="#dbus" class="headerlink" title="dbus"></a>dbus</h2><p>dbus-daemon: D-Bus的后台进程，作为D-Bus的消息中转枢纽，负责消息的转发，可分成system和session两种。</p>
+<p>dbus-launch 命令用于从shell脚本启动一个 dbus-daemon 的会话总线实例.<br>dbus-launch 命令通常会在用户的登录脚本中调用.<br>dbus-launch: 启动一个dbus-daemon，后面有不同的参数。<br>当系统启动时，需要使用dbus-launch来启动dbus-daemon<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval `dbus-launch --auto-syntax`</span><br></pre></td></tr></table></figure></p>
+<p>问题1</p>
+<pre><code>$ gdm
+** (gdm-binary:2195): WARNING **: Couldn&apos;t connect to system bus: Failed to connect to socket /var/run/dbus/system_bus_socket: No such file or directory
+
+我用ntsysv查看下了发现messagebus没有开机启动，设置messagebus自动启动后重启，再使用gdm就可以启动桌面了。
+</code></pre><p>问题2</p>
+<pre><code>ssh Client failed to connect to the D-BUS daemon
+
+Add the following lines to ~/.bashrc
+export $(dbus-launch)
+export NSS_USE_SHARED_DB=ENABLED
+</code></pre><h2 id="nmcli"><a href="#nmcli" class="headerlink" title="nmcli"></a>nmcli</h2><p>1、首先我们查看一下nmcli是哪个软件包提供的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@huis ~]# yum provides &quot;*/nmcli&quot;</span><br><span class="line">Loaded plugins：fastestmirror, security</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line"> * base: mirrors.cug.edu.cn</span><br><span class="line"> * extras: mirrors.cug.edu.cn</span><br><span class="line"> * updates: centos.ustc.edu.cn</span><br><span class="line">1:NetworkManager-0.8.1-75.el6.i686 : Network connection manager and</span><br><span class="line">                                   : user applications</span><br><span class="line">Repo        : base</span><br><span class="line">Matched from:</span><br><span class="line">Filename    : /usr/bin/nmcli</span><br></pre></td></tr></table></figure></p>
+<p>2、从上面结果可以看出nmcli，接下来我们安装NetworkManager这个软件包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@huis ~]# yum -y install NetworkManager</span><br></pre></td></tr></table></figure></p>
+<p>3、启动NetworkManager服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@huis ~]# sudo service NetworkManager start</span><br><span class="line">Setting network parameters...                      [  OK  ]</span><br><span class="line">Starting NetworkManager daemon:                    [  OK  ]</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>是不是 sudo 执行 service 是有区别的</li>
+<li>不使用 sudo 不会有错误提示，但没有真正运行</li>
+</ul>
+<p>4、NetWorkManager 和 network 冲突？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; service NetworkManager status</span><br><span class="line">NetworkManager 已死，但 pid 文件仍存</span><br><span class="line"></span><br><span class="line">&gt;&gt; sudo rm /var/run/NetworkManager/NetworkManager.pid </span><br><span class="line"></span><br><span class="line">&gt;&gt; service NetworkManager status</span><br><span class="line">NetworkManager 已死，但是 subsys 被锁</span><br><span class="line"></span><br><span class="line">&gt;&gt; sudo rm -rf /var/lock/subsys/NetworkManager</span><br></pre></td></tr></table></figure>
+<p>9、nmcli 和 dbus<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; nmcli con</span><br><span class="line">错误：无法连接到 D-Bus。</span><br><span class="line"></span><br><span class="line">&gt;&gt; nmcli dev</span><br><span class="line"></span><br><span class="line">** (process:1692): WARNING **: Couldn&apos;t connect to system bus: Failed to connect to socket /var/run/dbus/system_bus_socket: 没有那个文件或目录</span><br><span class="line">错误：无法连接到网络管理器。</span><br><span class="line"></span><br><span class="line">&gt;&gt; yum list|grep dbus</span><br><span class="line">dbus.i686                                  1:1.2.24-8.el6_6            @base    </span><br><span class="line">dbus-glib.i686                             0.86-6.el6                  @anaconda-CentOS-201703281202.i386/6.9</span><br><span class="line">dbus-libs.i686                             1:1.2.24-8.el6_6            @anaconda-CentOS-201703281202.i386/6.9</span><br><span class="line">eggdbus.i686                               0.6-3.el6                   @base    </span><br><span class="line">dbus-c++.i686                              0.5.0-0.10.20090203git13281b3.1.el6</span><br><span class="line">dbus-c++-devel.i686                        0.5.0-0.10.20090203git13281b3.1.el6</span><br><span class="line">dbus-devel.i686                            1:1.2.24-8.el6_6            base     </span><br><span class="line">dbus-doc.noarch                            1:1.2.24-8.el6_6            base     </span><br><span class="line">dbus-glib-devel.i686                       0.86-6.el6                  base     </span><br><span class="line">dbus-python.i686                           0.83.0-6.1.el6              base     </span><br><span class="line">dbus-python-devel.i686                     0.83.0-6.1.el6              base     </span><br><span class="line">dbus-qt.i686                               0.70-7.2.el6                base     </span><br><span class="line">dbus-qt-devel.i686                         0.70-7.2.el6                base     </span><br><span class="line">dbus-x11.i686                              1:1.2.24-8.el6_6            base     </span><br><span class="line">eggdbus-devel.i686                         0.6-3.el6                   base     </span><br><span class="line">python-slip-dbus.noarch                    0.2.20-1.el6_2              base     </span><br><span class="line">sssd-dbus.i686                             1.13.3-56.el6               base     </span><br><span class="line"></span><br><span class="line">&gt;&gt; yum info dbus</span><br><span class="line">已加载插件：fastestmirror</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line"> * base: mirrors.nju.edu.cn</span><br><span class="line"> * extras: mirrors.nwsuaf.edu.cn</span><br><span class="line"> * updates: mirrors.nwsuaf.edu.cn</span><br><span class="line">已安装的软件包</span><br><span class="line">Name        : dbus</span><br><span class="line">Arch        : i686</span><br><span class="line">Epoch       : 1</span><br><span class="line">Version     : 1.2.24</span><br><span class="line">Release     : 8.el6_6</span><br><span class="line">Size        : 486 k</span><br><span class="line">Repo        : installed</span><br><span class="line">From repo   : base</span><br><span class="line">Summary     : D-BUS message bus</span><br><span class="line">URL         : http://www.freedesktop.org/software/dbus/</span><br><span class="line">License     : GPLv2+ or AFL</span><br><span class="line">Description : D-BUS is a system for sending messages between applications. It is</span><br><span class="line">            : used both for the system-wide message bus service, and as a</span><br><span class="line">            : per-user-login-session messaging facility.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt; yum info dbus-x11</span><br><span class="line">已加载插件：fastestmirror</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line"> * base: mirrors.nju.edu.cn</span><br><span class="line"> * extras: mirrors.nwsuaf.edu.cn</span><br><span class="line"> * updates: mirrors.nwsuaf.edu.cn</span><br><span class="line">可安装的软件包</span><br><span class="line">Name        : dbus-x11</span><br><span class="line">Arch        : i686</span><br><span class="line">Epoch       : 1</span><br><span class="line">Version     : 1.2.24</span><br><span class="line">Release     : 8.el6_6</span><br><span class="line">Size        : 39 k</span><br><span class="line">Repo        : base</span><br><span class="line">Summary     : X11-requiring add-ons for D-BUS</span><br><span class="line">URL         : http://www.freedesktop.org/software/dbus/</span><br><span class="line">License     : GPLv2+ or AFL</span><br><span class="line">Description : D-BUS contains some tools that require Xlib to be installed, those are</span><br><span class="line">            : in this separate package so server systems need not install X.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt; rpm -qa|grep dbus</span><br><span class="line">dbus-libs-1.2.24-8.el6_6.i686</span><br><span class="line">dbus-1.2.24-8.el6_6.i686</span><br><span class="line">eggdbus-0.6-3.el6.i686</span><br><span class="line">dbus-glib-0.86-6.el6.i686</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt; rpm -ql dbus</span><br><span class="line">/bin/dbus-cleanup-sockets</span><br><span class="line">    /bin/dbus-daemon</span><br><span class="line">/bin/dbus-monitor</span><br><span class="line">/bin/dbus-send</span><br><span class="line">/bin/dbus-uuidgen</span><br><span class="line">/etc/dbus-1</span><br><span class="line">/etc/dbus-1/session.conf</span><br><span class="line">/etc/dbus-1/session.d</span><br><span class="line">/etc/dbus-1/system.conf</span><br><span class="line">/etc/dbus-1/system.d</span><br><span class="line">/etc/rc.d/init.d/messagebus</span><br><span class="line">/lib/dbus-1</span><br><span class="line">/lib/dbus-1/dbus-daemon-launch-helper</span><br><span class="line">/usr/share/dbus-1</span><br><span class="line">/usr/share/dbus-1/interfaces</span><br><span class="line">/usr/share/dbus-1/services</span><br><span class="line">/usr/share/dbus-1/system-services</span><br><span class="line">/usr/share/doc/dbus-1.2.24</span><br><span class="line">/usr/share/doc/dbus-1.2.24/COPYING</span><br><span class="line">/usr/share/man/man1/dbus-cleanup-sockets.1.gz</span><br><span class="line">/usr/share/man/man1/dbus-daemon.1.gz</span><br><span class="line">/usr/share/man/man1/dbus-monitor.1.gz</span><br><span class="line">/usr/share/man/man1/dbus-send.1.gz</span><br><span class="line">/usr/share/man/man1/dbus-uuidgen.1.gz</span><br><span class="line">/var/lib/dbus</span><br><span class="line">/var/run/dbus</span><br><span class="line"></span><br><span class="line">&gt;&gt; dbus-daemon</span><br><span class="line">No configuration file specified.</span><br><span class="line">dbus-daemon [--version] [--session] [--system] [--config-file=FILE] [--print-address[=DESCRIPTOR]] [--print-pid[=DESCRIPTOR]] [--fork] [--nofork] [--introspect]</span><br><span class="line"></span><br><span class="line">&gt;&gt; dbus-daemon --system --print-pid --print-address</span><br><span class="line">Failed to start message bus: Failed to bind socket &quot;/var/run/dbus/system_bus_socket&quot;: Permission denied</span><br><span class="line"></span><br><span class="line">&gt;&gt; sudo dbus-daemon --system --print-pid --print-address</span><br><span class="line">[sudo] password for ssy: </span><br><span class="line">unix:path=/var/run/dbus/system_bus_socket,guid=6100e9c5c906f107cd0f3efb00001480</span><br><span class="line">1797</span><br><span class="line"></span><br><span class="line">&gt;&gt; ll /var/run/dbus/</span><br><span class="line">总用量 0</span><br><span class="line">srwxrwxrwx. 1 root root 0 7月   6 09:13 system_bus_socket</span><br><span class="line"></span><br><span class="line">&gt;&gt; nmcli con show</span><br><span class="line">错误：无法获得连接：设定服务没有运行。</span><br><span class="line"></span><br><span class="line">&gt;&gt; nmcli dev</span><br><span class="line"></span><br><span class="line">** (process:1802): WARNING **: nm_client_get_devices: error getting devices: The name org.freedesktop.NetworkManager was not provided by any .service files</span><br><span class="line"></span><br><span class="line">设备       类型              状态        </span><br><span class="line"></span><br><span class="line">&gt;&gt; sudo /etc/rc.d/init.d/messagebus start</span><br><span class="line">[sudo] password for ssy: </span><br><span class="line">启动系统消息总线：</span><br><span class="line"></span><br><span class="line">&gt;&gt; nmcli con</span><br><span class="line">错误：无法获得连接：设定服务没有运行。</span><br><span class="line"></span><br><span class="line">&gt;&gt; sudo yum install -y dbus-x11</span><br><span class="line"></span><br><span class="line">&gt;&gt; rpm -ql dbus-x11</span><br><span class="line">/etc/X11/xinit/xinitrc.d/00-start-message-bus.sh</span><br><span class="line">/usr/bin/dbus-launch</span><br><span class="line">/usr/share/man/man1/dbus-launch.1.gz</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -348,7 +364,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/19/Linux - 用户管理/" rel="next" title="">
+              <a href="/2017/11/19/Linux - 编译内核/" rel="next" title="">
                 <i class="fa fa-chevron-left"></i> 
               </a>
             
@@ -358,7 +374,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/11/19/Linux - 软件包管理-markdown/" rel="prev" title="">
+              <a href="/2017/11/19/Linux - 自动启动守护进程/" rel="prev" title="">
                  <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -410,8 +426,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -426,7 +451,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-count">165</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -437,7 +462,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -448,7 +473,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">82</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -473,6 +498,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linux-网络设置"><span class="nav-number">1.</span> <span class="nav-text"><a href="#linux-&#x7F51;&#x7EDC;&#x8BBE;&#x7F6E;" class="headerlink" title="linux &#x7F51;&#x7EDC;&#x8BBE;&#x7F6E;"></a>linux &#x7F51;&#x7EDC;&#x8BBE;&#x7F6E;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#网络基本命令"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x7F51;&#x7EDC;&#x57FA;&#x672C;&#x547D;&#x4EE4;" class="headerlink" title="&#x7F51;&#x7EDC;&#x57FA;&#x672C;&#x547D;&#x4EE4;"></a>&#x7F51;&#x7EDC;&#x57FA;&#x672C;&#x547D;&#x4EE4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x8FDB;&#x7A0B;" class="headerlink" title="&#x8FDB;&#x7A0B;"></a>&#x8FDB;&#x7A0B;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VirtualBox-导致的问题"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#VirtualBox-&#x5BFC;&#x81F4;&#x7684;&#x95EE;&#x9898;" class="headerlink" title="VirtualBox &#x5BFC;&#x81F4;&#x7684;&#x95EE;&#x9898;"></a>VirtualBox &#x5BFC;&#x81F4;&#x7684;&#x95EE;&#x9898;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NetworkManager"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#NetworkManager" class="headerlink" title="NetworkManager"></a>NetworkManager</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uuid"><span class="nav-number">1.5.</span> <span class="nav-text"><a href="#uuid" class="headerlink" title="uuid"></a>uuid</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uuidgen"><span class="nav-number">1.6.</span> <span class="nav-text"><a href="#uuidgen" class="headerlink" title="uuidgen"></a>uuidgen</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dbus"><span class="nav-number">1.7.</span> <span class="nav-text"><a href="#dbus" class="headerlink" title="dbus"></a>dbus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nmcli"><span class="nav-number">1.8.</span> <span class="nav-text"><a href="#nmcli" class="headerlink" title="nmcli"></a>nmcli</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

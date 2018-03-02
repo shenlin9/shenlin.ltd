@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="halt        vi. 停止；立定；踌躇，犹豫        n. 停止；立定；休息        vt. 使停止；使立定 halt on        出错暂停 system halt        系统中止；系统停止；系统挂起；死机">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux - 关机 shutdown poweroff 重启 reboot 挂起 suspend 定时唤醒 rtcwake 休眠 hibernate">
+<meta property="og:url" content="http://www.shenlin.ltd/2018/01/05/Linux - 关机 shutdown poweroff 重启 reboot 挂起 suspend 定时唤醒 rtcwake 休眠 hibernate/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="halt        vi. 停止；立定；踌躇，犹豫        n. 停止；立定；休息        vt. 使停止；使立定 halt on        出错暂停 system halt        系统中止；系统停止；系统挂起；死机">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-05T07:56:47.978Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux - 关机 shutdown poweroff 重启 reboot 挂起 suspend 定时唤醒 rtcwake 休眠 hibernate">
+<meta name="twitter:description" content="halt        vi. 停止；立定；踌躇，犹豫        n. 停止；立定；休息        vt. 使停止；使立定 halt on        出错暂停 system halt        系统中止；系统停止；系统挂起；死机">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2018/01/05/Linux - 关机 shutdown poweroff 重启 reboot 挂起 suspend 定时唤醒 rtcwake 休眠 hibernate/"/>
+
+
+
+
+
+  <title>Linux - 关机 shutdown poweroff 重启 reboot 挂起 suspend 定时唤醒 rtcwake 休眠 hibernate | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/01/05/Linux - 关机 shutdown poweroff 重启 reboot 挂起 suspend 定时唤醒 rtcwake 休眠 hibernate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux - 关机 shutdown poweroff 重启 reboot 挂起 suspend 定时唤醒 rtcwake 休眠 hibernate</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-05T15:56:47+08:00">
+                2018-01-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>halt<br>        vi. 停止；立定；踌躇，犹豫<br>        n. 停止；立定；休息<br>        vt. 使停止；使立定</p>
+<p>halt on<br>        出错暂停</p>
+<p>system halt<br>        系统中止；系统停止；系统挂起；死机</p>
+<a id="more"></a>
+<p>体眠是一种更加省电的模式，它将内存中的数据保存于硬盘中，所有设备都停止工作。当再次使用时需按开关机键，机器将会恢复到您的执行休眠时的状态，而不用再次执行启动操作系统复杂的过程。</p>
+<p>待机（挂起）是将当前处于运行状态的数据保存在内存中，机器只对内存供电，而硬盘、屏幕和CPU等部件则停止供电。由于数据存储在速度快的内存中，因此进入等待状态和唤醒的速度比较快。不过这些数据是保存在内存中，如果断电则会使数据丢失。</p>
+<p>立刻关机：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo halt</span><br><span class="line">sudo init 0</span><br><span class="line">sudo shutdown -h now</span><br><span class="line">sudo shutdown -h 0</span><br></pre></td></tr></table></figure></p>
+<p>定时/延时关机：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo shutdown -h 19:30</span><br><span class="line">sudo shutdown -h +30      <span class="comment">##单位为分钟</span></span><br></pre></td></tr></table></figure></p>
+<p>重启：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo reboot</span><br><span class="line">sudo init 6</span><br><span class="line">sudo shutdown -r now</span><br></pre></td></tr></table></figure></p>
+<p>休眠：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo pm-hibernate</span><br><span class="line"><span class="built_in">echo</span> “disk” &gt; /sys/power/state</span><br><span class="line">sudo hibernate-disk</span><br></pre></td></tr></table></figure></p>
+<p>待机(挂起)：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo pm-suspend</span><br><span class="line">sudo pm-suspend-hybrid</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> “mem” &gt; /sys/power/state</span><br><span class="line"></span><br><span class="line">sudo hibernate-ram</span><br></pre></td></tr></table></figure></p>
+<p>定时唤醒<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rtcwake -m mem -s 60</span><br></pre></td></tr></table></figure></p>
+<p>表示系统挂起的时候是把当前系统的状态信息等保存到内存中，挂起时间为60秒，即在60秒后会自动唤醒；</p>
+<p>RHEL 7 中，shutdown, poweroff, reboot, init 都是 systemctl 的链接。</p>
+<hr>
+<p>系统挂起（Suspend）是电源管理（APM &amp; ACPI）的一个特性，给用户带来了很大的方便。Linux在2.6系列核心中对电源管理有了较好的支持，下面就谈谈Linux对系统挂起的支持情况。</p>
+<p>Linux对系统挂起的支持</p>
+<pre><code>Linux同时提供了对APM和ACPI的支持，当时两者是不兼容的，同一时刻只能有一种机制工作。由于ACPI的优越性，所以现在Linux将ACPI设为缺省的电源管理方案。对于一些比较旧的主板，如果其BIOS中ACPI的实现在2000年以前，那么Linux自动启用APM（可以通过核心命令行参数acpi=force来强制启用ACPI）。如果你下主板BIOS中对ACPI的支持有些问题导致Linux工作不正常，那么还可以使用核心命令行参数acpi=off来强制禁用ACPI，这样Linux会自动启用APM电源管理。
+</code></pre><p>Linux现在主要支持三种ACPI的节电方式：</p>
+<pre><code>S1：Stopgrant，即待机（standby）模式。显示屏自动断电，只是主机通电。这时敲任意键即可恢复原来状态。
+
+S2 S3：STR（Suspend To Ram），即挂起到内存。系统把当前信息储存在内存中，只有内存等几个关键部件通电，这时计算机处在高度节电状态。此时系统不能从键盘唤醒。手工唤醒的方法只能是按前面板上的电源按钮。唤醒后，计算机从内存中读取信息很快恢复到原来状态。
+
+S4：STD（Suspend To Disk），即挂起到硬盘，也即休眠。计算机自动关机，关机前将当前数据存储在硬盘上，用户下次按开关键开机时计算机将无须启动操作系统，直接从硬盘读取数据，恢复原来状态。
+</code></pre><p>在Linux下查看核心支持ACPI情况的方法如下：</p>
+<p>2.4核心下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo cat /proc/acpi/sleep</span><br><span class="line"></span><br><span class="line">S0 S1 S3 S4 S5</span><br></pre></td></tr></table></figure></p>
+<p>2.6核心下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cat /sys/power/state</span><br><span class="line"></span><br><span class="line">standby mem disk</span><br></pre></td></tr></table></figure></p>
+<p>上面的输出可知，我们系统中核心同时支持三种节电模式。</p>
+<p>在/sys/power目录下还有一个文件：disk，文件的内容可以如下：</p>
+<pre><code>shutdown: 将系统状态保存到磁盘，让BIOS关闭计算机；platform: 将系统状态保存到磁盘，让BIOS关闭计算机，并且点亮挂起指示灯；firmware: 让BIOS自己将系统状态保存，并且关闭计算机，需要BIOS自己有挂起磁盘。大部分工作都由BIOS完成，对操作系统是透明的；
+</code></pre><p>进入这三种节电模式的方法如下：</p>
+<pre><code>#echo standby &gt; /sys/power/state ----&gt;挂起（S1）#echo mem &gt; /sys/power/state ----&gt;挂起到内存（S3）#echo shutdown &gt; /sys/power/disk; echo disk &gt; /sys/power/state ----&gt;挂起到磁盘（S4）#echo platform &gt; /sys/power/disk; echo disk &gt; /sys/power/state
+</code></pre><p>Linux下的磁盘挂起（STD）是通过swsusp机制实现的：将系统当前状态保存的内存后，再把内存内容写入交换分区（swap）。这里要求交换分区容量最好大于内存容量。系统挂起到磁盘后，下次启动的时候需要向核心传递命令行参数resume=/dev/hdaX（/dev/hdaX是系统中的交换分区），这样系统就能够很快恢复到关机时的状态。</p>
+<p>还有一个非正式的核心补丁可以实现STD：Software Suspend 2。该项目是一个快速发展的项目，设计上教swsusp有一些优势，但是还没有集成到核心正式发布中，实现方式与swsusp基本相同。</p>
+<p>虽然Linux提供了系统挂起的机制，但是执行上面的挂起操作不一定能够成功。一方面，这些操作除了需要BIOS支持以外，还需要外围硬件设备能够兼容，即设备支持节电状态，支持从节电状态或断电状态恢复；另一方面，这些设备驱动必须能够接收电源管理指令。目前，系统挂起的主要障碍就是那些还不太完善的驱动程序，如USB、显卡、声卡驱动等。</p>
+<p>当然，现在Linux核心对系统挂起的支持还有待改进，主要表现在：</p>
+<pre><code>不支持SMP系统。
+不支持大内存（&gt;4G）。
+核心中许多模块需要增加电源管理的支持。
+缺少上层配置程序。
+不过以放心，所有的问题内核黑客们都能够解决！
+</code></pre><p><a href="https://weibo.com/dajiakuishow?refer_flag=0000015010_&amp;from=feed&amp;loc=nickname" target="_blank" rel="noopener">https://weibo.com/dajiakuishow?refer_flag=0000015010_&amp;from=feed&amp;loc=nickname</a></p>
+<p>参考阅读：</p>
+<pre><code>http://www.acpi.info：ACPI的官方网站，在上面可以免费获得最新的ACPI规范。
+http://acpi.sourceforge.net：Linux下支持ACPI项目网站。官方Linux内核中ACPI的版本实际上已经远远落后于最新的版本，因为linux稳定版中对任何新特性的加入都是非常小心谨慎的。你可以从这里下载最新的ACPI补丁。
+Linux核心源代码目录：Documentation/power/，里面有开发人员写的一些关于电源管理在Linux上实现的文档。
+http://www.suspend2.net：Software Suspend 2的官方网站，STD的另一个解决方案。
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/03/Vim - SpaceVim/" rel="next" title="SpaceVim">
+                <i class="fa fa-chevron-left"></i> SpaceVim
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/23/Linux - 开源协议 - GPL, LGPL, BSD, MIT, Mozilla 和 Apache/" rel="prev" title="Linux - 开源协议 - GPL, LGPL, BSD, MIT, Mozilla 和 Apache">
+                Linux - 开源协议 - GPL, LGPL, BSD, MIT, Mozilla 和 Apache <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">218</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

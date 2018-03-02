@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="PHP,PECL,OpenSSL," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="和安装普通源码包差不多，都需要进入扩展的源码目录然后执行./configure , make , make install 但php的pecl扩展库需要在 ./configure 之前先执行 phpize， phpize 命令是用来准备 PHP 扩展库的编译环境的，并生成configure文件">
+<meta name="keywords" content="PHP,PECL,OpenSSL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP - 编译安装 pecl 扩展库 openssl">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/12/31/PHP笔记/编译安装openssl/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="和安装普通源码包差不多，都需要进入扩展的源码目录然后执行./configure , make , make install 但php的pecl扩展库需要在 ./configure 之前先执行 phpize， phpize 命令是用来准备 PHP 扩展库的编译环境的，并生成configure文件">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-31T01:52:05.191Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP - 编译安装 pecl 扩展库 openssl">
+<meta name="twitter:description" content="和安装普通源码包差不多，都需要进入扩展的源码目录然后执行./configure , make , make install 但php的pecl扩展库需要在 ./configure 之前先执行 phpize， phpize 命令是用来准备 PHP 扩展库的编译环境的，并生成configure文件">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/12/31/PHP笔记/编译安装openssl/"/>
+
+
+
+
+
+  <title>PHP - 编译安装 pecl 扩展库 openssl | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/12/31/PHP笔记/编译安装openssl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PHP - 编译安装 pecl 扩展库 openssl</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-31T09:52:05+08:00">
+                2017-12-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/PECL/" itemprop="url" rel="index">
+                    <span itemprop="name">PECL</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/PECL/OpenSSL/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenSSL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>和安装普通源码包差不多，都需要进入扩展的源码目录<br>然后执行./configure , make , make install</p>
+<p>但php的pecl扩展库需要在 <code>./configure</code> 之前先执行 phpize， phpize 命令是用来<br>准备 PHP 扩展库的编译环境的，并生成configure文件</p>
+<a id="more"></a>
+<p>phpize位于php安装目录bin下，不是源码目录</p>
+<p>phpize需要的config.m4文件就位于扩展源码目录下，一般文件名为config.0m4，需要改个名</p>
+<p>./configure时需要选项：–with-PeclExtName和–with-php-config=/php安装目录/bin/php-config<br>php-config是提供php的安装环境变量的</p>
+<h2 id="基本步骤"><a href="#基本步骤" class="headerlink" title="基本步骤"></a>基本步骤</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> Pecl扩展库源码目录</span><br><span class="line">$ mv config.0m4 config.m4</span><br><span class="line">$ phpize</span><br><span class="line">$ ./configure --with-PeclExtName --with-php-config=/php安装目录/bin/php-config</span><br><span class="line">$ make</span><br><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure>
+<p>最后安装后，需要进入php.ini增加一行extension = extname.so以启用</p>
+<h2 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h2><p>下面是安装openssl的例子</p>
+<p>查询openssl的状态<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[ssy@localhost ~]$ php -i|grep openssl</span><br><span class="line">    OpenSSL support =&gt; disabled (install ext/openssl)</span><br><span class="line">    OLDPWD =&gt; /home/ssy/php-7.1.5/ext/openssl</span><br><span class="line">    <span class="variable">$_SERVER</span>[<span class="string">'OLDPWD'</span>] =&gt; /home/ssy/php-7.1.5/ext/openssl</span><br><span class="line">    <span class="variable">$_ENV</span>[<span class="string">'OLDPWD'</span>] =&gt; /home/ssy/php-7.1.5/ext/openssl</span><br></pre></td></tr></table></figure></p>
+<p>进入openssl的源码目录<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ssy@localhost ~]$ <span class="built_in">cd</span> php-7.1.5/ext/openssl</span><br></pre></td></tr></table></figure></p>
+<p>为PHP扩展准备编译环境<br>[ssy@localhost openssl]$ phpize<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Cannot find config.m4. </span><br><span class="line">Make sure that you run <span class="string">'/usr/local/php7.1.5/bin/phpize'</span> <span class="keyword">in</span> the top level <span class="built_in">source</span> directory of the module</span><br></pre></td></tr></table></figure></p>
+<p>???<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ssy@localhost openssl]$ mv config0.m4 config.m4</span><br></pre></td></tr></table></figure></p>
+<p>为PHP扩展准备编译环境<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[ssy@localhost openssl]$ phpize</span><br><span class="line">    Cannot find autoconf. Please check your autoconf installation and the</span><br><span class="line">    <span class="variable">$PHP_AUTOCONF</span> environment variable. Then, rerun this script.</span><br></pre></td></tr></table></figure></p>
+<p>安装autoconf<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ssy@localhost openssl]$ sudo yum install -y autoconf</span><br></pre></td></tr></table></figure></p>
+<p>为PHP扩展准备编译环境并生成configure文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[ssy@localhost openssl]$ phpize</span><br><span class="line">    Configuring <span class="keyword">for</span>:</span><br><span class="line">    PHP Api Version:         20160303</span><br><span class="line">    Zend Module Api No:      20160303</span><br><span class="line">    Zend Extension Api No:   320160303</span><br></pre></td></tr></table></figure></p>
+<p>生成Makefile<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[ssy@localhost openssl]$ ./configure --with-openssl --with-php-config=/usr/<span class="built_in">local</span>/php7.1.5/bin/php-config </span><br><span class="line">    configure: error: Cannot find OpenSSL<span class="string">'s &lt;evp.h&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>安装opessl-devel<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ssy@localhost openssl]$ sudo yum install -y openssl-devel</span><br></pre></td></tr></table></figure></p>
+<p>生成Makefile<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[ssy@localhost openssl]$ ./configure --with-openssl --with-php-config=/usr/<span class="built_in">local</span>/php7.1.5/bin/php-config </span><br><span class="line">    config.status: creating config.h</span><br></pre></td></tr></table></figure></p>
+<p>编译<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ssy@localhost openssl]$ make</span><br></pre></td></tr></table></figure></p>
+<p>安装<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ssy@localhost openssl]$ sudo make install</span><br></pre></td></tr></table></figure></p>
+<p>更改PHP.ini文件启用扩展<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[ssy@localhost zlib]$ sudo vi /usr/<span class="built_in">local</span>/php7.1.5/etc/php.ini</span><br><span class="line">    ;extension = openssl.so</span><br></pre></td></tr></table></figure></p>
+<p>查询openssl的状态<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[ssy@localhost openssl]$ php -i|grep openssl</span><br><span class="line">    openssl</span><br><span class="line">    Openssl default config =&gt; /etc/pki/tls/openssl.cnf</span><br><span class="line">    openssl.cafile =&gt; no value =&gt; no value</span><br><span class="line">    openssl.capath =&gt; no value =&gt; no value</span><br><span class="line">    PWD =&gt; /home/ssy/php-7.1.5/ext/openssl</span><br><span class="line">    <span class="variable">$_SERVER</span>[<span class="string">'PWD'</span>] =&gt; /home/ssy/php-7.1.5/ext/openssl</span><br></pre></td></tr></table></figure></p>
+<p>php-config的输出<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[ssy@localhost testdir]$ /usr/<span class="built_in">local</span>/php7.1.5/bin/php-config</span><br><span class="line">    Usage: /usr/<span class="built_in">local</span>/php7.1.5/bin/php-config [OPTION]</span><br><span class="line">    Options:</span><br><span class="line">      --prefix            [/usr/<span class="built_in">local</span>/php7.1.5]</span><br><span class="line">      --includes          [-I/usr/<span class="built_in">local</span>/php7.1.5/include/php -I/usr/<span class="built_in">local</span>/php7.1.5/include/php/main -I/usr/<span class="built_in">local</span>/php7.1.5/include/php/TSRM -I/usr/<span class="built_in">local</span>/php7.1.5/include/php/Zend -I/usr/<span class="built_in">local</span>/php7.1.5/include/php/ext -I/usr/<span class="built_in">local</span>/php7.1.5/include/php/ext/date/lib]</span><br><span class="line">      --ldflags           []</span><br><span class="line">      --libs              [-lcrypt   -lresolv -lcrypt -lrt -lrt -lm -ldl -lnsl  -lpthread -lxml2 -lz -lm -lxml2 -lz -lm -lxml2 -lz -lm -lcrypt -lxml2 -lz -lm -lxml2 -lz -lm -lxml2 -lz -lm -lcrypt ]</span><br><span class="line">      --extension-dir     [/usr/<span class="built_in">local</span>/php7.1.5/lib/php/extensions/no-debug-zts-20160303]</span><br><span class="line">      --include-dir       [/usr/<span class="built_in">local</span>/php7.1.5/include/php]</span><br><span class="line">      --man-dir           [/usr/<span class="built_in">local</span>/php7.1.5/php/man]</span><br><span class="line">      --php-binary        [/usr/<span class="built_in">local</span>/php7.1.5/bin/php]</span><br><span class="line">      --php-sapis         [ apache2handler cli phpdbg cgi]</span><br><span class="line">      --configure-options [--prefix=/usr/<span class="built_in">local</span>/php7.1.5/ --with-config-file-path=/usr/<span class="built_in">local</span>/php7.1.5/etc/ --with-apxs2=/usr/<span class="built_in">local</span>/httpd-2.4.25/bin/apxs --<span class="built_in">enable</span>-mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --<span class="built_in">enable</span>-bcmath --<span class="built_in">enable</span>-mbstring]</span><br><span class="line">      --version           [7.1.5]</span><br><span class="line">      --vernum            [70105]</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PHP/" rel="tag"># PHP</a>
+          
+            <a href="/tags/PECL/" rel="tag"># PECL</a>
+          
+            <a href="/tags/OpenSSL/" rel="tag"># OpenSSL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/30/PHP - 字符串函数/" rel="next" title="php - 字符串函数">
+                <i class="fa fa-chevron-left"></i> php - 字符串函数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">165</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本步骤"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x57FA;&#x672C;&#x6B65;&#x9AA4;" class="headerlink" title="&#x57FA;&#x672C;&#x6B65;&#x9AA4;"></a>&#x57FA;&#x672C;&#x6B65;&#x9AA4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#举例说明"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x4E3E;&#x4F8B;&#x8BF4;&#x660E;" class="headerlink" title="&#x4E3E;&#x4F8B;&#x8BF4;&#x660E;"></a>&#x4E3E;&#x4F8B;&#x8BF4;&#x660E;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

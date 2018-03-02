@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="PHP," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在PHP中使用MySQL扩展库操作数据库 mysql_connect mysql_pconnect mysql_select_db     一个页面有多个链接时，需要指定第二个参数，否则默认第二个参数为后建立的链接 mysql_query mysql_insert_id    获取最后增长的ID mysql_affected_rows mysql_errno mysq_error mysql_cl">
+<meta name="keywords" content="PHP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="细说 PHP - MySQLi">
+<meta property="og:url" content="http://www.shenlin.ltd/2017/12/29/PHP笔记/细说 PHP - MySQLi/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="在PHP中使用MySQL扩展库操作数据库 mysql_connect mysql_pconnect mysql_select_db     一个页面有多个链接时，需要指定第二个参数，否则默认第二个参数为后建立的链接 mysql_query mysql_insert_id    获取最后增长的ID mysql_affected_rows mysql_errno mysq_error mysql_cl">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-29T02:26:27.742Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="细说 PHP - MySQLi">
+<meta name="twitter:description" content="在PHP中使用MySQL扩展库操作数据库 mysql_connect mysql_pconnect mysql_select_db     一个页面有多个链接时，需要指定第二个参数，否则默认第二个参数为后建立的链接 mysql_query mysql_insert_id    获取最后增长的ID mysql_affected_rows mysql_errno mysq_error mysql_cl">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2017/12/29/PHP笔记/细说 PHP - MySQLi/"/>
+
+
+
+
+
+  <title>细说 PHP - MySQLi | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/12/29/PHP笔记/细说 PHP - MySQLi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">细说 PHP - MySQLi</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T10:26:27+08:00">
+                2017-12-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在PHP中使用MySQL扩展库操作数据库</p>
+<pre><code>mysql_connect
+mysql_pconnect
+mysql_select_db
+    一个页面有多个链接时，需要指定第二个参数，否则默认第二个参数为后建立的链接
+mysql_query
+mysql_insert_id    获取最后增长的ID
+mysql_affected_rows
+mysql_errno
+mysq_error
+mysql_close
+</code></pre><p>使用PHP中mysql扩展处理结果集</p>
+<pre><code>从结果集获取记录
+    mysql_fetch_row        //返回索引数组，可以和list配合
+        while(list($id,$name,$price)=mysql_fetch_row($result)){
+            echo $id.$name.$price
+        }
+    mysql_fetch_assoc    //返回关联数组，下标为列名
+    mysql_fetch_array    //返回索引和关联两个数组
+    mysql_fetch_object    //将一条记录以对象的形式返回
+
+    使用一次就从结果集中取出一条记录，取完后将指针移动到下一条记录，默认为第一条记录，到结尾则返回false
+
+    mysql_data_seek
+        移动结果集的指针
+
+获取行列的信息
+    mysql_num_fields
+    mysql_filed_name
+    mysql_num_rows
+
+释放结果集
+    mysql_free_result
+
+翻页类：
+$_SERVER[&quot;REQUEST_URI&quot;]
+parse_url
+parse_str
+http_build_query
+</code></pre><p>PHP的mysqli扩展库操作MySQL数据库</p>
+<pre><code>从php5.0开始可以使用mysqli，i表示改进
+mysqli是一个面向对象的技术，但也支持过程化的使用方式，建议使用面向对象开发
+相对mysql改进：
+    1、功能增加
+    2、效率提高，新项目建议使用mysqli
+    3、更稳定
+
+使用mysqli需要：
+    为php安装mysqli扩展
+    在php的配置文件中打开mysqli的扩展
+
+mysqli提供了三个类：
+    1、mysqli
+        和连接有关的类
+    2、mysqli_result
+        和结果集有关的类
+
+        上述mysqli的两个类即完成了mysql的功能
+    3、mysqli_stmt
+        预处理类
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$mysqli=@<span class="keyword">new</span> mysqli(<span class="string">"localhost"</span>,<span class="string">"root"</span>,<span class="string">"123"</span>,<span class="string">"mydb"</span>); <span class="comment">//注意new前的@屏蔽了错误输出</span></span><br><span class="line"><span class="keyword">if</span>(mysqli_connect_errno())&#123;</span><br><span class="line">	<span class="keyword">echo</span> mysqli_connect_error();</span><br><span class="line">	$mysqli=<span class="keyword">null</span>;</span><br><span class="line">	<span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> $mysqli-&gt;character_set_name().<span class="string">"&lt;br&gt;"</span>;</span><br><span class="line"><span class="keyword">echo</span> $mysqli-&gt;get_client_info().<span class="string">"&lt;br&gt;"</span>;</span><br><span class="line"><span class="keyword">echo</span> $mysqli-&gt;host_info.<span class="string">"&lt;br&gt;"</span>;</span><br><span class="line"><span class="keyword">echo</span> $mysqli-&gt;server_info.<span class="string">"&lt;br&gt;"</span>;</span><br><span class="line"><span class="keyword">echo</span> $mysqli-&gt;server_version.<span class="string">"&lt;br&gt;"</span>;</span><br><span class="line"></span><br><span class="line">$result=$mysqli-&gt;query($sql);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(!$result)&#123;</span><br><span class="line">	<span class="keyword">echo</span> $mysqli-&gt;errno.$mysqli-&gt;error;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> $mysqli-&gt;affected_rows;</span><br><span class="line"><span class="keyword">echo</span> $mysqli-&gt;insert_id;</span><br></pre></td></tr></table></figure>
+</code></pre><p>使用PHP中mysqli扩展处理结果集</p>
+<pre><code>$result-&gt;num_rows;
+$result-&gt;field_count;
+
+$result-&gt;fetch_row;
+$result-&gt;fetch_assoc;
+$result-&gt;fetch_array;
+$result-&gt;fetch_object;
+
+$result-&gt;data_seek(5);
+
+$result-&gt;fetch_field();
+$result-&gt;fetch_fields();
+$result-&gt;field_seek();
+
+$result-&gt;free();
+$result-&gt;free_result();
+$mysqli-&gt;close();
+</code></pre><p>使用PHP的mysqli扩展完成事务处理和一次执行多条SQL语句</p>
+<p>使用PHP的mysqli扩展中预处理语句</p>
+<p>   1、多条语句</p>
+<pre><code>$mysqli-&gt;multi_query(&quot;sql1;sql2;sql3;&quot;);
+do{
+
+    $result-&gt;$mysqli-&gt;store_result();
+
+    if($mysqli-&gt;more_results()){
+        echo &quot;还有结果集&quot;;
+    }
+}while($mysqli-&gt;next_result());
+</code></pre><p>   2、事务</p>
+<pre><code>目前只有InnoDB 和 BDB 表类型支持事务
+
+默认表都是自动提交的(autocommit)，因此使用事务需要先关闭自动提交，改为手动提交
+
+命令行中的操作：
+    1、关闭自动提交
+        set autocommit=0;
+    2、开启事务
+        start transaction;
+    3、提交
+        commit;
+    4、回滚
+        rollback;
+程序中的操作：
+    1、关闭自动提交
+        $mysqli-&gt;autocommit(0);
+    2、开启事务
+        start transaction;
+    3、提交
+        $mysqli-&gt;commit();
+    4、回滚
+        $mysqli-&gt;rollback();
+    5、开启自动提交
+        $mysqli-&gt;autocommit(1);
+</code></pre><p>   3、mysqli中其他类成员的使用</p>
+<pre><code>更改字符集
+    $mysqli-&gt;query(&quot;set names gb2312&quot;);
+    $mysqli-&gt;query(&quot;insert into t1(id,name) values(1,{$_GET(&quot;prname&quot;)})&quot;);
+
+    $mysqli-&gt;set_charset(&quot;utf8&quot;);
+</code></pre><p>使用PHP的mysqli扩展中预处理语句</p>
+<pre><code>预处理类mysqli_stmt，和mysqli，mysqli_result相比优点：
+    1、mysqli和mysqli_result完成的功能，都能使用mysqli_stmt完成
+    2、效率高，编译一次，执行多次
+    3、安全，使用问号占位符防止sql注入
+因此推荐使用
+
+第一种方法：
+    $stmt=$mysqli-&gt;stmt_init();
+
+    $sql=&quot;insert into t1(id,name,price,desn) values(?,?,?,?)&quot;;
+        sql中的?即为问号占位符
+
+    $stmt-&gt;prepare($sql);
+
+第二种方法：
+    $stmt=$mysqli-&gt;prepare($sql);
+
+
+给占位符的每个?传值，也称为绑定参数
+    $stmt-&gt;bind_param(&quot;idsb&quot;,$a,$b,$c,$d);
+        i   corresponding variable has type integer
+        d   corresponding variable has type double
+        s   corresponding variable has type string
+        b   corresponding variable is a blob and will be sent in packets
+
+        $a,$b,$c,$d必须传变量，不能直接传值，因为这里的参数需要是引用
+
+
+执行，可以先绑定参数，后为参数赋值
+    $a=&quot;1&quot;;
+    $b=&quot;2&quot;;
+    $c=&quot;3&quot;;
+    $d=&quot;4&quot;;
+    $stmt-&gt;execute();
+
+    $a=&quot;1&quot;;
+    $b=&quot;2&quot;;
+    $c=&quot;3&quot;;
+    $d=&quot;4&quot;;
+    $stmt-&gt;execute();
+
+    $a=&quot;1&quot;;
+    $b=&quot;2&quot;;
+    $c=&quot;3&quot;;
+    $d=&quot;4&quot;;
+    $stmt-&gt;execute();
+释放
+    $stmt-&gt;close();
+
+
+处理结果集
+    $stmt=$mysqli-&gt;prepare(&quot;select id,name,price from t1 where id &gt; ?&quot;);
+
+    $stmt-&gt;bind_param(&quot;i&quot;,$id);
+
+    $stmt-&gt;bind_result($id,$name,$price);    //将每一列绑定到对应的变量
+
+    $id=99;
+
+    $stmt-&gt;execute();
+
+    $stmt-&gt;store_result();    
+        //一次性将结果取过来，没有这条语句则是逐条取，效率低，且下面的data_seek方法和num_rows都无法正确执行
+
+    $result=$stmt-&gt;result_metadata();
+        //此方法虽返回的是mysqli_resul结果集对象，但只能使用获取字段的方法
+
+    while($field=$result-&gt;fetch_field){
+        echo $field-&gt;name;
+    }
+
+    $stmt-&gt;data_seek(2);
+
+    while($stmt-&gt;fetch()){        //循环取每一行
+
+        echo $id.$name.$price;
+
+    }
+
+    echo $stmt-&gt;num_rows;
+
+    $stmt-&gt;free_result();
+
+    $stmt-&gt;close();
+</code></pre><p>PHP中使用MySQL的视图</p>
+<pre><code>什么是视图
+    视图是存放数据的一个接口，是虚拟表
+    数据来自一个或几个基表或视图，也可以是用户自己定义的数据
+    视图并不存放数据，数据还是存放在基表中
+    基表数据发送变化，视图数据也随之变化；视图数据变化，基表数据也变化
+
+视图的作用
+    1.视图可以让查询变得很清楚，让复杂的sql语句变得简单
+    2.保护数据库的重要数据，给不同的人看不同的数据，可从基表中选择特定的字段生成视图，然后为用户分配此视图的权限，但基表不分配权限，则限制了用户查看数据的权限。
+
+视图分类
+    定制视图
+    传参视图 
+
+    merge
+        会将引用视图的语句
+    temptable
+    undefined
+
+    [with [cascaded|local] check option]
+
+创建视图
+    create [or replace] [algorithm={merge|temptable|undefined}]
+    view view_name [(column_list)]
+    as select_statement
+    [with [cascaded|local] check option]
+
+    create view student_view as select * from student; 
+
+    创建或替换视图（弱同名视图已存在）
+    create or replace view student_view as select id,name,age from student;
+
+    指定视图字段名，注意字段名中有空格时使用的是反引号
+    create view student_view(`编 号`,名字,年龄) as select id,name,age from student;
+        视图名不能和基表名相同
+        只有一个frm的结构存储文件
+
+更改视图
+
+     alter view student_view as select * from student; 
+
+删除视图
+
+    drop view student_view;
+
+查看视图
+
+    show tables;
+    desc student_view;
+    show table status like &apos;student_view&apos; \G;
+    show create view student_view \G;
+    select * from information_scheme \G;
+
+web开发中使用视图
+
+    登录时的用户名、密码字段放一个视图中
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PHP/" rel="tag"># PHP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/29/PHP笔记/细说 PHP - PDO/" rel="next" title="细说 PHP - PDO">
+                <i class="fa fa-chevron-left"></i> 细说 PHP - PDO
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/29/PHP笔记/细说 PHP - 常量和变量/" rel="prev" title="细说 PHP - 常量和变量">
+                细说 PHP - 常量和变量 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">218</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

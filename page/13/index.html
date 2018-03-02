@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 9 - 插件/">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/02/22/SQL - SQL 必知必会 - chapter 1~10 - SQL 基础/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shenlin">
@@ -251,7 +251,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/19/Composer - Chapter 9 - 插件/" itemprop="url">Composer - Chapter 9 - 插件</a></h1>
+                <a class="post-title-link" href="/2018/02/22/SQL - SQL 必知必会 - chapter 1~10 - SQL 基础/" itemprop="url">SQL - SQL 必知必会 - chapter 1~10 - SQL 基础</a></h1>
         
 
         <div class="post-meta">
@@ -263,8 +263,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-22T20:14:28+08:00">
+                2018-02-22
               </time>
             
 
@@ -286,19 +286,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/" itemprop="url" rel="index">
-                    <span itemprop="name">PHP</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/Composer/" itemprop="url" rel="index">
-                    <span itemprop="name">Composer</span>
+                  <a href="/categories/SQL/" itemprop="url" rel="index">
+                    <span itemprop="name">SQL</span>
                   </a>
                 </span>
 
@@ -335,10 +324,10 @@
 
       
         
-          <p>有修改或扩展 Composer 功能的需要时，可以使用插件。</p>
+          <p>SQL 基础知识。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/11/19/Composer - Chapter 9 - 插件/#more" rel="contents">
+            <a class="btn" href="/2018/02/22/SQL - SQL 必知必会 - chapter 1~10 - SQL 基础/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -389,7 +378,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 8 - 资源库/">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/02/19/Nginx - 基本操作/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shenlin">
@@ -408,7 +397,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/19/Composer - Chapter 8 - 资源库/" itemprop="url">Composer - Chapter 8 - 资源库</a></h1>
+                <a class="post-title-link" href="/2018/02/19/Nginx - 基本操作/" itemprop="url">Nginx - 基本操作</a></h1>
         
 
         <div class="post-meta">
@@ -420,8 +409,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-19T21:08:13+08:00">
+                2018-02-19
               </time>
             
 
@@ -443,19 +432,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/" itemprop="url" rel="index">
-                    <span itemprop="name">PHP</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/Composer/" itemprop="url" rel="index">
-                    <span itemprop="name">Composer</span>
+                  <a href="/categories/Nginx/" itemprop="url" rel="index">
+                    <span itemprop="name">Nginx</span>
                   </a>
                 </span>
 
@@ -492,178 +470,10 @@
 
       
         
-          
-            <a id="more"></a>
-<h2 id="资源库类型"><a href="#资源库类型" class="headerlink" title="资源库类型"></a>资源库类型</h2><p>资源库有 4 种类型：composer, vcs, pear, package</p>
-<h3 id="composer"><a href="#composer" class="headerlink" title="composer"></a>composer</h3><p>composer 类型是资源库的主要类型，默认资源库 packagist.org 就是 composer 类型的资源库</p>
-<h4 id="packages-json"><a href="#packages-json" class="headerlink" title="packages.json"></a>packages.json</h4><p>composer 类型资源库使用一个 <code>packages.json</code> 文件来包括包的元数据，</p>
-<p>而引用 Composer 资源库时使用 <code>packages.json</code> 文件所在目录的地址即可，</p>
-<p>如 packagist 的 <code>packages.json</code> 文件地址为 <a href="https://packagist.org/packages.json" target="_blank" rel="noopener">https://packagist.org/packages.json</a></p>
-<p>则引用 packagist 使用地址：<a href="https://packagist.org/" target="_blank" rel="noopener">https://packagist.org/</a></p>
-<p><a href="https://packagist.org/packages.json" target="_blank" rel="noopener">https://packagist.org/packages.json</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;packages&quot;: [],</span><br><span class="line">  &quot;notify&quot;: &quot;/downloads/%package%&quot;,</span><br><span class="line">  &quot;notify-batch&quot;: &quot;/downloads/&quot;,</span><br><span class="line">  &quot;search&quot;: &quot;/search.json?q=%query%&amp;type=%type%&quot;,</span><br><span class="line">  &quot;providers-url&quot;: &quot;/p/%package%$%hash%.json&quot;,</span><br><span class="line">  &quot;provider-includes&quot;: &#123;</span><br><span class="line">    &quot;p/provider-2013$%hash%.json&quot;: &#123;</span><br><span class="line">      &quot;sha256&quot;: &quot;3bfa7d41fff0ccb5d41613a4f7eda39cfb34829c4348459a60b843591c879398&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;p/provider-2014$%hash%.json&quot;: &#123;</span><br><span class="line">      &quot;sha256&quot;: &quot;b767368f88248a7d1ee5a58f543cea15a5a680ca950c8a43f32bc2d3efd02d52&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;p/provider-2015$%hash%.json&quot;: &#123;</span><br><span class="line">      &quot;sha256&quot;: &quot;f360883f238d4b4364c5340ba41ad9bec8c36dae8053e1d876d7721590c46821&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;p/provider-2016$%hash%.json&quot;: &#123;</span><br><span class="line">      &quot;sha256&quot;: &quot;522db3c8e06ed2ebeaa6879acd47c394296e93f7533ff975f586e5699bc790d3&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;p/provider-2016-10$%hash%.json&quot;: &#123;</span><br><span class="line">      &quot;sha256&quot;: &quot;97b9892040374a279779e941d343b2295d5fc3da02860dddaddd6295f6bab365&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;p/provider-2017-01$%hash%.json&quot;: &#123;</span><br><span class="line">      &quot;sha256&quot;: &quot;20088f8505c185b66b0f439d90f1e948db85a350f79bac4311299a030a6ea742&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;p/provider-2017-04$%hash%.json&quot;: &#123;</span><br><span class="line">      &quot;sha256&quot;: &quot;5d92cd0a963500f6f7b08b0819e1ae720b9fb9bfe5e3b224355297ffd883f9c7&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;p/provider-2017-07$%hash%.json&quot;: &#123;</span><br><span class="line">      &quot;sha256&quot;: &quot;7fb643b9978ea69980f678da197ab15c1ce4f5dc561008d7e6ae439413d6f026&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;p/provider-archived$%hash%.json&quot;: &#123;</span><br><span class="line">      &quot;sha256&quot;: &quot;8b9dacfc128a4639496a9928de0698e397730884ebe32fc1c0b89f848e423341&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;p/provider-latest$%hash%.json&quot;: &#123;</span><br><span class="line">      &quot;sha256&quot;: &quot;1e3c2a42c3faf518d1ac452c69c347f83b91612fcdc8a3f310fc00f6afe9f196&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li><code>provider-includes</code> </li>
-</ul>
-<p><a href="https://packagist.org/p/provider-2013$3bfa7d41fff0ccb5d41613a4f7eda39cfb34829c4348459a60b843591c879398.json" target="_blank" rel="noopener">https://packagist.org/p/provider-2013$3bfa7d41fff0ccb5d41613a4f7eda39cfb34829c4348459a60b843591c879398.json</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;providers&quot;: &#123;</span><br><span class="line">    &quot;0s1r1s/dev-shortcuts-bundle&quot;: &#123;</span><br><span class="line">      &quot;sha256&quot;: &quot;6c7710a1ca26d3c0f9dfc4c34bc3d6e71ed88d8783847ed82079601401e29b18&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;11ya/excelbundle&quot;: &#123;</span><br><span class="line">      &quot;sha256&quot;: &quot;65dccb7f2d57c09c19519c1b3cdf7cbace1dfbf46f43736c2afcb95658d9c0f1&quot;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    ............</span><br><span class="line"></span><br><span class="line">    &quot;zz/zz&quot;: &#123;</span><br><span class="line">      &quot;sha256&quot;: &quot;7fd780b8e8995f01adfc0b178202df43f85381ca8915d43ce950c5f24659f8ae&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;zzal/cakephp-hash&quot;: &#123;</span><br><span class="line">      &quot;sha256&quot;: &quot;e9ddb1a3e412f5ebfc88c2ad32a97c3956c176ae4e654390294dcf83ae45446b&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://packagist.org/p/zz/zz$7fd780b8e8995f01adfc0b178202df43f85381ca8915d43ce950c5f24659f8ae.json" target="_blank" rel="noopener">https://packagist.org/p/zz/zz$7fd780b8e8995f01adfc0b178202df43f85381ca8915d43ce950c5f24659f8ae.json</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;packages&quot;: &#123;</span><br><span class="line">    &quot;zz/zz&quot;: &#123;</span><br><span class="line">      &quot;1.0.0&quot;: &#123;</span><br><span class="line">        &quot;name&quot;: &quot;zz/zz&quot;,</span><br><span class="line">        &quot;description&quot;: &quot;library for japanese&quot;,</span><br><span class="line">        &quot;keywords&quot;: [</span><br><span class="line">          &quot;japanese library&quot;</span><br><span class="line">        ],</span><br><span class="line">        &quot;homepage&quot;: &quot;https://github.com/zaininnari/zz&quot;,</span><br><span class="line">        &quot;version&quot;: &quot;1.0.0&quot;,</span><br><span class="line">        &quot;version_normalized&quot;: &quot;1.0.0.0&quot;,</span><br><span class="line">        &quot;license&quot;: [</span><br><span class="line">          &quot;MIT&quot;</span><br><span class="line">        ],</span><br><span class="line">        &quot;authors&quot;: [</span><br><span class="line">          &#123;</span><br><span class="line">            &quot;name&quot;: &quot;zaininnari&quot;,</span><br><span class="line">            &quot;email&quot;: &quot;zaininnari@gmail.com&quot;,</span><br><span class="line">            &quot;homepage&quot;: &quot;http://www.zay.jp&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        ],</span><br><span class="line">        &quot;source&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;git&quot;,</span><br><span class="line">          &quot;url&quot;: &quot;https://github.com/zaininnari/zz.git&quot;,</span><br><span class="line">          &quot;reference&quot;: &quot;945abeaa5c310bfc69e49d41bdcec742859ccde2&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;dist&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;zip&quot;,</span><br><span class="line">          &quot;url&quot;: &quot;https://api.github.com/repos/zaininnari/zz/zipball/945abeaa5c310bfc69e49d41bdcec742859ccde2&quot;,</span><br><span class="line">          &quot;reference&quot;: &quot;945abeaa5c310bfc69e49d41bdcec742859ccde2&quot;,</span><br><span class="line">          &quot;shasum&quot;: &quot;&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;type&quot;: &quot;library&quot;,</span><br><span class="line">        &quot;time&quot;: &quot;2012-08-14T16:27:25+00:00&quot;,</span><br><span class="line">        &quot;autoload&quot;: &#123;</span><br><span class="line">          &quot;psr-0&quot;: &#123;</span><br><span class="line">            &quot;zz&quot;: &quot;src/&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;require&quot;: &#123;</span><br><span class="line">          &quot;php&quot;: &quot;&gt;=5.3.0&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;uid&quot;: 16980</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;dev-develop&quot;: &#123;</span><br><span class="line">        ........</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;dev-master&quot;: &#123;</span><br><span class="line">        ........</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;dev-travis&quot;: &#123;</span><br><span class="line">        ........&#123;</span><br><span class="line">    &quot;packages&quot;: &#123;</span><br><span class="line">        &quot;vendor/package-name&quot;: &#123;</span><br><span class="line">            &quot;dev-master&quot;: &#123; @composer.json &#125;,</span><br><span class="line">            &quot;1.0.x-dev&quot;: &#123; @composer.json &#125;,</span><br><span class="line">            &quot;0.0.1&quot;: &#123; @composer.json &#125;,</span><br><span class="line">            &quot;1.0.0&quot;: &#123; @composer.json &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>上面的格式概括：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;packages&quot;: &#123;</span><br><span class="line">        &quot;vendor/package-name&quot;: &#123;</span><br><span class="line">            &quot;dev-master&quot;: &#123; @composer.json &#125;,</span><br><span class="line">            &quot;1.0.x-dev&quot;: &#123; @composer.json &#125;,</span><br><span class="line">            &quot;0.0.1&quot;: &#123; @composer.json &#125;,</span><br><span class="line">            &quot;1.0.0&quot;: &#123; @composer.json &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="vcs"><a href="#vcs" class="headerlink" title="vcs"></a>vcs</h3><h3 id="pear"><a href="#pear" class="headerlink" title="pear"></a>pear</h3><h3 id="package"><a href="#package" class="headerlink" title="package"></a>package</h3><h2 id="创建自己的资源库"><a href="#创建自己的资源库" class="headerlink" title="创建自己的资源库"></a>创建自己的资源库</h2><h2 id="禁用-Packagist"><a href="#禁用-Packagist" class="headerlink" title="禁用 Packagist"></a>禁用 Packagist</h2><p>通过命令全局禁用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer config -g repo.packagist false</span><br></pre></td></tr></table></figure></p>
-<p>通过配置文件禁用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;repositories&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;packagist.org&quot;: false</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 7 - 资源包/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="shenlin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="shenlin's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/19/Composer - Chapter 7 - 资源包/" itemprop="url">Composer - Chapter 7 - 资源包</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/" itemprop="url" rel="index">
-                    <span itemprop="name">PHP</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/Composer/" itemprop="url" rel="index">
-                    <span itemprop="name">Composer</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Composer 是如何确定一个资源包的版本号列表的，获取依赖的资源包时又是如何限定其版本号的？</p>
+          <p>Nginx</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/11/19/Composer - Chapter 7 - 资源包/#more" rel="contents">
+            <a class="btn" href="/2018/02/19/Nginx - 基本操作/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -714,7 +524,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 6 - Schema/">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/02/18/Interest - HuaWei 华为手机连接电脑/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shenlin">
@@ -733,7 +543,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/19/Composer - Chapter 6 - Schema/" itemprop="url">Composer - Chapter 6 - Composer.json Schema</a></h1>
+                <a class="post-title-link" href="/2018/02/18/Interest - HuaWei 华为手机连接电脑/" itemprop="url">Interest - HuaWei 华为手机连接电脑</a></h1>
         
 
         <div class="post-meta">
@@ -745,8 +555,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-18T20:34:22+08:00">
+                2018-02-18
               </time>
             
 
@@ -768,19 +578,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/" itemprop="url" rel="index">
-                    <span itemprop="name">PHP</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/Composer/" itemprop="url" rel="index">
-                    <span itemprop="name">Composer</span>
+                  <a href="/categories/Interest/" itemprop="url" rel="index">
+                    <span itemprop="name">Interest</span>
                   </a>
                 </span>
 
@@ -817,10 +616,10 @@
 
       
         
-          <p>主要介绍在 <code>composer.json</code> 文件中可用的字段属性。</p>
+          <p>先设置手机端，再设置电脑端</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/11/19/Composer - Chapter 6 - Schema/#more" rel="contents">
+            <a class="btn" href="/2018/02/18/Interest - HuaWei 华为手机连接电脑/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -871,7 +670,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 5 - 环境变量/">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/02/13/Bash - linux shell 脚本攻略 - chapter 5.2 - wget/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shenlin">
@@ -890,7 +689,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/19/Composer - Chapter 5 - 环境变量/" itemprop="url">Composer - Chapter 5 - 环境变量</a></h1>
+                <a class="post-title-link" href="/2018/02/13/Bash - linux shell 脚本攻略 - chapter 5.2 - wget/" itemprop="url">bash - linux shell 脚本攻略 - chapter 5.2 - wget</a></h1>
         
 
         <div class="post-meta">
@@ -902,8 +701,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-13T14:16:13+08:00">
+                2018-02-13
               </time>
             
 
@@ -925,8 +724,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/" itemprop="url" rel="index">
-                    <span itemprop="name">PHP</span>
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
                   </a>
                 </span>
 
@@ -936,8 +735,8 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/Composer/" itemprop="url" rel="index">
-                    <span itemprop="name">Composer</span>
+                  <a href="/categories/linux/bash/" itemprop="url" rel="index">
+                    <span itemprop="name">bash</span>
                   </a>
                 </span>
 
@@ -974,177 +773,10 @@
 
       
         
-          
-            <h2 id="COMPOSER"><a href="#COMPOSER" class="headerlink" title="COMPOSER"></a>COMPOSER</h2><p>设置 <code>composer.json</code> 为其他文件名，对应的锁文件也将自动更改</p>
-<h2 id="COMPOSER-HOME"><a href="#COMPOSER-HOME" class="headerlink" title="COMPOSER_HOME"></a>COMPOSER_HOME</h2><p>COMPOSER_HOME 是一个<strong>全局的</strong>隐藏的<strong>多项目共享</strong>的目录 : windows 下为：<code>$HOME\AppData\Roaming\Composer</code> linux 下为 <code>~/.Composer</code></p>
-<p>COMPOSER_HOME 下的子目录 <code>vendor/bin</code> 在安装 Composer 时应该是已经添加到了 PATH 环境变量</p>
-<h1 id="COMPOSER-HOME-config-json"><a href="#COMPOSER-HOME-config-json" class="headerlink" title="COMPOSER_HOME/config.json"></a>COMPOSER_HOME/config.json</h1><p>全局配置文件</p>
-<p>配置项会被项目配置文件 <code>composer.json</code> 中同名的配置项覆盖</p>
-<h2 id="COMPOSER-VENDOR-DIR"><a href="#COMPOSER-VENDOR-DIR" class="headerlink" title="COMPOSER_VENDOR_DIR"></a>COMPOSER_VENDOR_DIR</h2><p>更改默认的依赖包 <code>vendor</code> 目录</p>
-<h2 id="COMPOSER-BIN-DIR"><a href="#COMPOSER-BIN-DIR" class="headerlink" title="COMPOSER_BIN_DIR"></a>COMPOSER_BIN_DIR</h2><p>更改默认的依赖包二进制文件 <code>vendor/bin</code> 目录</p>
-<p>也可使用属性 <code>bin-dir</code> 更改<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;config&quot;: &#123;</span><br><span class="line">        &quot;bin-dir&quot;: &quot;scripts&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="COMPOSER-CACHE-DIR"><a href="#COMPOSER-CACHE-DIR" class="headerlink" title="COMPOSER_CACHE_DIR"></a>COMPOSER_CACHE_DIR</h2><p>linux 默认路径： <code>$COMPOSER_HOME/cache</code><br>windows 默认路径 ：<code>%LOCALAPPDATA%/Composer</code></p>
-<p>也可以使用属性 <code>cache-dir</code> 来设置</p>
-<h2 id="COMPOSER-ALLOW-SUPERUSER"><a href="#COMPOSER-ALLOW-SUPERUSER" class="headerlink" title="COMPOSER_ALLOW_SUPERUSER"></a>COMPOSER_ALLOW_SUPERUSER</h2><p>设置为 1，则在使用超级用户 root 执行命令时不发出警告</p>
-<h2 id="COMPOSER-PROCESS-TIMEOUT"><a href="#COMPOSER-PROCESS-TIMEOUT" class="headerlink" title="COMPOSER_PROCESS_TIMEOUT"></a>COMPOSER_PROCESS_TIMEOUT</h2><p>Composer 等待命令执行完成的时间，默认为 300 秒</p>
-<h2 id="COMPOSER-HTACCESS-PROTECT"><a href="#COMPOSER-HTACCESS-PROTECT" class="headerlink" title="COMPOSER_HTACCESS_PROTECT"></a>COMPOSER_HTACCESS_PROTECT</h2><p>默认值 1，设为 0 则 Composer 不在 COMPOSER_HOME 、COMPOSER_CACHE_DIR 和数据目录创建 <code>.htaccess</code> 文件</p>
-<h2 id="COMPOSER-CAFILE"><a href="#COMPOSER-CAFILE" class="headerlink" title="COMPOSER_CAFILE"></a>COMPOSER_CAFILE</h2><p>设置包含 SSL/TLS 验证文件的路径</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 4 - 命令/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="shenlin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="shenlin's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/19/Composer - Chapter 4 - 命令/" itemprop="url">Composer - Chapter 4 - 命令</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/" itemprop="url" rel="index">
-                    <span itemprop="name">PHP</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/Composer/" itemprop="url" rel="index">
-                    <span itemprop="name">Composer</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Composer 常用命令简介。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">$ composer</span><br><span class="line">   ______</span><br><span class="line">  / ____/___  ____ ___  ____  ____  ________  _____</span><br><span class="line"> / /   / __ \/ __ `__ \/ __ \/ __ \/ ___/ _ \/ ___/</span><br><span class="line">/ /___/ /_/ / / / / / / /_/ / /_/ (__  )  __/ /</span><br><span class="line">\____/\____/_/ /_/ /_/ .___/\____/____/\___/_/</span><br><span class="line">                    /_/</span><br><span class="line">Composer version 1.5.1 2017-08-09 16:07:22</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  command [options] [arguments]</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  -h, --help                     Display this help message</span><br><span class="line">  -q, --quiet                    Do not output any message</span><br><span class="line">  -V, --version                  Display this application version</span><br><span class="line">      --ansi                     Force ANSI output</span><br><span class="line">      --no-ansi                  Disable ANSI output</span><br><span class="line">  -n, --no-interaction           Do not ask any interactive question</span><br><span class="line">      --profile                  Display timing and memory usage information</span><br><span class="line">      --no-plugins               Whether to disable plugins.</span><br><span class="line">  -d, --working-dir=WORKING-DIR  If specified, use the given directory as working directory.</span><br><span class="line">  -v|vv|vvv, --verbose           Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span><br><span class="line"></span><br><span class="line">Available commands:</span><br><span class="line">  about           Shows the short information about Composer.</span><br><span class="line">  help            Displays help for a command</span><br><span class="line"></span><br><span class="line">  global          Allows running commands in the global composer dir ($COMPOSER_HOME).</span><br><span class="line">  list            Lists commands</span><br><span class="line">  diagnose        Diagnoses the system to identify common errors.</span><br><span class="line">  self-update     Updates composer.phar to the latest version.</span><br><span class="line">  selfupdate      Updates composer.phar to the latest version.</span><br><span class="line">  suggests        Shows package suggestions.</span><br><span class="line">  why             Shows which packages cause the given package to be installed.</span><br><span class="line">  why-not         Shows which packages prevent the given package from being installed.</span><br><span class="line"></span><br><span class="line">  validate        Validates a composer.json and composer.lock.</span><br><span class="line">  config          Sets config options.</span><br><span class="line"></span><br><span class="line">  archive         Creates an archive of this composer package.</span><br><span class="line">  browse          Opens the package&apos;s repository URL or homepage in your browser.</span><br><span class="line">  clear-cache     Clears composer&apos;s internal package cache.</span><br><span class="line">  clearcache      Clears composer&apos;s internal package cache.</span><br><span class="line">  create-project  Creates new project from a package into given directory.</span><br><span class="line">  depends         Shows which packages cause the given package to be installed.</span><br><span class="line">  dump-autoload   Dumps the autoloader.</span><br><span class="line">  dumpautoload    Dumps the autoloader.</span><br><span class="line">  exec            Executes a vendored binary/script.</span><br><span class="line">  home            Opens the package&apos;s repository URL or homepage in your browser.</span><br><span class="line">  licenses        Shows information about licenses of dependencies.</span><br><span class="line">  outdated        Shows a list of installed packages that have updates available, including their latest version.</span><br><span class="line">  prohibits       Shows which packages prevent the given package from being installed.</span><br><span class="line"></span><br><span class="line">  init            Creates a basic composer.json file in current directory.</span><br><span class="line">  install         Installs the project dependencies from the composer.lock file if present, or falls back on the composer.json.</span><br><span class="line">  require         Adds required packages to your composer.json and installs them.</span><br><span class="line">  update          Updates your dependencies to the latest version according to composer.json, and updates the composer.lock file.</span><br><span class="line">  remove          Removes a package from the require or require-dev.</span><br><span class="line">  run-script      Runs the scripts defined in composer.json.</span><br><span class="line"></span><br><span class="line">  info            Shows information about packages.</span><br><span class="line">  show            Shows information about packages.</span><br><span class="line">  search          Searches for packages.</span><br><span class="line">  status          Shows a list of locally modified packages.</span><br></pre></td></tr></table></figure>
+          <p>wget 是一个用于下载文件的命令行工具，选项繁多使用灵活。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/11/19/Composer - Chapter 4 - 命令/#more" rel="contents">
+            <a class="btn" href="/2018/02/13/Bash - linux shell 脚本攻略 - chapter 5.2 - wget/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1195,7 +827,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 3 - 基本用法/">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/02/13/Bash - linux shell 脚本攻略 - chapter 5.4 - curl/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shenlin">
@@ -1214,7 +846,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/19/Composer - Chapter 3 - 基本用法/" itemprop="url">Composer - Chapter 3 - 基本用法</a></h1>
+                <a class="post-title-link" href="/2018/02/13/Bash - linux shell 脚本攻略 - chapter 5.4 - curl/" itemprop="url">bash - linux shell 脚本攻略 - chapter 5.4 - curl</a></h1>
         
 
         <div class="post-meta">
@@ -1226,8 +858,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-13T14:14:01+08:00">
+                2018-02-13
               </time>
             
 
@@ -1249,8 +881,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/" itemprop="url" rel="index">
-                    <span itemprop="name">PHP</span>
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
                   </a>
                 </span>
 
@@ -1260,8 +892,8 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/Composer/" itemprop="url" rel="index">
-                    <span itemprop="name">Composer</span>
+                  <a href="/categories/linux/bash/" itemprop="url" rel="index">
+                    <span itemprop="name">bash</span>
                   </a>
                 </span>
 
@@ -1298,204 +930,11 @@
 
       
         
-          
-            <h2 id="composer-json-和-composer-lock"><a href="#composer-json-和-composer-lock" class="headerlink" title="composer.json 和 composer.lock"></a>composer.json 和 composer.lock</h2><h3 id="安装依赖包时"><a href="#安装依赖包时" class="headerlink" title="安装依赖包时"></a>安装依赖包时</h3><p>composer执行install时，将会先检查composer.lock锁文件是否存在：<br>如果不存在，Composer 将读取 composer.json ，并获取依赖包匹配版本约束的最新版本放入 vendor 目录，然后创建锁文件，最后把所安装库的<strong>确切版本</strong>号写入 composer.lock 文件。<br>如果存在，Composer 将忽略composer.json文件，而使用 composer.lock 中定义的<strong>确切版本</strong>下载依赖库。<br>这意味着 composer.lock 文件锁定了项目依赖库的特定版本。</p>
-<p>基于上述结论，应该把composer.lock提交到版本库：<br>可以保证团队的任何人员建立项目时，都会下载使用完全相同的依赖，从而减轻潜在错误对部署的影响。<br>对于独立开发人员，也可以保证在很长时间以后重新部署项目时，所使用的依赖库没有一点儿改变，即使依赖库已经有了更新的版本。</p>
-<p>简单来讲，因为不会把依赖包都提交到版本库，为保证开发环境的一致性稳定性，使用 composer.lock 来锁死依赖包。 </p>
-<p> ???this lock file will not have any effect on other projects that depend on it. It only has an effect on the main project.<br> ???锁文件只对主项目起作用，子项目里的锁文件对主项目不起作用。</p>
-<h3 id="更新依赖包时"><a href="#更新依赖包时" class="headerlink" title="更新依赖包时"></a>更新依赖包时</h3><p>需要更新依赖库的版本时，先修改 composer.json 文件中的版本定义，<br>这时如果运行 <code>composer install</code>，composer 会发现 composer.json 和 composer.lock 文件的版本不匹配，会警告：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Warning: </span><br><span class="line">The lock file is not up to date with the latest changes in composer.json.</span><br><span class="line">You may be getting outdated dependencies.</span><br><span class="line">Run update to update them.</span><br><span class="line">Nothing to install or update</span><br></pre></td></tr></table></figure></p>
-<p>这时应该运行 <code>composer update</code> 命令，<br>composer 将会读取 composer.json 文件更新依赖的版本，然后把确切的版本号更新到 composer.lock 文件</p>
-<h2 id="定义依赖库"><a href="#定义依赖库" class="headerlink" title="定义依赖库"></a>定义依赖库</h2><p>在自己的项目中使用 Composer 唯一需要的就是一个 <code>composer.json</code> 文件，描述了当前项目依赖的库和其他元数据。</p>
-<h3 id="require-属性"><a href="#require-属性" class="headerlink" title="require 属性"></a>require 属性</h3><p>在 composer.json 文件中设定 require 的值。告诉 Composer 项目需要依赖哪些包。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;require&quot;: &#123;</span><br><span class="line">        &quot;monolog/monolog&quot;: &quot;1.0.*&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>1.0.*</code> 表示 &gt;=1.0 &lt;1.1</li>
-<li>默认只查找 stable 版本的包，即<code>minimum-stability</code>的默认值</li>
-<li>若设定查找 dev, alpha, beta, RC 版本时，则无法满足 composer 默认的最小稳定性要求，会抛出一个错误 ???有疑问好像也不是</li>
-</ul>
-<h3 id="require-dev-属性和-–no-dev-选项"><a href="#require-dev-属性和-–no-dev-选项" class="headerlink" title="require-dev 属性和 –no-dev 选项"></a>require-dev 属性和 –no-dev 选项</h3><p>一些儿开发中需要用到的包，可能在生产环境中无需部署，例如调试包，这些儿包可以在 <code>composer.json</code> 文件中用属性 <code>require-dev</code> 指明，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;require-dev&quot;: &#123;</span><br><span class="line">    &quot;fzaninotto/faker&quot;: &quot;~1.4&quot;,</span><br><span class="line">    &quot;mockery/mockery&quot;: &quot;0.9.*&quot;,</span><br><span class="line">    &quot;phpunit/phpunit&quot;: &quot;~5.7&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在部署到生产环境中时，配合<code>--no-dev</code>指明不部署这些儿包即可。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer install --no-dev</span><br></pre></td></tr></table></figure></p>
-<h3 id="repositories-属性"><a href="#repositories-属性" class="headerlink" title="repositories 属性"></a>repositories 属性</h3><p>安装依赖时查找包过程：</p>
-<blockquote>
-<p>1.先使用包名进行查找，将优先从 repositories 属性注册的资源库中查找，没有找到则从默认的 Packagist 查找<br>2.根据包名找到后，再根据定义的版本约束查找最优匹配</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&quot;repositories&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;type&quot;: &quot;composer&quot;,</span><br><span class="line">        &quot;url&quot;: &quot;http://packages.example.com&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;type&quot;: &quot;vcs&quot;,</span><br><span class="line">        &quot;url&quot;: &quot;https://github.com/Seldaek/monolog&quot;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<h2 id="安装依赖库"><a href="#安装依赖库" class="headerlink" title="安装依赖库"></a>安装依赖库</h2><h3 id="根据-composer-json-安装依赖库"><a href="#根据-composer-json-安装依赖库" class="headerlink" title="根据 composer.json 安装依赖库"></a>根据 composer.json 安装依赖库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer install</span><br></pre></td></tr></table></figure>
-<p>需要当前目录下有一个 composer.json</p>
-<p>将创建一个 composer.lock 文件到你项目的根目录中</p>
-<p>按惯例把第三方的代码到指定的目录 <code>vendor</code>。如果是 monolog 将会创建 <code>vendor/monolog/monolog</code> 目录。</p>
-<p>Git 管理的项目，要添加 vendor 到 <code>.gitignore</code> 文件中。 否则所有的依赖库代码都将添加到版本库中。</p>
-<h3 id="直接命令行安装依赖库"><a href="#直接命令行安装依赖库" class="headerlink" title="直接命令行安装依赖库"></a>直接命令行安装依赖库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer require mustache/mustache</span><br></pre></td></tr></table></figure>
-<p>composer会自动更改 composer.json 和 composer.lock 文件，增加安装的新依赖库的信息</p>
-<h2 id="更新依赖库"><a href="#更新依赖库" class="headerlink" title="更新依赖库"></a>更新依赖库</h2><p>composer.json 中定义版本约束时，很可能是一个范围，如 <code>1.*</code>，而 composer.lock 中肯定是写死的具体版本号，如<code>1.2.3</code>，虽然 <code>composer.lock</code> 保证了依赖包版本的稳定性，但也阻止了依赖包的更新升级，如依赖库有了<code>1.2.4</code>新版本，但<code>composer.lock</code>里仍然是<code>1.2.3</code>版本。</p>
-<p>若需要升级依赖包，则使用<code>update</code>命令，<code>composer update</code> 相当于先删除 <code>composer.lock</code> 然后再运行 <code>composer install</code>，将读取 <code>composer.json</code> 的版本约束，获取符合版本约束的最新版本，再更新<code>composer.lock</code>写入确切的版本号</p>
-<p>更新所有依赖库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer update</span><br></pre></td></tr></table></figure></p>
-<p>更新特定依赖库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer update monolog/monolog slim/slim</span><br></pre></td></tr></table></figure></p>
-<h2 id="autoload-php"><a href="#autoload-php" class="headerlink" title="autoload.php"></a>autoload.php</h2><p>composer在下载安装依赖库后，还在vendor目录下生成了一个 <code>autoload.php</code> 文件，用来自动加载库中的类，可以直接包含使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">require __DIR__ . &apos;/vendor/autoload.php&apos;;</span><br><span class="line"></span><br><span class="line">$log = new Monolog\Logger(&apos;name&apos;);</span><br></pre></td></tr></table></figure></p>
-<p><code>autoload.php</code>文件会返回 autoloader 的实例，因此也可以将返回值存储在变量中再添加命名空间，测试自动加载类很有用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$loader = require __DIR__ . &apos;/vendor/autoload.php&apos;;</span><br><span class="line">$loader-&gt;addPsr4(&apos;Acme\\Test\\&apos;, __DIR__);</span><br></pre></td></tr></table></figure></p>
-<p>如果不想使用 Composer 提供的 autoloader，可以仅仅引入 <code>vendor/composer/autoload_*.php</code> 文件，它返回一个关联数组，你可以通过这个关联数组配置自己的 autoloader。</p>
-<h2 id="autoload-属性"><a href="#autoload-属性" class="headerlink" title="autoload 属性"></a>autoload 属性</h2><p>可以使用<code>autoload</code>属性让 <code>vendor/autoload.php</code> 自动加载自己的类文件<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"autoload"</span>: &#123;</span><br><span class="line">        <span class="string">"psr-4"</span>: &#123;<span class="string">"Acme\\"</span>: <span class="string">"src/"</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>为 Acme 命名空间注册一个 PSR-4 规范的 autoloader</li>
-<li>定义了一个从命名空间到目录的映射，src 应在项目的根目录，与 vendor 文件夹同级。例如 src/Foo.php 文件应该包含 Acme\Foo 类。</li>
-</ul>
-<p>添加 autoload 属性后，需要重新生成 vendor/autoload.php 文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ composer dump-autoload</span><br><span class="line">Generating autoload files</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 2 - 安装/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="shenlin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="shenlin's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/19/Composer - Chapter 2 - 安装/" itemprop="url">Composer - Chapter 2 - 安装</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/" itemprop="url" rel="index">
-                    <span itemprop="name">PHP</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/Composer/" itemprop="url" rel="index">
-                    <span itemprop="name">Composer</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>安装 Composer 简介。</p>
+          <p>wget 默认把下载文件保存的磁盘，把进度信息输出到 stdout，</p>
+<p>而 curl 默认把下载文件的内容输出到 stdout，把进度信息输出到 stderr</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/11/19/Composer - Chapter 2 - 安装/#more" rel="contents">
+            <a class="btn" href="/2018/02/13/Bash - linux shell 脚本攻略 - chapter 5.4 - curl/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1546,7 +985,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Composer - Chapter 1 - 概述/">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/02/12/Basis - 并发, 吞吐量, TPS, QPS, RPS, 响应时间 RT/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shenlin">
@@ -1565,7 +1004,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/19/Composer - Chapter 1 - 概述/" itemprop="url">Composer - Chapter 1 - 概述</a></h1>
+                <a class="post-title-link" href="/2018/02/12/Basis - 并发, 吞吐量, TPS, QPS, RPS, 响应时间 RT/" itemprop="url">Basis - 并发, 吞吐量, TPS, QPS, RPS, 响应时间 RT</a></h1>
         
 
         <div class="post-meta">
@@ -1577,8 +1016,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-12T21:45:50+08:00">
+                2018-02-12
               </time>
             
 
@@ -1600,19 +1039,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/" itemprop="url" rel="index">
-                    <span itemprop="name">PHP</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/Composer/" itemprop="url" rel="index">
-                    <span itemprop="name">Composer</span>
+                  <a href="/categories/Basis/" itemprop="url" rel="index">
+                    <span itemprop="name">Basis</span>
                   </a>
                 </span>
 
@@ -1649,10 +1077,10 @@
 
       
         
-          <p>Composer 是 PHP 的依赖管理工具，它允许你声明自己的项目所依赖的库，而它将根据你的声明为你的项目安装、更新这些儿库。</p>
+          <p>TPS</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/11/19/Composer - Chapter 1 - 概述/#more" rel="contents">
+            <a class="btn" href="/2018/02/12/Basis - 并发, 吞吐量, TPS, QPS, RPS, 响应时间 RT/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1703,7 +1131,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/C 语言 - Linux C 编程一站式学习 chapter 19 - 汇编和 C 的关系/">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/02/12/Basis - Numeronym 数字词/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shenlin">
@@ -1722,7 +1150,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/19/C 语言 - Linux C 编程一站式学习 chapter 19 - 汇编和 C 的关系/" itemprop="url">C 语言 - Linux C 编程一站式学习 chapter 19 - 汇编和 C 的关系</a></h1>
+                <a class="post-title-link" href="/2018/02/12/Basis - Numeronym 数字词/" itemprop="url">Basis - Numeronym 数字词</a></h1>
         
 
         <div class="post-meta">
@@ -1734,8 +1162,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-12T20:32:05+08:00">
+                2018-02-12
               </time>
             
 
@@ -1757,19 +1185,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C-语言/" itemprop="url" rel="index">
-                    <span itemprop="name">C 语言</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C-语言/Linux-C-编程一站式学习/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux C 编程一站式学习</span>
+                  <a href="/categories/Basis/" itemprop="url" rel="index">
+                    <span itemprop="name">Basis</span>
                   </a>
                 </span>
 
@@ -1806,25 +1223,486 @@
 
       
         
+          <p>Numeronym</p>
+<p><a href="https://en.wikipedia.org/wiki/Numeronym" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Numeronym</a></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/12/Basis - Numeronym 数字词/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/02/08/PHP - CodeIgniter 视图/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/08/PHP - CodeIgniter 视图/" itemprop="url">PHP - CodeIgniter 视图</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-08T12:21:49+08:00">
+                2018-02-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-            <a id="more"></a>
-<h2 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h2><h2 id="main-函数和启动例程"><a href="#main-函数和启动例程" class="headerlink" title="main 函数和启动例程"></a>main 函数和启动例程</h2><h2 id="变量的存储布局"><a href="#变量的存储布局" class="headerlink" title="变量的存储布局"></a>变量的存储布局</h2><h2 id="结构体和联合体"><a href="#结构体和联合体" class="headerlink" title="结构体和联合体"></a>结构体和联合体</h2><h2 id="C-内联汇编"><a href="#C-内联汇编" class="headerlink" title="C 内联汇编"></a>C 内联汇编</h2><p>使用汇编的情形：</p>
-<ul>
-<li>C 程序要经由编译器生成汇编代码，现代编译器的优化不如手写代码</li>
-<li>C 语言的语法和概念是对各种平台的抽象，而各种平台特有的一些东西在C语言中没有等价的语法，所以有些平台相关的指令必须手写<ul>
-<li>例如x86是端口I/O， 而C语言就没有这个概念，所以 in/out 指令必须用汇编来写</li>
-</ul>
-</li>
-</ul>
-<p>使用内联汇编的原因：</p>
-<pre><code>根据应用场景为了兼得 C 语言和汇编的优点 ：C语言简洁易读，容易组织规模较大的代码，而汇编效率高，而且写一些特殊指令必须用汇编
-</code></pre><p>内联汇编（Inline Assembly）</p>
-<pre><code>gcc 提供了一种扩展语法可以在C代码中使用汇编语言
-</code></pre><p>内联汇编举例</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> __asm__(<span class="string">"nop"</span>);                                                <span class="comment">// 单条汇编指令</span></span><br><span class="line"></span><br><span class="line">__asm__(<span class="string">"movl $1, %eax\n\t"</span>                                     <span class="comment">// 多条汇编指令使用 \n\t 分隔</span></span><br><span class="line">        <span class="string">"movl $4, %ebx\n\t"</span></span><br><span class="line">        <span class="string">"int $0x80"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 内联汇编和 C 语言变量关联</span></span><br><span class="line"><span class="comment">// 可选的部分没有则空着只写个冒号</span></span><br><span class="line">__asm__(assembler <span class="keyword">template</span>                                      <span class="comment">// 汇编指令</span></span><br><span class="line">        : output operands                                       <span class="comment">// 约束条件，可选，指示汇编指令的运算结果输出到哪些儿 C 操作数</span></span><br><span class="line">        : input operands                                        <span class="comment">// 约束条件，可选，指示汇编指令从哪些儿 C 操作数获得输入</span></span><br><span class="line">        : <span class="built_in">list</span> of clobbered registers                           <span class="comment">// 可选，列出在汇编指令中被修改过的寄存器列表，</span></span><br><span class="line">                                                                <span class="comment">// 这样编译器就不会在执行这行代码时使用这些儿寄存器来保存其他值</span></span><br><span class="line">        );</span><br></pre></td></tr></table></figure>
-<p>内联汇编完整举例<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 将变量 a 的值赋给 b</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">10</span>, b;</span><br><span class="line"></span><br><span class="line">    __asm__(<span class="string">"movl %1, %%eax\n\t"</span>                                <span class="comment">// %1 是占位符，对应 a，为了和占位符区分，寄存器 eax 前加了两个 %</span></span><br><span class="line">            <span class="string">"movl %%eax, %0\n\t"</span>                                <span class="comment">// %0 是站位符，对应 b</span></span><br><span class="line">            :<span class="string">"=r"</span>(b)                                            <span class="comment">// 把 %0 代表的寄存器的值输出给变量 b</span></span><br><span class="line">            :<span class="string">"r"</span>(a)                                             <span class="comment">// 指示编译器分配一个寄存器保存变量 a  的值</span></span><br><span class="line">            :<span class="string">"%eax"</span>                                             <span class="comment">// 告诉编译器寄存器 eax 的值被改变了，所以在执行 __asm__ 时不要用 eax 再保存其他值</span></span><br><span class="line">    );</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Result: %d, %d\n"</span>, a, b);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="volatile-限定符"><a href="#volatile-限定符" class="headerlink" title="volatile 限定符"></a>volatile 限定符</h2>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/CodeIgniter/" itemprop="url" rel="index">
+                    <span itemprop="name">CodeIgniter</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>一个视图其实就是一个 Web 页面，或者页面的一部分，像页头、页脚、侧边栏等。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/08/PHP - CodeIgniter 视图/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/02/05/PHP - CodeIgniter 模型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/05/PHP - CodeIgniter 模型/" itemprop="url">PHP - CodeIgniter 模型</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-05T08:25:17+08:00">
+                2018-02-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/CodeIgniter/" itemprop="url" rel="index">
+                    <span itemprop="name">CodeIgniter</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>模型是专门用来和数据库打交道的 PHP 类。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/05/PHP - CodeIgniter 模型/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/02/04/PHP - CodeIgniter 控制器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/04/PHP - CodeIgniter 控制器/" itemprop="url">PHP - CodeIgniter 控制器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-04T17:09:34+08:00">
+                2018-02-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/CodeIgniter/" itemprop="url" rel="index">
+                    <span itemprop="name">CodeIgniter</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>一个控制器就是一个类文件，是以一种能够和 URI 关联在一起的方式来命名的</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/04/PHP - CodeIgniter 控制器/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1862,7 +1740,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1908,7 +1786,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-count">218</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1919,7 +1797,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1930,7 +1808,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">156</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1969,7 +1847,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

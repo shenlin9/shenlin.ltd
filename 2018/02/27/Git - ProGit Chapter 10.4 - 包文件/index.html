@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Git,Git-包文件," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Git 包文件">
+<meta name="keywords" content="Git,Git-包文件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter 10.4 - Git 包文件">
+<meta property="og:url" content="http://www.shenlin.ltd/2018/02/27/Git - ProGit Chapter 10.4 - 包文件/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="Git 包文件">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-27T01:57:14.042Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter 10.4 - Git 包文件">
+<meta name="twitter:description" content="Git 包文件">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2018/02/27/Git - ProGit Chapter 10.4 - 包文件/"/>
+
+
+
+
+
+  <title>chapter 10.4 - Git 包文件 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/02/27/Git - ProGit Chapter 10.4 - 包文件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">chapter 10.4 - Git 包文件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-27T09:57:14+08:00">
+                2018-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/Book-ProGit/" itemprop="url" rel="index">
+                    <span itemprop="name">Book-ProGit</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Git 包文件</p>
+<a id="more"></a>
+<h2 id="松散对象"><a href="#松散对象" class="headerlink" title="松散对象"></a>松散对象</h2><p>Git 最初向磁盘中存储对象时所使用的格式被称为松散（loose）对象格式，是相对于包文件（packfile）说的，即不在包文件中的对象就是松散对象。</p>
+<h2 id="包文件"><a href="#包文件" class="headerlink" title="包文件"></a>包文件</h2><p>Git 会不定时地自动运行一个叫做 “auto gc” 的命令将多个松散对象打包成一个称为“包文件（packfile）”的二进制文件，以节省空间和提高效率。</p>
+<!--more-->
+<h2 id="gc命令的运行时刻"><a href="#gc命令的运行时刻" class="headerlink" title="gc命令的运行时刻"></a>gc命令的运行时刻</h2><h3 id="1-版本库中有太多的松散对象"><a href="#1-版本库中有太多的松散对象" class="headerlink" title="1.版本库中有太多的松散对象"></a>1.版本库中有太多的松散对象</h3><pre><code>大多数时候，“auto gc”命令运行不会有效果
+大约需要 7000 个以上的松散对象
+或超过 50 个的包文件才能让 Git 启动一次真正的 gc 命令
+可以通过修改 gc.auto 与 gc.autopacklimit 的设置来改动这些数值
+</code></pre><h3 id="2-手动执行-git-gc-命令"><a href="#2-手动执行-git-gc-命令" class="headerlink" title="2.手动执行 git gc 命令"></a>2.手动执行 git gc 命令</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git gc --auto</span><br></pre></td></tr></table></figure>
+</code></pre><h3 id="3-向远程服务器执行推送时"><a href="#3-向远程服务器执行推送时" class="headerlink" title="3.向远程服务器执行推送时"></a>3.向远程服务器执行推送时</h3><h2 id="gc-命令的功能"><a href="#gc-命令的功能" class="headerlink" title="gc 命令的功能"></a>gc 命令的功能</h2><h3 id="1-移除与任何提交都不相关的陈旧对象。"><a href="#1-移除与任何提交都不相关的陈旧对象。" class="headerlink" title="1.移除与任何提交都不相关的陈旧对象。"></a>1.移除与任何提交都不相关的陈旧对象。</h3><p>没被添加到任何提交记录的文件，Git 认为它们是悬空（dangling）的，不会将它们打包进新生成的包文件中</p>
+<h3 id="2-收集所有松散对象并将它们放置到包文件中"><a href="#2-收集所有松散对象并将它们放置到包文件中" class="headerlink" title="2.收集所有松散对象并将它们放置到包文件中"></a>2.收集所有松散对象并将它们放置到包文件中</h3><p>git打包生成一个包文件和一个索引文件。<br>包文件包含了从文件系统中打包的所有松散对象的内容。<br>索引文件包含了包文件的偏移信息，我们通过索引文件就可以快速定位任意一个指定对象。 </p>
+<p>Git 打包对象时，会查找命名及大小相近的文件，并只保存文件不同版本之间的差异内容。</p>
+<p>通常文件的较新版本会被完整保存内容，而最初较老的版本反而以差异方式保存——这是因为大部分情况下需要快速访问文件的最新版本。</p>
+<p>可以查看包文件，观察它是如何节省空间的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ git verify-pack -v .git/objects/pack/pack-978e03944f5c581011e6998cd0e9e30000905586.idx</span><br><span class="line">f26fdbdc4eb8d65dc14e70b89ae5ef9bdf600363 commit 176 121 3494</span><br><span class="line">f50fc22ff236284f2153395717adf238e184e4fd tree   248 208 3615</span><br><span class="line">c4e0c24377fd1887539e1bafc81dc7a57b212e9a tag    142 127 572</span><br><span class="line">b042a60ef7dff760008df33cee372b945b6e884e blob   22054 5799 1463</span><br><span class="line">033b4468fa6b2a9547a70d88d1bbe8bf3f9ed0d5 blob   9 20 7262 1 \</span><br><span class="line">  b042a60ef7dff760008df33cee372b945b6e884e</span><br><span class="line">1f7a7a472abf3dd9643fd615f6da379c4acb3e3a blob   10 19 7282</span><br><span class="line">non delta: 15 objects</span><br><span class="line">chain length = 1: 3 objects</span><br><span class="line">.git/objects/pack/pack-978e03944f5c581011e6998cd0e9e30000905586.pack: ok</span><br></pre></td></tr></table></figure></p>
+<p>033b4 这个数据对象引用了数据对象 b042a。 第三列显示的是各个对象在包文件中的大小，可以看到 b042a 占用了 22K 空间，而 033b4 仅占用 9 字节。</p>
+<h3 id="3-将多个包文件合并为一个大的包文件"><a href="#3-将多个包文件合并为一个大的包文件" class="headerlink" title="3.将多个包文件合并为一个大的包文件"></a>3.将多个包文件合并为一个大的包文件</h3><h3 id="4-把refs引用打包到一个单独的文件"><a href="#4-把refs引用打包到一个单独的文件" class="headerlink" title="4.把refs引用打包到一个单独的文件"></a>4.把refs引用打包到一个单独的文件</h3><p>若 git 引用目录文件如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ find .git/refs -type f</span><br><span class="line">.git/refs/heads/experiment</span><br><span class="line">.git/refs/heads/master</span><br><span class="line">.git/refs/tags/v1.0</span><br><span class="line">.git/refs/tags/v1.1</span><br></pre></td></tr></table></figure></p>
+<p><code>git gc --auto</code>会把上述文件打包成一个文件 .git/packed-refs<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ cat .git/packed-refs</span><br><span class="line"># pack-refs with: peeled fully-peeled</span><br><span class="line">cac0cab538b970a37ea1e769cbbde608743bc96d refs/heads/experiment</span><br><span class="line">ab1afef80fac8e34258ff41fc1b867c702daa24b refs/heads/master</span><br><span class="line">cac0cab538b970a37ea1e769cbbde608743bc96d refs/tags/v1.0</span><br><span class="line">9585191f37f7b0fb9444f35a9bf50de191beadc2 refs/tags/v1.1</span><br><span class="line">^1a410efbd13591db07496601ebc7a059dd55cfe9</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>如果你更新了引用，Git 并不会修改这个文件，而是向 refs/heads 创建一个新的文件。 </p>
+</li>
+<li><p>Git 会首先在 .git/refs 目录中查找指定的引用，然后再到 .git/packed-refs 文件中查找。 </p>
+</li>
+<li><p>开头的 ^ 号表示这行是被附注标签指向的commit对象，而上一行就是附注标签对象。</p>
+</li>
+</ul>
+<h2 id="查看空间占用的命令"><a href="#查看空间占用的命令" class="headerlink" title="查看空间占用的命令"></a>查看空间占用的命令</h2><p>查看数据库占用空间<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git gc</span><br><span class="line">Counting objects: 63, done.</span><br><span class="line">Delta compression using up to 2 threads.</span><br><span class="line">Compressing objects: 100% (33/33), done.</span><br><span class="line">Writing objects: 100% (63/63), done.</span><br><span class="line">Total 63 (delta 15), reused 62 (delta 15)</span><br></pre></td></tr></table></figure></p>
+<p>快速查看占用空间大小<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ git count-objects -v</span><br><span class="line">count: 0</span><br><span class="line">size: 0</span><br><span class="line">in-pack: 63</span><br><span class="line">packs: 1</span><br><span class="line">size-pack: 8</span><br><span class="line">prune-packable: 0</span><br><span class="line">garbage: 0</span><br><span class="line">size-garbage: 0</span><br></pre></td></tr></table></figure></p>
+<p>size-pack 数值的单位是KB</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+            <a href="/tags/Git-包文件/" rel="tag"># Git-包文件</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/27/Git - ProGit Chapter 10.2 - 对象/" rel="next" title="chapter 10.2 - Git 对象">
+                <i class="fa fa-chevron-left"></i> chapter 10.2 - Git 对象
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/27/Git - ProGit Chapter 10.5 - 引用规格/" rel="prev" title="chapter 10.5 - Git 引用规格">
+                chapter 10.5 - Git 引用规格 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">218</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#松散对象"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x677E;&#x6563;&#x5BF9;&#x8C61;" class="headerlink" title="&#x677E;&#x6563;&#x5BF9;&#x8C61;"></a>&#x677E;&#x6563;&#x5BF9;&#x8C61;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包文件"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5305;&#x6587;&#x4EF6;" class="headerlink" title="&#x5305;&#x6587;&#x4EF6;"></a>&#x5305;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gc命令的运行时刻"><span class="nav-number">3.</span> <span class="nav-text"><a href="#gc&#x547D;&#x4EE4;&#x7684;&#x8FD0;&#x884C;&#x65F6;&#x523B;" class="headerlink" title="gc&#x547D;&#x4EE4;&#x7684;&#x8FD0;&#x884C;&#x65F6;&#x523B;"></a>gc&#x547D;&#x4EE4;&#x7684;&#x8FD0;&#x884C;&#x65F6;&#x523B;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-版本库中有太多的松散对象"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#1-&#x7248;&#x672C;&#x5E93;&#x4E2D;&#x6709;&#x592A;&#x591A;&#x7684;&#x677E;&#x6563;&#x5BF9;&#x8C61;" class="headerlink" title="1.&#x7248;&#x672C;&#x5E93;&#x4E2D;&#x6709;&#x592A;&#x591A;&#x7684;&#x677E;&#x6563;&#x5BF9;&#x8C61;"></a>1.&#x7248;&#x672C;&#x5E93;&#x4E2D;&#x6709;&#x592A;&#x591A;&#x7684;&#x677E;&#x6563;&#x5BF9;&#x8C61;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-手动执行-git-gc-命令"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#2-&#x624B;&#x52A8;&#x6267;&#x884C;-git-gc-&#x547D;&#x4EE4;" class="headerlink" title="2.&#x624B;&#x52A8;&#x6267;&#x884C; git gc &#x547D;&#x4EE4;"></a>2.&#x624B;&#x52A8;&#x6267;&#x884C; git gc &#x547D;&#x4EE4;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-向远程服务器执行推送时"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#3-&#x5411;&#x8FDC;&#x7A0B;&#x670D;&#x52A1;&#x5668;&#x6267;&#x884C;&#x63A8;&#x9001;&#x65F6;" class="headerlink" title="3.&#x5411;&#x8FDC;&#x7A0B;&#x670D;&#x52A1;&#x5668;&#x6267;&#x884C;&#x63A8;&#x9001;&#x65F6;"></a>3.&#x5411;&#x8FDC;&#x7A0B;&#x670D;&#x52A1;&#x5668;&#x6267;&#x884C;&#x63A8;&#x9001;&#x65F6;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gc-命令的功能"><span class="nav-number">4.</span> <span class="nav-text"><a href="#gc-&#x547D;&#x4EE4;&#x7684;&#x529F;&#x80FD;" class="headerlink" title="gc &#x547D;&#x4EE4;&#x7684;&#x529F;&#x80FD;"></a>gc &#x547D;&#x4EE4;&#x7684;&#x529F;&#x80FD;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-移除与任何提交都不相关的陈旧对象。"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#1-&#x79FB;&#x9664;&#x4E0E;&#x4EFB;&#x4F55;&#x63D0;&#x4EA4;&#x90FD;&#x4E0D;&#x76F8;&#x5173;&#x7684;&#x9648;&#x65E7;&#x5BF9;&#x8C61;&#x3002;" class="headerlink" title="1.&#x79FB;&#x9664;&#x4E0E;&#x4EFB;&#x4F55;&#x63D0;&#x4EA4;&#x90FD;&#x4E0D;&#x76F8;&#x5173;&#x7684;&#x9648;&#x65E7;&#x5BF9;&#x8C61;&#x3002;"></a>1.&#x79FB;&#x9664;&#x4E0E;&#x4EFB;&#x4F55;&#x63D0;&#x4EA4;&#x90FD;&#x4E0D;&#x76F8;&#x5173;&#x7684;&#x9648;&#x65E7;&#x5BF9;&#x8C61;&#x3002;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-收集所有松散对象并将它们放置到包文件中"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#2-&#x6536;&#x96C6;&#x6240;&#x6709;&#x677E;&#x6563;&#x5BF9;&#x8C61;&#x5E76;&#x5C06;&#x5B83;&#x4EEC;&#x653E;&#x7F6E;&#x5230;&#x5305;&#x6587;&#x4EF6;&#x4E2D;" class="headerlink" title="2.&#x6536;&#x96C6;&#x6240;&#x6709;&#x677E;&#x6563;&#x5BF9;&#x8C61;&#x5E76;&#x5C06;&#x5B83;&#x4EEC;&#x653E;&#x7F6E;&#x5230;&#x5305;&#x6587;&#x4EF6;&#x4E2D;"></a>2.&#x6536;&#x96C6;&#x6240;&#x6709;&#x677E;&#x6563;&#x5BF9;&#x8C61;&#x5E76;&#x5C06;&#x5B83;&#x4EEC;&#x653E;&#x7F6E;&#x5230;&#x5305;&#x6587;&#x4EF6;&#x4E2D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-将多个包文件合并为一个大的包文件"><span class="nav-number">4.3.</span> <span class="nav-text"><a href="#3-&#x5C06;&#x591A;&#x4E2A;&#x5305;&#x6587;&#x4EF6;&#x5408;&#x5E76;&#x4E3A;&#x4E00;&#x4E2A;&#x5927;&#x7684;&#x5305;&#x6587;&#x4EF6;" class="headerlink" title="3.&#x5C06;&#x591A;&#x4E2A;&#x5305;&#x6587;&#x4EF6;&#x5408;&#x5E76;&#x4E3A;&#x4E00;&#x4E2A;&#x5927;&#x7684;&#x5305;&#x6587;&#x4EF6;"></a>3.&#x5C06;&#x591A;&#x4E2A;&#x5305;&#x6587;&#x4EF6;&#x5408;&#x5E76;&#x4E3A;&#x4E00;&#x4E2A;&#x5927;&#x7684;&#x5305;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-把refs引用打包到一个单独的文件"><span class="nav-number">4.4.</span> <span class="nav-text"><a href="#4-&#x628A;refs&#x5F15;&#x7528;&#x6253;&#x5305;&#x5230;&#x4E00;&#x4E2A;&#x5355;&#x72EC;&#x7684;&#x6587;&#x4EF6;" class="headerlink" title="4.&#x628A;refs&#x5F15;&#x7528;&#x6253;&#x5305;&#x5230;&#x4E00;&#x4E2A;&#x5355;&#x72EC;&#x7684;&#x6587;&#x4EF6;"></a>4.&#x628A;refs&#x5F15;&#x7528;&#x6253;&#x5305;&#x5230;&#x4E00;&#x4E2A;&#x5355;&#x72EC;&#x7684;&#x6587;&#x4EF6;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看空间占用的命令"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x67E5;&#x770B;&#x7A7A;&#x95F4;&#x5360;&#x7528;&#x7684;&#x547D;&#x4EE4;" class="headerlink" title="&#x67E5;&#x770B;&#x7A7A;&#x95F4;&#x5360;&#x7528;&#x7684;&#x547D;&#x4EE4;"></a>&#x67E5;&#x770B;&#x7A7A;&#x95F4;&#x5360;&#x7528;&#x7684;&#x547D;&#x4EE4;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

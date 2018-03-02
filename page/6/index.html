@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Linux - 卸载软件包/">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/03/01/Linux - nginx php-fpm 提示 File not found/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shenlin">
@@ -251,7 +251,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/19/Linux - 卸载软件包/" itemprop="url">未命名</a></h1>
+                <a class="post-title-link" href="/2018/03/01/Linux - nginx php-fpm 提示 File not found/" itemprop="url">Linux - PHP-FPM</a></h1>
         
 
         <div class="post-meta">
@@ -263,8 +263,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-01T14:44:19+08:00">
+                2018-03-01
               </time>
             
 
@@ -273,6 +273,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -302,11 +324,14 @@
 
       
         
-          
-            <p>make clean<br>����ϴε�make������������object�ļ�����׺Ϊ��.o�����ļ�������ִ���ļ���<br>make distclean<br>����make clean����ͬʱҲ��configure���ɵ��ļ�ȫ��ɾ�������Makefile��</p>
-<p>��һ��makefile������û��make uninstallѡ�<br>���û��<br>�� makefile ��� make install ������ʲô�������������Ǹ����ļ����������ӣ����ֹ�����</p>
-
-          
+          <p>PHP-FPM 提示 “File not found”</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/01/Linux - nginx php-fpm 提示 File not found/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -353,7 +378,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Linux - sudo/">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/03/01/Linux - UTC GMT localtime timestamp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shenlin">
@@ -372,7 +397,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/19/Linux - sudo/" itemprop="url">未命名</a></h1>
+                <a class="post-title-link" href="/2018/03/01/Linux - UTC GMT localtime timestamp/" itemprop="url">Linux - UTC GMT localtime timestamp</a></h1>
         
 
         <div class="post-meta">
@@ -384,8 +409,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-01T14:41:28+08:00">
+                2018-03-01
               </time>
             
 
@@ -394,6 +419,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -423,25 +470,14 @@
 
       
         
-          
-            <p>在使用Linux系统过程中，通常情况下，我们都会使用普通用户进行日常操作，<br>而root用户只有在权限分配及系统设置时才会使用，而root用户的密码也不可能公开。</p>
-<p>普通用户执行到系统程序时，需要临时提升权限，sudo就是我们常用的命令，仅需要输入当前用户密码，便可以完成权限的临时提升。</p>
-<p>在使用sudo命令的过程中，我们经常会遇到当前用户不在sudoers文件中的提示信息，<br>如果解决该问题呢？通过下面几个步骤，可以很简单的解决</p>
-<p>[ssy@localhost]$ sudo ls<br>提示<br>ssy user not in sudoers file</p>
-<p>1、切换到root用户权限<br>    $ su root<br>2、查看/etc/sudoers文件权限，如果只读权限，修改为可写权限</p>
-<pre><code># ls -l /etc/sudoers
--r--r-----. 1 root root 4030 9月  25 00:57 /etc/sudoers
-# chmod u+w /etc/sudoers
-# ls -l /etc/sudoers
--rw-r-----. 1 root root 4030 9月  25 00:57 /etc/sudoers
-</code></pre><p>3、执行vi命令，编辑/etc/sudoers文件，添加要提升权限的用户；在文件中找到root  ALL=(ALL) ALL，在该行下添加提升权限的用户信息，如：<br>    root    ALL=(ALL)       ALL<br>    ssy     ALL=(ALL)       ALL<br>    说明：格式为（用户名    网络中的主机=（执行命令的目标用户）    执行的命令范围）<br>4、保存退出，并恢复/etc/sudoers的访问权限为440</p>
-<pre><code># chmod u-w /etc/sudoers
-# ls -l /etc/sudoers
--r--r-----. 1 root root 4030 9月  25 00:57 /etc/sudoers
-</code></pre><p>5、切换到普通用户，测试用户权限提升功能</p>
-<p>！！不用修改sudoers文件的权限，切换到root用户后，可直接使用:w!强制写入更改</p>
-
-          
+          <p>时间相关</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/01/Linux - UTC GMT localtime timestamp/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -488,7 +524,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Linux - Shell编程/">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/03/01/Linux - POSIX/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shenlin">
@@ -507,7 +543,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/19/Linux - Shell编程/" itemprop="url">未命名</a></h1>
+                <a class="post-title-link" href="/2018/03/01/Linux - POSIX/" itemprop="url">linux - posix</a></h1>
         
 
         <div class="post-meta">
@@ -519,8 +555,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-01T14:40:47+08:00">
+                2018-03-01
               </time>
             
 
@@ -529,6 +565,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -558,340 +616,14 @@
 
       
         
-          
-            <p>��Shell�ṹ��</p>
-<pre><code>#!  ָ��ִ�нű���shell
-
-#   ע����
-</code></pre><p>������shell����Ĳ��衿</p>
-<pre><code>��һ����������һ����������Ϳ��ƽṹ���ļ���
-
-�ڶ������޸�����ļ���Ȩ��ʹ������ִ�С�chmod u+x
-
-��������ִ��./example��Ҳ����ʹ��sh exampleִ��
-</code></pre><p>��shell������</p>
-<pre><code>�����������ʱ���������ñ���
-
-��ʱ������shell�����ڲ�����ģ���ʵҲ��Χ�����ڶ������ĳ��򣬶��������򲻿ɼ����������û��Զ��������λ�ñ�����
-
-���ñ����ǻ�����������ֵ����shell�ű���ִ�н�������ʧ��
-
-    $PATH   $LANG   $SHELL  $PS1
-</code></pre><p>���û��Զ��������</p>
-<pre><code>����ĸ���»��߿�ͷ������ĸ�����֣��»���������ɡ�
-
-���ִ�Сд����ϰ�����ô�д��ĸ������������
-
-����������û�����ơ�
-</code></pre><p>�����塢ʹ�ú�ɾ��������</p>
-<pre><code>�����ɾ������ʱ����ʹ��$����ʹ�ñ���ʱ��Ҫ�ڱ�����ǰ��ǰ׺$������������ֵʱ����$���ӱ���ȡֵʱ��Ҫ��$��
-
-������һ��ʹ��ʱ�������壬��ʱ��Ҫ�Ա������и�ֵ��
-
-������ֵʱ����ֵ��&quot;=&quot;�����߲����пո񡣸�ֵ������
-
-    ����ʱ��ֵ��NUM=1
-
-    ��һ�������ִ�н������������TIME=`date`
-
-    ��һ������������һ��������A=$B
-
-                              TIME=$(date +%F)
-
-    �鿴����ֵ��echo $A
-
-ɾ��������unset ������
-
-          unset A
-
-�鿴���б����������˻����������û����Զ��������set
-</code></pre><p>��λ�ñ�����</p>
-<pre><code>Shell����ִ���û�����ʱ���������еĵ�һ��������Ϊ������������������Ϊ������
-
-�ɳ������������ϵ�λ��ȷ���Ĳ�����Ϊλ�ò��������磺
-
-    ls -l file1 file2 file3
-
-        $0  ���������ļ���ls -l
-
-        $n  �������ĵ�n������ֵ��n=1-9
-</code></pre><p>�����������</p>
-<pre><code>$*  �����������в���
-
-$#  �������Ĳ�������
-
-$$  ��������PID
-
-$!  ִ����һ����̨�����PID
-
-$?  ��һ������ִ���Ƿ�ɹ���ȡֵ0���0��0��ʾִ�гɹ�����0��ʾ���ɹ����ɹ����ɹ�����ִ����û�д�����grep sss /etc/passwdû���ҵ����Ҳ��ʾִ�в��ɹ�
-</code></pre><p>�������ź�˫���š�</p>
-<pre><code>˫�����еı����ᱻ�������������еı�����������
-
-ssl=123
-
-echo &quot;adf $ssl&quot;;
-
-echo &apos;adf $ssl&apos;;
-</code></pre><p>��Shell���</p>
-<pre><code>read VAR���Ӽ��̶������ݸ�������VAR
-
-    #read $VAR1 $VAR2 $VAR3
-
-    #1 2 3
-
-expr��������ͱ��������������㣬+-*/��������඼�����пո񣬳������ΪС��ʱ��ȡ��Ϊ0���˷���Ϊ???ԭ����Ҫת��
-
-    expr 3 + 5
-
-    expr $var - 5
-
-    expr $var \* 10
-
-    expr $var / $var2
-
-    �������滻�� ` ���ʹ�ã� 
-
-    expr `expr $var1 + $var2` / $var4
-
-    var4=`expr $var1 / $var2`
-</code></pre><p>������������䡿</p>
-<pre><code>���ڲ��Ա����Ƿ���ȣ��Ƿ�Ϊ�գ��ļ����͵�
-
-��ʽ��test ��������
-
-���Է�Χ���������ַ������ļ�
-
-�ַ������ԣ�
-
-    test str1=str2  �����ַ����Ƿ����
-
-    test str1!=str2 �����ַ����Ƿ����
-
-    test str1       �����ַ����Ƿ�Ϊ��
-
-    test -n str1    �����ַ����Ƿ�Ϊ��
-
-    test -z str1    �����ַ����Ƿ�Ϊ��
-
-�������ԣ�
-
-    test int1 -eq int2  ���������Ƿ����
-
-    test int1 -ne int2  ���������Ƿ����
-
-    test int1 -ge int2  ����int1�Ƿ�&gt;=int2
-
-    test int1 -gt int2  ����int1�Ƿ�&gt;int2
-
-    test int1 -le int2  ����int1�Ƿ�&lt;=int2
-
-    test int1 -lt int2  ����int1�Ƿ�&lt;int2
-
-�ļ����ԣ�
-
-    test -d file    �����ļ��Ƿ�ΪĿ¼
-
-    test -f file    �����ļ��Ƿ�Ϊ�����ļ�
-
-    test -x file    �����ļ��Ƿ��ִ��
-
-    test -r file    �����ļ��Ƿ�ɶ�
-
-    test -w file    �����ļ��Ƿ��д
-
-    test -a file    �����ļ��Ƿ����
-
-    test -s file    �����ļ���С�Ƿ�Ϊ0
-
-�����������һ�㲻����ʹ�ã�����Ϊif���Ĳ����������磺
-
-    if test -d $1 then
-        ...
-    fi
-
-��������������[]���м򻯣�[ �Ҳ� ] ����пո��磺
-
-    test -d $1 �ȼ��� [ -d $1 ]
-</code></pre><p>��sh -x �ű���</p>
-<pre><code>-x  ��ѡ��ʹ�ýű�ִ��ʱ���Ὣִ�е�ÿһ���������Ļ�ϣ�����ǰ�����+�ţ����ڵ���
-</code></pre><p>�������ж�if��</p>
-<pre><code>then����������һ��
-
-if���
-
-    if �ж�����
-    then
-        ...ִ�����
-    fi
-
-if..else���
-
-    if �ж�����
-    then
-        ...ִ�����
-    else
-        ...ִ�����
-    fi
-
-if..elif..elif..else���
-
-    if �ж�����
-    then
-        ...ִ�����
-    elif �ж�����
-    then
-        ...ִ�����
-    elif �ж�����
-    then
-        ...ִ�����
-    else
-        ...ִ�����
-    fi
-</code></pre><p>����������䡿</p>
-<pre><code>-a���߼��룬������������������ʱ�����Ϊ��
-
--o���߼���������������һ�������������Ϊ��
-</code></pre><p>��ѭ��for��䡿</p>
-<pre><code>for ���� in ���ֱ�
-do
-    �����б�
-done
-
-������
-
-for DAY in Monday Tuesday Wednesday
-do
-    echo &quot;The day is��$DAY&quot;
-done
-
-for FILE in `ls`
-do
-    echo $FILE
-done
-</code></pre><p>��ѭ��select��䡿</p>
-<pre><code>select ���� in �ؼ���
-do
-    command 1
-    ...
-    command n
-    break
-done
-
-��for���������ڣ�select�Խ����ķ�ʽִ��do��done֮�������
-
-???
-</code></pre><p>��case…esac��䡿</p>
-<pre><code>case ���� in
-
-    �ַ���1)
-        �����б�1
-    ;;
-
-    ......
-
-    �ַ���n)
-        �����б�n
-    ;;
-
-    *)
-        �����б�
-
-esac
-
-������
-
-echo &apos;*****************************&apos;
-echo &quot;Please select your operation:&quot;
-echo &quot;Press C to Copy&quot;
-echo &quot;Press D to Delete&quot;
-echo &quot;Press B to Backup&quot;
-echo &apos;*****************************&apos;
-
-read op
-case $op in
-    C)
-        echo &quot;your selection is Copy&quot;
-    ;;
-    D)
-        echo &quot;your selection is Delete&quot;
-    ;;
-    B)
-        echo &quot;your selection is Delete&quot;
-    ;;
-    *)
-        echo &quot;invalid selection&quot;
-esac
-</code></pre><p>��whileѭ����䡿</p>
-<pre><code>while ����
-do
-    ����
-done
-</code></pre><p>��untilѭ����䡿</p>
-<pre><code>until ����
-do
-    ����
-done
-
-until��while��ͬ���ǣ�until����������ֵΪ��ʱ�ż���ִ��
-</code></pre><p>��break��continue��䡿</p>
-<pre><code>break       ��������ѭ��
-
-continue    ��������ѭ���������´�ѭ��
-</code></pre><p>��shiftָ�</p>
-<pre><code>�������ƣ�ÿִ��һ�Σ������б�����һ��λ�ã�$#��ֵ��1���Ƴ�ȥ�Ĳ����������ã����ڷֱ���ÿ��������
-
-while [ $# -gt 0 ]
-do
-    sum=`expr $sum + $1`
-    shift
-done
-echo $sum
-</code></pre><p>��������</p>
-<p>   ���庯���� </p>
-<pre><code>    ������(){
-
-        ��������
-
-    }
-
-���ú�����
-
-    ������ ����1 ����2 ...
-
-    ����()
-
-����������
-
-    ���庯��ʱ������Ҫ�����βΣ������ú���ʱ���Դ��ݲ��������������ں�������$1��$2...������
-
-����������
-
-    �����еı�����Ϊȫ�ֱ�����û�оֲ�����
-</code></pre><p>��exit��䡿</p>
-<pre><code>�˳�����ִ�У�������һ�������룬������Ϊ0��ʾ�����˳�����0��ʾ�������˳���exit 0
-</code></pre><p>��Shell�ű����ԡ�</p>
-<pre><code>sh -x script
-
-    ִ��ÿһ�нű�ǰ���Ƚ����нű��������Ļ��
-
-sh -n script
-
-    ��ִ�нű���ֻ�Ǽ���﷨�������������﷨����
-</code></pre><p>����ͨ�û�ִ�нű���Ҫ��Ȩ�ޡ�</p>
-<pre><code>#sh dir/scriptfile
-
-    ��dir��rxȨ��
-
-    ��scriptfile��rȨ��
-
-#dir/scriptfile
-
-    ��dir��rxȨ��
-
-    ��scriptfile��rxȨ��
-</code></pre>
-          
+          <p>POSIX 基本上是 Portable Operating System Interface（可移植操作系统接口）的缩写，</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/01/Linux - POSIX/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -938,7 +670,7 @@ sh -n script
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Linux - Samba服务器配置/">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/03/01/Linux - PHP-FPM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shenlin">
@@ -957,7 +689,7 @@ sh -n script
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/19/Linux - Samba服务器配置/" itemprop="url">未命名</a></h1>
+                <a class="post-title-link" href="/2018/03/01/Linux - PHP-FPM/" itemprop="url">Linux - PHP-FPM</a></h1>
         
 
         <div class="post-meta">
@@ -969,8 +701,8 @@ sh -n script
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-01T14:40:23+08:00">
+                2018-03-01
               </time>
             
 
@@ -979,6 +711,28 @@ sh -n script
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -1008,46 +762,14 @@ sh -n script
 
       
         
-          
-            <p>NetBios �� SMB����·�ɣ����������ڻ�������</p>
-<p>nmbd���̣���������鿴linux������������ļ�<br>      ��������ƽ�����ͨ��linux�����������ƶ�����IP������</p>
-<p><code>#</code>ע�͵���˵����Ϣ</p>
-<p><code>;</code>ע�͵���ѡ��</p>
-<p>security=ָ����ȫģʽ<br>    1��share      ��Ȩ����֤<br>    2��user        ȱʡ�ģ��Ƽ�ʹ�ã���linux��Samba����������֤<br>    3��server    ������������֤��������windows��linux������ʹ��<br>    4��domain    ������������֤��������������windows�������������ʹ��</p>
-<p>hosts allow=���������<br>hosts denny=���Ƶ�����<br>һ������ǽ�ֹ���ȣ���Samba��������</p>
-<p>���Ρ�IP��ַ������</p>
-<p>ע������192.168.1.0��samba��дΪ192.168.1.</p>
-<p>log file = ��־�ļ�·��</p>
-<pre><code>%mָ���ǽ���������smbd��nmbd
-</code></pre><p>��������޶������֣�<br>1�������޶�<br>2���û��޶�</p>
-<p>homes��</p>
-<p>browseable = no ��Ȩ�޷��ʵ�Ŀ¼���ɼ�����ֻ�ܿ����Լ�������Ŀ¼<br>writable = no ֻ�� yes �ɶ���д<br>    Ҳ��дΪwriteable</p>
-<p>Linux���ַ���ǽ��<br>1��Netfilter/Iptables    <code>#iptables -F</code><br>2��SELinux        <code>#setsebool -P use_samba_home_dirs on</code><br>                      samba_enable_home_dirs </p>
-<pre><code> gesebool -a | grep samba
-
-��ر�SELinux
- /etc/selinxu/config SELINUX = disabled
-</code></pre><p>iptables -L</p>
-<p>�û�������ϵͳ�û�<br>    apache�п���������û�����Ϊ������ӵ��û���ϵͳ�в�����</p>
-<p>����samba��֤����<br>    smbpasswd -a �û���<br>        -a��ʾ�������룬û��-a��ʾ�޸�����</p>
-<p>��samba</p>
-<p>ȷ��smaba�����Ƿ����</p>
-<p>samba�鿴���ʵĿͻ�����Ϣ<br>smbstatus</p>
-<p>�鿴��־��Ϣ<br>cat /var/log/samba</p>
-<p>windows�������Ӻ���¼�Ự��<br>net use</p>
-<p>ɾ����������<br>net use * /delete /y</p>
-<p>SSH Secure Shell Client<br>SSH Secure File Transfer<br>SecureCRT</p>
-<hr>
-<p>1��chcon -t samba_share_t /software<br>2��vi /etc/samba/smb.conf<br>    д�������ļ�ĩβ</p>
-<pre><code>[������]
-path = ����Ŀ¼��ֻ����һ������Ŀ¼������д�����Ҳ����д�ļ���
-valid users = ָ�����ʹ���Ŀ¼���û�����ָ��������ÿո�ָ��д��ʾ�����û�
-writable = Ȩ��
-</code></pre><p>3���������<br>    /etc/rc.d/init.d/smb restart</p>
-<p>�û��Ƿ���дȨ�ޣ���Ҫ��<br>1��samba�Ƿ�����дȨ��<br>2���û���linuxϵͳ���Ƿ�Թ���Ŀ¼��дȨ��</p>
-<p>samba����д���ѡ����ԣ���Ϊû�����ô�ѡ�����ʹ��������������﷨����<br>testparm</p>
-
-          
+          <p>PHP-FPM</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/01/Linux - PHP-FPM/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1094,7 +816,7 @@ writable = Ȩ��
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Linux - RPM 软件包后缀说明/">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/03/01/Linux - LSB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shenlin">
@@ -1113,7 +835,7 @@ writable = Ȩ��
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/19/Linux - RPM 软件包后缀说明/" itemprop="url">未命名</a></h1>
+                <a class="post-title-link" href="/2018/03/01/Linux - LSB/" itemprop="url">Linux - LSB</a></h1>
         
 
         <div class="post-meta">
@@ -1125,8 +847,8 @@ writable = Ȩ��
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-01T14:39:35+08:00">
+                2018-03-01
               </time>
             
 
@@ -1135,6 +857,28 @@ writable = Ȩ��
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -1164,22 +908,14 @@ writable = Ȩ��
 
       
         
-          
-            <h1 id="rpm-软件包后缀说明"><a href="#rpm-软件包后缀说明" class="headerlink" title="rpm 软件包后缀说明"></a>rpm 软件包后缀说明</h1><p>标签（空格分隔）： AAA linux rpm 后缀</p>
-<hr>
-<p>rpm软件包有这么几种后缀：</p>
-<pre><code>*.386.rpm, *.486.rpm, *.586.rpm, *.686.rpm
-</code></pre><p>这是与CPU的指令集有关.</p>
-<p>intel的cpu经过8086,8088,80286,80386,80486,奔腾（586),奔腾二代（686)，奔腾 三代（686)每次换代，都增加了一些新的指令集,但都向后兼容。</p>
-<p>软件包为了能发挥好cpu的全部性能，就加入cpu相对应能执行的指令。因此就产生了各种不同的软件包。所以，i686的软件包能在奔腾二代以上的cpu上执行，但基本不能在此之先的cpu如486上执行。而i386的软件包既可在i386 的电脑上执行，也可在后面所有的cpu上执行（如奔三，但不能发挥cpu的最佳性能。）</p>
-<pre><code>*.athlon.rpm
-</code></pre><p>这种装在AMD系统上更能发挥好AMD cpu的性能。</p>
-<pre><code>*.noarch.rpm
-</code></pre><p>noarch，no architecture<br>表明与处理器无关，这类包可以在各个不同的cpu上使用，<br>可以安装在任何架构，可能为x86，SPARC或字母为基础的系统。</p>
-<pre><code>*.src.rpm
-</code></pre><p>这类软件包是源程序包，不能直接安装运行的，先要通过编译。在编译时会根据cpu的类型来产生相应后缀的软件包.</p>
-
-          
+          <p>LSB : Linux Standard Base</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/01/Linux - LSB/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1226,7 +962,7 @@ writable = Ȩ��
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Linux - PS/">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/03/01/Linux - LAMP兄弟连Linux视频教程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shenlin">
@@ -1245,7 +981,7 @@ writable = Ȩ��
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/19/Linux - PS/" itemprop="url">未命名</a></h1>
+                <a class="post-title-link" href="/2018/03/01/Linux - LAMP兄弟连Linux视频教程/" itemprop="url">Linux - LAMP �ֵ��� Linux �̳�</a></h1>
         
 
         <div class="post-meta">
@@ -1257,8 +993,8 @@ writable = Ȩ��
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-01T14:39:10+08:00">
+                2018-03-01
               </time>
             
 
@@ -1267,6 +1003,28 @@ writable = Ȩ��
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -1296,34 +1054,14 @@ writable = Ȩ��
 
       
         
-          
-            <p>通过PS1变量修改命令提示符的颜色，达到快速区分命令和输出内容</p>
-<p>PS(Prompt Sign): 是指命令提示符</p>
-<p>PS1：就是用户平时的提示符。<br>PS2：第一行没输完，等待第二行输入的提示符。<br>PS4</p>
-<p>使用下列命令得到PS1的值<br>$echo PS1<br>$set|grep PS1</p>
-<p>默认值如下<br>PS1=’[\u@\h \W]\$ ‘</p>
-<p>即表示提示符显示的样式为：<br>[ssy@localhost ~]$</p>
-<p>含义就是<br>当前用户名@主机名的第一个名字 工作目录的最后一层目录名</p>
-<p>PS1各参数含义：<br>    \d ：代表日期，格式为weekday month date，例如：”Mon Aug 1”<br>　　\h ：主机名<br>　　\H ：包含域名的完整主机名称<br>　　\t ：显示时间为24小时，格式：HH:MM:SS<br>　　\T ：显示时间为12小时格式，格式：HH:MM:SS<br>　　\A ：显示时间为24小时格式：HH：MM<br>　　\@ The current time in 12-hour am/pm format<br>　　\u ：当前用户的账号名称<br>　　\v ：BASH的版本信息<br>　　\V The release level of the bash shell<br>　　\w ：完整的工作目录名称<br>　　\W ：利用basename取得工作目录名称，只显示最后一个目录名<br>　　# ：下达的第几个命令<br>　　! The bash shell history number of this command<br>　　\$ ：提示字符，如果是root用户，提示符为 # ，普通用户则为 $<br>　　\a The bell character<br>　　\e The ASCII escape character<br>　　\j The number of jobs currently managed by the shell<br>　　\l The basename of the shell’s terminal device name<br>　　\n The ASCII newline character<br>　　\r The ASCII carriage return<br>　　\s The name of the shell<br>　　\nnn The character corresponding to the octal value nnn</p>
-<p>　　\ A backslash<br>　　[ Begins a control code sequence<br>　　] Ends a control code sequence</p>
-<p>在PS1中设置字符颜色的格式为：</p>
-<p>[\e[F;Bm]</p>
-<p>其中“F“为字体颜色，编号为30-37，“B”为背景颜色，编号为40-47，例如</p>
-<p>[\e[34;40m]</p>
-<p>表示此处位置后的显示都使用黑底蓝字，如遇到下一个颜色设置才改变</p>
-<p>颜色对照表：<br>F    B<br>30  40 黑色<br>31  41 红色<br>32  42 绿色<br>33  43 黄色<br>34  44 蓝色<br>35  45 紫红色<br>36  46 青蓝色<br>37  47 白色</p>
-<p>可以关闭颜色输出</p>
-<p>[\e[0m]</p>
-<p>其它代码含义：<br>0 OFF<br>1 高亮显示<br>4 underline<br>5 闪烁<br>7 反白显示<br>8 不可见</p>
-<p>可以直接更改PS1的值<br>PS1=”[\e[37;40m][[\e[34;40m]\u[\e[37;40m]@\h [\e[36;40m]\w[\e[0m]]\$ “</p>
-<p>但只是本次登录起作用，永久作用需将上面的设置写入下面文件<br>/etc/bashrc</p>
-<p>但不建议这样做，建议的做法是在目录<br>/etc/profile.d</p>
-<p>下建立用户自己的配置文件</p>
-<p>#touch custom.sh</p>
-<p>然后把PS1的设置写入文件<br>再加载此文件使配置生效</p>
-<p>#source custom.sh</p>
-
-          
+          <p>LAMP �ֵ��� Linux �̳�</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/01/Linux - LAMP兄弟连Linux视频教程/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1370,7 +1108,7 @@ writable = Ȩ��
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Linux - LAMP兄弟连Linux视频教程/">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/03/01/Linux - IEEE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shenlin">
@@ -1389,7 +1127,7 @@ writable = Ȩ��
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/19/Linux - LAMP兄弟连Linux视频教程/" itemprop="url">未命名</a></h1>
+                <a class="post-title-link" href="/2018/03/01/Linux - IEEE/" itemprop="url">Linux - IEEE</a></h1>
         
 
         <div class="post-meta">
@@ -1401,8 +1139,8 @@ writable = Ȩ��
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-01T14:36:48+08:00">
+                2018-03-01
               </time>
             
 
@@ -1411,6 +1149,28 @@ writable = Ȩ��
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -1440,108 +1200,14 @@ writable = Ȩ��
 
       
         
-          
-            <p>����ϵͳ��Ҫ�ṩ���»����������</p>
-<pre><code>1���ļ�ϵͳ
-    ��֯�͹������ݵķ�ʽ
-2���豸��������
-    ����Ӳ���ķ�ʽ
-3���û��ӿ�
-    �û���ϵͳ�����ķ�ʽ��ͼ�Ρ�������
-4��ϵͳ�������
-    ��װ�ļ�ϵͳ������������
-</code></pre><p>Unix/Linux��չʷ</p>
-<pre><code>���
-    1973    Multics��Ŀ            Multic�Ӵ���
-    1973    UNIX
-    1971    C����
-    1973    C������д��UNIX
-
-�����֧
-    AT&amp;T�����İ汾            System V
-    ���ݴ�ѧ��������У�İ汾    BSD
-
-UNIX��Ҫ���а汾
-    �汾        ��˾        CPUоƬ
-    AIX            IBM            PowerPC        ���С�ͨ��
-    HP-UX        HP            PA-RISC        ���ʿ�̽������
-    Solaris        Sun            SPARC        
-    Irix        SGI            MIPS
-</code></pre><p>����ķ���<br>    ��ҵ    ����    ���    ����</p>
-<p>�������<br>    ʹ�õ�����<br>        ���Բ����κ����Ƶ�ʹ�����<br>    �о�������<br>        ���Ի�����Դ���롢�о����������ʽ<br>    ɢ��������<br>        �������ɸ��������ɢ��������<br>    ����������<br>        �������и��������ɢ��������İ汾</p>
-<p>LinuxӦ������<br>    ����Ӧ��<br>        ����LAMP����վ��̳�Լ�B/S�ܹ�Ӧ��<br>        ����Linux�ĸ��ؾ���ͼ�Ⱥ<br>        ����Linux�ķ���ǽ�����������<br>        ����Linux�����η�����</p>
-<pre><code>    �˽��������Ϣ��www.netcraft.com ���what&apos;s that site running
-Ƕ��ʽӦ��
-    ��������ʶ��ϵͳ
-    ���ܿ�ϵͳ
-    �����ֻ�
-    ·����
-��ѧ����
-    www.top500.org ȫ���������ٶ����ĵ���
-</code></pre><p>X Window<br>    ����ĳ����������������һ����׼    </p>
-<pre><code>�����ڲ���ϵͳ
-��������
-Դ�������
-</code></pre><p>Unixͼ�λ���<br>    CDE����ͨ�����滷��</p>
-<p>Linux������֤���<br>    RHCE    redhat certified engineer<br>    LPI    linux professional institute<br>    ��Ϣ��ҵ����</p>
-<p>��װLinuxʱ�����е�����Ŀ¼<br>    ������<br>    swap�����������ڴ������</p>
-<p>Զ�̹�����<br>    Putty,SecureCRT    (telnetЭ�������Ĵ���ģ��Ƽ�sshЭ�����ӣ���ʹ��sniffer����ز���)</p>
-<p>�ļ�������<br>    SSH Secure Shell Client</p>
-<p>����Ŀ¼���Ŀ¼<br>    ��¼�û��Լ��ĵ�¼����/home/zhangsan</p>
-<p>/boot    Ŀ¼������ϵͳ����������ļ��������ں��ļ��������ļ�grub����СԼΪ128M<br>/etc    Ŀ¼��ϵͳ����Ա������Ҫ�޸ĵ��ļ�������ϵͳ��Ϊ�������ļ�,��apache,dns������ϵͳʱҪ���ݴ�Ŀ¼���޸�����ʱҲ��Ҫ�ȱ������޸�<br>/bin    Ŀ¼�������û����õ�������ļ���Ŀ¼�Ĳ��������vi��ls������Ŀ¼�µ����������û�������ʹ��<br>/sbin    Ŀ¼������ϵͳά����ʹ�õ������ļ���������͸�ʽ��������ܶ�������ͨ�û���Ȩʹ��<br>/lib    Ŀ¼��ϵͳ��������Ҫ�Ŀ��ļ�����C���Եľ�̬�⡢��̬���ļ�<br>/dev    Ŀ¼��ϵͳ�豸�ļ�����/dev/cdrom<br>/var    Ŀ¼������ϵͳ����ʱ�仯�����ݣ�����־�ļ����ѻ��ļ�<br>/mnt    Ŀ¼��������װϵͳ�ļ��豸��Ŀ¼�������/mnt/cdrom<br>/proc    Ŀ¼��ϵͳ�ڴ��cpu��ӳ���ļ����ɲ鿴�ڴ��ռ�ã�cpu��ռ�õ�<br>/tmp    Ŀ¼������ϵͳ����ʱ��������ʱ�ļ�<br>/usr    Ŀ¼���������û���ص���Ϣ����һ��İ�װ���<br>/home    Ŀ¼����ͨ�û�����Ŀ¼��Ҳ�Ƽ�Ŀ¼��<br>/root    Ŀ¼��ϵͳ�г����û�����Ŀ¼</p>
-<p>ϵͳ�ļ���<em>.conf    </em>.rpm<br>������ű���<em>.c    </em>.php<br>��ʽ�ļ���.wav    <em>.jpg    </em>.html<br>�浵����ѹ���ļ���<em>.tar    </em>.gz</p>
-<p>ͨ�����*    ƥ���κ���Ŀ���κ��ַ�<br>        ��    ƥ���κε��ַ�<br>        []  ƥ���κΰ�����������ĵ��ַ�</p>
-<p>#����ʾ��˵���ǳ�������Աroot<br>$����ʾ��˵������ͨ�û�</p>
-<p>ls���list����д����ʾĿ¼�ļ�������λ��binĿ¼��<br>        -a    ��ʾ�����ļ������������ļ�<br>        -l    ���б���ʾ<br>        -F    �����ļ�����</p>
-<p><a href="https://rhn.redhat.com/rhn/software/downloads/SupportedISOs.do" target="_blank" rel="noopener">https://rhn.redhat.com/rhn/software/downloads/SupportedISOs.do</a></p>
-<p>netconfig<br>service network restart</p>
-<p>service iptables stop</p>
-<p>iptables -F<br>iptables -X</p>
-<p>service sshd start</p>
-<p>ctrl+c ��ֹһ������ִ��</p>
-<p>��Linuxϵͳ��װ���á�</p>
-<pre><code>linux�У�ʹ��sd��ʾscsiӲ�̣���һ��Ӳ�̱�ʾΪsda���ڶ����ʾΪsdb����һ��Ӳ�̵ĵ�һ��������ʾΪsda1
-         ʹ��hd��ʾideӲ�̣���һ��Ӳ�̱�ʾΪhda���ڶ����ʾΪhdb
-
-��Ҫ������
-    1��������
-    2��swap����������Ҫ���ص㣩
-
-û�е��������ķ�������ʹ�ø�Ŀ¼/�Ŀռ䣬�����Ƕ����Ĵ洢�ռ䣬���߼����������ڸ�Ŀ¼
-
-/root/install.log�ļ�����������װ��־
-
-kickstart�ļ���¼�˱��ΰ�װʱ��������ѡ���ʵ������ֵ�ذ�װ��λ��/root/anaconda-ks.cfg�ļ���
-</code></pre><p>��ifconfig��<br>    if��ʾinterface���ӿ�<br>    eth0        eth��ʾethernet����������һ��������ʾeth0<br>    lo            ��ʾloopback���ػ�����</p>
-<p>��Զ�̵�¼�����ߡ�</p>
-<pre><code>putty
-SecureCRT
-</code></pre><p>���˳�ϵͳ��<br>    1���������logout��exit<br>    2����ݼ���ctrl+D</p>
-<pre><code>[�û���@������ ����Ŀ¼]������ʾ��
-</code></pre><p>�����������������ͨ�š�<br>    1���������������ӵ�������<br>        vmware��������Ϊ����bridge<br>    2����������û�����ӵ�������<br>        �������������һ������������Microsoft Loopback Adapter</p>
-<p>����linuxϵͳ�У����еĶ��������ļ���</p>
-<p>��.��..�����������Ŀ¼����ʹ��ls������ÿ��Ŀ¼�¶����Կ�������</p>
-<p>������ִ��Ŀ¼��<br>    ֻ��root�û��ſ�ִ�е�������Ŀ¼��<br>        /sbin<br>        /usr/sbin</p>
-<pre><code>�����û�����ִ�е�������Ŀ¼��
-    /bin
-    /usr/bin
-
-bin - binary
-usr - user
-sbin - super binary
-</code></pre><p>��linux��һ��Ĭ�Ϲ�������binĿ¼�µ�����������û�����ִ�еģ�����binĿ¼λ���ĸ�Ŀ¼�£�����sbinĿ¼�µ������ֻ��root�û��ſ���ִ�еģ�����sbinĿ¼λ���ĸ�Ŀ¼�¡�</p>
-<p>����ɫ��ǣ���Щ��unix��linuxϵͳlsʱ�ǲ�ʹ����ɫ����ǲ�ͬ���ļ����͵ģ���Щ��linux֮�����ɫ���Ҳ��һ�¡�</p>
-<p>���洢���ݵ���С��λ�����ݿ�block�����ݿ�ԽС��Խ��ʡ�ռ䣬����ȡ�ٶ�Խ������webվ�����ݿ�Խ�󣬶�ȡ�ٶ�Խ�죬��Խ�˷ѿռ䣬����Ƶ��վӦ����block��һЩ����linux��blockĬ����512�ֽڣ����ݿ�Ĵ�С�ɵ�����</p>
-<p>��Vim/Vi��</p>
-<pre><code>û�в˵���ֻ������
-
-Vim/Vi���ֹ���ģʽ������ģʽ������ģʽ���༭ģʽ��
-
-vi filename��������ģʽ��:wq�˳�����
-����ģʽ�£�����iao�������ģʽ��ESC�����ص�����ģʽ
-����ģʽ�£�����:�ͱ༭�������༭ģʽ���س��򷵻�����ģʽ
-</code></pre>
-          
+          <p>电气电子工程师学会（英语：Institute of Electrical and Electronics Engineers，简称为IEEE，英文读作“i triple e”[ai trɪpl i:]）</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/01/Linux - IEEE/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1588,7 +1254,7 @@ vi filename��������ģʽ��:wq�˳�����
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Linux -  软件包管理/">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/03/01/Linux - FHS/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shenlin">
@@ -1607,7 +1273,7 @@ vi filename��������ģʽ��:wq�˳�����
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/19/Linux -  软件包管理/" itemprop="url">未命名</a></h1>
+                <a class="post-title-link" href="/2018/03/01/Linux - FHS/" itemprop="url">Linux - FHS</a></h1>
         
 
         <div class="post-meta">
@@ -1619,8 +1285,8 @@ vi filename��������ģʽ��:wq�˳�����
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-01T14:35:29+08:00">
+                2018-03-01
               </time>
             
 
@@ -1629,6 +1295,28 @@ vi filename��������ģʽ��:wq�˳�����
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -1658,171 +1346,15 @@ vi filename��������ģʽ��:wq�˳�����
 
       
         
-          
-            <h1 id="linux-软件包管理"><a href="#linux-软件包管理" class="headerlink" title="linux 软件包管理"></a>linux 软件包管理</h1><p>tags ： AAA linux yum rpm</p>
-<hr>
-<h2 id="二进制软件包管理"><a href="#二进制软件包管理" class="headerlink" title="二进制软件包管理"></a>二进制软件包管理</h2><h3 id="1-RPM包管理"><a href="#1-RPM包管理" class="headerlink" title="1. RPM包管理"></a>1. RPM包管理</h3><p>RPM：Redhat Package Manage</p>
-<h4 id="RPM-包名格式"><a href="#RPM-包名格式" class="headerlink" title="RPM 包名格式"></a>RPM 包名格式</h4><pre><code>sudo-1.7.2p1-5.e15.i386.rpm
-
-    sudo    软件名称
-
-    1.7.2p1 主版本号.次版本号.修订版本号
-
-    5.e15   发行号
-
-    i386    硬件平台
-</code></pre><h4 id="RPM-包后缀说明"><a href="#RPM-包后缀说明" class="headerlink" title="RPM 包后缀说明"></a>RPM 包后缀说明</h4><p>rpm软件包有这么几种后缀：</p>
-<h5 id="386-rpm-486-rpm-586-rpm-686-rpm"><a href="#386-rpm-486-rpm-586-rpm-686-rpm" class="headerlink" title=".386.rpm, .486.rpm, .586.rpm, .686.rpm"></a><em>.386.rpm, </em>.486.rpm, <em>.586.rpm, </em>.686.rpm</h5><pre><code>这是与CPU的指令集有关.
-
-intel的cpu经过8086,8088,80286,80386,80486,奔腾（586),奔腾二代（686)，奔腾 三代（686)每次换代，都增加了一些新的指令集,但都向后兼容。
-
-软件包为了能发挥好cpu的全部性能，就加入cpu相对应能执行的指令。因此就产生了各种不同的软件包。所以，i686的软件包能在奔腾二代以上的cpu上执行，但基本不能在此之先的cpu如486上执行。而i386的软件包既可在i386 的电脑上执行，也可在后面所有的cpu上执行（如奔三，但不能发挥cpu的最佳性能。）
-</code></pre><h5 id="athlon-rpm"><a href="#athlon-rpm" class="headerlink" title="*.athlon.rpm"></a>*.athlon.rpm</h5><pre><code>这种装在AMD系统上更能发挥好AMD cpu的性能。
-</code></pre><h5 id="noarch-rpm"><a href="#noarch-rpm" class="headerlink" title="*.noarch.rpm"></a>*.noarch.rpm</h5><pre><code>noarch，no architecture 
-表明与处理器无关，这类包可以在各个不同的cpu上使用，
-可以安装在任何架构，可能为x86，SPARC或字母为基础的系统。
-</code></pre><h5 id="src-rpm"><a href="#src-rpm" class="headerlink" title="*.src.rpm"></a>*.src.rpm</h5><pre><code>这类软件包是源程序包，不能直接安装运行的，先要通过编译。在编译时会根据cpu的类型来产生相应后缀的软件包.
-</code></pre><h4 id="RPM-相关命令"><a href="#RPM-相关命令" class="headerlink" title="RPM 相关命令"></a>RPM 相关命令</h4><h5 id="安装软件包"><a href="#安装软件包" class="headerlink" title="安装软件包"></a>安装软件包</h5><pre><code>rpm -ivh sudo-1.7.2p1-5.e15.i386.rpm
-
-rpm -i install
-    -v 详细信息
-    -h 进度
-    --excludedocs 不安装软件包中的文档文件
-    --prefix=PATH 将软件包安装到由PATH指定的路径下，但大多数RPM安装包已包含了安装目录信息，不允许改变安装目录
-    --test      只对安装进行测试，并不实际安装
-    --replacepkgs 软件包已安装，覆盖安装
-    --replacefiles 要安装的软件包中有一个文件已在安装其他软件包时被安装了，会提示conflicts with file xxx，使用此选项替换文件
-    --nodeps 软件包依赖于其他软件包，忽略依赖关系强制安装（但很可能因缺少依赖关系而导致可以安装但无法运行）
-</code></pre><h5 id="卸载软件"><a href="#卸载软件" class="headerlink" title="卸载软件"></a>卸载软件</h5><pre><code>上面的是软件包的名称，而卸载时使用的是软件的名称
-
-rpm -e sudo
-
-    e表示erase
-
-rpm -e --nodeps samba
-
-    如果其他软件包对要卸载的软件有依赖关系，卸载时会产生提示信息，使用--nodeps可强行卸载（no dependencies）
-</code></pre><h5 id="升级软件包"><a href="#升级软件包" class="headerlink" title="升级软件包"></a>升级软件包</h5><pre><code>rpm
-    -Uvh [新软件包名]     Upgrade
-</code></pre><h5 id="校验软件包"><a href="#校验软件包" class="headerlink" title="校验软件包"></a>校验软件包</h5><pre><code>rpm -V [软件名]     V表示Verify
-
-软件包安装的每一个文件都没有做过更改，则不显示任何信息，否则：
-
-#rpm -V sudo
-
-#S.5....T   c /etc/sudoers
-
-    5 文件的MD5校验值
-    S 文件大小
-    L 链接文件
-    T 创建或更新时间
-    D 设备文件
-    U 文件的用户
-    G 文件的用户组
-    M 文件的权限
-
-md5sum可以为文件生成MD5值
-
-    md5sum /etc/services
-</code></pre><h5 id="查询软件包"><a href="#查询软件包" class="headerlink" title="查询软件包"></a>查询软件包</h5><pre><code>rpm -q samba
-        查询samba软件是否已安装
-
-    -qa
-        查询所有已安装的软件包
-
-    -qa | grep samba
-        查找和samba相关的所有已安装软件包
-
-    -------------------
-
-    -qf [文件]
-        查询文件所属软件包
-
-    -qi [软件名]
-        查询已安装的软件包的信息
-
-    -qip [软件包名]
-        查询尚未安装的软件包的信息,p表示package
-
-    -ql [软件名]
-        查询已安装的软件包在系统中安装了哪些儿文件
-
-    -qlp [软件包名]
-        查询未安装的软件包将在系统中安装哪些儿文件
-
-    -------------------
-
-    -qd [软件名]
-        查询已安装的案件包帮助文档的位置
-
-    -qdp [软件包名]
-        查询未安装的案件包帮助文档的位置
-
-    -------------------
-
-    -qc [软件名]
-        查询已安装的案件包配置文件的位置
-
-    -qcp [软件包名]
-        查询未安装的案件包配置文件的位置
-</code></pre><h5 id="提取软件包文件"><a href="#提取软件包文件" class="headerlink" title="提取软件包文件"></a>提取软件包文件</h5><pre><code>解压所有文件到当前目录
-rpm2cpio initscripts-8.45.30-2.el5.centeros.i386.rpm | cpio -idv
-
-解压指定文件到当前目录
-rpm2cpio initscripts-8.45.30-2.el5.centeros.i386.rpm | cpio -idv ./etc/ininttab
-</code></pre><h3 id="2-YUM包管理"><a href="#2-YUM包管理" class="headerlink" title="2. YUM包管理"></a>2. YUM包管理</h3><h4 id="引入-Yum-的好处"><a href="#引入-Yum-的好处" class="headerlink" title="引入 Yum 的好处"></a>引入 Yum 的好处</h4><pre><code>RPM的依赖关系比较麻烦，yum自动解决软件包的依赖关系，方便软件包升级
-</code></pre><h4 id="YUM-包相关命令"><a href="#YUM-包相关命令" class="headerlink" title="YUM 包相关命令"></a>YUM 包相关命令</h4><pre><code>yum info [软件名]    获取软件信息
-yum install [软件名]
-yum remove [软件名]    卸载软件
-
-yum list installed   列出已安装的软件包
-yum list | grep sudo
-yum list | more       列出yum源上的所有软件包
-yum -C search xxx       在本地缓存中查找软件信息
-yum provides &quot;*/nmcli&quot; 查找命令所属软件包
-
-yum update [软件名]
-yum upgrade 两者区别
-yum check-update    检查可更新的软件
-yum check-update    [软件名]
-
-yum makecache           缓存yum源的软件包信息到本地
-
-yum -help
-man yum
-</code></pre><h4 id="更改YUM源"><a href="#更改YUM源" class="headerlink" title="更改YUM源"></a>更改YUM源</h4><pre><code>1，进入yum源配置目录
-    cd /etc/yum.repos.d
-
-2，备份系统自带的yum源
-    mv CentOS-Base.repo CentOS-Base.repo.bk
-
-3，下载163网易的yum源：
-    wget http://mirrors.163.com/.help/CentOS6-Base-163.repo
-
-4，更新yum源后，执行下边命令更新yum配置，使操作立即生效
-    yum makecache
-</code></pre><h3 id="3-APT包管理"><a href="#3-APT包管理" class="headerlink" title="3. APT包管理"></a>3. APT包管理</h3><p>linux软件包管理分redhat系列 和 debian系列</p>
-<h4 id="搜索软件包"><a href="#搜索软件包" class="headerlink" title="搜索软件包"></a>搜索软件包</h4><pre><code>apt-cache search
-</code></pre><h4 id="软件包信息"><a href="#软件包信息" class="headerlink" title="软件包信息"></a>软件包信息</h4><pre><code>apt-cache show
-</code></pre><h4 id="安装软件包-1"><a href="#安装软件包-1" class="headerlink" title="安装软件包"></a>安装软件包</h4><pre><code>apt-get install
-apt-get -f install  修复安装
-apt-get reinstall
-</code></pre><h4 id="删除软件包"><a href="#删除软件包" class="headerlink" title="删除软件包"></a>删除软件包</h4><pre><code>apt-get remove
-apt-get -purge remove   卸载时不保留配置文件
-apt-get autoremove  卸载时自动解决依赖关系
-</code></pre><h4 id="更新软件源"><a href="#更新软件源" class="headerlink" title="更新软件源"></a>更新软件源</h4><pre><code>apt-get update
-</code></pre><h4 id="更新已安装包"><a href="#更新已安装包" class="headerlink" title="更新已安装包"></a>更新已安装包</h4><pre><code>apt-get upgrade
-</code></pre><h2 id="源代码包管理"><a href="#源代码包管理" class="headerlink" title="源代码包管理"></a>源代码包管理</h2><p>源代码包有广泛的适用性<br>源代码包很灵活，可按需要修改代码<br>很多知名软件的最新版本都是源代码包，而不是二进制包<br>源代码包名中不会注明平台类型，如i386或alpha等<br>源代码包一般为.tar.gz或.biz2的压缩文件<br>源代码包不像二进制包有专门的卸载命令，卸载时将软件卸载的很干净，所以最好自己指定源代码包的安装路径<br>源代码包安装的软件卸载方法：关闭进程，删除软件所在目录</p>
-<h3 id="手工安装"><a href="#手工安装" class="headerlink" title="手工安装"></a>手工安装</h3><h4 id="1-解压包"><a href="#1-解压包" class="headerlink" title="1. 解压包"></a>1. 解压包</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ tar -zxvf proftpd-1.3.3d.tar.gz</span><br><span class="line">$ tar -jxvf proftpd-1.3.3d.tar.bz2</span><br><span class="line">$ cd proftpd-1.3.3d</span><br></pre></td></tr></table></figure>
-<h4 id="2-配置"><a href="#2-配置" class="headerlink" title="2. 配置"></a>2. 配置</h4><p>configure是可执行的脚本文件，位于解压的目录里，执行后将收集系统信息，生成makefile文件，为后续的编译make做准备<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./configure --prefix=/usr/local/proftpd</span><br></pre></td></tr></table></figure></p>
-<h4 id="3-编译"><a href="#3-编译" class="headerlink" title="3. 编译"></a>3. 编译</h4><p>将源代码编译为二进制文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ make</span><br></pre></td></tr></table></figure></p>
-<h4 id="4-安装"><a href="#4-安装" class="headerlink" title="4. 安装"></a>4. 安装</h4><p>将二进制文件、配置文件复制到指定目录中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure></p>
-<h4 id="5-卸载"><a href="#5-卸载" class="headerlink" title="5. 卸载"></a>5. 卸载</h4><p>关闭软件的进程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kill `pgrep proftpd`;</span><br></pre></td></tr></table></figure></p>
-<p>将软件的目录删除<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /usr/local/proftpd</span><br></pre></td></tr></table></figure></p>
-<h3 id="脚本安装"><a href="#脚本安装" class="headerlink" title="脚本安装"></a>脚本安装</h3><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>源代码包安装较复杂，一些儿大型软件采用脚本安装的方式 一般为shell脚本 和 javaScript编写，应用举例：webmin OpenOffice<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ tar-xzvf webmin-1.530.tar.gz</span><br><span class="line">$ cd webmin-1.530</span><br><span class="line">$ vi README</span><br><span class="line">$ ./setup.sh</span><br></pre></td></tr></table></figure></p>
-<h4 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h4><pre><code>在解压后的安装包里一般有卸载脚本
-</code></pre>
-          
+          <p>FHS : Filesystem Hierarchy Standard 文件系统层次化标准</p>
+<p><a href="https://zh.wikipedia.org/wiki/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E6%A0%87%E5%87%86#cite_ref-11" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E6%A0%87%E5%87%86#cite_ref-11</a><br><a href="http://www.pathname.com/fhs/pub/fhs-2.3.html" target="_blank" rel="noopener">http://www.pathname.com/fhs/pub/fhs-2.3.html</a><br><a href="http://www.pathname.com/fhs/" target="_blank" rel="noopener">http://www.pathname.com/fhs/</a></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/01/Linux - FHS/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1869,7 +1401,7 @@ apt-get autoremove  卸载时自动解决依赖关系
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Linux -  自动启动守护进程/">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/03/01/Interest - 理财产品/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shenlin">
@@ -1888,7 +1420,7 @@ apt-get autoremove  卸载时自动解决依赖关系
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/19/Linux -  自动启动守护进程/" itemprop="url">未命名</a></h1>
+                <a class="post-title-link" href="/2018/03/01/Interest - 理财产品/" itemprop="url">理财产品</a></h1>
         
 
         <div class="post-meta">
@@ -1900,8 +1432,8 @@ apt-get autoremove  卸载时自动解决依赖关系
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-01T14:33:57+08:00">
+                2018-03-01
               </time>
             
 
@@ -1910,6 +1442,28 @@ apt-get autoremove  卸载时自动解决依赖关系
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Interest/" itemprop="url" rel="index">
+                    <span itemprop="name">Interest</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -1939,17 +1493,14 @@ apt-get autoremove  卸载时自动解决依赖关系
 
       
         
-          
-            <h1 id="linux-自动启动守护进程"><a href="#linux-自动启动守护进程" class="headerlink" title="linux 自动启动守护进程"></a>linux 自动启动守护进程</h1><p>tags ： AAA linux </p>
-<hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">initctl start local-git-daemon</span><br><span class="line">initctl: Unknown job: local-git-daemon</span><br></pre></td></tr></table></figure>
-<p>sysvinit 系统中的 xinetd 脚本</p>
-<p>inetd (internet service daemon) :</p>
-<p>inetd is a super-server daemon on many Unix systems that provides Internet services. For each configured service, it listens for requests from connecting clients. Requests are served by spawning a process which runs the appropriate executable, but simple services such as echo are served by inetd itself. External executables, which are run on request, can be single- or multi-threaded. First appearing in 4.3BSD , it is generally located at /usr/sbin/inetd.</p>
-<p>Xinetd (extended Internet daemon) :</p>
-<p>In computer networking, xinetd (extended Internet daemon) is an open-source super-server daemon which runs on many Unix-like systems and manages Internet-based connectivity. It offers a more secure extension to or version of inetd, the Internet daemon, thus most modern Linux distributions have switched to it.</p>
-
-          
+          <p>理财</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/01/Interest - 理财产品/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1996,7 +1547,7 @@ apt-get autoremove  卸载时自动解决依赖关系
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2017/11/19/Linux -  网络设置/">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/03/01/Interest - 李威讲记忆/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="shenlin">
@@ -2015,7 +1566,7 @@ apt-get autoremove  卸载时自动解决依赖关系
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/19/Linux -  网络设置/" itemprop="url">未命名</a></h1>
+                <a class="post-title-link" href="/2018/03/01/Interest - 李威讲记忆/" itemprop="url">李威讲记忆</a></h1>
         
 
         <div class="post-meta">
@@ -2027,8 +1578,8 @@ apt-get autoremove  卸载时自动解决依赖关系
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T15:25:35+08:00">
-                2017-11-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-01T14:33:16+08:00">
+                2018-03-01
               </time>
             
 
@@ -2037,6 +1588,28 @@ apt-get autoremove  卸载时自动解决依赖关系
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Interest/" itemprop="url" rel="index">
+                    <span itemprop="name">Interest</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -2066,50 +1639,14 @@ apt-get autoremove  卸载时自动解决依赖关系
 
       
         
-          
-            <h1 id="linux-网络设置"><a href="#linux-网络设置" class="headerlink" title="linux 网络设置"></a>linux 网络设置</h1><p>标签（空格分隔）： AAA linux ifconfig</p>
-<hr>
-<p><a href="http://www.cnblogs.com/Jtianlin/p/4655831.html" target="_blank" rel="noopener">http://www.cnblogs.com/Jtianlin/p/4655831.html</a><br><a href="http://xtbao.blog.51cto.com/7482722/1671739" target="_blank" rel="noopener">http://xtbao.blog.51cto.com/7482722/1671739</a><br><a href="http://www.iyunv.com/thread-269695-1-1.html" target="_blank" rel="noopener">http://www.iyunv.com/thread-269695-1-1.html</a><br><a href="http://www.linuxidc.com/Linux/2013-08/88809.htm" target="_blank" rel="noopener">http://www.linuxidc.com/Linux/2013-08/88809.htm</a></p>
-<h2 id="网络基本命令"><a href="#网络基本命令" class="headerlink" title="网络基本命令"></a>网络基本命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">//网卡信息配置文件</span><br><span class="line">$ sudo vi /etc/udev/rules.d/70-persistent-net.rules</span><br><span class="line"></span><br><span class="line"># PCI device 0x8086:0x100f (e1000)</span><br><span class="line">SUBSYSTEM==&quot;net&quot;, ACTION==&quot;add&quot;, DRIVERS==&quot;?*&quot;, ATTR&#123;address&#125;==&quot;eth0-MAC&quot;, ATTR&#123;type&#125;==&quot;1&quot;, KERNEL==&quot;eth*&quot;, NAME=&quot;eth0&quot;</span><br><span class="line"></span><br><span class="line"># PCI device 0x8086:0x100f (e1000)</span><br><span class="line">SUBSYSTEM==&quot;net&quot;, ACTION==&quot;add&quot;, DRIVERS==&quot;?*&quot;, ATTR&#123;address&#125;==&quot;eth1-MAC&quot;, ATTR&#123;type&#125;==&quot;1&quot;, KERNEL==&quot;eth*&quot;, NAME=&quot;eth1&quot;</span><br><span class="line"></span><br><span class="line">//</span><br><span class="line">$ sudo vi /etc/sysconfig/network-scripts/ifcfg-eth0</span><br><span class="line"></span><br><span class="line">//查看所有网卡</span><br><span class="line">$ ifconfig -a</span><br><span class="line"></span><br><span class="line">//</span><br><span class="line">$ ifconfig eth0</span><br><span class="line"></span><br><span class="line">//</span><br><span class="line">$ sudo ifup ifcfg-eth0</span><br></pre></td></tr></table></figure>
-<p>windows 网络命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -ano | findstr 2222</span><br></pre></td></tr></table></figure></p>
-<h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; ps -ef|grep httpd</span><br><span class="line">ssy       2001  1546 21 10:37 pts/1    00:00:00 grep httpd</span><br><span class="line"></span><br><span class="line">&gt;&gt; netstat -le</span><br><span class="line"></span><br><span class="line">&gt;&gt; service httpd status</span><br><span class="line">httpd: 未被识别的服务</span><br><span class="line"></span><br><span class="line">&gt;&gt; sudo /usr/local/httpd-2.4.25/bin/apachectl start</span><br></pre></td></tr></table></figure>
-<h2 id="VirtualBox-导致的问题"><a href="#VirtualBox-导致的问题" class="headerlink" title="VirtualBox 导致的问题"></a>VirtualBox 导致的问题</h2><p>device eth0 does not seem to present</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; ifconfig eth3</span><br><span class="line">eth3: error fetching interface information: Device not found</span><br></pre></td></tr></table></figure>
-<p>在KVM中克隆出新的CentOS虚拟机时，出现如下问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">service network restart</span><br><span class="line">Shutting down loopback insterface: [ OK ]</span><br><span class="line">Bringing up loopback insterface: [ OK ]</span><br><span class="line">Bringing up interface eth0: Device eth0 does not seem to be present,delaying initialization. [FAILED]</span><br></pre></td></tr></table></figure></p>
-<p>用ifconfig查看发现缺少eth0，只有lo；用ifconfig -a查看发现多出了eth1的信息。</p>
-<p>解决办法1：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv /etc/sysconfig/network-scripts/ifcfg-eth0  /etcsysconfig/network-scripts/ifcfg-eth1</span><br></pre></td></tr></table></figure></p>
-<p>将eth0的mac地址改为eth1的mac地址，同时改变其DEVICE名称为eth1，再重启网络即可。</p>
-<p>解决办法2：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /etc/udev/rules.d/70-persistent-net.rules</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure></p>
-<p>总之，只要保证/etc/sysconfig/network-scripts/ifcfg-eth0 与/etc/udev/rules.d/70-persistent-net.rules的信息一致即可，即网卡地址与网卡编号一致，这样service network restart 就可以配置成功。</p>
-<h2 id="NetworkManager"><a href="#NetworkManager" class="headerlink" title="NetworkManager"></a>NetworkManager</h2><p>查看 nmcli 命令由哪个软件包提供<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum provides &quot;*/nmcli&quot;</span><br></pre></td></tr></table></figure></p>
-<p>安装对应的软件包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum -y install NetworkManager</span><br></pre></td></tr></table></figure></p>
-<h2 id="uuid"><a href="#uuid" class="headerlink" title="uuid"></a>uuid</h2><p>不小心将/etc/sysconfig/network-scripts/ifcfg-eth0(可以通过此文件进行查看UUID)删除或者损坏，要重新编辑ifcfg-eth0文件时不知道网卡的UUID是什么(当然也可以不写)，那我们还有什么方法可以查看网卡的UUID呢？在这里我们使用的方法是使用nmcli命令查看<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmcli con | sed -n &apos;1,2p&apos;</span><br></pre></td></tr></table></figure></p>
-<h2 id="uuidgen"><a href="#uuidgen" class="headerlink" title="uuidgen"></a>uuidgen</h2><p>-t 每次后面都是网卡的MAC地址<br>-r 每次全变<br>不加任何参数则默认是 -r<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; uuidgen -t eth0</span><br><span class="line">209997dc-61e1-11e7-8670-08002708bab0</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix ~</span><br><span class="line">&gt;&gt; uuidgen -t eth0</span><br><span class="line">245c40ae-61e1-11e7-a5f3-08002708bab0</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix ~</span><br><span class="line">&gt;&gt; uuidgen -t eth0</span><br><span class="line">27e4ea82-61e1-11e7-bd8f-08002708bab0</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix ~</span><br><span class="line">&gt;&gt; uuidgen -r eth0</span><br><span class="line">d02d1ef5-2b35-41bc-a9b1-f854d8cf29d5</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix ~</span><br><span class="line">&gt;&gt; uuidgen -r eth0</span><br><span class="line">7ce3c5ef-b172-4643-8b78-961ce4fb0ecc</span><br><span class="line"></span><br><span class="line">ssy@e42.matrix ~</span><br><span class="line">&gt;&gt; uuidgen -r eth0</span><br><span class="line">7d39b85e-f748-40d7-a6db-979ad1d150bc</span><br></pre></td></tr></table></figure></p>
-<h2 id="dbus"><a href="#dbus" class="headerlink" title="dbus"></a>dbus</h2><p>dbus-daemon: D-Bus的后台进程，作为D-Bus的消息中转枢纽，负责消息的转发，可分成system和session两种。</p>
-<p>dbus-launch 命令用于从shell脚本启动一个 dbus-daemon 的会话总线实例.<br>dbus-launch 命令通常会在用户的登录脚本中调用.<br>dbus-launch: 启动一个dbus-daemon，后面有不同的参数。<br>当系统启动时，需要使用dbus-launch来启动dbus-daemon<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval `dbus-launch --auto-syntax`</span><br></pre></td></tr></table></figure></p>
-<p>问题1</p>
-<pre><code>$ gdm
-** (gdm-binary:2195): WARNING **: Couldn&apos;t connect to system bus: Failed to connect to socket /var/run/dbus/system_bus_socket: No such file or directory
-
-我用ntsysv查看下了发现messagebus没有开机启动，设置messagebus自动启动后重启，再使用gdm就可以启动桌面了。
-</code></pre><p>问题2</p>
-<pre><code>ssh Client failed to connect to the D-BUS daemon
-
-Add the following lines to ~/.bashrc
-export $(dbus-launch)
-export NSS_USE_SHARED_DB=ENABLED
-</code></pre><h2 id="nmcli"><a href="#nmcli" class="headerlink" title="nmcli"></a>nmcli</h2><p>1、首先我们查看一下nmcli是哪个软件包提供的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@huis ~]# yum provides &quot;*/nmcli&quot;</span><br><span class="line">Loaded plugins：fastestmirror, security</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line"> * base: mirrors.cug.edu.cn</span><br><span class="line"> * extras: mirrors.cug.edu.cn</span><br><span class="line"> * updates: centos.ustc.edu.cn</span><br><span class="line">1:NetworkManager-0.8.1-75.el6.i686 : Network connection manager and</span><br><span class="line">                                   : user applications</span><br><span class="line">Repo        : base</span><br><span class="line">Matched from:</span><br><span class="line">Filename    : /usr/bin/nmcli</span><br></pre></td></tr></table></figure></p>
-<p>2、从上面结果可以看出nmcli，接下来我们安装NetworkManager这个软件包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@huis ~]# yum -y install NetworkManager</span><br></pre></td></tr></table></figure></p>
-<p>3、启动NetworkManager服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@huis ~]# sudo service NetworkManager start</span><br><span class="line">Setting network parameters...                      [  OK  ]</span><br><span class="line">Starting NetworkManager daemon:                    [  OK  ]</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>是不是 sudo 执行 service 是有区别的</li>
-<li>不使用 sudo 不会有错误提示，但没有真正运行</li>
-</ul>
-<p>4、NetWorkManager 和 network 冲突？</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; service NetworkManager status</span><br><span class="line">NetworkManager 已死，但 pid 文件仍存</span><br><span class="line"></span><br><span class="line">&gt;&gt; sudo rm /var/run/NetworkManager/NetworkManager.pid </span><br><span class="line"></span><br><span class="line">&gt;&gt; service NetworkManager status</span><br><span class="line">NetworkManager 已死，但是 subsys 被锁</span><br><span class="line"></span><br><span class="line">&gt;&gt; sudo rm -rf /var/lock/subsys/NetworkManager</span><br></pre></td></tr></table></figure>
-<p>9、nmcli 和 dbus<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; nmcli con</span><br><span class="line">错误：无法连接到 D-Bus。</span><br><span class="line"></span><br><span class="line">&gt;&gt; nmcli dev</span><br><span class="line"></span><br><span class="line">** (process:1692): WARNING **: Couldn&apos;t connect to system bus: Failed to connect to socket /var/run/dbus/system_bus_socket: 没有那个文件或目录</span><br><span class="line">错误：无法连接到网络管理器。</span><br><span class="line"></span><br><span class="line">&gt;&gt; yum list|grep dbus</span><br><span class="line">dbus.i686                                  1:1.2.24-8.el6_6            @base    </span><br><span class="line">dbus-glib.i686                             0.86-6.el6                  @anaconda-CentOS-201703281202.i386/6.9</span><br><span class="line">dbus-libs.i686                             1:1.2.24-8.el6_6            @anaconda-CentOS-201703281202.i386/6.9</span><br><span class="line">eggdbus.i686                               0.6-3.el6                   @base    </span><br><span class="line">dbus-c++.i686                              0.5.0-0.10.20090203git13281b3.1.el6</span><br><span class="line">dbus-c++-devel.i686                        0.5.0-0.10.20090203git13281b3.1.el6</span><br><span class="line">dbus-devel.i686                            1:1.2.24-8.el6_6            base     </span><br><span class="line">dbus-doc.noarch                            1:1.2.24-8.el6_6            base     </span><br><span class="line">dbus-glib-devel.i686                       0.86-6.el6                  base     </span><br><span class="line">dbus-python.i686                           0.83.0-6.1.el6              base     </span><br><span class="line">dbus-python-devel.i686                     0.83.0-6.1.el6              base     </span><br><span class="line">dbus-qt.i686                               0.70-7.2.el6                base     </span><br><span class="line">dbus-qt-devel.i686                         0.70-7.2.el6                base     </span><br><span class="line">dbus-x11.i686                              1:1.2.24-8.el6_6            base     </span><br><span class="line">eggdbus-devel.i686                         0.6-3.el6                   base     </span><br><span class="line">python-slip-dbus.noarch                    0.2.20-1.el6_2              base     </span><br><span class="line">sssd-dbus.i686                             1.13.3-56.el6               base     </span><br><span class="line"></span><br><span class="line">&gt;&gt; yum info dbus</span><br><span class="line">已加载插件：fastestmirror</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line"> * base: mirrors.nju.edu.cn</span><br><span class="line"> * extras: mirrors.nwsuaf.edu.cn</span><br><span class="line"> * updates: mirrors.nwsuaf.edu.cn</span><br><span class="line">已安装的软件包</span><br><span class="line">Name        : dbus</span><br><span class="line">Arch        : i686</span><br><span class="line">Epoch       : 1</span><br><span class="line">Version     : 1.2.24</span><br><span class="line">Release     : 8.el6_6</span><br><span class="line">Size        : 486 k</span><br><span class="line">Repo        : installed</span><br><span class="line">From repo   : base</span><br><span class="line">Summary     : D-BUS message bus</span><br><span class="line">URL         : http://www.freedesktop.org/software/dbus/</span><br><span class="line">License     : GPLv2+ or AFL</span><br><span class="line">Description : D-BUS is a system for sending messages between applications. It is</span><br><span class="line">            : used both for the system-wide message bus service, and as a</span><br><span class="line">            : per-user-login-session messaging facility.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt; yum info dbus-x11</span><br><span class="line">已加载插件：fastestmirror</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line"> * base: mirrors.nju.edu.cn</span><br><span class="line"> * extras: mirrors.nwsuaf.edu.cn</span><br><span class="line"> * updates: mirrors.nwsuaf.edu.cn</span><br><span class="line">可安装的软件包</span><br><span class="line">Name        : dbus-x11</span><br><span class="line">Arch        : i686</span><br><span class="line">Epoch       : 1</span><br><span class="line">Version     : 1.2.24</span><br><span class="line">Release     : 8.el6_6</span><br><span class="line">Size        : 39 k</span><br><span class="line">Repo        : base</span><br><span class="line">Summary     : X11-requiring add-ons for D-BUS</span><br><span class="line">URL         : http://www.freedesktop.org/software/dbus/</span><br><span class="line">License     : GPLv2+ or AFL</span><br><span class="line">Description : D-BUS contains some tools that require Xlib to be installed, those are</span><br><span class="line">            : in this separate package so server systems need not install X.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt; rpm -qa|grep dbus</span><br><span class="line">dbus-libs-1.2.24-8.el6_6.i686</span><br><span class="line">dbus-1.2.24-8.el6_6.i686</span><br><span class="line">eggdbus-0.6-3.el6.i686</span><br><span class="line">dbus-glib-0.86-6.el6.i686</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt; rpm -ql dbus</span><br><span class="line">/bin/dbus-cleanup-sockets</span><br><span class="line">    /bin/dbus-daemon</span><br><span class="line">/bin/dbus-monitor</span><br><span class="line">/bin/dbus-send</span><br><span class="line">/bin/dbus-uuidgen</span><br><span class="line">/etc/dbus-1</span><br><span class="line">/etc/dbus-1/session.conf</span><br><span class="line">/etc/dbus-1/session.d</span><br><span class="line">/etc/dbus-1/system.conf</span><br><span class="line">/etc/dbus-1/system.d</span><br><span class="line">/etc/rc.d/init.d/messagebus</span><br><span class="line">/lib/dbus-1</span><br><span class="line">/lib/dbus-1/dbus-daemon-launch-helper</span><br><span class="line">/usr/share/dbus-1</span><br><span class="line">/usr/share/dbus-1/interfaces</span><br><span class="line">/usr/share/dbus-1/services</span><br><span class="line">/usr/share/dbus-1/system-services</span><br><span class="line">/usr/share/doc/dbus-1.2.24</span><br><span class="line">/usr/share/doc/dbus-1.2.24/COPYING</span><br><span class="line">/usr/share/man/man1/dbus-cleanup-sockets.1.gz</span><br><span class="line">/usr/share/man/man1/dbus-daemon.1.gz</span><br><span class="line">/usr/share/man/man1/dbus-monitor.1.gz</span><br><span class="line">/usr/share/man/man1/dbus-send.1.gz</span><br><span class="line">/usr/share/man/man1/dbus-uuidgen.1.gz</span><br><span class="line">/var/lib/dbus</span><br><span class="line">/var/run/dbus</span><br><span class="line"></span><br><span class="line">&gt;&gt; dbus-daemon</span><br><span class="line">No configuration file specified.</span><br><span class="line">dbus-daemon [--version] [--session] [--system] [--config-file=FILE] [--print-address[=DESCRIPTOR]] [--print-pid[=DESCRIPTOR]] [--fork] [--nofork] [--introspect]</span><br><span class="line"></span><br><span class="line">&gt;&gt; dbus-daemon --system --print-pid --print-address</span><br><span class="line">Failed to start message bus: Failed to bind socket &quot;/var/run/dbus/system_bus_socket&quot;: Permission denied</span><br><span class="line"></span><br><span class="line">&gt;&gt; sudo dbus-daemon --system --print-pid --print-address</span><br><span class="line">[sudo] password for ssy: </span><br><span class="line">unix:path=/var/run/dbus/system_bus_socket,guid=6100e9c5c906f107cd0f3efb00001480</span><br><span class="line">1797</span><br><span class="line"></span><br><span class="line">&gt;&gt; ll /var/run/dbus/</span><br><span class="line">总用量 0</span><br><span class="line">srwxrwxrwx. 1 root root 0 7月   6 09:13 system_bus_socket</span><br><span class="line"></span><br><span class="line">&gt;&gt; nmcli con show</span><br><span class="line">错误：无法获得连接：设定服务没有运行。</span><br><span class="line"></span><br><span class="line">&gt;&gt; nmcli dev</span><br><span class="line"></span><br><span class="line">** (process:1802): WARNING **: nm_client_get_devices: error getting devices: The name org.freedesktop.NetworkManager was not provided by any .service files</span><br><span class="line"></span><br><span class="line">设备       类型              状态        </span><br><span class="line"></span><br><span class="line">&gt;&gt; sudo /etc/rc.d/init.d/messagebus start</span><br><span class="line">[sudo] password for ssy: </span><br><span class="line">启动系统消息总线：</span><br><span class="line"></span><br><span class="line">&gt;&gt; nmcli con</span><br><span class="line">错误：无法获得连接：设定服务没有运行。</span><br><span class="line"></span><br><span class="line">&gt;&gt; sudo yum install -y dbus-x11</span><br><span class="line"></span><br><span class="line">&gt;&gt; rpm -ql dbus-x11</span><br><span class="line">/etc/X11/xinit/xinitrc.d/00-start-message-bus.sh</span><br><span class="line">/usr/bin/dbus-launch</span><br><span class="line">/usr/share/man/man1/dbus-launch.1.gz</span><br></pre></td></tr></table></figure></p>
-
-          
+          <p>李威讲记忆</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/01/Interest - 李威讲记忆/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2147,7 +1684,7 @@ export NSS_USE_SHARED_DB=ENABLED
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2193,7 +1730,7 @@ export NSS_USE_SHARED_DB=ENABLED
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-count">218</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2204,7 +1741,7 @@ export NSS_USE_SHARED_DB=ENABLED
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2215,7 +1752,7 @@ export NSS_USE_SHARED_DB=ENABLED
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">156</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -2254,7 +1791,7 @@ export NSS_USE_SHARED_DB=ENABLED
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

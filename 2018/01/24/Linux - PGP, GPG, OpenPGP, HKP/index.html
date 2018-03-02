@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux,PGP,GPG,OpenPGP,HKP," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="GPG 大多用于加密信息在不安全网络环境下的传递（如 internet）。 如果仅仅是想在本地加密数据，推荐使用  企业级加密文件系统（ubuntu安装时有个选项——加密用户文件夹，使用的就是该系统）。">
+<meta name="keywords" content="Linux,PGP,GPG,OpenPGP,HKP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux - PGP, GPG, OpenPGP, HKP">
+<meta property="og:url" content="http://www.shenlin.ltd/2018/01/24/Linux - PGP, GPG, OpenPGP, HKP/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="GPG 大多用于加密信息在不安全网络环境下的传递（如 internet）。 如果仅仅是想在本地加密数据，推荐使用  企业级加密文件系统（ubuntu安装时有个选项——加密用户文件夹，使用的就是该系统）。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ecryptfs.org/">
+<meta property="og:image" content="https://philzimmermann.com/EN/background/index.html">
+<meta property="og:updated_time" content="2018-01-24T13:36:40.234Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux - PGP, GPG, OpenPGP, HKP">
+<meta name="twitter:description" content="GPG 大多用于加密信息在不安全网络环境下的传递（如 internet）。 如果仅仅是想在本地加密数据，推荐使用  企业级加密文件系统（ubuntu安装时有个选项——加密用户文件夹，使用的就是该系统）。">
+<meta name="twitter:image" content="http://ecryptfs.org/">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2018/01/24/Linux - PGP, GPG, OpenPGP, HKP/"/>
+
+
+
+
+
+  <title>Linux - PGP, GPG, OpenPGP, HKP | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/01/24/Linux - PGP, GPG, OpenPGP, HKP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux - PGP, GPG, OpenPGP, HKP</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-24T21:36:40+08:00">
+                2018-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>GPG 大多用于加密信息在不安全网络环境下的传递（如 internet）。</p>
+<p>如果仅仅是想在本地加密数据，推荐使用 <img src="http://ecryptfs.org/" alt="eCryptfs(The enterprise cryptographic filesystem for Linux)"> 企业级加密文件系统（ubuntu安装时有个选项——加密用户文件夹，使用的就是该系统）。</p>
+<a id="more"></a>
+<h2 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h2><p>RSA公钥加密。RSA公钥加密算法基于一个简单的事实，就是将两个大质数相乘很容易，但是想要在不知情的情况下根据结果找出是由哪两个数相乘得到的该结果却不容易，至少在当今一段时间和过去想要暴力破解使用了长秘钥的RSA加密信息是相当困难的。</p>
+<h2 id="PGP-和-GnuPG"><a href="#PGP-和-GnuPG" class="headerlink" title="PGP 和 GnuPG"></a>PGP 和 GnuPG</h2><p>1991年，程序员Phil Zimmermann为了避开政府的监视，开发了加密软件PGP。</p>
+<p>但 PGP 是商业软，所以，自由软件基金会开发了PGP的替代品GnuPG，即GNU Privacy Guard，GNU 隐私卫士，也常缩写为GPG。</p>
+<p>大多数的linux发行版都默认包含了 gpg</p>
+<p>Windows 版 GPG：<a href="https://www.gpg4win.org/" target="_blank" rel="noopener">https://www.gpg4win.org/</a></p>
+<h2 id="OpenPGP"><a href="#OpenPGP" class="headerlink" title="OpenPGP"></a>OpenPGP</h2><p>OpenPGP 最广泛使用的电子邮件加密标准，</p>
+<p>由 <img src="https://philzimmermann.com/EN/background/index.html" alt="Philip Zimmermann"> 开发 PGP 软件时首次实现。</p>
+<p><a href="https://www.openpgp.org/" target="_blank" rel="noopener">https://www.openpgp.org/</a></p>
+<h2 id="GnuPG"><a href="#GnuPG" class="headerlink" title="GnuPG"></a>GnuPG</h2><p>GnuPG 是一个开放源码的与 OpenPGP 标准兼容的加密系统. 完全免费和自由, 避免了使用 RSA 和其他获得专利的算法.</p>
+<p>GnuPG是GNU将OpenPGP（即PGP）中的专利算法去除后实现的开源软件。GnuPG整合了RSA公钥加密和数字签名技术，可以运行在Windows或Linux系统中，可以用来加密文件或者邮件。</p>
+<h2 id="keyserver"><a href="#keyserver" class="headerlink" title="keyserver"></a>keyserver</h2><p>公钥服务器</p>
+<p>公钥需要先导入本地才能使用，没有对应的公钥则需要到公钥服务器下载和导入</p>
+<p>PGP公钥服务器列表：</p>
+<pre><code>http://keyserver.ubuntu.com
+http://keys.gnupg.net
+hkp://subkeys.pgp.net
+hkp://pgp.mit.edu
+hkp://pool.sks-keyservers.net
+hkp://zimmermann.mayfirst.org
+</code></pre><p>查看所有公钥服务器上的公钥数目，可访问网站：<a href="https://sks-keyservers.net/status/" target="_blank" rel="noopener">https://sks-keyservers.net/status/</a></p>
+<h2 id="HKP"><a href="#HKP" class="headerlink" title="HKP"></a>HKP</h2><p>HKP : OpenPGP HTTP Keyserver Protocol</p>
+<p>hkp 是基于 http 协议实现的， hkp 协议默认端口 11371, </p>
+<p>因此 hkp 服务器也支持以 http 指定端口的方式访问 <a href="http://pool.sks-keyservers.net:11371" target="_blank" rel="noopener">http://pool.sks-keyservers.net:11371</a></p>
+<p>或者直接使用 http 协议提供公钥服务 <a href="http://http-keys.gnupg.net" target="_blank" rel="noopener">http://http-keys.gnupg.net</a></p>
+<p><a href="https://tools.ietf.org/html/draft-shaw-openpgp-hkp-00" target="_blank" rel="noopener">https://tools.ietf.org/html/draft-shaw-openpgp-hkp-00</a></p>
+<h2 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h2><p>签名文件一般以<code>.sig</code>或<code>.asc</code>结尾</p>
+<p>PGP签名只是检测文件是否完整的一个参考。PGP签名的原理就是使用非对称秘钥加密技术和数字摘要技术产生一段只有文件的原始发布者才能产生的数字串。我们对文件进行PGP签名校验，就是要使用公钥解密文件的原始发布者使用私钥加密的签名，核对上述中的“数字串”是否和原来一致。为了方便获取公钥，人们一般把公钥上传到公钥服务器中。有时候人们为了防止PGP签名本身被伪造，还提供了SHA256用于对PGP签名文件本身的完整性进行检测。</p>
+<h2 id="GPG-配置文件"><a href="#GPG-配置文件" class="headerlink" title="GPG 配置文件"></a>GPG 配置文件</h2><p>For GnuPG 1.4 and 2.0 installations this can be used by using the following parameters in gpg.conf:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">~/.gnupg/gpg.conf:</span><br><span class="line">  keyserver hkps://hkps.pool.sks-keyservers.net</span><br><span class="line">  keyserver-options ca-cert-file=/path/to/CA/sks-keyservers.netCA.pem</span><br></pre></td></tr></table></figure>
+<p>GnuPG 2.1 users prior to version 2.1.11 (starting with this version the certificate is enabled by default for this pool) want to add the following in dirmngr.conf:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">~/.gnupg/dirmngr.conf:</span><br><span class="line">   hkp-cacert /path/to/CA/sks-keyservers.netCA.pem</span><br></pre></td></tr></table></figure>
+<h2 id="操作命令"><a href="#操作命令" class="headerlink" title="操作命令"></a>操作命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># GPG 版本号</span></span><br><span class="line">[shenlin@t460p /usr/<span class="built_in">local</span>/src]$ gpg --version</span><br><span class="line">gpg (GnuPG) 2.0.22</span><br><span class="line">libgcrypt 1.5.3</span><br><span class="line">Copyright (C) 2013 Free Software Foundation, Inc.</span><br><span class="line">License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;</span><br><span class="line">This is free software: you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.</span><br><span class="line"></span><br><span class="line">Home: ~/.gnupg</span><br><span class="line">Supported algorithms:</span><br><span class="line">Pubkey: RSA, ?, ?, ELG, DSA</span><br><span class="line">Cipher: IDEA, 3DES, CAST5, BLOWFISH, AES, AES192, AES256, TWOFISH,</span><br><span class="line">        CAMELLIA128, CAMELLIA192, CAMELLIA256</span><br><span class="line">Hash: MD5, SHA1, RIPEMD160, SHA256, SHA384, SHA512, SHA224</span><br><span class="line">Compression: Uncompressed, ZIP, ZLIB, BZIP2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 目录内的软件包和对应的 PGP 签名</span></span><br><span class="line">[shenlin@t460p /usr/<span class="built_in">local</span>/src]$ ls</span><br><span class="line">nginx-1.12.2.tar.gz</span><br><span class="line">nginx-1.12.2.tar.gz.asc</span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证 PGP 签名，提示没有公钥，ID 是 A1C052F8</span></span><br><span class="line"><span class="comment"># 可通过此步获取要去公钥服务器上下载的公钥 ID</span></span><br><span class="line">[shenlin@t460p /usr/<span class="built_in">local</span>/src]$ gpg --verify nginx-1.12.2.tar.gz.asc</span><br><span class="line">gpg: Signature made Tue 17 Oct 2017 09:18:21 PM CST using RSA key ID A1C052F8</span><br><span class="line">gpg: Cant check signature: No public key</span><br><span class="line"></span><br><span class="line"><span class="comment"># 按公钥 ID 在默认的公钥服务器 keys.gnupg.net 上查找，没找到</span></span><br><span class="line">[shenlin@t460p /usr/<span class="built_in">local</span>/src]$ gpg --search-keys A1C052F8</span><br><span class="line">gpg: searching <span class="keyword">for</span> <span class="string">"A1C052F8"</span> from hkp server keys.gnupg.net</span><br><span class="line">gpg: key <span class="string">"A1C052F8"</span> not found on keyserver</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定公钥服务器，再次查找</span></span><br><span class="line">[shenlin@t460p /usr/<span class="built_in">local</span>/src]$ gpg --keyserver pgp.mit.edu --recv-keys A1C052F8</span><br><span class="line">gpg: requesting key A1C052F8 from hkp server pgp.mit.edu</span><br><span class="line">gpg: key A1C052F8: public key <span class="string">"Maxim Dounin &lt;mdounin@mdounin.ru&gt;"</span> imported</span><br><span class="line">gpg: key A1C052F8: public key <span class="string">"Maxim Dounin &lt;mdounin@mdounin.ru&gt;"</span> imported</span><br><span class="line">gpg: no ultimately trusted keys found</span><br><span class="line">gpg: Total number processed: 2</span><br><span class="line">gpg:               imported: 2  (RSA: 2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看当前系统中的公钥</span></span><br><span class="line">[shenlin@t460p ~]$ gpg -k</span><br><span class="line">/home/shenlin/.gnupg/pubring.gpg</span><br><span class="line">--------------------------------</span><br><span class="line">pub   2048R/A1C052F8 2014-06-16 [revoked: 2016-08-16]</span><br><span class="line">uid                  Maxim Dounin &lt;mdounin@mdounin.ru&gt;</span><br><span class="line"></span><br><span class="line">pub   2048R/A1C052F8 2011-11-27</span><br><span class="line">uid                  Maxim Dounin &lt;mdounin@mdounin.ru&gt;</span><br><span class="line">sub   2048R/D345AB09 2011-11-27</span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证签名</span></span><br><span class="line">[shenlin@t460p /usr/<span class="built_in">local</span>/src]$ gpg --verify nginx-1.12.2.tar.gz.asc </span><br><span class="line">gpg: Signature made Tue 17 Oct 2017 09:18:21 PM CST using RSA key ID A1C052F8</span><br><span class="line">gpg: Good signature from <span class="string">"Maxim Dounin &lt;mdounin@mdounin.ru&gt;"</span>        <span class="comment"># 完好的签名</span></span><br><span class="line">gpg: WARNING: This key is not certified with a trusted signature!   <span class="comment"># 这把密钥未经受信任的签名认证</span></span><br><span class="line">gpg:          There is no indication that the signature belongs to the owner.   <span class="comment"># 没有迹象表明这个签名属于它所声称的拥有者</span></span><br><span class="line">Primary key fingerprint: B0F4 2533 73F8 F6F5 10D4  2178 520A 9993 A1C0 52F8</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成密钥</span></span><br><span class="line">[shenlin@t460p ~]$ gpg --gen-key</span><br><span class="line">gpg (GnuPG) 2.0.22; Copyright (C) 2013 Free Software Foundation, Inc.</span><br><span class="line">This is free software: you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.</span><br><span class="line"></span><br><span class="line">Please select what kind of key you want:    <span class="comment"># 选择加密算法，默认 RSA</span></span><br><span class="line">   (1) RSA and RSA (default)</span><br><span class="line">   (2) DSA and Elgamal</span><br><span class="line">   (3) DSA (sign only)</span><br><span class="line">   (4) RSA (sign only)</span><br><span class="line">Your selection? </span><br><span class="line">RSA keys may be between 1024 and 4096 bits long.    <span class="comment"># 选择密钥长度，默认 2048</span></span><br><span class="line">What keysize <span class="keyword">do</span> you want? (2048) </span><br><span class="line">Requested keysize is 2048 bits</span><br><span class="line">Please specify how long the key should be valid.    <span class="comment"># 选择密钥过期时间，默认永不过期</span></span><br><span class="line">         0 = key does not expire</span><br><span class="line">      &lt;n&gt;  = key expires <span class="keyword">in</span> n days</span><br><span class="line">      &lt;n&gt;w = key expires <span class="keyword">in</span> n weeks</span><br><span class="line">      &lt;n&gt;m = key expires <span class="keyword">in</span> n months</span><br><span class="line">      &lt;n&gt;y = key expires <span class="keyword">in</span> n years</span><br><span class="line">Key is valid <span class="keyword">for</span>? (0) </span><br><span class="line">Key does not expire at all</span><br><span class="line">Is this correct? (y/N) y</span><br><span class="line"></span><br><span class="line">GnuPG needs to construct a user ID to identify your key.</span><br><span class="line"></span><br><span class="line">Real name: shenlin                                  <span class="comment"># 填写用户信息：姓名，Email，注释</span></span><br><span class="line">Email address: bitbite@foxmail.com</span><br><span class="line">Comment: hello,world...</span><br><span class="line">You selected this USER-ID:</span><br><span class="line">    <span class="string">"shenlin (hello,world...) &lt;bitbite@foxmail.com&gt;"</span></span><br><span class="line"></span><br><span class="line">Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? O</span><br><span class="line">You need a Passphrase to protect your secret key.           <span class="comment"># 输入密钥保护密码</span></span><br><span class="line"></span><br><span class="line">We need to generate a lot of random bytes. It is a good idea to perform     <span class="comment"># 产生密钥需要生成大量随机字节</span></span><br><span class="line">some other action (<span class="built_in">type</span> on the keyboard, move the mouse, utilize the        <span class="comment"># 需要用户进行一下操作，如打字，移动鼠标，浏览网页，读写磁盘等</span></span><br><span class="line">disks) during the prime generation; this gives the random number            <span class="comment"># 涉及到的技术：linux 熵池</span></span><br><span class="line">generator a better chance to gain enough entropy.                           <span class="comment"># 熵（entropy）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行到这里就挂起了，原因就是依据上面说明，熵池太浅，需要大量的环境噪音</span></span><br><span class="line"><span class="comment"># 解决方法：安装 rng-tools 填充熵池</span></span><br><span class="line"><span class="comment"># 注意这里无需终止终端运行，打开一个新终端填充熵池完毕后，挂起的操作会继续进行</span></span><br><span class="line">[shenlin@t460p ~]$ sudo yum install -y rng-tools</span><br><span class="line"></span><br><span class="line"><span class="comment"># 手动一次性执行填充熵池</span></span><br><span class="line">[shenlin@t460p ~]$ sudo rngd -r /dev/urandom</span><br><span class="line"></span><br><span class="line"><span class="comment"># 除了安装 rng-tools 填充熵池，还可以通过磁盘读写来产生熵</span></span><br><span class="line">[shenlin@t460p ~]$ dd <span class="keyword">if</span>=/dev/urandom of=/dev/null bs=1024b count=10</span><br><span class="line">10+0 records <span class="keyword">in</span></span><br><span class="line">10+0 records out</span><br><span class="line">5242880 bytes (5.2 MB) copied, 0.04122 s, 127 MB/s</span><br><span class="line"></span><br><span class="line"><span class="comment"># 填充熵池后挂起的操作会立即生成密钥</span></span><br><span class="line">gpg: checking the trustdb</span><br><span class="line">gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model</span><br><span class="line">gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u</span><br><span class="line">pub   2048R/7A173015 2018-01-24                                             <span class="comment"># 7A173015 是用户ID的hash，可以代替用户ID</span></span><br><span class="line">      Key fingerprint = E85D C9FC 035A 77AE 3CD0  08AB 5901 22DA 7A17 3015  <span class="comment"># 指纹</span></span><br><span class="line">uid                  shenlin (hello,world...) &lt;bitbite@foxmail.com&gt;</span><br><span class="line">sub   2048R/2419EA7D 2018-01-24                                             <span class="comment"># </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出本地密钥 </span></span><br><span class="line">[shenlin@t460p ~]$ gpg --list-keys</span><br><span class="line">/home/shenlin/.gnupg/pubring.gpg</span><br><span class="line">--------------------------------</span><br><span class="line">pub   2048R/A1C052F8 2014-06-16 [revoked: 2016-08-16]</span><br><span class="line">uid                  Maxim Dounin &lt;mdounin@mdounin.ru&gt;</span><br><span class="line"></span><br><span class="line">pub   2048R/A1C052F8 2011-11-27</span><br><span class="line">uid                  Maxim Dounin &lt;mdounin@mdounin.ru&gt;</span><br><span class="line">sub   2048R/D345AB09 2011-11-27</span><br><span class="line"></span><br><span class="line">pub   2048R/7A173015 2018-01-24</span><br><span class="line">uid                  shenlin (hello,world...) &lt;bitbite@foxmail.com&gt;</span><br><span class="line">sub   2048R/2419EA7D 2018-01-24</span><br></pre></td></tr></table></figure>
+<p>上传公钥到密钥服务器<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[shenlin@t460p ~]$ gpg --send-keys 7A173015 --keyserver hkp://pgp.mit.edu</span><br><span class="line">gpg: &quot;--keyserver&quot; not a key ID: skipping</span><br><span class="line">gpg: &quot;hkp://pgp.mit.edu&quot; not a key ID: skipping</span><br><span class="line">gpg: sending key 7A173015 to hkp server keys.gnupg.net</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>密钥服务器是用来发布你的公钥，并将其分发到其他人的服务器</li>
+<li>这样其他用户可以轻松的根据你数据库中的名字（或者e-mail地址）来获取你的公钥，并给你发送加密信息。</li>
+<li>避免了把公钥直接拷贝给其他人的过程。</li>
+</ul>
+<h2 id="生成签名"><a href="#生成签名" class="headerlink" title="生成签名"></a>生成签名</h2><p><code>-s</code> 或 <code>--sign</code> 生成二进制的签名文件，后缀 .gpg，签名文件较小<br><code>--clearsign</code> 生成ASCII码文本格式签名文件，后缀 .asc，clearsign 表示 make a clear text signature，签名文件较大<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">[shenlin@t460p ~]$ gpg -s haha.txt</span><br><span class="line">[shenlin@t460p ~]$ gpg --sign haha.txt</span><br><span class="line">You need a passphrase to unlock the secret key for</span><br><span class="line">user: &quot;shenlin (hello,world...) &lt;bitbite@foxmail.com&gt;&quot;</span><br><span class="line">2048-bit RSA key, ID 7A173015, created 2018-01-24</span><br><span class="line"></span><br><span class="line">[shenlin@t460p ~]$ gpg --clearsign haha.txt</span><br><span class="line"></span><br><span class="line">You need a passphrase to unlock the secret key for</span><br><span class="line">user: &quot;shenlin (hello,world...) &lt;bitbite@foxmail.com&gt;&quot;</span><br><span class="line">2048-bit RSA key, ID 7A173015, created 2018-01-24</span><br><span class="line"></span><br><span class="line">[shenlin@t460p ~]$ ll</span><br><span class="line">total 12</span><br><span class="line">-rw-rw-r--. 1 shenlin shenlin  12 Jan 24 20:59 haha.txt</span><br><span class="line">-rw-rw-r--. 1 shenlin shenlin 549 Jan 24 21:01 haha.txt.asc</span><br><span class="line">-rw-rw-r--. 1 shenlin shenlin 337 Jan 24 20:59 haha.txt.gpg</span><br><span class="line"></span><br><span class="line">[shenlin@t460p ~]$ cat haha.txt.asc</span><br><span class="line">-----BEGIN PGP SIGNED MESSAGE-----</span><br><span class="line">Hash: SHA1</span><br><span class="line"></span><br><span class="line">123</span><br><span class="line">456</span><br><span class="line">789</span><br><span class="line">-----BEGIN PGP SIGNATURE-----</span><br><span class="line">Version: GnuPG v2.0.22 (GNU/Linux)</span><br><span class="line"></span><br><span class="line">iQEcBAEBAgAGBQJaaIObAAoJEFkBItp6FzAVkhEIAJKm6HikvsQmZPa6WoK18U03</span><br><span class="line">PuK2xOGm5xWS5arKweyYCq35laXpBm2gNc7DatlS+3ioytfxr2BvJ/Xt6j5COJrU</span><br><span class="line">rc6HG0qMzwcwgUn6EdclIS2ElL3D83wD+ydqQRf4qmr6YfE/02qoPVBLMJdSPsNd</span><br><span class="line">bZJlDVetygxKYZjCLhDhrEXU1Y1XZr/kcEjHWlS51BhJdpHFpsS6tyKUpH75fmEY</span><br><span class="line">qOvH3sXEV9AWceptIPseSyDJHsskDtdAytTGo7TtdZDpGpeawdrHqqtUqjwQlqK8</span><br><span class="line">n8wdBfBme4ebwAp9ESB5lxZJsFhOzn3rJdCJrLzUX97qZwwj3GxqKOiXO70eLcg=</span><br><span class="line">=KPwt</span><br><span class="line">-----END PGP SIGNATURE-----</span><br></pre></td></tr></table></figure></p>
+<h1 id="删除密钥"><a href="#删除密钥" class="headerlink" title="删除密钥"></a>删除密钥</h1><h2 id="加密文件"><a href="#加密文件" class="headerlink" title="加密文件"></a>加密文件</h2><h2 id="解密文件"><a href="#解密文件" class="headerlink" title="解密文件"></a>解密文件</h2><p>3、导出公钥：gpg –export –armor key-id -o file.key</p>
+<p>将公钥导出至文件，以便于其他人使用。–armor选项以文本形式显示输出，而非二进制格式。key-id是电子邮箱地址或在–list-keys的pub行中列出的八位十六进制数。</p>
+<p>4、导入公钥：gpg –import file.key</p>
+<p>从发送给您的密钥文件中导入其他人的公钥</p>
+<p>5、加密文件：gpg –encrypt –armor -r key-id file</p>
+<p>用key-id的公钥加密消息。如果未提供-r key-id，命令将提示收件人输入。默认输出文件为file.asc.</p>
+<p>6、解密文件：gpg –decrypt file</p>
+<p>用您的私钥之一解密用公钥加密的消息。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/PGP/" rel="tag"># PGP</a>
+          
+            <a href="/tags/GPG/" rel="tag"># GPG</a>
+          
+            <a href="/tags/OpenPGP/" rel="tag"># OpenPGP</a>
+          
+            <a href="/tags/HKP/" rel="tag"># HKP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/24/Linux - iptables/" rel="next" title="linux - iptables">
+                <i class="fa fa-chevron-left"></i> linux - iptables
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/26/Linux - 软件包管理 - RPM, YUM, APT/" rel="prev" title="Linux - 软件包管理 - RPM, YUM, APT, noarch">
+                Linux - 软件包管理 - RPM, YUM, APT, noarch <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">218</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA"><span class="nav-number">1.</span> <span class="nav-text"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PGP-和-GnuPG"><span class="nav-number">2.</span> <span class="nav-text"><a href="#PGP-&#x548C;-GnuPG" class="headerlink" title="PGP &#x548C; GnuPG"></a>PGP &#x548C; GnuPG</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenPGP"><span class="nav-number">3.</span> <span class="nav-text"><a href="#OpenPGP" class="headerlink" title="OpenPGP"></a>OpenPGP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GnuPG"><span class="nav-number">4.</span> <span class="nav-text"><a href="#GnuPG" class="headerlink" title="GnuPG"></a>GnuPG</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#keyserver"><span class="nav-number">5.</span> <span class="nav-text"><a href="#keyserver" class="headerlink" title="keyserver"></a>keyserver</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HKP"><span class="nav-number">6.</span> <span class="nav-text"><a href="#HKP" class="headerlink" title="HKP"></a>HKP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#签名"><span class="nav-number">7.</span> <span class="nav-text"><a href="#&#x7B7E;&#x540D;" class="headerlink" title="&#x7B7E;&#x540D;"></a>&#x7B7E;&#x540D;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GPG-配置文件"><span class="nav-number">8.</span> <span class="nav-text"><a href="#GPG-&#x914D;&#x7F6E;&#x6587;&#x4EF6;" class="headerlink" title="GPG &#x914D;&#x7F6E;&#x6587;&#x4EF6;"></a>GPG &#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作命令"><span class="nav-number">9.</span> <span class="nav-text"><a href="#&#x64CD;&#x4F5C;&#x547D;&#x4EE4;" class="headerlink" title="&#x64CD;&#x4F5C;&#x547D;&#x4EE4;"></a>&#x64CD;&#x4F5C;&#x547D;&#x4EE4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成签名"><span class="nav-number">10.</span> <span class="nav-text"><a href="#&#x751F;&#x6210;&#x7B7E;&#x540D;" class="headerlink" title="&#x751F;&#x6210;&#x7B7E;&#x540D;"></a>&#x751F;&#x6210;&#x7B7E;&#x540D;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除密钥"><span class="nav-number"></span> <span class="nav-text"><a href="#&#x5220;&#x9664;&#x5BC6;&#x94A5;" class="headerlink" title="&#x5220;&#x9664;&#x5BC6;&#x94A5;"></a>&#x5220;&#x9664;&#x5BC6;&#x94A5;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#加密文件"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x52A0;&#x5BC6;&#x6587;&#x4EF6;" class="headerlink" title="&#x52A0;&#x5BC6;&#x6587;&#x4EF6;"></a>&#x52A0;&#x5BC6;&#x6587;&#x4EF6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解密文件"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x89E3;&#x5BC6;&#x6587;&#x4EF6;" class="headerlink" title="&#x89E3;&#x5BC6;&#x6587;&#x4EF6;"></a>&#x89E3;&#x5BC6;&#x6587;&#x4EF6;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Git,Git-Refs," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="引用规格 Refspec 可以使用命令行的方式，或者写入.git/config配置文件，写入文件的引用规格会每次推送拉取时都被执行。">
+<meta name="keywords" content="Git,Git-Refs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter 10.5 - Git 引用规格">
+<meta property="og:url" content="http://www.shenlin.ltd/2018/02/27/Git - ProGit Chapter 10.5 - 引用规格/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="引用规格 Refspec 可以使用命令行的方式，或者写入.git/config配置文件，写入文件的引用规格会每次推送拉取时都被执行。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-27T01:57:25.694Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter 10.5 - Git 引用规格">
+<meta name="twitter:description" content="引用规格 Refspec 可以使用命令行的方式，或者写入.git/config配置文件，写入文件的引用规格会每次推送拉取时都被执行。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2018/02/27/Git - ProGit Chapter 10.5 - 引用规格/"/>
+
+
+
+
+
+  <title>chapter 10.5 - Git 引用规格 | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/02/27/Git - ProGit Chapter 10.5 - 引用规格/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">chapter 10.5 - Git 引用规格</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-27T09:57:25+08:00">
+                2018-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/Book-ProGit/" itemprop="url" rel="index">
+                    <span itemprop="name">Book-ProGit</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>引用规格 Refspec 可以使用命令行的方式，或者写入<code>.git/config</code>配置文件，写入文件的引用规格会每次推送拉取时都被执行。</p>
+<a id="more"></a>
+<h2 id="引用规格"><a href="#引用规格" class="headerlink" title="引用规格"></a>引用规格</h2><h3 id="格式"><a href="#格式" class="headerlink" title="格式"></a>格式</h3><p><code>[+]&lt;src&gt;:&lt;dst&gt;</code></p>
+<pre><code>\+    可选，表示在不能快进Fast Forward的时候也要强制更新引用
+src   源分支
+dst   目标分支
+</code></pre><p>fetch 时，src 是远程库的分支，dst 是本地库的分支<br>push 时，src 是本地库的分支，dst 是远程库的分支</p>
+<p>???拉取推送时的顺序问题???</p>
+<pre><code>git clone [&lt;options&gt;] [--] &lt;repo&gt; [&lt;dir&gt;]
+
+git remote add [-t &lt;branch&gt;] [-m &lt;master&gt;] [-f] [--tags | --no-tags] [--mirror=&lt;fetch|push&gt;] &lt;name&gt; &lt;url&gt;
+
+git pull [&lt;options&gt;] [&lt;repository&gt; [&lt;refspec&gt;...]]
+
+git push [&lt;options&gt;] [&lt;repository&gt; [&lt;refspec&gt;...]]
+
+git fetch [&lt;options&gt;] [&lt;repository&gt; [&lt;refspec&gt;...]]
+git fetch [&lt;options&gt;] &lt;group&gt;
+git fetch --multiple [&lt;options&gt;] [(&lt;repository&gt; | &lt;group&gt;)...]
+git fetch --all [&lt;options&gt;]
+</code></pre><h3 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h3><p>在规格中使用<strong>部分通配符</strong>是不合法的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fetch = +refs/heads/qa*:refs/remotes/origin/qa*</span><br></pre></td></tr></table></figure></p>
+<p>这样是可以的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fetch = +refs/heads/qa/*:refs/remotes/origin/qa/*</span><br></pre></td></tr></table></figure></p>
+<h2 id="通过引用规格获取远程库分支"><a href="#通过引用规格获取远程库分支" class="headerlink" title="通过引用规格获取远程库分支"></a>通过引用规格获取远程库分支</h2><h3 id="通过命令生成引用规格"><a href="#通过命令生成引用规格" class="headerlink" title="通过命令生成引用规格"></a>通过命令生成引用规格</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote add origin git@github.com:bitbiteme/gitgo</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>git remote add</code>命令将自动生成引用规格，并写入<code>.git/config</code>文件</li>
+<li>git 将获取远程服务器上<code>refs/heads/</code>下所有引用并写入<code>refs/remotes/origin/</code>中</li>
+</ul>
+<h3 id="通过-config-文件配置引用规格"><a href="#通过-config-文件配置引用规格" class="headerlink" title="通过 config 文件配置引用规格"></a>通过 config 文件配置引用规格</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cat .git/config</span><br><span class="line">[remote &quot;origin&quot;]</span><br><span class="line">        url = git@github.com:bitbiteme/gitgo</span><br><span class="line">        fetch = +refs/heads/*:refs/remotes/origin/*</span><br></pre></td></tr></table></figure>
+<ul>
+<li>remote “origin”   远程库在本地的名字</li>
+<li>url               远程库的地址</li>
+<li>fetch             引用规格refspec，仅针对 fetch 操作</li>
+</ul>
+<h3 id="引用规格举例"><a href="#引用规格举例" class="headerlink" title="引用规格举例"></a>引用规格举例</h3><p>每次都拉取所有分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fetch = +refs/heads/*:refs/remotes/origin/*</span><br></pre></td></tr></table></figure></p>
+<p>每次只拉取 master 分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fetch = +refs/heads/master:refs/remotes/origin/master</span><br></pre></td></tr></table></figure></p>
+<p>将远程库的 master 分支拉入本地 <code>mymaster</code> 分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fetch = +refs/heads/master:refs/remotes/origin/mymaster</span><br></pre></td></tr></table></figure></p>
+<p>或执行命令，命令行方式适用于只执行一次的操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git fetch origin master:refs/remotes/origin/mymaster</span><br></pre></td></tr></table></figure></p>
+<p>指定多个引用规格<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[remote &quot;origin&quot;]</span><br><span class="line">	url = https://github.com/schacon/simplegit-progit</span><br><span class="line">	fetch = +refs/heads/master:refs/remotes/origin/master</span><br><span class="line">	fetch = +refs/heads/experiment:refs/remotes/origin/experiment</span><br></pre></td></tr></table></figure></p>
+<p>或 命令行一次拉取多个分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git fetch origin master:refs/remotes/origin/mymaster \</span><br><span class="line">	               topic:refs/remotes/origin/topic</span><br><span class="line">	 </span><br><span class="line">From git@github.com:schacon/simplegit</span><br><span class="line"> ! [rejected]        master     -&gt; origin/mymaster  (non fast forward)</span><br><span class="line"> * [new branch]      topic      -&gt; origin/topic</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>master 分支被拒绝，因为不可快进，可通过前加 + 来覆盖</li>
+</ul>
+<h3 id="分支命名空间"><a href="#分支命名空间" class="headerlink" title="分支命名空间"></a>分支命名空间</h3><p>如果项目工作流程复杂，包含了 QA 团队推送分支、开发人员推送分支、集成团队推送分支并且在远程分支上展开协作，可以为这些分支创建各自的命名空间</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[remote &quot;origin&quot;]</span><br><span class="line">	url = https://github.com/schacon/simplegit-progit</span><br><span class="line">	fetch = +refs/heads/master:refs/remotes/origin/master</span><br><span class="line">	fetch = +refs/heads/qa/*:refs/remotes/origin/qa/*</span><br><span class="line">	fetch = +refs/heads/dev/*:refs/remotes/origin/dev/*</span><br></pre></td></tr></table></figure>
+<h2 id="通过引用规格推送分支到远程库"><a href="#通过引用规格推送分支到远程库" class="headerlink" title="通过引用规格推送分支到远程库"></a>通过引用规格推送分支到远程库</h2><p>QA 团队把他们的 master 分支推送到远程服务器的 qa/master 分支上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin master:refs/heads/qa/master</span><br></pre></td></tr></table></figure></p>
+<p>或写入配置文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[remote &quot;origin&quot;]</span><br><span class="line">	url = https://github.com/schacon/simplegit-progit</span><br><span class="line">	fetch = +refs/heads/*:refs/remotes/origin/*</span><br><span class="line">	push = refs/heads/master:refs/heads/qa/master</span><br></pre></td></tr></table></figure></p>
+<p>每次直接<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin</span><br></pre></td></tr></table></figure></p>
+<h2 id="通过引用规格删除远程库引用"><a href="#通过引用规格删除远程库引用" class="headerlink" title="通过引用规格删除远程库引用"></a>通过引用规格删除远程库引用</h2><p>通过引用规格删除远程服务器引用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin :topic</span><br></pre></td></tr></table></figure></p>
+<p>因为引用规格（的格式）是 <code>&lt;src&gt;:&lt;dst&gt;</code>，<br>所以上述命令把 <code>&lt;src&gt;</code> 留空，<br>意味着把远程版本库的 topic 分支定义为空值，也就是删除它。</p>
+<h2 id="访问服务器上分支的提交记录"><a href="#访问服务器上分支的提交记录" class="headerlink" title="访问服务器上分支的提交记录"></a>访问服务器上分支的提交记录</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git log origin/master</span><br><span class="line">$ git log remotes/origin/master</span><br><span class="line">$ git log refs/remotes/origin/master</span><br></pre></td></tr></table></figure>
+<ul>
+<li>上面的 3 个命令效果相同</li>
+<li>前两个命令都会被 git 扩展为最后一个命令的格式</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+            <a href="/tags/Git-Refs/" rel="tag"># Git-Refs</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/27/Git - ProGit Chapter 10.4 - 包文件/" rel="next" title="chapter 10.4 - Git 包文件">
+                <i class="fa fa-chevron-left"></i> chapter 10.4 - Git 包文件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/27/Git - ProGit Chapter 10.6 - 传输协议/" rel="prev" title="chapter 10.6 - Git 传输协议">
+                chapter 10.6 - Git 传输协议 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">218</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引用规格"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5F15;&#x7528;&#x89C4;&#x683C;" class="headerlink" title="&#x5F15;&#x7528;&#x89C4;&#x683C;"></a>&#x5F15;&#x7528;&#x89C4;&#x683C;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#格式"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x683C;&#x5F0F;" class="headerlink" title="&#x683C;&#x5F0F;"></a>&#x683C;&#x5F0F;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通配符"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x901A;&#x914D;&#x7B26;" class="headerlink" title="&#x901A;&#x914D;&#x7B26;"></a>&#x901A;&#x914D;&#x7B26;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过引用规格获取远程库分支"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x901A;&#x8FC7;&#x5F15;&#x7528;&#x89C4;&#x683C;&#x83B7;&#x53D6;&#x8FDC;&#x7A0B;&#x5E93;&#x5206;&#x652F;" class="headerlink" title="&#x901A;&#x8FC7;&#x5F15;&#x7528;&#x89C4;&#x683C;&#x83B7;&#x53D6;&#x8FDC;&#x7A0B;&#x5E93;&#x5206;&#x652F;"></a>&#x901A;&#x8FC7;&#x5F15;&#x7528;&#x89C4;&#x683C;&#x83B7;&#x53D6;&#x8FDC;&#x7A0B;&#x5E93;&#x5206;&#x652F;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通过命令生成引用规格"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x901A;&#x8FC7;&#x547D;&#x4EE4;&#x751F;&#x6210;&#x5F15;&#x7528;&#x89C4;&#x683C;" class="headerlink" title="&#x901A;&#x8FC7;&#x547D;&#x4EE4;&#x751F;&#x6210;&#x5F15;&#x7528;&#x89C4;&#x683C;"></a>&#x901A;&#x8FC7;&#x547D;&#x4EE4;&#x751F;&#x6210;&#x5F15;&#x7528;&#x89C4;&#x683C;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过-config-文件配置引用规格"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x901A;&#x8FC7;-config-&#x6587;&#x4EF6;&#x914D;&#x7F6E;&#x5F15;&#x7528;&#x89C4;&#x683C;" class="headerlink" title="&#x901A;&#x8FC7; config &#x6587;&#x4EF6;&#x914D;&#x7F6E;&#x5F15;&#x7528;&#x89C4;&#x683C;"></a>&#x901A;&#x8FC7; config &#x6587;&#x4EF6;&#x914D;&#x7F6E;&#x5F15;&#x7528;&#x89C4;&#x683C;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#引用规格举例"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x5F15;&#x7528;&#x89C4;&#x683C;&#x4E3E;&#x4F8B;" class="headerlink" title="&#x5F15;&#x7528;&#x89C4;&#x683C;&#x4E3E;&#x4F8B;"></a>&#x5F15;&#x7528;&#x89C4;&#x683C;&#x4E3E;&#x4F8B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分支命名空间"><span class="nav-number">2.4.</span> <span class="nav-text"><a href="#&#x5206;&#x652F;&#x547D;&#x540D;&#x7A7A;&#x95F4;" class="headerlink" title="&#x5206;&#x652F;&#x547D;&#x540D;&#x7A7A;&#x95F4;"></a>&#x5206;&#x652F;&#x547D;&#x540D;&#x7A7A;&#x95F4;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过引用规格推送分支到远程库"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x901A;&#x8FC7;&#x5F15;&#x7528;&#x89C4;&#x683C;&#x63A8;&#x9001;&#x5206;&#x652F;&#x5230;&#x8FDC;&#x7A0B;&#x5E93;" class="headerlink" title="&#x901A;&#x8FC7;&#x5F15;&#x7528;&#x89C4;&#x683C;&#x63A8;&#x9001;&#x5206;&#x652F;&#x5230;&#x8FDC;&#x7A0B;&#x5E93;"></a>&#x901A;&#x8FC7;&#x5F15;&#x7528;&#x89C4;&#x683C;&#x63A8;&#x9001;&#x5206;&#x652F;&#x5230;&#x8FDC;&#x7A0B;&#x5E93;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过引用规格删除远程库引用"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x901A;&#x8FC7;&#x5F15;&#x7528;&#x89C4;&#x683C;&#x5220;&#x9664;&#x8FDC;&#x7A0B;&#x5E93;&#x5F15;&#x7528;" class="headerlink" title="&#x901A;&#x8FC7;&#x5F15;&#x7528;&#x89C4;&#x683C;&#x5220;&#x9664;&#x8FDC;&#x7A0B;&#x5E93;&#x5F15;&#x7528;"></a>&#x901A;&#x8FC7;&#x5F15;&#x7528;&#x89C4;&#x683C;&#x5220;&#x9664;&#x8FDC;&#x7A0B;&#x5E93;&#x5F15;&#x7528;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问服务器上分支的提交记录"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x8BBF;&#x95EE;&#x670D;&#x52A1;&#x5668;&#x4E0A;&#x5206;&#x652F;&#x7684;&#x63D0;&#x4EA4;&#x8BB0;&#x5F55;" class="headerlink" title="&#x8BBF;&#x95EE;&#x670D;&#x52A1;&#x5668;&#x4E0A;&#x5206;&#x652F;&#x7684;&#x63D0;&#x4EA4;&#x8BB0;&#x5F55;"></a>&#x8BBF;&#x95EE;&#x670D;&#x52A1;&#x5668;&#x4E0A;&#x5206;&#x652F;&#x7684;&#x63D0;&#x4EA4;&#x8BB0;&#x5F55;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

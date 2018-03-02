@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="进程">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux - 进程 ps kill nice renice">
+<meta property="og:url" content="http://www.shenlin.ltd/2018/03/01/Linux - 进程管理/index.html">
+<meta property="og:site_name" content="shenlin&#39;s blog">
+<meta property="og:description" content="进程">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-01T10:34:15.902Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux - 进程 ps kill nice renice">
+<meta name="twitter:description" content="进程">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.shenlin.ltd/2018/03/01/Linux - 进程管理/"/>
+
+
+
+
+
+  <title>linux - 进程 ps kill nice renice | shenlin's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">shenlin's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">what the fuck?!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.shenlin.ltd/2018/03/01/Linux - 进程管理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="shenlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="shenlin's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">linux - 进程 ps kill nice renice</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-01T18:34:15+08:00">
+                2018-03-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>进程</p>
+<a id="more"></a>
+<h2 id="进程的概念"><a href="#进程的概念" class="headerlink" title="进程的概念"></a>进程的概念</h2><p>【进程和程序的区别】</p>
+<pre><code>程序是静态概念，本身作为一种软件资源长期存在；而进程是程序的执行过程，它是动态概念，有一定的生命期，是动态产生和消亡的。
+
+程序和进程无一一对应关系。一个程序可以由多个进程共用；另一方面，一个进程在活动中也可顺序的执行若干个程序，如使用命令分隔符;分开的若干个命令。
+</code></pre><p>【父进程与子进程】</p>
+<pre><code>进程用PID（Process ID）表示，父进程使用PPID表示（Parent Process ID）
+
+子进程是由进程所产生的进程，产生进程的进程称为父进程，被产生的进程称为子进程。
+
+父进程终止子进程自然终止。 子进程因意外可能成为孤儿进程或僵尸进程：
+
+    若父进程终止，而子进程因特殊原因没被终止，则子进程被称为孤儿进程；linux检测到孤儿进程后，会将孤儿进程的父进程指向init进程；
+
+    若子进程被终止后，父进程没了解到此信息，还尝试和子进程取得联系，则此子进程称为僵尸进程，linux中用Z（Zombie）表示。
+
+linux系统中，使用系统调用fork创建进程。fork复制的内容包括父进程的数据和堆栈段以及父进程的进程环境。
+</code></pre><p>【前台进程与后台进程】</p>
+<pre><code>前台进程：
+
+    在Shell提示符后输入命令并回车，则创建了一个子进程来运行此命令，而Shell进程将等待命令进程退出，在命令进程完成之前不会对用户给出Shell提示符。这时命令进程在运行，而Shell进程在等待，命令进程和Shell进程不是同时运行，而是异步运行，即在前台运行。
+
+后台进程：
+
+    在Shell提示符后输入命令，并且在最后面加一个后台执行符&amp;，然后回车，则创建了一个子进程来运行此命令，而Shell进程不等待命令进程退出，直接返回到对用户给出Shell提示符。这时命令进程在运行，而Shell进程也在运行，命令进程和Shell进程是同步运行，即在后台运行。
+
+后台进程必须是非交互式的。
+</code></pre><p>【进程状态】</p>
+<pre><code>就绪状态：
+
+    进程已经分配到资源，但因为其他进程正占用CPU，所以暂时不能运行而等待分配CPU的状态。
+
+等待状态：
+
+    因等待某种事件而暂时不能运行的状态。
+
+运行状态：
+
+    进程分配到CPU，正在处理器上运行。
+</code></pre><p>linux上进程有5种状态: </p>
+<pre><code>1. 运行(正在运行或在运行队列中等待) 
+2. 中断(休眠中, 受阻, 在等待某个条件的形成或接受到信号) 
+3. 不可中断(收到信号不唤醒和不可运行, 进程必须等待直到有中断发生) 
+4. 僵死(进程已终止, 但进程描述符存在, 直到父进程调用wait4()系统调用后释放) 
+5. 停止(进程收到SIGSTOP, SIGSTP, SIGTIN, SIGTOU信号后停止运行运行) 
+</code></pre><p>ps工具标识进程的5种状态码: </p>
+<pre><code>D 不可中断 uninterruptible sleep (usually IO) 
+R 运行 runnable (on run queue) 
+S 中断 sleeping 
+T 停止 traced or stopped 
+Z 僵死 a defunct (”zombie”) process 
+</code></pre><p>【进程状态细化】</p>
+<pre><code>用户态运行：在CPU上执行用户代码
+核心态运行：在CPU上执行核心代码
+
+在内存就绪：具备运行条件，只等调度程序为它分配CPU
+在内存睡眠：因等待某一事件的发生，而在内存中排队等待
+
+在外存就绪：就绪进程被交换到外存上继续处于就绪状态
+在外存睡眠：睡眠进程被交换到外存上继续等待
+
+在内存暂停：因调用stop程序而仅需跟踪暂停状态，等待其父进程发送命令
+在外存暂停：处于跟踪暂停态的进程被交换到外存上
+
+创建态：新进程正在被创建、但尚未完毕的中间状态
+终止态：进程终止自己
+</code></pre><h2 id="进程管理命令"><a href="#进程管理命令" class="headerlink" title="进程管理命令"></a>进程管理命令</h2><p>【查看用户登录信息：who命令，w命令】</p>
+<pre><code>who
+
+w           查看所有用户的登录信息
+w 用户A     查看用户A的登录信息
+
+结果：
+
+    10:31:03 up 4 min, 2 users, load average: 0.54,0.52,0.24
+
+    USER    TTY     FROM        LOGIN@      IDLE        JCPU        PCPU        WHAT
+    --------------------------------------------------------------------------------
+    ssl     tty1    -           10:30       9.00s       0.07s       0.07s       -bash
+    samlee  pts/0   192.168.9.2 11:10       0.00s       0.10s       0.13s       sshd:sam
+
+解释：
+
+    load average：分别显示系统在过去1、、5、15分钟内的平均负载程度。fork炸弹???
+
+    TTY：登录终端
+
+    FROM：显示用户从何处登录系统，如果是“:0”，代表用户在X Windows下，打开文本模式窗口登录的。
+
+    LOGIN@：
+
+    IDLE：用户的闲置时间，一旦用户执行任何操作，此时间将被重置。按任意键不执行命令也被重置。
+
+    JCPU：以终端代号来区分，该终端所有相关的进程执行时，所消耗的CPU时间会显示在这里。
+
+    PCPU：CPU执行程序耗费的时间。
+
+    WHAT：用户正在执行的操作。
+</code></pre><p>【进程查看命令ps – process status】</p>
+<pre><code>ps 为我们提供了进程的一次性的查看，它所提供的查看结果并不动态连续的；如果想对进程时间监控，应该用 top 工具。
+
+-a：显示所有用户的进程
+
+-u：显示用户名和启动时间
+
+-x：显示没有控制终端的进程
+
+-e：显示所有进程，包括没有控制终端的进程
+
+-l：长格式显示
+
+-w：宽行显示，可以使用多个w进行加宽显示
+
+
+--------------------------------
+ps -l 输出格式：
+--------------------------------
+
+F   S   UID     PID     PPID    C       PRI     NI      ADDR        SZ      WCHAN       TTY     TIME        CMD
+----------------------------------------------------------------------------------------------------------------
+4   S   0       3526    3508    0       78      0       -           733     wait        pts/0   00:00:00    su
+
+解释：
+
+    PID：进程号
+
+    PPID：父进程的进程号
+
+    TTY：进程启动的终端
+
+    S：表示STAT，进程当前状态。
+
+            S Sleeping      休眠状态  
+
+            D Drop Sleep    不可中断的休眠状态 
+
+            R Running       运行状态 
+
+            Z Zombie        僵死状态 
+
+            T sToped        停止状态
+
+    NI：进程优先级
+
+    TIME：进程自启动以来启用CPU的总时间
+
+    COMMAND/CMD：进程的命令名
+
+    USER：用户名
+
+    %CPU：占用CPU时间和总时间的百分比
+
+    %MEM：占用内存与系统内存总量的百分比
+
+--------------------------------
+ps u 输出格式：
+--------------------------------
+
+USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND
+
+格式说明：
+
+    USER: 行程拥有者
+
+    PID: pid
+
+    %CPU: 占用的 CPU 使用率
+
+    %MEM: 占用的记忆体使用率
+
+    VSZ: 占用的虚拟内存大小，单位 KB
+
+    RSS: 占用的记忆体大小
+
+    TTY: 终端的次要装置号码 (minor device number of tty)
+
+    STAT: 该行程的状态，linux的进程有5种状态：
+
+    D 不可中断 uninterruptible sleep (usually IO)
+
+    R 运行 runnable (on run queue)
+
+    S 中断 sleeping
+
+    T 停止 traced or stopped
+
+    Z 僵死 a defunct (”zombie”) process
+
+    注: 其它状态还包括W(无驻留页), &lt;(高优先级进程), N(低优先级进程), L(内存锁页).
+
+    START: 行程开始时间
+
+    TIME: 执行的时间
+
+    COMMAND:所执行的指令
+
+--------------------------------
+
+如果直接用ps命令，会显示所有进程的状态，通常结合grep命令查看某进程的状态。
+
+ps命令的最多用法：
+
+    查看所有用户的执行进程的详细信息
+
+        ps -le 或 ps -aux
+
+    查看指定进程的信息，配合管道和grep使用：
+
+        ps -aux | grep httpd
+        ps -le | grep httpd
+
+    查看指定用户的进程信息：
+
+        ps -uU ssl
+        ps -aux | grep ssl
+
+    按进程的PID对进程进行排序，还可按UID，执行时间等排序：
+
+        ps -aux --sort pid
+</code></pre><p>【查看进程树pstree】</p>
+<pre><code>pstree
+
+    以树形列出所有进程
+</code></pre><p>【杀死进程Kill】</p>
+<pre><code>为什么要杀死进程：
+
+    该进程占用了过多的CPU时间
+
+    该进程锁住了一个终端，使其他前台进程无法运行
+
+    运行时间过长，但没有预期效果
+
+    产生了过多到屏幕或磁盘文件的输出
+
+    无法正常退出
+
+关闭进程：
+
+    kill 进程号
+
+kill信号：
+
+    kill -l 列出所有信号，常用的是1和9
+
+    kill -1 进程号      重启进程
+
+    kill -9 进程号      强行关闭
+
+关闭图形进程：
+
+    xkill
+
+关闭所有进程按名称：
+
+    killall httpd
+
+查找服务进程号：
+
+    pgrep 服务名称
+
+关闭服务进程：
+
+    pkill 服务名称
+
+/proc：
+
+    /proc目录下以数字命名的子目录就是进程的PID号
+</code></pre><p>【设定进程的优先级nice和renice】</p>
+<pre><code>优先级取值范围为：-20到19，值越小，优先级越高
+
+指定程序的运行优先级：
+
+    nice -n 服务名
+
+        nice --5 httpd  将httpd优先级设为-5
+
+改变一个正在运行的进程的优先级
+
+    renice n pid
+
+        renice -5 679
+</code></pre><p>【退出登录后仍继续执行nohup命令】</p>
+<pre><code>使进程在用户退出登录后仍继续执行，若没有输出重定向等方式指定输出的存储位置，nohup命令将执行后的数据信息和错误信息默认存储到文件nohup.out中
+
+nohup 命令 &amp; 
+</code></pre><p>【进程的挂起和恢复】</p>
+<pre><code>挂起/中止进程：Ctrl+Z
+
+终止：Ctrl+C
+
+恢复进程到前台继续运行：fg
+
+    fg 1
+
+        1是使用jobs命令看到的编号
+
+恢复进程到后台继续运行：bg
+
+查看被挂起的进程：jobs
+</code></pre><p>【进程状态显示和进程控制】</p>
+<pre><code>top
+
+    内部快捷键：
+
+        d   指定刷新的时间间隔，默认为5秒钟自动刷新一次
+
+        c   显示整个命令行而不仅仅显示命令名
+
+        u   查看指定用户的进程
+
+        k   终止执行中的进程
+
+        h/? 获得帮助
+
+        r   重新设置进程优先级
+
+        s   改变刷新的时间间隔
+
+        W   将当前设置写入~/.toprc文件中
+</code></pre><p>【进程处理方式】</p>
+<pre><code>standalone  独立运行
+
+    服务启动后，会一直在系统驻留，占用系统资源，等待相应请求
+
+    反应速度快但较占用资源
+
+xinetd      进程托管
+
+    是互联网超级守护进程inetd的升级版，/etc/xinetd.d目录下的均是托管的服务
+
+    xinetd负责监听端口请求，有客户端请求时，xinetd启动对应的服务来应答请求，请求处理完后终止进程 
+
+    占用资源较少但反应速度慢
+
+atd、crond  计划任务
+
+    每隔一分钟从休眠中醒来一次，查看列表中是否有要执行的计划任务，因此计划任务不能精确到秒
+
+
+有大量访问，需要快速应答的选择standalone方式，如webserver Apache
+</code></pre><h2 id="计划任务"><a href="#计划任务" class="headerlink" title="计划任务"></a>计划任务</h2><p>【一次性计划任务at和batch】</p>
+<pre><code>at      安排作业在某一时刻执行一次
+
+batch   安排作业在系统负载不重时执行一次
+</code></pre><p>【周期性计划任务cron】</p>
+<pre><code>cron    安排周期性运行的作业
+</code></pre><p>【at】</p>
+<pre><code>安排一个或多个命令在指定的时间运行一次
+
+at进程的启动脚本：/etc/rc.d/init.d/atd
+
+创建的计划任务位于：/var/spool/at目录下，也可以直接编辑此目录下对应的文件来修改计划任务的命令
+
+at 时间
+
+    进入互动模式，输入要执行的命令，注意使用绝对路径，为防止黑客替换命令文件
+
+    输入完命令后，按Ctrl+d保存
+
+at -f 文件名 时间
+
+    执行指定文件中的所有命令
+
+at -d 或者 atrm     删除队列中的任务
+
+at -l 或者 atq      查看队列中的任务
+
+    3   2014-03-20 17:22 a ssl
+    2   2014-03-20 21:00 a root
+
+    2,3是编号，atrm删除时即根据此编号
+    时间是计划任务要执行的时间
+    a表示计划任务的状态active
+    ssl/root表示任务的创建人
+</code></pre><p>【at命令指定时间的方式】</p>
+<pre><code>绝对计时方法
+
+    midnight    noon    teatime（下午4点）
+
+    hh:mm [today]
+
+    hh:mm tomorrow
+
+    hh:mm 星期
+
+    hh:mm MM/DD/YY
+    hh:mm MMDDYY
+    hh:mm DD.MM.YY.
+
+相对计时方法
+
+    now + n minutes
+
+    now + n hours
+
+    now + days
+</code></pre><p>【at的配置文件】</p>
+<pre><code>限制哪些儿用户可以使用at命令
+
+/etc/at.allow
+
+/etc/at.deny
+
+at.allow文件的优先级高于at.deny
+
+若at.allow文件存在，则忽略at.deny，只有列在at.allow中的用户才可以使用at命令
+
+若at.allow文件不存在，而at.deny文件存在，则只有列在at.deny文件中的用户不能使用at命令
+
+若两个文件都不存在，则只有超级用户可以使用at命令
+
+若两个文件都存在且都为空，则所有用户都可以使用at命令
+</code></pre><p>【batch】</p>
+<pre><code>安排一个或多个命令在系统负载较轻时运行一次，一般情况下负载较轻指平均负载降到0.8以下
+
+使用方法同at
+</code></pre><p>【crontab】</p>
+<pre><code>cron进程的启动脚本：/etc/rc.d/init.d/crond
+
+用于生成cron进程所需要的crontab文件，位于/var/spool/cron目录下，以用户名来命名
+
+crontab -l  显示当前的crontab
+
+        -r  删除当前的crontab
+
+        -e  编辑当前的crontab
+
+格式：
+
+    分钟    小时    天    月    星期    命令/脚本
+
+    每项都不能为空，必须填入，不需要指定的用*表示任何时间
+
+    每项都可以指定多个值，用逗号,分隔，也可以指定连续值，用横杠-分隔
+
+    命令应该使用绝对路径，并应该有标准输出，错误输出的重定向文件
+
+    用户必须具有运行所对应命令或程序的权限
+
+取值范围：
+
+    分钟    0~59
+
+    小时    0~23
+
+    天      1~31
+
+    月      1~12
+
+    星期    0~6
+
+窍门：
+
+    分析企业的业务需求，把知道的具体的时间填上，不知道的都填上*
+
+    如每天凌晨4点执行A命令
+
+        分钟    小时    天    月    星期    命令/脚本
+        0       4       *     *     *       A
+
+    如一到三月份的每星期二、星期五下午6点执行A命令
+
+        分钟    小时    天    月    星期    命令/脚本
+        0       18       *    1-3     2,5       A
+
+    每隔2分钟，使用*/2表示
+</code></pre><p>【cron的配置文件】</p>
+<pre><code>/etc/crontab
+/etc/cron.allow
+/etc/cron.deny
+</code></pre><p>【其他】</p>
+<pre><code>telnet密码明文传输，已被ssh代替
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/01/Linux - sysvinit 详解/" rel="next" title="Linux - sysvinit 详解">
+                <i class="fa fa-chevron-left"></i> Linux - sysvinit 详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/01/Linux - 通过 YUM 仓库安装配置 LAMP 或 LNMP 环境/" rel="prev" title="Linux - 通过 YUM 仓库安装配置 LAMP 或 LNMP 环境">
+                Linux - 通过 YUM 仓库安装配置 LAMP 或 LNMP 环境 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">shenlin</p>
+              <p class="site-description motion-element" itemprop="description">A Programmer's Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">218</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程的概念"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x8FDB;&#x7A0B;&#x7684;&#x6982;&#x5FF5;" class="headerlink" title="&#x8FDB;&#x7A0B;&#x7684;&#x6982;&#x5FF5;"></a>&#x8FDB;&#x7A0B;&#x7684;&#x6982;&#x5FF5;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程管理命令"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;&#x547D;&#x4EE4;" class="headerlink" title="&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;&#x547D;&#x4EE4;"></a>&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;&#x547D;&#x4EE4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计划任务"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x8BA1;&#x5212;&#x4EFB;&#x52A1;" class="headerlink" title="&#x8BA1;&#x5212;&#x4EFB;&#x52A1;"></a>&#x8BA1;&#x5212;&#x4EFB;&#x52A1;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shenlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
