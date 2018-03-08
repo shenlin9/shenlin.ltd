@@ -2,9 +2,7 @@
 title: PHP - 编译安装 pecl 扩展库 openssl
 categories:
   - PHP
-  - PECL
 tags:
-  - PHP
   - PECL
   - OpenSSL
 ---

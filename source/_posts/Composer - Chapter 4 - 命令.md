@@ -1,11 +1,11 @@
-﻿title: Composer - Chapter 4 - 命令
+---
+title: Composer - Chapter 4 - 命令
 categories:
   - PHP
   - Composer
 tags:
   - PHP
   - Composer
-
 ---
 
 Composer 常用命令简介。

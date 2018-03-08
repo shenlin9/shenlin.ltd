@@ -1,10 +1,8 @@
 ﻿---
-title: linux - meta-package
+title: Linux - meta-package
 categories:
   - Linux
-  - meta-package
 tags:
-  - Linux
   - meta-package
 ---
 

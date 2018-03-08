@@ -2,6 +2,7 @@
 title: VirtualBox
 categories:
   - Windows
+  - Tools
 tags:
   - Virtualbox
 ---

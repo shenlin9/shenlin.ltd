@@ -3,8 +3,12 @@ title: PHP - 编译后没有 php.ini 文件
 categories:
   - PHP
 tags:
-  - PHP
+  - PHP.ini
 ---
+
+PHP 编译后没有 php.ini 文件
+
+<!--more-->
 
 查看装载的php.ini路径
 ```bash

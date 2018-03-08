@@ -1,9 +1,10 @@
 ---
 title: XShell
 categories:
-  - XShell
+  - Windows
+  - Tools
 tags:
-  - xshell
+  - XShell
 ---
 
 xshell

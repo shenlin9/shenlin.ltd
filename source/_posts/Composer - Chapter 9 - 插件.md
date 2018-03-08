@@ -1,12 +1,11 @@
+---
 title: Composer - Chapter 9 - 插件
-
 categories:
   - PHP
   - Composer
 tags:
   - PHP
   - Composer
-
 ---
 
 有修改或扩展 Composer 功能的需要时，可以使用插件。

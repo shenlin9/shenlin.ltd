@@ -24,7 +24,7 @@ SSL（Secure Sockets Layer）
 
     NetScape 公司上世纪 90 年代中期设计，用于解决 HTTP 协议的明文传输问题。
 
-    SSL指的是建立一条加密链路以加密通讯，其实这个链路中传输的内容是没有被SSL加密的。???
+    SSL 指的是建立一条加密链路以加密通讯，其实这个链路中传输的内容是没有被 SSL 加密的。???
 
     SSL 介于传输层（TCP）和应用层（HTTP,FTP）之间
 
@@ -32,7 +32,9 @@ TLS（Transport Layer Security）
 
     传输层安全协议
 
-    SSL 因为应用广泛，已经成为互联网上的事实标准。1999 年 IETF 把 SSL 标准化，标准化之后的名称改为 TLS。
+    SSL 因为应用广泛，已经成为互联网上的事实标准。
+    
+    1999 年 IETF 把 SSL 标准化，标准化之后的名称改为 TLS。
 
     两者常被并列称呼（SSL/TLS），因为这两者可以视作同一个东西的不同阶段。
 
@@ -67,15 +69,21 @@ HTTPS
 
 OpenSSL
 
-    是SSL协议的实现，整个软件包大概可以分成三个主要的功能部分：密码算法库、SSL协议库以及应用程序。
+    是 SSL 协议的实现，整个软件包大概可以分成三个主要的功能部分：密码算法库、SSL 协议库以及应用程序。
 
 SSH（Secure SHell）
 
-    SSH只是加密的shell，最初是用来替代telnet的。
+    SSH 是一种网络协议，用于计算机之间的加密登录，1995年，由芬兰学者 Tatu Ylonen 设计
 
-OpenSSH是SSH的实现
+    OpenSSH 是 SSH 协议的一种实现
 
-    OpenSSH依赖于OpenSSL，没有OpenSSL的话OpenSSH就编译不过去，也运行不了。
+    SSH 为 Secure Shell 的缩写，由IETF的网络工作小组（Network Working Group）所制定；
+    
+    SSH 为创建在应用层和传输层基础上的安全协议。
+
+OpenSSH 是 SSH 的实现
+
+    OpenSSH 依赖于 OpenSSL，没有 OpenSSL 的话 OpenSSH 就编译不过去，也运行不了。
 
 ## 实践
 
@@ -100,7 +108,6 @@ chkconfig sshd on
 ```
 
 ## nginx 设置 https
-
 
 ```
 

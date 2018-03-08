@@ -2,8 +2,8 @@
 title: Total Commander
 categories:
   - Windows
+  - Tools
 tags:
-  - Windows
   - Total Commander
 ---
 

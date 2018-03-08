@@ -2,9 +2,7 @@
 title: linux - PS 命令提示符
 categories:
   - Linux
-  - PS
 tags:
-  - Linux
   - PS
 ---
 

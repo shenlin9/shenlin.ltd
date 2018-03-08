@@ -1,11 +1,11 @@
-﻿title: Composer - Chapter 5 - 事件脚本
+---
+title: Composer - Chapter 5 - 事件脚本
 categories:
   - PHP
   - Composer
 tags:
   - PHP
   - Composer
-
 ---
 
 root 包 composer.json 文件里的 root JSON 对象属性：scripts，可以定义一系列触发事件和对应的事件脚本，格式如下:

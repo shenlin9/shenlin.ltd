@@ -1,7 +1,10 @@
 ---
 title: bash - linux shell 脚本攻略 - chapter 3 - 文件
-categories: bash
-tags: bash
+categories: 
+  - Linux
+  - Bash
+tags: 
+  - 
 ---
 
 shell 文件操作，Unix 将操作系统的一切都视为文件。

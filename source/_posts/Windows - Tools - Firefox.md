@@ -2,7 +2,7 @@
 title: Firefox
 categories:
   - Windows
-  - Firefox
+  - Tools
 tags:
   - Firefox
 ---

@@ -24,7 +24,7 @@ tags:
 
 fetch 时，src 是远程库的分支，dst 是本地库的分支
 push 时，src 是本地库的分支，dst 是远程库的分支
-    
+
 ???拉取推送时的顺序问题???
 
     git clone [<options>] [--] <repo> [<dir>]

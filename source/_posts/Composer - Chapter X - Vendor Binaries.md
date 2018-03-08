@@ -1,3 +1,4 @@
+---
 title: Composer - Chapter X - Vendor binaries
 categories:
   - PHP
@@ -5,7 +6,6 @@ categories:
 tags:
   - PHP
   - Composer
-
 ---
 
 一个 Composer 包中被用户使用的命令行脚本称为 vendor binary，用户不需要的如 build, compile 等命令行脚本则不是 vendor binary。

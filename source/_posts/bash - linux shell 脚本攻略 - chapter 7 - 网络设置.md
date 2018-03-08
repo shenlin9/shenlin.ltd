@@ -1,7 +1,10 @@
 ---
 title: bash - linux shell 脚本攻略 - chapter 7 - 网络设置
-categories: bash
-tags: bash
+categories: 
+ - Linux
+ - Bash
+tags: 
+ - 
 ---
 
 shell 网络设置

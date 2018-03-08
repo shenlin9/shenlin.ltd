@@ -1,11 +1,9 @@
 ---
 title: bash - linux shell 脚本攻略 - chapter 4.4 - cut
 categories: 
- - linux
- - bash
+ - Linux
+ - Bash
 tags: 
- - linux
- - bash
  - cut
 ---
 

@@ -1,4 +1,4 @@
-﻿---
+---
 title: chapter 2.2 - Git 提交历史
 categories:
   - Git

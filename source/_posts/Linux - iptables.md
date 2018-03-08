@@ -2,9 +2,7 @@
 title: linux - iptables
 categories:
   - Linux
-  - iptables
 tags:
-  - Linux
   - iptables
 ---
 

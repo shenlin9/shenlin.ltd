@@ -1,3 +1,4 @@
+---
 title: Composer - Chapter X - Composer.json Schema
 categories:
   - PHP
@@ -5,7 +6,6 @@ categories:
 tags:
   - PHP
   - Composer
-
 ---
 
 composer 在内部是将同一个包的不同版本都看做是独立不相干的包，这点对于使用 Composer 不重要，但更改 Composer 时这点儿很重要。

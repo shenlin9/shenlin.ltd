@@ -1,10 +1,8 @@
 ---
-title: linux - 软件包格式
+title: Linux - 软件包格式
 categories:
-  - linux
-  - rpm
+  - Linux
 tags:
-  - linux
   - rpm
 ---
 

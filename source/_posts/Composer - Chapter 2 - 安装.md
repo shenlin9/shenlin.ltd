@@ -1,11 +1,11 @@
-﻿title: Composer - Chapter 2 - 安装
+---
+title: Composer - Chapter 2 - 安装
 categories:
   - PHP
   - Composer
 tags:
   - PHP
   - Composer
-
 ---
 
 安装 Composer 简介。

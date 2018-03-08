@@ -1,3 +1,4 @@
+---
 title: Composer - Chapter 3 - 基本用法
 categories:
   - PHP
@@ -5,7 +6,6 @@ categories:
 tags:
   - PHP
   - Composer
-
 ---
 
 ## composer.json 和 composer.lock

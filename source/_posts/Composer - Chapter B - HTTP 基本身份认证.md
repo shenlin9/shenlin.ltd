@@ -1,12 +1,11 @@
+---
 title: Composer - Chapter B - HTTP 基本身份认证
-
 categories:
   - PHP
   - Composer
 tags:
   - PHP
   - Composer
-
 ---
 
 有 3 种进行 HTTP 基本身份认证的方法。

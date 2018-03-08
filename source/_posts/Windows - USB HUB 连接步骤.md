@@ -1,6 +1,6 @@
 ---
 title: USB HUB 连接步骤
-categories: 计算机基础
+categories: Basis
 tags: USB HUB
 ---
 

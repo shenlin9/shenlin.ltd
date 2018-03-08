@@ -1,3 +1,4 @@
+---
 title: Composer - Chapter 6 - Composer.json Schema
 categories:
   - PHP
@@ -5,7 +6,6 @@ categories:
 tags:
   - PHP
   - Composer
-
 ---
 
 主要介绍在 `composer.json` 文件中可用的字段属性。

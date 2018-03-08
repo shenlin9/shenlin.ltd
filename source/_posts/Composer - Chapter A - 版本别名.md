@@ -1,12 +1,11 @@
+---
 title: Composer - Chapter A - 版本别名
-
 categories:
   - PHP
   - Composer
 tags:
   - PHP
   - Composer
-
 ---
 
 Composer 根据 VCS 的 branch 生成版本号时，会分为两类，一类是数字形式的可比较版本号如1.2, 1.3等，另一类是非数字形式的不可比较的版本号如 master 会生成 dev-master，bugfix 生成 dev-bugfix。

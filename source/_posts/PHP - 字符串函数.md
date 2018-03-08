@@ -1,10 +1,8 @@
 ---
-title: php - 字符串函数
+title: PHP - 字符串函数
 categories:
-  - php
-  - 字符串函数
+  - PHP
 tags:
-  - php
   - 字符串函数
 ---
 

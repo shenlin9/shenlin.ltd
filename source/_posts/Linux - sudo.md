@@ -1,9 +1,8 @@
 ---
-title: linux - sudo
+title: Linux - sudo
 categories:
-  - linux
+  - Linux
 tags:
-  - linux
   - sudo
 ---
 

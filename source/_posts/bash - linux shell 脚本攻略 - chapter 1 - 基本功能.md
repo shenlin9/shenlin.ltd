@@ -1,7 +1,10 @@
 ---
 title: bash - linux shell 脚本攻略 - chapter 1 - 基本功能
-categories: bash
-tags: bash
+categories: 
+ - Linux
+ - Bash
+tags: 
+ - 
 ---
 
 shell 基本功能

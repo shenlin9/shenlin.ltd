@@ -1,3 +1,4 @@
+---
 title: Composer - Chapter 5 - 环境变量
 categories:
   - PHP
@@ -5,7 +6,6 @@ categories:
 tags:
   - PHP
   - Composer
-
 ---
 
 ## COMPOSER 

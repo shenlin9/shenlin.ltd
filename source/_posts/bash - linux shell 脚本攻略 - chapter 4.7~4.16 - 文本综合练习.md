@@ -1,11 +1,10 @@
 ---
 title: bash - linux shell 脚本攻略 - chapter 4.7~4.16 - 文本综合练习
 categories: 
- - linux
- - bash
+ - Linux
+ - Bash
 tags: 
- - linux
- - bash
+ - 
 ---
 
 shell 文本综合练习

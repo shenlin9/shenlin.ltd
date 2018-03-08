@@ -1,11 +1,11 @@
-﻿title: Composer - Chapter 7 - 资源包
+---
+title: Composer - Chapter 7 - 资源包
 categories:
   - PHP
   - Composer
 tags:
   - PHP
   - Composer
-
 ---
 
 Composer 是如何确定一个资源包的版本号列表的，获取依赖的资源包时又是如何限定其版本号的？

@@ -1,7 +1,10 @@
 ---
 title: bash - 基础
-categories: bash
-tags: bash
+categories: 
+ - Linux
+ - Bash
+tags: 
+ - 
 ---
 
 http://www.tldp.org/guides.html

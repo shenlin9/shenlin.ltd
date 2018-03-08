@@ -2,8 +2,8 @@
 title: Chocolatey
 categories:
   - Windows
+  - Tools
 tags:
-  - Windows
   - PowerShell
   - Chocolatey
 ---

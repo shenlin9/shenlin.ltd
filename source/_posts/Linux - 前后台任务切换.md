@@ -1,7 +1,7 @@
 ﻿---
-title: linux - 前后台任务切换
+title: Linux - 前后台任务切换
 categories:
-  - linux
+  - Linux
 tags:
   - jobs
   - fg

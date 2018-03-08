@@ -1,3 +1,4 @@
+---
 title: Composer - Chapter 8 - 资源库
 categories:
   - PHP
@@ -5,11 +6,10 @@ categories:
 tags:
   - PHP
   - Composer
-
 ---
 
+资源库
 
-    
 <!--more-->
 
 ## 资源库类型

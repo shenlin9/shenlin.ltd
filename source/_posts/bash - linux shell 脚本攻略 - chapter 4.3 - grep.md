@@ -1,7 +1,10 @@
 ---
 title: bash - linux shell 脚本攻略 - chapter 4.3 - grep 搜索文本
-categories: bash
-tags: bash
+categories: 
+ - Linux
+ - Bash
+tags: 
+ - grep
 ---
 
 shell 文本操作

@@ -1,11 +1,9 @@
 ---
 title: bash - linux shell 脚本攻略 - chapter 5.2 - wget
 categories: 
- - linux
- - bash
+ - Linux
+ - Bash
 tags: 
- - linux
- - bash
  - wget
 ---
 

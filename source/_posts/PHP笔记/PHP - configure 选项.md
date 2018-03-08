@@ -1,3 +1,14 @@
+---
+title: PHP - configure 选项
+categories:
+  - PHP
+tags:
+  - configure
+---
+
+PHP configure 选项
+
+<!--more-->
 
 ```bash
 [ssy@localhost php-7.1.5]$ ./configure \

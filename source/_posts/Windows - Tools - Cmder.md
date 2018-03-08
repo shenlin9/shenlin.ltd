@@ -2,8 +2,8 @@
 title: Cmder
 categories:
   - Windows
+  - Tools
 tags:
-  - Windows
   - Cmder
 ---
 

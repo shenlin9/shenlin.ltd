@@ -1,3 +1,16 @@
+---
+title: PHP - mysqld, libmysql
+categories:
+  - PHP
+tags:
+  - mysqld
+  - libmysql
+---
+
+PHP configure 选项
+
+<!--more-->
+
 ## 什么是mysqlnd？
 
 mysqldnd（MySQL native driver）是由PHP源码提供的mysql驱动连接代码。它的目的是代替旧的libmysql驱动。
