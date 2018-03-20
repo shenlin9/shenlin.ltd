@@ -18,17 +18,23 @@ $ sudo cd /home/michael
 sudo: command not found
 ```
 
-我们知道在执行Linux命令时，如果在其前面加上sudo，就表示以root权限执行。但是这其实是有一个前提的，就是只有那些Linux内置系统命令才可以用如此的形式来执行，而对于Shell内置命令或其他用户自定义命令、别名等，是不能用sudo来使用root权限的。为什么呢？详细说一下sudo幕后隐藏的过程才能明白。
+我们知道在执行 Linux 命令时，如果在其前面加上 sudo，就表示以 root 权限执行。
+但是这其实是有一个前提的，就是只有那些 Linux 内置系统命令才可以用如此的形式来执行，
+而对于 Shell 内置命令或其他用户自定义命令、别名等，是不能用 sudo 来使用 root 权限的。
 
-因为当在Linux下用sudo执行某一命令时，是在原进程（parent process）的基础上fork出来一个子进程（child process），这个子进程是以root权限执行的。然后在子进程中，执行你在sudo后面跟的命令。
+为什么呢？详细说一下 sudo 幕后隐藏的过程才能明白。
 
-在子进程中是无法调用涉及到父进程的状态的一些命令的，所以非系统内置命令会被拒绝。这就是为什么会出现command not found的提示。具体来说，当我们执行：
+因为当在 Linux 下用 sudo 执行某一命令时，是在原进程（parent process）的基础上 fork 出来一个子进程（child process），
+这个子进程是以 root 权限执行的。然后在子进程中，执行你在 sudo 后面跟的命令。
+
+在子进程中是无法调用涉及到父进程的状态的一些命令的，所以非系统内置命令会被拒绝。
+这就是为什么会出现 command not found 的提示。具体来说，当我们执行：
 
     sudo cd /home/michael  
 
 所在这个shell进程中（称其为PP，表示parent process）fork出一个子进程（称其为CP，表示child process），那么在CP中是无法改变PP的所在目录的。
 
-    sudo ls /home/michael  
+    sudo ls /home/michael
 
 sudo后由PP产生了CP，CP是无法获取PP所在的目录的内容的（具体来说，是读取该目录的block data，可详见《柳大的Linux游记·基础篇（2）Linux文件系统的inode》一文）。
 

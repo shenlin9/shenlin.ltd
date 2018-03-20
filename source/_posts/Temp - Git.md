@@ -293,3 +293,48 @@ http.sslcainfo=C:\cmder\vendor\git-for-windows\mingw32\ssl\certs\ca-bundle.crt
 diff.astextplain.textconv=astextplain
 ```
 
+设置分支
+```
+C:\Users\T460P\config_bak (master -> origin)
+$ git push
+fatal: The current branch master has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin master
+
+
+C:\Users\T460P\config_bak (master -> origin)
+$ git remote show origin
+* remote origin
+  Fetch URL: git@github.com:shenlin9/config_bak.git
+  Push  URL: git@github.com:shenlin9/config_bak.git
+  HEAD branch: master
+  Remote branch:
+    master tracked
+  Local ref configured for 'git push':
+    master pushes to master (fast-forwardable)
+
+C:\Users\T460P\config_bak (master -> origin)
+$ git push -u origin master
+Counting objects: 5, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (5/5), 6.15 KiB | 3.07 MiB/s, done.
+Total 5 (delta 0), reused 0 (delta 0)
+To github.com:shenlin9/config_bak.git
+   8800923..ffe87c6  master -> master
+Branch master set up to track remote branch master from origin.
+
+C:\Users\T460P\config_bak (master -> origin)
+$ git remote show origin
+* remote origin
+  Fetch URL: git@github.com:shenlin9/config_bak.git
+  Push  URL: git@github.com:shenlin9/config_bak.git
+  HEAD branch: master
+  Remote branch:
+    master tracked
+  Local branch configured for 'git pull':
+    master merges with remote master
+  Local ref configured for 'git push':
+    master pushes to master (up to date)
+```

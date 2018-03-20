@@ -1,9 +1,8 @@
 ---
-title: Linux - PHP-FPM
+title: PHP - PHP-FPM
 categories:
-  - Linux
+  - PHP
 tags:
-  - Linux
   - PHP-FPM
 ---
 

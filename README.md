@@ -1,6 +1,9 @@
+Vue.js
 PHP
 CodeIgniter
 Laravel
 Redis
 Swoole
-Vue.js
+
+CentOS/RedHat
+Manjaro

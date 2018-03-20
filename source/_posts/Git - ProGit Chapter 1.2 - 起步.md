@@ -1,4 +1,4 @@
-﻿---
+---
 title: chapter 1.2 - Git 起步
 categories:
   - Git
@@ -101,8 +101,8 @@ $ sudo yum install curl-devel expat-devel gettext-devel \
 ```
 为了能够添加更多格式的文档（如 doc, html, info），需要安装以下的依赖包：
 ```
-  $ sudo yum install asciidoc xmlto docbook2x
-  $ sudo apt-get install asciidoc xmlto docbook2x
+$ sudo yum install asciidoc xmlto docbook2x
+$ sudo apt-get install asciidoc xmlto docbook2x
 ```
 编译安装
 ```

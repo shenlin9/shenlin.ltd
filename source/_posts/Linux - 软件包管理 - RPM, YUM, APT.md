@@ -337,7 +337,34 @@ yum是软件的仓库，它可以是http或ftp站点，也可以是本地软件�
     yum --help
     man yum
 
-#### 更改YUM源
+#### Yum 源相关命令
+
+    yum repolist
+    yum repolist enabled
+    yum repolist disabled
+    yum repolist all
+
+
+    yum-config-manager --enable epel
+    ??? 区别
+    yum repolist --enablerepo=epel
+
+    yum repolist all|grep epel
+        * epel: mirror2.totbb.net
+        epel/x86_64                        Extra Packages for Enterprise enabled: 12,400
+
+    yum repoinfo epel
+        Loaded plugins: fastestmirror
+        Loading mirror speeds from cached hostfile
+        Repo-id      : epel/x86_64
+        Repo-name    : Extra Packages for Enterprise Linux 7 - x86_64
+        Repo-status  : disabled
+        Repo-metalink: https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=x86_64
+        Repo-expire  : 21,600 second(s) (last: Wed Jan 31 15:07:57 2018)
+          Filter     : read-only:present
+        Repo-filename: /etc/yum.repos.d/epel.repo
+
+#### 更改 YUM 源
 
 1，进入yum源配置目录
 

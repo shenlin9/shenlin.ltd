@@ -1,11 +1,11 @@
 ---
-title: chapter 1.1 - 版本控制系统简介
+title: ProGit chapter 1.1 - 版本控制系统简介
 categories: 
   - Git
   - Book-ProGit
 tags: 
   - Git
-  - DVCS
+  - DVCS 版本控制系统
 ---
 
 版本控制系统是一种记录一个或若干文件内容变化，以便将来查阅特定版本修订情况的系统。
@@ -26,7 +26,7 @@ tags:
 
 ## 集中化的版本控制系统
 
-![DVCS](https://git-scm.com/book/en/v2/images/centralized.png)
+![CVCS](https://git-scm.com/book/en/v2/images/centralized.png)
 
 Centralized Version Control Systems，简称 CVCS
 
@@ -60,17 +60,3 @@ Distributed Version Control System，简称 DVCS
 
 你可以根据需要设定不同的协作流程，比如层次模型式的工作流，而这在以前的集中式系统中是无法实现的。
 
-
-9.2 Why is GnuPG warning me about using insecure memory?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  GnuPG tries to lock memory so that no other process can see it and so
-  that the memory will not be written to swap.  If for some reason it’s
-  not able to do this (for instance, certain platforms don’t support
-  this kind of memory locking), GnuPG will warn you that it’s using
-  insecure memory.
-
-  While it’s almost always better to use secure memory, it’s not
-  necessarily a bad thing to use insecure memory.  If you own the
-  machine and you’re confident it’s not harboring malware, then this
-  warning can probably be ignored.
