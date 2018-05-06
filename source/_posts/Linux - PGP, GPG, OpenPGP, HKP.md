@@ -12,19 +12,25 @@ tags:
 
 GPG 大多用于加密信息在不安全网络环境下的传递（如 internet）。
 
-如果仅仅是想在本地加密数据，推荐使用 ![eCryptfs(The enterprise cryptographic filesystem for Linux)](http://ecryptfs.org/) 企业级加密文件系统（ubuntu安装时有个选项——加密用户文件夹，使用的就是该系统）。
+如果仅仅是想在本地加密数据，推荐使用 ![eCryptfs(The enterprise cryptographic
+filesystem for Linux)](http://ecryptfs.org/) 企业级加密文件系统（ubuntu安装时有
+个选项——加密用户文件夹，使用的就是该系统）。
 
 <!--more-->
 
 ## RSA
 
-RSA公钥加密。RSA公钥加密算法基于一个简单的事实，就是将两个大质数相乘很容易，但是想要在不知情的情况下根据结果找出是由哪两个数相乘得到的该结果却不容易，至少在当今一段时间和过去想要暴力破解使用了长秘钥的RSA加密信息是相当困难的。
+RSA公钥加密。RSA公钥加密算法基于一个简单的事实，就是将两个大质数相乘很容易，但是
+想要在不知情的情况下根据结果找出是由哪两个数相乘得到的该结果却不容易，至少在当今
+一段时间和过去想要暴力破解使用了长秘钥的RSA加密信息是相当困难的。
 
-## PGP 和 GnuPG
+## PGP 和 GPG
 
-1991年，程序员Phil Zimmermann为了避开政府的监视，开发了加密软件PGP。
+1991年，程序员Phil Zimmermann为了避开政府的监视，开发了加密软件PGP (Pretty Good
+Privacy)。
 
-但 PGP 是商业软，所以，自由软件基金会开发了PGP的替代品GnuPG，即GNU Privacy Guard，GNU 隐私卫士，也常缩写为GPG。
+但 PGP 是商业软件，所以，自由软件基金会开发了PGP的替代品开源软件 GnuPG，即GNU
+Privacy Guard，GNU 隐私卫士，也常缩写为GPG。
 
 大多数的linux发行版都默认包含了 gpg
 

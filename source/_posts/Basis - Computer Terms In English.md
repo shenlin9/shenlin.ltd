@@ -33,3 +33,7 @@ Internet Engineering Task Force (IETF)
 副作用
 
 如调用一个函数不是为了使用它的返回值，而是为了执行它里面对文件的操作，可称为副作用???
+
+## IRC
+
+Internet Relay Chat (IRC)

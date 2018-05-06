@@ -100,6 +100,8 @@ See Section 4.4.7, “mysql_upgrade — Check and Upgrade MySQL Tables”.
 
 命令行工具 ：可以交互式地输入SQL语句，或者以批处理模式从文件中执行 SQL 语句
 
+一般用小写 mysql 表示这个客户端命令行工具，用大写的 MySQL 表示数据库管理系统
+
 See Section 4.5.1, “mysql — The MySQL Command-Line Tool”.
 
 * mysqladmin
@@ -268,7 +270,7 @@ See Section 4.8.5, “zlib_decompress — Decompress mysqlpump
 ZLIB-Compressed Output”.
 
 * Oracle 还提供了 MySQL Workbench GUI tool，用于管理 MySQL 服务器和数据库，用于
-  创建、执行和评估查询，以及从其他关系数据库管理系统中迁移数据库和数据以供MySQL
+  创建、执行和评估查询，以及从其他关系数据库管理系统中迁移数据库和数据以供 MySQL
   使用
 
 * 额外的 GUI 工具包括 MySQL Notifier 和 MySQL for Excel
@@ -294,6 +296,8 @@ See Section 6.1.2.1, “End-User Guidelines for Password Security”.
 ## 选项
 
 ### 通用选项
+
+--help 或 -?        获取在线帮助
 
 一些儿选项是所有 MySQL 客户端程序都支持的，如：
 

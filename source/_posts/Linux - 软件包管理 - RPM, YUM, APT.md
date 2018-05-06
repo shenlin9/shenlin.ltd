@@ -179,6 +179,11 @@ rpm -Uvh oracle-validated-1.1.0-21.el5.x86_64.rpm
 	解压指定文件到当前目录
 	rpm2cpio initscripts-8.45.30-2.el5.centeros.i386.rpm | cpio -idv ./etc/ininttab
 
+##### 完整性验证
+
+    RPM 内置完整性验证机制
+    ????
+
 ### 2. 软件包管理器 YUM
 
 YUM : Yellowdog Updater,Modified
