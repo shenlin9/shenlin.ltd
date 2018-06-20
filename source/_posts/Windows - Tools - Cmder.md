@@ -7,7 +7,8 @@ tags:
   - Cmder
 ---
 
-可使用 cmder 代替 Windows 的命令行窗口，cmder 支持多种 shell，如 Git, PowerShell, BaShell 等。
+可使用 cmder 代替 Windows 的命令行窗口，cmder 支持多种 shell，如 Git,
+PowerShell, BaShell 等。
 
 <!--more-->
 

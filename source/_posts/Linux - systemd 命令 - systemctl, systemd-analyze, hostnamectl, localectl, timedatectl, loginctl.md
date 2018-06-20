@@ -99,11 +99,9 @@ Unit 之间存在依赖关系：A 依赖于 B，就意味着 Systemd 在启动 A
 
 systemctl list-dependencies命令列出一个 Unit 的所有依赖。
 
-
     $ systemctl list-dependencies nginx.service
 
 上面命令的输出结果之中，有些依赖是 Target 类型（详见下文），默认不会展开显示。如果要展开 Target，就需要使用--all参数。
-
 
     $ systemctl list-dependencies --all nginx.service
 

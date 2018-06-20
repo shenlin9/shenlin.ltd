@@ -293,7 +293,16 @@ see Section 4.9, “MySQL Program Environment Variables”.
 使用 MYSQL_PWD 是不安全的
 See Section 6.1.2.1, “End-User Guidelines for Password Security”.
 
-## 选项
+## 参数和选项
+
+参数可以有选项，也可以没有选项
+```
+shell> mysql --user=root test
+shell> mysql -h example.com
+```
+有选项的参数以 `-` 或 `--` 开头，如 `--user`
+无选项的参数提供了额外的信息，如 mysql 命令的第一个无选项参数被解释为数据库名，
+如 `test`
 
 ### 通用选项
 
@@ -317,14 +326,15 @@ mysql 客户端程序的第一个非选项参数是要连接的数据库名
 
 一些儿选项具有默认值，当不指定选项值时则使用默认值
 
--h 默认值 localhost
--u Windows 下默认值 ODBC，Linux 下为当前登录的用户名
--p 不提供此选项则不发送密码
-
 例如
 ```
 $ mysql
 ```
+-h 默认值 localhost
+-u Windows 下默认值 ODBC，Linux 下为当前登录的用户名
+-p 不提供此选项则不发送密码
+第一个非选项参数为数据库名，没提供则表示默认不选择数据库
+
 不带任何参数，则使用默认值，表示连接 localhost 主机，用户名是 ODBC 或 当前登录用
 户，不发送密码，没有指定要连接的数据库
 
@@ -334,7 +344,13 @@ shell> mysql --host=localhost --user=myname --password mydb
 shell> mysql -h localhost -u myname -p mydb
 ```
 
-## 
+## 许可
 
 MySQL 是双重许可，用户既可以根据 GPL 的条款把 MySQL 软件作为开源产品，或者可以从
 Oracle 购买标准的商业许可证。
+
+## 
+
+```
+shell> mysql --protocol
+```

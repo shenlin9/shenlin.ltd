@@ -3,13 +3,13 @@ title: MySQL - MySQL Windows 安装程序 - MySQL Installer
 categories: 
  - MySQL
 tags: 
+ - MySQL Windows
  - MySQL Installer
 ---
 
 MySQL Installer
 
 <!--more-->
-
 
 ## Windows 系统的 MySQL Installer
 

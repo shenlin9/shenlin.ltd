@@ -15,7 +15,8 @@ tags:
 
 首先说明：小写的 gcc 和大写的 GCC 是两个不同的东西
 
-GCC:GNU Compiler Collection(GNU 编译器集合)，它可以编译C、C++、JAV、Fortran、Pascal、Object-C、Ada等语言。
+GCC:GNU Compiler Collection(GNU 编译器集合)，它可以编译C、C++、JAV、Fortran、
+Pascal、Object-C、Ada等语言。
 
 gcc 是 GCC中的GNU C Compiler（C 编译器）
 
@@ -23,7 +24,8 @@ g++ 是 GCC中的GNU C++ Compiler（C++编译器）
 
 <!--more-->
 
-一个有趣的事实就是，就本质而言，gcc和g++并不是编译器，也不是编译器的集合，它们只是一种驱动器，根据参数中要编译的文件的类型，调用对应的GUN编译器而已
+一个有趣的事实就是，就本质而言，gcc和g++并不是编译器，也不是编译器的集合，它们只
+是一种驱动器，根据参数中要编译的文件的类型，调用对应的GUN编译器而已
 
 由于编译器是可以更换的，所以gcc不仅仅可以编译C文件
 
@@ -39,7 +41,8 @@ gcc 和 g++ 的主要区别
 
 4. gcc在编译C文件时，可使用的预定义宏是比较少的
 
-5. gcc在编译cpp文件时/g++在编译c文件和cpp文件时（这时候gcc和g++调用的都是cpp文件的编译器），会加入一些额外的宏
+5. gcc在编译cpp文件时/g++在编译c文件和cpp文件时（这时候gcc和g++调用的都是cpp文件
+   的编译器），会加入一些额外的宏
 
 ## MinGW
 
@@ -92,7 +95,8 @@ Package: mingw32-gcc-objc                             Subsystem: mingw32
     C:\MinGW\include
 
 
-完成，编译软件包时，若缺少 dll， 可能是有软件包未安装，如编译 SpaceVim 缺少 libmingwex，安装即可
+完成，编译软件包时，若缺少 dll， 可能是有软件包未安装，如编译 SpaceVim 缺少
+libmingwex，安装即可
 
 
 

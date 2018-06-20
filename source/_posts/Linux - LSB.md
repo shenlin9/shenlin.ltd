@@ -33,7 +33,8 @@ LSB脚本动作
 
 ·status 打印服务的当前状态
 
-start,stop,restart,force-reload 和status是所有lsb脚本必须支持的；reload和try-restart是可选的。当然自己也可以定义别的一些动作。
+start,stop,restart,force-reload 和 status 是所有 lsb 脚本必须支持的；reload 和
+try-restart 是可选的。当然自己也可以定义别的一些动作。
 
 在下列情况下，lsb脚本要求确保对其接受的动作(action)有其明确且合理的行为
 
@@ -43,7 +44,9 @@ start,stop,restart,force-reload 和status是所有lsb脚本必须支持的；rel
 
 对于这些行为，为了满足其一致性，最好使用/lib/lsb/init-functions脚本(后面分析)
 
-在主流的Linux发行版版本中,一个软件包卸载(remove)时,并不会讲一些脚本,配置文件同时删除,除非你强制指定为清除(purge).因此,在你的lsb脚本最前面应该包括一个判断真正的可执行文件是否存在,类似于下面这个样子:
+在主流的Linux发行版版本中,一个软件包卸载(remove)时,并不会讲一些脚本,配置文件同时
+删除,除非你强制指定为清除(purge).因此,在你的lsb脚本最前面应该包括一个判断真正的
+可执行文件是否存在,类似于下面这个样子:
 
 [ -x /usr/sbin/ifconfig ] || exit 5
 
@@ -92,4 +95,6 @@ start,stop,restart,force-reload 和status是所有lsb脚本必须支持的；rel
 
 ·             错误和状态消息应该通过日志函数来输出，比如lsb提供的log_failure_msg。
 
-因为lsb脚本有可能是由系统管理员在非标准的环境下手工运行,比如没有PATH,USER,LOGNAME等环境变量.因此lsb脚本不能依赖环境变量,它需要自己设定自己需要的变量或者使用缺省值.
+因为lsb脚本有可能是由系统管理员在非标准的环境下手工运行,比如没有
+PATH,USER,LOGNAME等环境变量.因此lsb脚本不能依赖环境变量,它需要自己设定自己需要的
+变量或者使用缺省值.

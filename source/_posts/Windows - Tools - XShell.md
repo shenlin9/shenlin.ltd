@@ -13,9 +13,11 @@ xshell
 
 ## 下载安装
 
-不要去中文网站(http://www.xshellcn.com/)下载，去 xshell 的英文网站 http://www.netsarang.com/ 下载学习和家庭用户的免费版本，其功能和商业版是一样的
+不要去中文网站(http://www.xshellcn.com/)下载，去 xshell 的英文网站
+http://www.netsarang.com/ 下载学习和家庭用户的免费版本，其功能和商业版是一样的
 
-> This Free for Home and School edition has the same powerful features as the commercial version.
+> This Free for Home and School edition has the same powerful features as the
+> commercial version.
 
 在下载页面选择 Evaluation user / Home & School user
 

@@ -104,7 +104,7 @@ SUSE Linux Enterprise Server (SLES) 平台使用 MySQL SLES 源
 shell> openssl md5 package_name 
 ```
 
-否则可以使用  GNU Text Utilities ， MD5 校验是它功能的一部分
+否则可以使用 GNU Text Utilities ，MD5 校验是它功能的一部分
 http://www.gnu.org/software/textutils/
 ```
 shell> md5sum mysql-standard-5.7.21-linux-i686.tar.gz
@@ -189,10 +189,12 @@ Primary key fingerprint: A4A9 4068 76FC BD3C 4567 70C8 8C71 8D3B 5072 E1F5
 
     密钥没有经过可信签名的认证，没有证据表明签名属于所有者，
 
-    This refers to your level of trust in your belief that you possess our real public key. 
+    This refers to your level of trust in your belief that you possess our real
+    public key. 
     This is a personal decision.
     Ideally, a MySQL developer would hand you the key in person,
-    but more commonly, you downloaded it. Was the download tampered with? Probably not, but this decision is up to you.
+    but more commonly, you downloaded it. Was the download tampered with?
+    Probably not, but this decision is up to you.
     Setting up a web of trust is one method for trusting them.
 
 #### Windows 下验证签名
@@ -235,7 +237,10 @@ shell> rpm --import http://dev.mysql.com/doc/refman/5.7/en/checking-gpg-signatur
 
 ## 使用通用二进制软件包安装
 
-
+```
+shell> 
+shell> 
+```
 
 ## 创建名为 mysql 的用户和用户组
 

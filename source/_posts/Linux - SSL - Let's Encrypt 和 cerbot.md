@@ -127,7 +127,7 @@ $ sudo certbot renew
 
 可以设置计划任务 cron 或 systemd timer
 (在过期前)定期自动更新证书      ??? 过期前不是说快过期的时候再运行，而是安装上证书后就要开始运行了
-最好一天运行两次，防止撤销Let's Encrypt-initiated 撤销
+最好一天运行两次，防止撤销 Let's Encrypt-initiated 撤销
 > if you're setting up a cron or systemd job, we recommend running it twice per day 
 > (it won't do anything until your certificates are due for renewal or revoked, but
 > running it regularly would give your site a chance of staying online in case a
