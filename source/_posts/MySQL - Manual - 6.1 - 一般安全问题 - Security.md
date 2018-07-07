@@ -247,7 +247,7 @@ MySQL 5.7.5 移除了对 `pre-4.1` 密码散列的支持，这包括移除 `mysq
 身份验证插件和 `OLD_PASSWORD()` 函数。另外，`secure_auth` 不能被禁用，
 `old_passwords` 不能被设置为1。
 
-MySQL 5.7.5 中只有 `mysql_native_password` 验证插件仍然和 `4.1` 密码散列相关。
+从 MySQL 5.7.5 起只有 `mysql_native_password` 验证插件仍然和 `4.1` 密码散列相关。
 
 注：`4.1` 和 `pre-4.1` 是两套散列
 
@@ -313,23 +313,156 @@ mysql> SELECT PASSWORD('mypass');
 列目前的长度。
 
 因此目前 user 表的 Password 列既可以存储 `pre-4.1` 格式的 16 字节散列值也可以存
-储 `4.1` 格式的 41 字节散列值
+储 `4.1` 格式的 41 字节散列值，对于一个给定的散列值，可以根据下面两种方法来确定
+使用的是哪个格式的散列：
+1. 长度：`4.1` 长度为 41 字节，`pre-4.1` 长度为 16 字节
+2. 内容：`4.1` 散列值总是以 `*` 号开头，而 `pre-4.1` 则不是
+
+为了允许显式的生成 `pre-4.1` 格式的密码散列，还进行了两次更改：
+
+1. 添加了 `OLD_PASSWORD()` 方法，返回 16 字节长散列值
+
+2. 为了兼容性，添加了系统变量 `old_passwords`，以便 DBAs 和应用程序控制散列方法
+   `PASSWORD()`，`old_passwords` 默认值为 0，表示使用 `4.1` 的 41 字节长散列方法
+   ，若为 1，则表示使用 `pre-4.1` 的散列方法，这时 `PASSWORD()` 和
+   `OLD_PASSWORD()` 等价。
+   为了允许 DBA 控制客户端如何连接，添加了系统变量 `secure_auth`，启动服务器时根
+   据此变量的启用或禁用状态将可以决定是否允许客户端使用老旧的 `pre-4.1` 散列方法
+   ，在 MySQL 5.6.5 之前，`secure_auth` 默认是禁用的，即可以用旧的 `pre-4.1`，从
+   MySQL 5.6.5 起，`secure_auth` 默认是启用的，但 DBAs 可以禁用掉它，但不推荐这
+   样做，`pre-4.1` 应被弃用并避免再次使用它。
+
+另外，客户端 `mysql` 支持选项 `--secure-auth` 类似于服务器端的系统变量
+`secure_auth`，但这是客户端的选项，可以用来阻止客户端连接到使用 `pre-4.1` 散列方
+法的不安全账户。
+
+账户升级说明，参考：Section 6.5.1.3,“Migrating Away from Pre-4.1 Password
+Hashing and the mysql_old_password Plugin”.
 
 #### 与散列方法相关的兼容性问题
 
-
+以后补充
 
 ## 使 MySQL 对攻击者安全
 
+使用客户端连接到服务器时，应该使用密码，密码不是使用明文传输的，密码在 MySQL
+4.1.1 版本里已经被升级为很安全的版本，如果使用的是 pre-4.1 散列方法则密码可能被
+破解，因为有能力的入侵者可以监听客户端和服务器之间的通讯。
+
+为了使得通讯也不可被监听，可以使用 MySQL 的内部 SSL。
+参见： Section 6.4, “Using Encrypted Connections”
+
+或者，使用 SSH 获得一个加密的 TCP/IP 连接。
+开源 SSH 客户端：http://www.openssh.org/
+SSH 客户端的开源版和商业版比较：http://en.wikipedia.org/wiki/Comparison_of_SSH_clients
+
+为了 MySQL 系统安全，强烈地考虑以下建议：
+
+1. 所有的 MySQL 账号都必须设置密码，如果有账户没有设置密码，则任何人都可以简单的
+   通过 mysql 客户端连接到服务器
+   ```
+   shell>> mysql -h host -u user_no_passwd
+   ```
+   设置密码的方法的讨论：Section 6.3.6, “Assigning Account Passwords”.
+
+2. 确保运行 mysqld 的帐户是唯一有权限在数据库目录中读或写的 Unix 用户帐户。
+
+3. 永远不要以 Unix 的 root 用户身份运行 mysqld，这是极度危险的，因为任何具有文件
+   权限的用户都可以让 MySQL 服务器以 root 的身份创建文件，例如 `~root/.bashrc`，
+   因此除非明确的指定了 `--user=root` 选项，mysqld 拒绝以 root 身份运行。
+
+   mysqld 应该以一个普通的没有特权的用户身份运行，可以创建一个名为 mysql 的 Unix
+   用户账号，此账户只用来管理 MySQL 服务器。
+
+   以指定的用户账号来启动服务器，可以在选项文件 `my.cnf` 里设置：
+   ```
+   [mysqld]
+   user=mysql
+   ```
+   这时，MySQL 服务器无论是手动启动，还是由 mysqld_safe 或 mysql.server 启动，均
+   是以指定的用户来运行的。
+
+   以除 root 以外的其他 Unix 用户运行 mysqld 并不意味着需要改变用户表中的 root
+   用户名。MySQL 帐户的用户名与 Unix 帐户的用户名没有任何关系。
+
+   参见：Section 6.1.5, “How to Run MySQL as a Normal User”.
+
+4. 不要向非管理用户授予文件权限。任何拥有文件权限的用户都可以在文件系统的任何地
+   方使用 mysqld 守护进程的特权编写文件。包括服务器的数据目录，其中包含实现特权
+   表的文件。想要文件特权操作安全一点儿，使用 `SELECT ... INTO OUTFILE` 生成文件
+   时不要覆盖已经存在的文件，而且文件要对所有人都是可写的。
+
+   文件权限也可以被用来读取任何的文件，只要此文件对于以某用户身份运行的服务器具
+   有世界可读性或可访问性
+
+   使用此权限，可以把任何文件读入数据库表。
+
+   但此权限也可能被滥用，例如，通过 `LOAD DATA` 把 `/etc/passwd` 读入到表里，则
+   会通过`SELECT` 语句泄露.
+
+5. 限制可以写入和读取文件的目录，设置系统变量 `set_secure_priv` 到指定的目录，参
+   见：Section 5.1.5, “Server System Variables”
+
+6. 不要向非管理用户授予 `process` 和 `super` 权限。`mysqladmin processlist` 和
+   `SHOW PROCESSLIST` 显示了当前执行的语句文本，所以允许查看服务器进程列表的用户
+   可能看见被其他用户执行的敏感语句如 `UPDATE user SET
+   password=PASSWORD('not_secure')`
+
+   mysqld 为拥有 `SUPER` 权限的用户准备了一个额外的连接，所以 MySQL 的 root 用户
+   可以在其他普通连接都在使用的情况下登录并检查服务器的活动情况。`SUPER` 特权可
+   以用来终止客户端连接，通过改变系统变量的值来改变服务器操作和控制复制服务器.
+
+7.  不允许把符号连接用于表。可以通过 `--skip-symbolic-links` 选项来禁用，当使用
+    root 用户来运行 mysqld 时更是特别重要，因为任何对服务器数据目录有写权限的用户
+    都可以删除任何系统文件。
+
+    参见：Section 8.12.3.2, “Using Symbolic Links for MyISAM Tables on Unix”.
+
+8.  存储的程序和视图应该使用第23.6节中讨论的安全指南来编写
+
+    参见：Section 23.6,“Access Control for Stored Programs and Views”.
+
+9.  如果无法信任 DNS 服务器，则应该在授权表里使用 IP 地址而不是主机名，总之，应该
+    在使用包含通配符的主机名创建授权表条目时要特别小心。
+
+10. 如果要限制一个账户允许的连接数量，可以通过设置 mysqld 变量
+    `max_user_connections` 的值。`GRANT` 语句也支持资源控制选项，来限制帐户的服
+    务器使用范围
+
+    参见；Section 13.7.1.4, “GRANT Syntax”.
+
+11. 如果插件目录对服务器是可写入的，那么用户就可能使用 `SELECT...INTO DUMPFILE`
+    语句将可执行代码写入插件目录中的文件。可以通过让 `plugin_dir` 对服务器只读来
+    阻止，或者通过设置`--secure-file-priv` 到一个安全目录，即此目录里可以安全的
+    用 `SELECT` 进行写操作。
 
 
 ## 与安全相关的 mysqld 选项和变量
 
+稍后补充
 
+## 如何以普通用户身份运行 MySQL
 
-## 如何将 MySQL 作为普通用户运行
+在 Windows 上，您可以使用普通用户帐户将 MySQL 服务器作为 Windows 服务运行。
 
+在 Linux 上，对于使用 MySQL 存储库、RPM 包或 Debian 软件包执行的 MySQL 安装，
+MySQL 服务器 mysqld 应该使用本地操作系统用户 `mysql` 来启动，包含在安装程序里的
+初始化脚本不支持使用其他的本地操作系统用户来启动。
 
+在 Linux 上，对于使用 `tar`, `tar.gz` 执行的 MySQL 安装，MySQL 服务器 mysqld 可
+以被任何用户启动和运行，但是为了安全原因，仍应该避免使用 `root` 用户来运行。把
+MySQL 的运行用户改为普通的无特权用户 `user_name`，需要执行下列操作：
+
+1. 如果服务器在运行，则使用 `mysqladmin shutdown` 停止运行服务器
+
+2. 更改数据库的目录、文件以使得普通用户有权限写入和读取文件：
+
+    ```
+    shell> chown -R user_name /path/to/mysql/datadir
+    ```
+    * 可能需要以 `root` 身份执行
+    * 不做这步则服务器以普通用户身份运行时可能无法读取数据库和表
+    * 如果 MySQL 数据目录中的目录或文件是符号链接
 
 ## 使用 LOAD DATA LOCAL 的安全问题
 

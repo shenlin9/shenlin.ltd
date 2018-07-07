@@ -99,3 +99,39 @@ Password hashing methods in MySQL have the history described following.
 These changes are illustrated by changes in the result from the PASSWORD()
 function that computes password hash values and in the structure of the user
 table where passwords are stored.
+
+
+The closest some of us will ever get to heaven
+
+
+Any user that has this privilege can write a file anywhere in the file system
+with the privileges of the mysqld daemon.
+任何拥有这种特权的用户都可以在文件系统的任何地方使用mysqld守护进程的特权编写文件
+？能不能改为下面的顺序？
+Any user that has this privilege can write a file anywhere with the privileges
+of the mysqld daemon in the file system
+
+
+To make FILE-privilege operations a bit safer, files generated with SELECT ...
+INTO OUTFILE do not overwrite existing files and are writable by everyone.
+想要文件特权操作安全一点儿，使用 `SELECT ... INTO OUTFILE` 生成文件时不要覆盖已
+经存在的文件，而且文件要对所有人都是可写的。
+
+
+The FILE privilege may also be used to read any file that is world-readable or
+accessible to the Unix user that the server runs as.
+world-readable ???
+
+
+
+If the plugin directory is writable by the server, it may be possible for a user
+to write executable code to a file in the directory using SELECT ... INTO
+DUMPFILE.
+This can be prevented by making `plugin_dir` read only to the server or by
+setting `--secure-file-priv` to a directory where `SELECT` writes can be made
+safely.
+
+is writable by  由服务器写入？？
+is writable for 
+
+
