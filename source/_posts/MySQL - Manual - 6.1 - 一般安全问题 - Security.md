@@ -11,7 +11,6 @@ tags:
 
 <!--more-->
 
-
 ## 安全参考
 
 在讨论安全性时，有必要考虑完全保护整个服务器主机（而不仅仅是 MySQL 服务器），以
@@ -449,9 +448,11 @@ SSH 客户端的开源版和商业版比较：http://en.wikipedia.org/wiki/Compa
 MySQL 服务器 mysqld 应该使用本地操作系统用户 `mysql` 来启动，包含在安装程序里的
 初始化脚本不支持使用其他的本地操作系统用户来启动。
 
-在 Linux 上，对于使用 `tar`, `tar.gz` 执行的 MySQL 安装，MySQL 服务器 mysqld 可
-以被任何用户启动和运行，但是为了安全原因，仍应该避免使用 `root` 用户来运行。把
-MySQL 的运行用户改为普通的无特权用户 `user_name`，需要执行下列操作：
+在 Unix 上，或使用 `tar`, `tar.gz` 执行 MySQL 安装的 Linux 上，MySQL 服务器
+mysqld 可以被任何用户启动和运行，但是为了安全原因，仍应该避免使用 `root` 用户来
+运行。
+
+Linux 上把 MySQL 的运行用户改为普通的无特权用户 `user_name`，需要执行下列操作：
 
 1. 如果服务器在运行，则使用 `mysqladmin shutdown` 停止运行服务器
 
@@ -462,12 +463,149 @@ MySQL 的运行用户改为普通的无特权用户 `user_name`，需要执行�
     ```
     * 可能需要以 `root` 身份执行
     * 不做这步则服务器以普通用户身份运行时可能无法读取数据库和表
-    * 如果 MySQL 数据目录中的目录或文件是符号链接
+    * 如果 MySQL 数据目录中的目录或文件是符号链接，`chown -R` 可能不会跟踪更改到
+        原文件，这样的话则需要用户自己跟踪更改原文件的所有者
+
+3. 启动服务器时以 `user_name` 用户启动，另一个方法是启动时使用 `root` 用户启动，
+   但使用 `--user=user_name` 选项，则 mysqld 启动后，在接受任何连接前将切换为以
+   `user_name` 身份运行。所以授权表里的 `root` 账号必须总是设置密码，否则任何账
+   户都可以使用 `--user=root` 选项执行任何操作。
+   参见：Section 2.10.4,“Securing the Initial MySQL Accounts”
+
+4. 为了设定 MySQL 服务器在系统启动时自动以 `user_name` 身份运行，可以通过 `/etc`
+   目录或服务器数据目录下的 `my.cnf` 选项文件设置：
+
+    ```
+    [mysqld]
+    user=user_name
+    ```
 
 ## 使用 LOAD DATA LOCAL 的安全问题
 
+`LOAD DATA` 语句可以载入服务器上的文件，`LOAD DATA LOCAL` 则可以载入客户端的文件
+，载入客户端文件时有两个安全问题：
 
+1. 从客户端主机到服务器主机的文件的传输是由 MySQL 服务器发起的。理论上打过补丁的服务器
+   可以告诉客户端程序传送服务器选择的文件，而不是在 `LOAD DATA` 语句中由客户端命
+   名的文件，这样的服务器可以访问客户端主机（客户端用户拥有读权限的那台主机）上
+   的任何文件，打过补丁的服务器实际上应该回应任何语句要求的文件传输请求，而不仅
+   仅是 `LOAD DATA LOCAL`，更基本的问题是客户端不应该连接到不信任的服务器。
+
+2. 在 Web 环境里，客户端连接到 Web 服务器，则 Web 客户端用户可以读取 Web 服务器
+   进程有读权限的所有文件，在这个环境里，MySQL 服务器的客户端其实是 Web 服务器，
+   而不是连接到 Web 服务器的用户运行的某个远程程序。
+
+为了避免 `LOAD DATA` 问题，客户端应该避免使用 `LOCAL`；
+
+为了避免连接到不信任的服务器，客户端应该建立安全连接并且通过连接时使用
+`--ssl-mode=VERIFY_IDENTITY` 选项和适当的 CA 证书来验证服务器的身份
+
+使管理员和应用程序能够管理本地数据加载能力，`LOCAL` 配置是这样工作的：
+
+1. 服务器端
+
+    * 系统变量 `local_infile` 控制服务器端的 `LOCAL` 能力，取决于 `local_infile`
+      的设置，服务端将拒绝或允许已启用 `LOCAL` 的客户端进行本地数据加载。缺省是
+      启用的。
+
+    * 为了显式的让服务端拒绝或允许 `LOAD DATA LOCAL` 语句（无论客户端的程序和库
+      在编译和运行时如何配置），则需要启动 mysqld 时设定 `local_infile`，或者在
+      运行时设定。
+
+2. 客户端
+
+    * CMake 的 `ENABLED_LOCAL_INFILE CMake` 选项, 控制着 MySQL 客户端库内编译的
+      的默认 `LOCAL` 功能，所以，没有明确安排的客户端可以根据在 MySQL 构建时设定
+      的 `ENABLED_LOCAL_INFILE` 设置禁用或启用 `LOCAL` 功能。
+
+      默认情况下，MySQL 二进制发行版里的客户端库编译时启用了
+      `ENABLED_LOCAL_INFILE`，如果你自己从源代码编译 MySQL 时，禁用还是启用
+      `ENABLED_LOCAL_INFILE` 基于没有明确安排的客户端是否应该具有 `LOCAL` 的功能
+
+    * 使用 C 语言 API 的客户端程序可以通过调用 `mysql_options()` 来来显式地控制
+      负载数据加载，从而启用或禁用 `MYSQL_OPT_LOCAL_INFILE` 选项
+
+      参考：Section 27.8.7.50, “mysql_options()”
+
+    * 对于 mysql 客户端，默认本地数据装载是禁用的，明确的禁用或启用此功能，可以
+      使用 `--local-infile=0` 或 `--local-infile[=1]`。
+
+    * 对于 mysqlimport 客户端，默认本地数据装载是禁用的，明确的禁用或启用此功能
+      ，可以使用 `--local=0` 或 `--local[=1]`。
+
+    * 如果在 Perl 脚本或其他程序里通过读取选项文件里的 `[client]` 组使用 `LOAD
+      DATA LOCAL`，可以在组里添加 `local-infile` 选项，为了防止有程序不明白此选
+      项，可以在前面添加前缀 `loose-`
+
+      ```mysql
+      [client]
+      loose-local-infile=0
+      ```
+    * 在所有情况中，成功使用 `LOCAL` 加载操作都需要客户端的允许。
+
+如果 `LOCAL` 功能被禁用，则无论是因为客户端还是服务器端，客户端在执行 `LOAD DATA
+LOCAL` 语句时会收到如下的错误消息：
+```
+ERROR 1148: The used command is not allowed with this MySQL version
+```
 
 ## 客户端编程安全指导方针
 
+访问 MySQL 的应用程序不应该信任用户输入的任何数据，它们可能通过在 Web 表单、URL
+等输入特殊字符或转义字符来欺骗你的代码，所以要确保自己的程序在遇到这些情况时仍能
+保证安全。如一个极端例子：`DROP DATABASE mysql;` 会引起数据丢失
 
+一个常犯的错误是只保护字符串值，数值值也应该要检测。例如：`SELECT * FROM table
+WHERE ID=234` 如果数值 234 换为了 `234 OR 1=1` 则将暴露所有数据行并加重服务器负
+载，防止此类攻击的简单方法是把数值常量用单引号引起来，即 `SELECT * FROM
+table WHERE ID='234'`，即使用户输入了多余字符也会变为字符串一部分，因为在一个数
+值的上下文中，MySQL 会自动把尾部的非数字的字符剥离并把字符串转换为数字。
+
+有时人们认为，如果数据库只包含公开可用的数据，就不需要保护，这是不正确的，即使数
+据库里的任何行都允许显示，仍需要防范拒绝服务攻击（例如前面例子中那些很浪费服务器
+资源的攻击），否则服务器会对合法用户的反馈很迟钝。
+
+检查清单：
+
+1. 启用严格的 SQL 模式以让服务器对于接受的数据值更严格
+   参考：Section 5.1.8, “Server SQL Modes”
+
+2. 在所有的 Web 表单中输入单引号和双引号以触发错误，有任何错误则立即改正。
+
+3. 尝试通过添加 `%22(")`、`%23(#)` 和 `%27(')` 来修改动态 url。
+
+4. 尝试修改动态 URLs 里的数据类型，使用上条的方法从数值修改为字符类型，应用应该
+   对类似的攻击是安全的
+
+5. 试着在数字字段中输入字符、空格和特殊符号，你的应用程序应该在将它们传递给
+   MySQL 之前删除它们，否则就会产生错误。没有经过检测的值传给 MySQL 是非常危险的
+
+6. 把数据传递给 MySQL 之前检测数据的长度
+
+7. 应用程序连接到数据库时使用的用户名应该和用于管理数据库的用户名不同，不要给应
+   用程序任何不必需的访问权限。
+
+许多 API 提供了转义数据值中的特殊字符的方法，如果使用得当，将阻止用户输入意外的
+值从而导致应用程序生成与您意图不同的语句
+
+1. MySQL C API: 使用 `mysql_real_escape_string_quote()` API 调用.
+
+2. MySQL++: 为查询流使用 `escape` 和 `quote` 修饰符
+
+3. PHP: 使用 `mysqli` 或 `pdo_mysql` 扩展，不要使用老旧的 `ext/mysql` 扩展。
+
+   首选的 API 应支持改进的 MySQL 认证协议和密码，以及使用占位符的预处理语句。参考：
+   https://dev.mysql.com/doc/apis-php/en/apis-php-mysqlinfo.api.choosing.html，
+
+   如果必须使用老旧的 `ext/mysql` 扩展，则请使用方法
+   `mysql_real_escape_string_quote()` 不要使用 `mysql_escape_string()` 或
+   `addslashes()`，因为只有第一个方法是 character set-aware，其他方法在使用无效的
+   多字节字符集时都可以被绕过 
+
+4. Perl DBI：使用占位符或 `quote()` 方法
+
+5. Ruby DBI：使用占位符或 `quote()` 方法
+
+6. Java JDBC：使用 `PreparedStatement` 对象和占位符
+
+其他开发语言也应该有类似的功能。

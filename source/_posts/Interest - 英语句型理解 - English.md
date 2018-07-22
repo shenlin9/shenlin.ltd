@@ -135,3 +135,64 @@ is writable by  由服务器写入？？
 is writable for 
 
 
+Such a server could access any file on the client host to which the client user
+has read access
+
+
+The ENABLED_LOCAL_INFILE CMake option controls the compiled-in default LOCAL
+capability for the MySQL client library.
+compiled-in ???
+
+
+Clients that make no explicit arrangements therefore have LOCAL capability
+disabled or enabled according to the ENABLED_LOCAL_INFILE setting specified at
+MySQL build time.
+所以，没有明确安排的客户端可以根据在 MySQL 构建时设定的 `ENABLED_LOCAL_INFILE`
+设置禁用或启用 `LOCAL` 功能
+therfore 的位置为什要放那里???
+
+
+
+
+The preferred API's support the improved MySQL authentication protocol and
+passwords, as well as prepared statements with placeholders
+谓语是 support? 主语？？？
+
+
+
+because only mysql_real_escape_string_quote() is character set-aware; the
+other functions can be “bypassed” when using (invalid) multibyte character sets
+character set-aware????
+
+
+You cannot specify that a user has privileges to create or drop tables in a
+database but not to create or drop the database itself.
+您不能指定用户有权在数据库中创建或删除表，但不能有权创建或删除数据库本身。????
+您不能指定用户有权在数据库中创建或删除表格，而不是创建或删除数据库本身。????
+
+
+
+Without this privilege, the slave cannot request updates that have been made to
+databases on the master server.
+没有此特权，则从服务器不能请求主服务器数据库上已经完成的更新。
+没有此特权，则从服务器不能请求对主服务器上的数据库进行更新。???
+
+
+
+
+Enables control over client connections not permitted to non-SUPER accounts:
+允许控制不被允许的的客户端连接到非 `SUPER` 账户 ???
+
+
+
+A user with this privilege can specify any account in the DEFINER attribute of a view or stored program.
+拥有此权限的用户可以在视图或存储过程 `DEFINER` 的属性中指定任何账号
+
+
+
+Privileges granted for the mysql database itself can be used to change passwords and other access privilege information.
+授予 `mysql` 数据库本身的特权可以用来更改密码和其他访问特权信息。
+
+
+
+The FILE privilege can be abused to read into a database table any files that the MySQL server can read on the server host.
