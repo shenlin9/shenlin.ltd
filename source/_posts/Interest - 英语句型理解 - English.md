@@ -185,14 +185,51 @@ Enables control over client connections not permitted to non-SUPER accounts:
 
 
 
-A user with this privilege can specify any account in the DEFINER attribute of a view or stored program.
+A user with this privilege can specify any account in the DEFINER attribute of a
+view or stored program.
 拥有此权限的用户可以在视图或存储过程 `DEFINER` 的属性中指定任何账号
 
 
 
-Privileges granted for the mysql database itself can be used to change passwords and other access privilege information.
+Privileges granted for the mysql database itself can be used to change passwords
+and other access privilege information.
 授予 `mysql` 数据库本身的特权可以用来更改密码和其他访问特权信息。
 
 
 
-The FILE privilege can be abused to read into a database table any files that the MySQL server can read on the server host.
+The FILE privilege can be abused to read into a database table any files that
+the MySQL server can read on the server host.
+
+
+
+
+For an account to be able to grant the PROXY privilege to other accounts, it
+must have a row in the proxies_priv table with With_grant set to 1 and
+Proxied_host and Proxied_user set to indicate the account or accounts for which
+the privilege can be granted.
+??? set to indicate the account 什么语法和意思
+
+
+
+The server performs matching of host values in account names against the client
+host using the value returned by the system DNS resolver for the client host
+name or IP address.
+
+
+
+The server accepts the connection only if the Host and User columns in some user
+table row match the client host name and user name, the client supplies the
+password specified in that row, and the account_locked value is 'N'.
+
+
+
+Nonblank authentication_string values in the user table represent encrypted
+passwords. MySQL does not store passwords in cleartext form for anyone to see.
+Rather, the password supplied by a user who is attempting to connect is
+encrypted (using the password hashing method implemented by the account
+authentication plugin). The encrypted password then is used during the
+connection process when checking whether the password is correct. This is done
+without the encrypted password ever traveling over the connection. 
+最后一句
+This is done without the encrypted password ever traveling over the connection.
+???
