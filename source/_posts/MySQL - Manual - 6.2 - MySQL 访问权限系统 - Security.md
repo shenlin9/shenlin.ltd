@@ -928,37 +928,308 @@ It may not be apparent why, if the global user row privileges are initially foun
 
 ## 特权变更后何时生效
 
-When mysqld starts, it reads all grant table contents into memory. The in-memory tables become effective
-for access control at that point.
+`mysqld` 启动时，把所有授权表的内容读入内存，内存中的表从这时开始可以用于访问控
+制。
 
-If you modify the grant tables indirectly using account-management statements such as GRANT, REVOKE,
-SET PASSWORD, or RENAME USER, the server notices these changes and loads the grant tables into
-memory again immediately.
+如果你通过账户管理语句如 `GRANT`,`REVOKE`,`SET PASSWORD`,`RENAME USER` 来间接的
+修改授权表，服务器会注意到这些更改并立即再次把授权表载入到内存。
 
-If you modify the grant tables directly using statements such as INSERT, UPDATE, or DELETE, your
-changes have no effect on privilege checking until you either restart the server or tell it to reload the tables.
+但如果你通过 `INSERT`,`UPDATE`,`DELETE` 等语句直接修改授权表，则除非你重启服务器
+或让服务器重新载入授权表，否则你的更改对于权限检测不会有任何效果。
 
-If you change the grant tables directly but forget to reload them, your changes have no effect until you
-restart the server. This may leave you wondering why your changes seem to make no difference!
+要让服务器重新载入授权表，可以执行刷新权限的操作：通过执行 `FLUSH PRIVILEGES` 语
+句或者执行 `mysqladmin flush-privileges` 或 `mysqladmin reload` 命令。
 
-To tell the server to reload the grant tables, perform a flush-privileges operation. This can be done by
-issuing a FLUSH PRIVILEGES statement or by executing a mysqladmin flush-privileges or
-mysqladmin reload command.
+授权表重新载入会影响每个现有连接的特权：
+* 表和列的特权改变在客户端下次请求时生效。
+* 数据库特权的改变在客户端下次执行 `USE db_name` 语句时生效。
+    * 注意：客户端程序可以缓存数据库的名称，因此，如果不是实际切换到另一个不同的
+      数据库，则可能无法看到效果。
+* 全局特权和密码不影响已存在的连接，这些更改只对后续的客户端连接生效。
 
-A grant table reload affects privileges for each existing client connection as follows:
-• Table and column privilege changes take effect with the client's next request.
-• Database privilege changes take effect the next time the client executes a USE db_name statement.
-• Global privileges and passwords are unaffected for a connected client. These changes take effect only
-for subsequent connections.
+如果服务器启动时使用了 `--skip-grant-tables` 选项，则服务器不会读取任何授权表内
+容，不实现任何访问控制，任何人可以连接到数据库做任何事，非常不安全。要使得服务器
+开始读取授权表并启用访问控制，执行上面介绍的刷新权限操作。
 
-If the server is started with the --skip-grant-tables option, it does not read the grant tables or
-implement any access control. Anyone can connect and do anything, which is insecure. To cause a server
-thus started to read the tables and enable access checking, flush the privileges.
+## 连接 MySQL 时的故障排除
 
-Note
-Client applications may cache the database name; thus, this effect may not be
-visible to them without actually changing to a different database.
+如果您在尝试连接到 MySQL 服务器时遇到问题，下面描述了一些您可以采取的行动来纠正
+这个问题。
 
-## 连接到 MySQL 时的故障排除
+* 确保服务器正在运行，否则，客户端肯定无法连接。下面示例中连接服务器失败，错误信
+  息提示如下则可能原因之一就是服务器没在运行：
 
+    ```
+    shell> mysql
+    ERROR 2003: Can't connect to MySQL server on 'host_name' (111)
 
+    shell> mysql
+    ERROR 2002: Can't connect to local MySQL server through socket
+    '/tmp/mysql.sock' (111)
+    ```
+
+* 服务器在运行，但你连接时使用的 TCP/IP 端口或命名管道或 Unix 套接字文件和服
+  务器正在监听的刚好不一样。要修正此类问题，可以在调用客户端程序时，指定 `--port`
+  选项指明合适的端口号，或使用 `--socket` 选项指明合适的命名管道或 Unix 套接字文
+  件。要定位套接字文件的位置，使用下面的命令：
+
+    ```
+    shell> netstat -ln | grep mysql
+    ```
+
+* 确保服务器没有被配置为忽略网络连接，如果服务器启动时使用了 `--skip-networking`
+  ，则不会接受任何 TCP/IP 连接。如果你正从远程连接，则要确保服务器没有被配置为在
+  只监听本地连接，如果服务器启动时使用了 `--bind-address=127.0.0.1`，则只监听本
+  地的环回接口，不接受任何远程连接。
+
+* 检查确认没有防火墙阻挡对 MySQL 的访问。防火墙的配置可以根据被执行的程序或者被
+  MySQL 通讯使用的端口号（默认 3306）。在 Unix 或 Linux 平台，检查 IP tables并确
+  认端口没有被阻挡。Windows 平台上，类似 ZoneAlarm 或 Windows 防火墙的程序可能需
+  要配置一下以不阻挡 MySQL 的端口。
+
+* 授权表必须被恰当的配置以使得服务器可以进行访问控制。一些发行类型（例如 Windows
+  的二进制发行包或者 Linux 的 RPM 发行包）的安装进程会初始化 MySQL 的数据目录和
+  包含授权表的 `mysql` 数据库。但一些安装类型则不会进行上述初始化，则你必须手动
+  初始化数据目录，更详细的信息参考：Section 2.10, “Postinstallation Setup and
+  Testing”
+
+  至于是否需要初始化授权表，在 MySQL 的数据目录下寻找一个叫 `mysql` 的子目录，确
+  保此子目录下有一个叫 `user.MYD` 的文件，如果没有，则需要初始化数据目录。完成后
+  启动服务器，则应该可以连接到服务器。
+
+  注：MySQL 的数据目录通常位于 MySQL 的安装目录下，名字通常是 `data` 或 `var`。
+
+* 在新安装完 MySQL 后，如果尝试用 root 账户无密码登录，可能会获取如下错误信息：
+
+    ```
+    shell> mysql -u root
+    ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)
+    ```
+
+  它表示在安装过程中，root 已被设置了密码并且登录时必须提供，参考；2.10.4, “
+  Securing the Initial MySQL Accounts”，了解如何以不同的方式设置密码和在一些情
+  况下怎么找到它。
+
+  如果需要重置 root 密码，参考：Section B.5.3.2, “How to Reset the Root Password”
+
+  在找到或重置密码之后，登录时使用 `--password` 或 `-p` 选项使用密码：
+
+    ```
+    shell> mysql -u root -p
+    Enter password:
+    ```
+
+  但是，如果你初始化 MySQL 时使用了 `mysqld --initialize-insecure` 选项（参考：
+  Section 2.10.1.1, “Initializing the Data Directory Manually Using mysqld”）
+  ，则服务器可以让你用 root 账户登录而不用使用密码，但这是一个安全风险，始终应该
+  为root 账户设置密码。参考：Section 2.10.4, “Securing the Initial MySQL
+  Accounts”
+
+* 如果你将一个已存在的 MySQL 安装升级到一个新版本，是否运行了 `mysql_upgrade` 脚
+  本，如果没有，请先运行此脚本。因为当添加新功能后，授权表的结构偶尔也会改变，因
+  此每次升级后你都应该确保授权表是当前的表结构。参考：Section 4.4.7, “
+  mysql_upgrade — Check and Upgrade MySQL
+
+* 如果客户端程序连接时收到如下的错误西悉尼，说明服务器需要更新格式的密码，而客户
+  端没有此能力：
+
+    ```
+    shell> mysql
+    Client does not support authentication protocol requested by server;
+    consider upgrading MySQL client
+    ```
+
+  参考：Section 6.5.1.3, “Migrating Away from Pre-4.1 Password Hashing and the
+  mysql_old_password Plugin”.
+
+* 记住客户端程序使用的连接参数来自选项文件或环境变量，如果客户端连接时看起来使用
+  了错误的选项，而你又没有在命令行指定它们，则请检查任何可用的选项文件和环境变量
+  。例如，你运行客户端时没有使用任何选项但并拒绝访问，则请检查选项文件确保没有在
+  那里使用过时的旧密码。
+
+  也可以在调用客户端程序时，通过选项 `--no-defaults` 来禁用选项文件：
+
+    ```
+    shell> mysqladmin --no-defaults -u root version
+    ```
+
+  客户端使用的选项文件列表参考：Section 4.2.6, “Using Option Files”
+  环境变量列表参考：Section 4.9, “MySQL Program Environment Variables”
+
+* 下面的错误表示密码不对
+
+    ```
+    shell> mysqladmin -u root -pxxxx ver
+    Access denied for user 'root'@'localhost' (using password: YES)
+    ```
+  如果你没有指定密码，但还是发生了上面的错误，则表示在某个选项文件中使用了错误的
+  密码，`--no-defaults` 禁用选项文件再试下。
+
+  更改密码参考：Section 6.3.6, “Assigning Account Passwords”.
+
+  如果忘记或丢失 root 密码，参考：Section B.5.3.2, “How to Reset the Root
+  Password”.
+
+* 如果通过 `SET PASSWORD`, `INSERT`, `UPDATE` 语句更改密码，则必须使用
+  `PASSWORD()` 方法加密密码，否则密码不正确。下例用户使用密码 `eagle` 无法连接：
+
+    ```
+    SET PASSWORD FOR 'abe'@'host_name' = 'eagle';
+    ```
+
+  应该这样设置密码：
+
+    ```
+    SET PASSWORD FOR 'abe'@'host_name' = PASSWORD('eagle');
+    ```
+
+  当使用 `CREATE USER`,`GRANT` 语句或 `mysqladmin password` 命令设置密码时无需使
+  用 `PASSWORD()` 方法加密密码，因为它们都自动的调用了 `PASSWORD()` 方法，参考：
+  Section 6.3.6, “Assigning Account Passwords”
+  Section 13.7.1.2, “CREATE USER Syntax”
+
+* `localhost` 是你的本地主机名的同义词，并且也是在没有显式的指定主机时客户端连接
+  的默认主机
+
+  可以使用 `--host=127.0.0.1` 选项显式的指定服务器主机，将建立一个 TCP/IP 连接到
+  本地的 mysqld 服务器。指定 `--host` 选项时使用本地主机实际的主机名也会建立
+  TCP/IP 连接，这种情况下，服务器主机上 `user` 表里也必须有此主机名，即使你的
+  客户端程序和服务器程序在同一台主机上。
+
+* `Access denied` 错误消息告诉了你：你想要以哪个账户登录，你从哪个客户端主机连接
+  ，你是否使用了密码。通常，在 `user` 表里应该有一行准确的匹配了错误消息里的主机
+  名和用户名。例如：如果错误消息里包含 `using password: NO`，表示你尝试不使用密
+  码登录。
+
+* 如果使用 `mysql -u user_name` 尝试连接数据库时发生了 `Access denied` 错误消息
+  ，则可能是 `user` 表的问题，通过执行下列语句来检查此问题：
+
+    ```
+    shell> mysql -u root mysql
+
+    mysql> SELECT * FROM user;
+    ```
+
+    结果行里应该包含一个行，其 `Host` 和 `User` 列分别匹配你的客户端主机名和
+    MySQL 账户名。
+
+• If the following error occurs when you try to connect from a host other than the one on which the MySQL server is running, it means that there is no row in the user table with a Host value that matches the client host:
+
+* 如果你尝试从不是 MySQL 所在的服务器主机连接时发生了下列错误，则说明 `user` 表
+  里没有 `Host` 列可以匹配你的客户端主机：
+
+    ```
+    Host ... is not allowed to connect to this MySQL server
+    ```
+
+  可以用你尝试连接时使用的主机名和用户名的组合建立一个账户来解决此问题.
+
+  如果你不知道自己发起连接的客户端主机的 IP 地址和主机名，则可以在 `user` 表里放
+  入 `Host` 值为 `%` 的一个行，然后尝试连接后，使用 `SELECT USER()` 查询你到底是
+  怎么连接的。然后把 `user` 表里 `Host` 值为 `%` 的那个列值替换为日志中显示的真
+  实主机名。否则，系统留下了隐患，因为它允许使用指定的用户名从任何主机发起连接。
+
+  Linux 平台上，这个错误可能发生的另一个原因是：你正在使用一个 MySQL 的二进制版
+  本，此版本编译时使用的 `glibc` 库和你目前正在用的 `glibc` 库不是同一个版本。这
+  种情况下，你应该升级你的操作系统或者 `glibc` 库，再或者下载一个 MySQL 的源码发
+  行版自己编译。一个源代码的 RPM 包通常来说编译和安装是很容易的，所以不是大问题。
+
+* 如果你连接时指定了主机名，但在错误消息里没有出现主机名或者主机名是一个 IP 地址
+    ，这种情况说明 MySQL 服务器在把客户端主机的 IP 地址解析为名称时发生了错误：
+
+    ```
+    shell> mysqladmin -u root -pxxxx -h some_hostname ver
+    Access denied for user 'root'@'' (using password: YES)
+    ```
+
+  如果以 `root` 连接时获取如下错误消息，则表示在 `user` 表里没有一行的 `User` 值
+  是 `root` 并且 mysqld 不能解析你的客户端主机名：
+
+    ```
+    Access denied for user ''@'unknown'
+    ```
+
+  这些错误都说明了是 DNS 的问题，要修复可以尝试执行 `mysqladmin flush-hosts` 重
+  置内部的 DNS 主机缓存，参考：Section 8.12.5.2, “DNS Lookup Optimization and the Host Cache”.
+
+  一些永久性的解决方案：
+  * 确定 DNS 服务器问题并修正它
+  * 在授权表里使用 IP 地址而不是主机名
+  * Unix 上在 `etc/hosts` 文件里加入客户端主机名的条目，windows 上位于
+    `\windows\hosts`
+  * 启动 mysqld 时使用 `--skip-name-resolve` 选项
+  * 启动 mysqld 时使用 `--skip-host-cache` 选项
+  * Unix 上，如果服务器端和客户端位于同一主机，连接时主机名请使用 `localhost`，
+    因为 MySQL 程序会尝试使用一个 Unix 套接字文件来连接本地服务器，除非有连接参
+    数指定了要确保客户端使用 TCP/IP 连接。更多信息，参考：Section 4.2.2, “
+    Connecting to the MySQL Server”
+  * Windows 上，如果服务器端和客户端位于同一主机，并且服务器端支持命名管道连接，
+    则可以连接到主机名 `.`，连接到 `.` 时使用的是命名管道而不是 TCP/IP
+
+• If mysql -u root works but mysql -h your_hostname -u root results in Access denied
+(where your_hostname is the actual host name of the local host), you may not have the correct
+name for your host in the user table. A common problem here is that the Host value in the user
+table row specifies an unqualified host name, but your system's name resolution routines return a
+fully qualified domain name (or vice versa). For example, if you have a row with host 'pluto' in the
+user table, but your DNS tells MySQL that your host name is 'pluto.example.com', the row does
+not work. Try adding a row to the user table that contains the IP address of your host as the Host
+column value. (Alternatively, you could add a row to the user table with a Host value that contains a
+wildcard; for example, 'pluto.%'. However, use of Host values ending with % is insecure and is not
+recommended!)
+
+• If mysql -u user_name works but mysql -u user_name some_db does not, you have not granted
+access to the given user for the database named some_db.
+
+• If mysql -u user_name works when executed on the server host, but mysql -h host_name -u
+user_name does not work when executed on a remote client host, you have not enabled access to the
+server for the given user name from the remote host.
+
+• If you cannot figure out why you get Access denied, remove from the user table all rows that have
+Host values containing wildcards (rows that contain '%' or '_' characters). A very common error is
+to insert a new row with Host='%' and User='some_user', thinking that this enables you to specify
+localhost to connect from the same machine. The reason that this does not work is that the default
+privileges include a row with Host='localhost' and User=''. Because that row has a Host value
+'localhost' that is more specific than '%', it is used in preference to the new row when connecting
+from localhost! The correct procedure is to insert a second row with Host='localhost' and
+User='some_user', or to delete the row with Host='localhost' and User=''. After deleting
+the row, remember to issue a FLUSH PRIVILEGES statement to reload the grant tables. See also
+Section 6.2.4, “Access Control, Stage 1: Connection Verification”.
+
+• If you are able to connect to the MySQL server, but get an Access denied message whenever you
+issue a SELECT ... INTO OUTFILE or LOAD DATA INFILE statement, your row in the user table
+does not have the FILE privilege enabled.
+
+• If you change the grant tables directly (for example, by using INSERT, UPDATE, or DELETE statements)
+and your changes seem to be ignored, remember that you must execute a FLUSH PRIVILEGES
+statement or a mysqladmin flush-privileges command to cause the server to reload the privilege
+tables. Otherwise, your changes have no effect until the next time the server is restarted. Remember
+that after you change the root password with an UPDATE statement, you will not need to specify the
+new password until after you flush the privileges, because the server will not know you've changed the
+password yet!
+
+• If your privileges seem to have changed in the middle of a session, it may be that a MySQL administrator
+has changed them. Reloading the grant tables affects new client connections, but it also affects existing
+connections as indicated in Section 6.2.6, “When Privilege Changes Take Effect”.
+
+• If you have access problems with a Perl, PHP, Python, or ODBC program, try to connect to the server
+with mysql -u user_name db_name or mysql -u user_name -pyour_pass db_name. If
+you are able to connect using the mysql client, the problem lies with your program, not with the
+access privileges. (There is no space between -p and the password; you can also use the --
+password=your_pass syntax to specify the password. If you use the -p or --password option with
+no password value, MySQL prompts you for the password.)
+
+• For testing purposes, start the mysqld server with the --skip-grant-tables option. Then you
+can change the MySQL grant tables and use the SHOW GRANTS statement to check whether your
+modifications have the desired effect. When you are satisfied with your changes, execute mysqladmin
+flush-privileges to tell the mysqld server to reload the privileges. This enables you to begin using
+the new grant table contents without stopping and restarting the server.
+
+• If everything else fails, start the mysqld server with a debugging option (for example, --
+debug=d,general,query). This prints host and user information about attempted connections, as well
+as information about each command issued. See Section 28.5.3, “The DBUG Package”.
+
+• If you have any other problems with the MySQL grant tables and feel you must post the problem to
+the mailing list, always provide a dump of the MySQL grant tables. You can dump the tables with the
+mysqldump mysql command. To file a bug report, see the instructions at Section 1.7, “How to Report
+Bugs or Problems”. In some cases, you may need to restart mysqld with --skip-grant-tables to
+run mysqldump.
