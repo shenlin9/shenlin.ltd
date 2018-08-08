@@ -233,3 +233,15 @@ without the encrypted password ever traveling over the connection.
 最后一句
 This is done without the encrypted password ever traveling over the connection.
 ???
+
+
+
+the client should call the mysql_options() C API function with the
+MYSQL_SET_CHARSET_NAME option and appropriate character set name as arguments.
+
+客户端应该使用 `MYSQL_SET_CHARSET_NAME` 选项调用 C 语言的 API 函数
+`mysql_options()` 并使用合适的字符集名作为参数
+
+客户端应该使用 `MYSQL_SET_CHARSET_NAME` 选项和合适的字符集名作为参数调用 C 语言
+的 API 函数
+

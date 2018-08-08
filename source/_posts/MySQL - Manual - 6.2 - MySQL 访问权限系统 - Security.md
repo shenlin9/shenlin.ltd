@@ -917,9 +917,12 @@ OR column privileges
 OR routine privileges
 ```
 
-为什么要这样操作呢？如果最初的 `user` 表里的全局特权不能满足请求的操作，
+为什么要这样操作呢？如果最初的 `user` 表里的全局特权不能满足请求的操作，服务器会
+稍后把数据库、表、列的特权添加到权限系统。
 
-It may not be apparent why, if the global user row privileges are initially found to be insufficient for the requested operation, the server adds those privileges to the database, table, and column privileges later. 
+It may not be apparent why, if the global user row privileges are initially
+found to be insufficient for the requested operation, the server adds those
+privileges to the database, table, and column privileges later. 
 
 原因是一个请求可能需要一种类型以上的特权，例如执行 `INSERT INTO ... SELECT` 语句
 时，就需要 `INSERT` 和 `SELECT` 两种特权，用户的两种特权可能一个来自 `user` 表另
@@ -1113,8 +1116,6 @@ It may not be apparent why, if the global user row privileges are initially foun
     结果行里应该包含一个行，其 `Host` 和 `User` 列分别匹配你的客户端主机名和
     MySQL 账户名。
 
-• If the following error occurs when you try to connect from a host other than the one on which the MySQL server is running, it means that there is no row in the user table with a Host value that matches the client host:
-
 * 如果你尝试从不是 MySQL 所在的服务器主机连接时发生了下列错误，则说明 `user` 表
   里没有 `Host` 列可以匹配你的客户端主机：
 
@@ -1166,70 +1167,59 @@ It may not be apparent why, if the global user row privileges are initially foun
   * Windows 上，如果服务器端和客户端位于同一主机，并且服务器端支持命名管道连接，
     则可以连接到主机名 `.`，连接到 `.` 时使用的是命名管道而不是 TCP/IP
 
-• If mysql -u root works but mysql -h your_hostname -u root results in Access denied
-(where your_hostname is the actual host name of the local host), you may not have the correct
-name for your host in the user table. A common problem here is that the Host value in the user
-table row specifies an unqualified host name, but your system's name resolution routines return a
-fully qualified domain name (or vice versa). For example, if you have a row with host 'pluto' in the
-user table, but your DNS tells MySQL that your host name is 'pluto.example.com', the row does
-not work. Try adding a row to the user table that contains the IP address of your host as the Host
-column value. (Alternatively, you could add a row to the user table with a Host value that contains a
-wildcard; for example, 'pluto.%'. However, use of Host values ending with % is insecure and is not
-recommended!)
+* 如果 `mysql -u root` 执行正常但 `mysql -h your_hostname -u root` 出现 `Access
+  denied`，可能是 `user` 表里的主机名不准确。一个常见的问题是 `user` 表里的主机
+  名是一个非限定主机名，但是系统的名称解析例程返回的是一个完全限定域名，或者完全
+  反过来。例如 `user` 表中主机名为 `pluto`，而 DNS 告诉 MySQL 你的主机名是
+  `pluto.example.com`，则出错。可以试着在 `user` 表里添加一行使用主机 IP 地址作为
+  `Host` 的列值。或者使用主机名时使用通配符，例如 `pluto.%`，不过主机值里以 `%`
+  结尾是不安全的所以不推荐。
 
-• If mysql -u user_name works but mysql -u user_name some_db does not, you have not granted
-access to the given user for the database named some_db.
+* 如果 `mysql -u user_name` 执行正常但 `mysql -u user_name some_db` 出错，则可能
+  是没有授权给当前指定的用户访问此数据库 `some_db`
 
-• If mysql -u user_name works when executed on the server host, but mysql -h host_name -u
-user_name does not work when executed on a remote client host, you have not enabled access to the
-server for the given user name from the remote host.
+* 如果 `mysql -u user_name` 在服务器主机上执行正常但 `mysql -h host_name -u
+  user_name` 在远程客户端主机上出错，则可能是因为你没有为当前的指定用户从远程主
+  机访问开启权限。
 
-• If you cannot figure out why you get Access denied, remove from the user table all rows that have
-Host values containing wildcards (rows that contain '%' or '_' characters). A very common error is
-to insert a new row with Host='%' and User='some_user', thinking that this enables you to specify
-localhost to connect from the same machine. The reason that this does not work is that the default
-privileges include a row with Host='localhost' and User=''. Because that row has a Host value
-'localhost' that is more specific than '%', it is used in preference to the new row when connecting
-from localhost! The correct procedure is to insert a second row with Host='localhost' and
-User='some_user', or to delete the row with Host='localhost' and User=''. After deleting
-the row, remember to issue a FLUSH PRIVILEGES statement to reload the grant tables. See also
-Section 6.2.4, “Access Control, Stage 1: Connection Verification”.
+* 如果你不能想出为什么会被 `Access denied`，可以先移除 `user` 表里 `Host` 值包含
+  了通配符 `%` 和 `_` 的所有行。因为一个常见错误就是插入了一个新行 `Host='%',
+  User='some_user'` 后，就认为此行能够使得你通过指定连接时的主机为 `localhost`
+  从同台主机连接成功。但结果不成功，原因就是默认的权限里包含了一行
+  `Host='localhost',User=''`，因为主机值 `Host='localhost'` 比 `Host='%'` 更具体
+  ，所以连接时前者优先于后者匹配。正确的处理是插入的行应为 
+  `Host='localhost',User='some_user'` 或者删掉 `Host='localhost',User=''`，删掉
+  此行后记得执行 `FLUSH PRIVILEGES` 语句以重新载入授权表。参考：Section 6.2.4,
+  “Access Control, Stage 1: Connection Verification”.
 
-• If you are able to connect to the MySQL server, but get an Access denied message whenever you
-issue a SELECT ... INTO OUTFILE or LOAD DATA INFILE statement, your row in the user table
-does not have the FILE privilege enabled.
+* 如果你可以连接到服务器，但是执行 `SELECT ... INTO OUTFILE`,`LOAD DATA INFILE`
+  语句时发生 `Access Denied`，则应该是 `user` 表里没有启用 `FILE` 特权。
 
-• If you change the grant tables directly (for example, by using INSERT, UPDATE, or DELETE statements)
-and your changes seem to be ignored, remember that you must execute a FLUSH PRIVILEGES
-statement or a mysqladmin flush-privileges command to cause the server to reload the privilege
-tables. Otherwise, your changes have no effect until the next time the server is restarted. Remember
-that after you change the root password with an UPDATE statement, you will not need to specify the
-new password until after you flush the privileges, because the server will not know you've changed the
-password yet!
+* 如果你通过 `INSERT`,`UPDATE`,`DELETE` 语句直接的改变了授权表，但你的更改却看起
+  来被忽略了，记住你必须执行 `FLUSH PRIVILEGES` 语句或 `mysqladmin
+  flush-privileges` 命令让服务器重新载入授权表。否则，在服务器下次重启之前，你的
+  更改不会起作用。当你使用 `UPDATE` 语句更改 `root` 账户的密码时，在你刷新权限之
+  前不必指定新密码，因为服务器还不知道你更改了密码。
 
-• If your privileges seem to have changed in the middle of a session, it may be that a MySQL administrator
-has changed them. Reloading the grant tables affects new client connections, but it also affects existing
-connections as indicated in Section 6.2.6, “When Privilege Changes Take Effect”.
+* 如果在会话中间你的特权看起来改变了，可能是 MySQL 管理员修改的。重新载入授权表
+  将影响新的客户端连接，但是它也影响已存在的连接，参考：6.2.6, “When Privilege
+  Changes Take Effect”.
 
-• If you have access problems with a Perl, PHP, Python, or ODBC program, try to connect to the server
-with mysql -u user_name db_name or mysql -u user_name -pyour_pass db_name. If
-you are able to connect using the mysql client, the problem lies with your program, not with the
-access privileges. (There is no space between -p and the password; you can also use the --
-password=your_pass syntax to specify the password. If you use the -p or --password option with
-no password value, MySQL prompts you for the password.)
+* 如果你使用 Perl, PHP, Python, ODBC 程序时有权限问题，先尝试使用 `mysql` 客户端
+  以 `mysql -u user_name db_name` 或 `mysql -u user_name -pyour_pass db_name` 连
+  接，如果可以连接，则问题在你的程序，而不在访问权限。
 
-• For testing purposes, start the mysqld server with the --skip-grant-tables option. Then you
-can change the MySQL grant tables and use the SHOW GRANTS statement to check whether your
-modifications have the desired effect. When you are satisfied with your changes, execute mysqladmin
-flush-privileges to tell the mysqld server to reload the privileges. This enables you to begin using
-the new grant table contents without stopping and restarting the server.
+* 为了测试，可以启动 `mysqld` 服务器时使用 `--skip-grant-tables` 选项，然后你可
+  以更改授权表并使用 `SHOW GRANTS` 语句检查你的修改是否达到预期效果。当测试满意
+  后，使用 `mysqladmin flush-privileges` 命令让 `mysqld` 服务器重新载入特权。这
+  样处理将会使得你无需停止并重启服务器就开始使用新的授权表内容。
 
-• If everything else fails, start the mysqld server with a debugging option (for example, --
-debug=d,general,query). This prints host and user information about attempted connections, as well
-as information about each command issued. See Section 28.5.3, “The DBUG Package”.
+* 如果其他方法都失败了，可以使用调试选项启动 `mysqld` 服务器（例如，`debug=d、
+  general、query`）。将输出尝试连接的主机和用户信息，以及所执行的每个命令的信息
+  。参考：Section 28.5.3, “The DBUG Package”.
 
-• If you have any other problems with the MySQL grant tables and feel you must post the problem to
-the mailing list, always provide a dump of the MySQL grant tables. You can dump the tables with the
-mysqldump mysql command. To file a bug report, see the instructions at Section 1.7, “How to Report
-Bugs or Problems”. In some cases, you may need to restart mysqld with --skip-grant-tables to
-run mysqldump.
+* 如果你有任何其他关于授权表的问题并且需要提交问题到邮件列表，请始终提供授权表的
+  转储，可以使用 `mysqldump mysql` 命令执行此操作。要提交 Bug 报告，参考：
+  Section 1.7, “How to Report Bugs or Problems”，在某些情况下，为了运行
+  `mysqldump` 命令，可能需要使用 `--skip-grant-tables` 选项重启 `mysqld`。
+
