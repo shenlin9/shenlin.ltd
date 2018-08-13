@@ -238,10 +238,28 @@ This is done without the encrypted password ever traveling over the connection.
 
 the client should call the mysql_options() C API function with the
 MYSQL_SET_CHARSET_NAME option and appropriate character set name as arguments.
-
-客户端应该使用 `MYSQL_SET_CHARSET_NAME` 选项调用 C 语言的 API 函数
+???客户端应该使用 `MYSQL_SET_CHARSET_NAME` 选项调用 C 语言的 API 函数
 `mysql_options()` 并使用合适的字符集名作为参数
+???客户端应该使用 `MYSQL_SET_CHARSET_NAME` 选项和合适的字符集名作为参数调用 C 语
+言的 API 函数
 
-客户端应该使用 `MYSQL_SET_CHARSET_NAME` 选项和合适的字符集名作为参数调用 C 语言
-的 API 函数
+
+
+
+Resource-use counting takes place when any account has a nonzero limit placed on
+its use of any of the resources.
+当任何帐户使用的任何资源是非零限制时，就会发生资源使用计数。
+
+
+
+
+an edge case can occur if the account currently has open the maximum number of
+connections permitted to it
+
+
+
+
+Pluggable authentication makes it possible for clients to connect to the MySQL
+server with credentials that are appropriate for authentication methods that
+store credentials elsewhere than in the `mysql.user` table. 
 
