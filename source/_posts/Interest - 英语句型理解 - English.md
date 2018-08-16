@@ -263,3 +263,24 @@ Pluggable authentication makes it possible for clients to connect to the MySQL
 server with credentials that are appropriate for authentication methods that
 store credentials elsewhere than in the `mysql.user` table. 
 
+
+
+
+It is also possible to connect using encryption from within an SSH connection to
+the MySQL server host.  
+
+
+
+The files need not have been generated automatically;
+
+
+
+
+clients require an encrypted connection, and also perform verification against
+the server CA certificate and against the server host name in its certificate.
+
+
+
+
+They can be enabled at startup and inspected but not set at runtime.
+
