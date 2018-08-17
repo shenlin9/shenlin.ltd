@@ -35,7 +35,7 @@ X509 使得在互联网上识别某人成为可能。在基本术语里，应该
 MySQL 可以使用 OpenSSL 或 wolfSSL 编译为支持加密连接。这些包的比较，参考：
 Section 6.4.4, “OpenSSL Versus wolfSSL”。
 
-有关每个包支持的加密协议和密码的信息，参考：Section 6.4.6, “Encrypted
+有关每个包支持的加密协议和加密算法的信息，参考：Section 6.4.6, “Encrypted
 Connection Protocols and Ciphers”.
 
 默认情况下，如果服务器支持加密连接，MySQL程序会尝试连接使用加密，如果无法建立加
@@ -267,7 +267,7 @@ Connection Support”.
 `--ssl-ca`          包含了可信的 SSL 证书颁发机构列表的文件
 `--ssl-capath`      包含了可信的 SSL 证书颁发机构证书文件的目录
 `--ssl-cert`        包含了 X509 证书
-`--ssl-cipher`      连接加密的许可密码列表
+`--ssl-cipher`      连接加密的许可加密算法列表
 `--ssl-crl`         包含证书撤销列表的文件
 `--ssl-crlpath`     包含证书撤销列表的文件的目录
 `--ssl-fips-mode`   是否在客户端 8.0.11 启用 FIPS 模式
@@ -329,14 +329,14 @@ PEM 格式的 SSL 公钥证书文件的路径名，用于客户端时，是客�
 连接加密允许的加密算法列表，如果列表里没有支持的加密算法，则加密连接无法工作。用
 于服务器端时，其隐含了 `--ssl` 选项。
 
-为了获得最大的可移植性，`cipher_list` 应该是一个或多个密码算法名的列表，由冒号隔
+为了获得最大的可移植性，`cipher_list` 应该是一个或多个加密算法名的列表，由冒号隔
 开。例子:
 ```
 --ssl-cipher=AES128-SHA
 --ssl-cipher=DHE-RSA-AES128-GCM-SHA256:AES128-SHA
 ```
 
-指定密码算法时 OpenSSL 支持一种更灵活的语法，参考文档：
+指定加码算法时 OpenSSL 支持一种更灵活的语法，参考文档：
 https://www.openssl.org/docs/manmaster/man1/ciphers.html. wolfSSL 则不支持, 所以
 对使用 wolfSSL 编译的 MySQL 发行版使用此扩展语法就会失败。
 
@@ -604,28 +604,444 @@ mysql> SHOW STATUS LIKE 'Ssl_server_not%';
 
 ### 6.4.3.2 Creating SSL Certificates and Keys Using openssl
 
+本节描述如何使用 openssl 命令来设置 MySQL 服务器和客户机使用的 SSL 证书和密钥文件。
+第一个例子展示了一个简化的过程，例如您可以从命令行中使用。
+第二个显示了包含更多细节的脚本。
+前两个示例打算在 Unix 上使用，并且都使用 openssl 命令。
+第三个例子描述了如何在 Windows 上设置 SSL 文件。
 
+    注意：
+    有比这里描述的更简单的方法来生成 SSL 要求的文件，就是：服务器自动生成或使用
+    `mysql_ssl_rsa_setup` 手动生成。参考 Section 6.4.3.1, “Creating SSL and RSA
+    Certificates and Keys using MySQL”.
 
+    重要：
+    无论您使用何种方法来生成证书和密钥文件，服务器和客户端证书/密钥所使用的公共
+    名称值都必须与 CA 证书使用的公共名称值不同。否则，证书和密钥文件将不适用于使
+    用 OpenSSL 编译的服务器。在这种情况下，一个典型的错误是：
+    ```
+    ERROR 2026 (HY000): SSL connection error:
+    error:00000001:lib(0):func(0):reason(1)
+    ```
+
+#### Example 1: Creating SSL Files from the Command Line on Unix
+
+下面的例子展示了一组用来创建 MySQL 服务器和客户端证书和密钥文件的命令。您将需要
+对 openssl 命令的几个提示作出响应。为了生成测试文件，您可以按 Enter 键回应所有提
+示。要生成用于生产的文件，您应该提供非空响应。
+```bash
+# Create clean environment
+rm -rf newcerts
+mkdir newcerts && cd newcerts
+
+# Create CA certificate
+openssl genrsa 2048 > ca-key.pem
+openssl req -new -x509 -nodes -days 3600 -key ca-key.pem -out ca.pem
+
+# Create server certificate, remove passphrase, and sign it
+# server-cert.pem = public key, server-key.pem = private key
+openssl req -newkey rsa:2048 -days 3600 \
+-nodes -keyout server-key.pem -out server-req.pem
+openssl rsa -in server-key.pem -out server-key.pem
+
+openssl x509 -req -in server-req.pem -days 3600 \
+-CA ca.pem -CAkey ca-key.pem -set_serial 01 -out server-cert.pem
+
+# Create client certificate, remove passphrase, and sign it
+# client-cert.pem = public key, client-key.pem = private key
+openssl req -newkey rsa:2048 -days 3600 \
+-nodes -keyout client-key.pem -out client-req.pem
+openssl rsa -in client-key.pem -out client-key.pem
+
+openssl x509 -req -in client-req.pem -days 3600 \
+-CA ca.pem -CAkey ca-key.pem -set_serial 01 -out client-cert.pem
+```
+
+After generating the certificates, verify them:
+```bash
+openssl verify -CAfile ca.pem server-cert.pem client-cert.pem
+```
+
+You should see a response like this:
+```bash
+server-cert.pem: OK
+client-cert.pem: OK
+```
+
+To see the contents of a certificate (for example, to check the range of dates
+over which a certificate is valid), invoke openssl like this:
+```bash
+openssl x509 -text -in ca.pem
+openssl x509 -text -in server-cert.pem
+openssl x509 -text -in client-cert.pem
+```
+
+现在您有了一组可以使用的文件：
+* ca.pem: 使用此文件作为服务器端和客户端 `--ssl-ca` 的参数 (如果使用了 CA 证书，则必须两边的证书相同)
+* server-cert.pem, server-key.pem: 使用这两个文件分别作为服务器端 `--ssl-cert` 和 `--ssl-key` 的参数
+* client-cert.pem, client-key.pem: 使用这两个文件分别作为客户端 `--ssl-cert` 和 `--ssl-key` 的参数
+
+额外的使用说明参考 Section 6.4.1, “Configuring MySQL to Use Encrypted Connections”.
+
+#### Example 2: Creating SSL Files Using a Script on Unix
+
+下面是一个示例脚本，展示了如何为 MySQL 设置 SSL 证书和密钥文件，执行此脚本后，
+使用 Section 6.4.1, “Configuring MySQL to Use Encrypted Connections”描述的用于
+SSL 连接的文件。
+```
+# ....
+# ....
+# 超长代码参考：Page 1039
+# ....
+# ....
+```
+
+#### Example 3: Creating SSL Files on Windows
+
+....
+暂时略
+....
 
 ### 6.4.3.3 Creating RSA Keys Using openssl
 
+此节描述如何使用 openssl 命令来设置 RSA 密钥文件，以使得 MySQL 在未加密的连接上
+为账户支持安全的密码交换，这些交换密码的账户都是使用 `sha256_password` 和
+`caching_sha2_password` 插件验证的。
 
+    注意：
+    有比这里描述的过程更容易的替代方法来生成需要的 RSA 文件：让服务器自动生成或
+    使用 `mysql_ssl_rsa_setup` 程序，参考：Section 6.4.3.1, “Creating SSL and
+    RSA Certificates and Keys using MySQL”.
 
+为了创建 RSA 私有和公共密钥对文件，在登录到运行 MySQL 服务器的系统帐户时运行这些
+命令，这样则这些文件将由该帐户拥有：
+```bash
+openssl genrsa -out private_key.pem 2048
+openssl rsa -in private_key.pem -pubout -out public_key.pem
+```
+这些命令会创建 2,048 位密钥。要创建更强的密钥，使用更大的值。
+
+然后设置密钥文件的访问模式。私钥只能由服务器读取，而公钥可以自由地分发给客户端用
+户：
+```bash
+chmod 400 private_key.pem
+chmod 444 public_key.pem
+```
 
 ## 6.4.4 OpenSSL Versus wolfSSL
 
+MySQL 可以使用 OpenSSL 或 wolfSSL 编译，这两种方法都支持基于 OpenSSL API 的加密
+连接：
+* MySQL 企业版二进制发行版使用 OpenSSL 编译。不可与 wolfSSL 和 MySQL 企业版搭配
+  使用。
+* MySQL 社区版二进制发行版使用 OpenSSL 编译。
+* MySQL 社区版源码发行版可以使用 OpenSSL 或 wolfSSL 编译。参考 Section 6.4.5, “
+  Building MySQL with Support for Encrypted Connections”
 
+OpenSSL 和 wolfSSL 提供了相同的基本功能，但是使用 OpenSSL 编译的 MySQL 发行版有
+其他特性：
 
+* OpenSSL 支持更广泛的加密密码用于 `--ssl-cipher` 选项. OpenSSL 支持
+  `--ssl-capath`, `--ssl-crl`, `--ssl-crlpath` 选项. See Section 6.4.2, “
+  Command Options for Encrypted Connections”.
+
+* 使用 `sha256_password` 插件验证的账号可以使用 RSA 密钥文件用于在未加密的连接上
+  进行安全密码交换。See Section 6.5.1.2, “SHA-256 Pluggable Authentication”. (
+  使用 `caching_sha2_password` 插件进行身份验证的账户可以使用 RSA 密钥对密码交换
+  ，而不管 MySQL 是使用 OpenSSL 还是 wolfSSL 编译的。See Section 6.5.1.3, “
+  Caching SHA-2 Pluggable Authentication”.)
+
+* 服务器可以在启动时自动生成缺失的 SSL 和 RSA 的证书和密钥文件，参考：Section
+  6.4.3.1, “Creating SSL and RSA Certificates and Keys using MySQL”.
+
+* OpenSSL 支持`AES_ENCRYPT()` 方法和 `AES_DECRYPT()` 方法的更多加密模式 See
+  Section 12.13, “Encryption and Compression Functions”
+
+只有使用 OpenSSL 来编译 MySQL 时，才会出现这些与 OpenSSL 相关的系统和状态变量：
+* auto_generate_certs
+* caching_sha2_password_auto_generate_rsa_keys
+* sha256_password_auto_generate_rsa_keys
+* sha256_password_private_key_path
+* sha256_password_public_key_path
+* Rsa_public_key
+
+为了确定服务器是否是使用 OpenSSL 编译的，测试这些变量的存在。例如，如果使用
+OpenSSL，则下列语句返回一行，如果使用 wolfSSL，则返回空结果：
+```
+SHOW STATUS LIKE 'Rsa_public_key';
+```
 
 ## 6.4.5 Building MySQL with Support for Encrypted Connections
 
+要在 MySQL 服务器和客户端程序之间使用加密连接，您的系统必须支持 OpenSSL 或
+wolfSSL：
 
+* MySQL 企业版二进制发行版使用 OpenSSL 编译。不可能 wolfSSL 和 MySQL 企业版搭配
+  使用。
+* MySQL 社区版二进制发行版使用 OpenSSL 编译。
+* MySQL 社区版源码发行版可以使用 OpenSSL 或 wolfSSL 编译。
+
+如果从源码编译 MySQL，CMake 配置发行版默认使用 OpenSSL。
+
+要使用OpenSSL进行编译，请使用以下步骤：
+
+1. 确保你的系统上安装了 OpenSSL 1.0.1 或更高的版本。如果安装的 OpenSSL 版本低于
+   1.0.1，CMake 会在 MySQL 配置时生成一个错误。 http://www.openssl.org.
+
+2. `WITH_SSL CMake` 选项确定了编译 MySQL 时使用哪个 SSL 库 (see Section 2.8.4, “MySQL Source-Configuration Options”). 默认值 `-DWITH_SSL=system` 使用 OpenSSL. 在 `CMake` 命令行上显式的指定此选项，例如：
+    ```
+    cmake . -DWITH_SSL=system
+    ```
+
+  上述命令配置发行版使用已安装的 OpenSSL 库。或者，为了显式地指定 OpenSSL 安装的
+  路径名，使用以下语法。如果您安装了多个版本的 OpenSSL，那么这将非常有用，可以防
+  止 CMake 选择错误的版本：
+    ```
+    cmake . -DWITH_SSL=path_name
+    ```
+3. 编译并安装分发版。
+
+  要使用 wolfSSL 编译，下载 wolfSSL 发行版并且再打一个小补丁，说明参考：
+  `extra/README-wolfssl.txt` 文件
+
+  要检测一个 mysqld 服务器是否支持加密连接，检查系统变量 `have_ssl` 的值：
+    ```
+    mysql> SHOW VARIABLES LIKE 'have_ssl';
+    +---------------+-------+
+    | Variable_name | Value |
+    +---------------+-------+
+    | have_ssl      | YES   |
+    +---------------+-------+
+    ```
+
+如果值是 `YES`，服务器支持加密连接。如果该值是 `DISABLED` 的，那么服务器能够支持
+加密连接，但并不是以适当的`--ssl-xxx` 选项启动。see Section 6.4.1, “Configuring
+MySQL to Use Encrypted Connections”.
+
+要确定服务器是使用 OpenSSL 编译还是使用 wolfSSL 编译，可以通过检查只存在于
+OpenSSL 的任何系统变量或状态变量的存在。See Section 6.4.4, “OpenSSL Versus
+wolfSSL”
 
 ## 6.4.6 Encrypted Connection Protocols and Ciphers
 
+为了确定加密连接使用的加密协议和加密算法，请使用以下语句来检查 `Ssl_version` 和
+`Ssl_cipher` 状态变量的值：
+```
+mysql> SHOW SESSION STATUS LIKE 'Ssl_version';
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| Ssl_version | TLSv1 |
++---------------+-------+
 
+mysql> SHOW SESSION STATUS LIKE 'Ssl_cipher';
++---------------+---------------------------+
+| Variable_name | Value |
++---------------+---------------------------+
+| Ssl_cipher | DHE-RSA-AES128-GCM-SHA256 |
++---------------+---------------------------+
+```
+如果连接未加密，则两个变量的值都是空。
+
+MySQL 支持加密连接使用 TLSv1, TLSv1.1 和 TLSv1.2 protocols.
+
+系统变量 `tls_version` 的值决定了服务器可以从可用的协议中使用哪些协议。
+`tls_version` 的值是一个逗号分隔的列表，其中包含一个或多个这样的协议（不区分大小
+写）：TLSv1、TLSv1.1、TLSv1.2。默认情况下，这个变量列出了用于编译 MySQL 的 SSL
+库所支持的所有协议。要在运行时确定 `tls_version` 的值，请使用以下语句：
+```
+mysql> SHOW GLOBAL VARIABLES LIKE 'tls_version';
++---------------+-----------------------+
+| Variable_name | Value                 |
++---------------+-----------------------+
+| tls_version   | TLSv1,TLSv1.1,TLSv1.2 |
++---------------+-----------------------+
+```
+
+要更改 `tls_version` 的值, 在服务器启动时设置它. 例如，要禁止使用安全性较低的
+`TLSv1` 协议的连接，在服务器文件 `my.cnf` 里使用下列行：
+```
+[mysqld]
+tls_version=TLSv1.1,TLSv1.2
+```
+
+要更严格，只允许 TLSv1.2 连接，设置如下：
+```
+[mysqld]
+tls_version=TLSv1.2
+```
+
+对于客户端程序，`--tls-version` 选项允许指定每个客户端调用所允许的 TLS 协议。值
+格式与 `tls_version` 相同。
+
+默认情况下，MySQL 尝试使用可用的最高版本的 TLS 协议，这取决于使用哪个 SSL 库来编
+译服务器和客户端，以及密钥大小，以及服务器或客户端是否被限制使用某些协议;例如，
+`tls_version/--tls-version` 的含义：
+
+* 如果可能的话，使用 TLSv1.2
+* TLSv 1.2 不适用于所有具有 512 位密钥或更少位密钥的加密算法。要使用这样的密钥来
+  使用这个协议，请使用 `--ssl-cipher` 显式地指定加密算法名：
+    ```
+    AES128-SHA
+    AES128-SHA256
+    AES256-SHA
+    AES256-SHA256
+    CAMELLIA128-SHA
+    CAMELLIA256-SHA
+    DES-CBC3-SHA
+    DHE-RSA-AES256-SHA
+    RC4-MD5
+    RC4-SHA
+    SEED-SHA
+    ```
+* 为了获得更好的安全性，请使用至少有 2048 位 RSA 密钥的证书。
+
+如果服务器和客户端协议功能没有共同的协议，服务器就会终止连接请求。例如，如果服务
+器配置了`tls_version=TLSv 1.1,TLSv1.2`，那么连接尝试将会失败，对于那些使用
+`--tls-version=TLSv1` 的客户端，以及不支持 `--tls-version` 选项的老客户端，并且
+隐式地只支持 `TLSv1`。
+
+MySQL permits specifying a list of protocols to support. This list is passed
+directly down to the underlying SSL library and is ultimately up to that library
+what protocols it actually enables from the supplied list. 
+MySQL 允许指定支持的协议列表。这个列表直接传递到底层 SSL 库，并最终取决于实际
+上从提供的列表中启用了哪些协议。关于 SSL 库如何处理这个问题，请参考 MySQL 源代码
+和 `SSL_CTX_new` 文档。对于 OpenSSL，请参阅 `SSL_CTX_new` 文档。
+
+要确定服务器支持的加密算法，使用下列语句检测状态变量 `Ssl_cipher_list` 的值：
+```
+SHOW SESSION STATUS LIKE 'Ssl_cipher_list';
+```
+
+MySQL 传递到 SSL 库的加密算法的顺序非常重要。在列表里会首先提到更安全的加密算法
+，所提供的证书所支持的第一个密码被选中。
+
+MySQL 将这个加密算法列表传递给 SSL 库：
+```
+ECDHE-ECDSA-AES128-GCM-SHA256
+ECDHE-ECDSA-AES256-GCM-SHA384
+ECDHE-RSA-AES128-GCM-SHA256
+ECDHE-RSA-AES256-GCM-SHA384
+ECDHE-ECDSA-AES128-SHA256
+ECDHE-RSA-AES128-SHA256
+ECDHE-ECDSA-AES256-SHA384
+ECDHE-RSA-AES256-SHA384
+DHE-RSA-AES128-GCM-SHA256
+DHE-DSS-AES128-GCM-SHA256
+DHE-RSA-AES128-SHA256
+DHE-DSS-AES128-SHA256
+DHE-DSS-AES256-GCM-SHA384
+DHE-RSA-AES256-SHA256
+DHE-DSS-AES256-SHA256
+ECDHE-RSA-AES128-SHA
+ECDHE-ECDSA-AES128-SHA
+ECDHE-RSA-AES256-SHA
+ECDHE-ECDSA-AES256-SHA
+DHE-DSS-AES128-SHA
+DHE-RSA-AES128-SHA
+TLS_DHE_DSS_WITH_AES_256_CBC_SHA
+DHE-RSA-AES256-SHA
+AES128-GCM-SHA256
+DH-DSS-AES128-GCM-SHA256
+ECDH-ECDSA-AES128-GCM-SHA256
+AES256-GCM-SHA384
+DH-DSS-AES256-GCM-SHA384
+ECDH-ECDSA-AES256-GCM-SHA384
+AES128-SHA256
+DH-DSS-AES128-SHA256
+ECDH-ECDSA-AES128-SHA256
+AES256-SHA256
+DH-DSS-AES256-SHA256
+ECDH-ECDSA-AES256-SHA384
+AES128-SHA
+DH-DSS-AES128-SHA
+ECDH-ECDSA-AES128-SHA
+AES256-SHA
+DH-DSS-AES256-SHA
+ECDH-ECDSA-AES256-SHA
+DHE-RSA-AES256-GCM-SHA384
+DH-RSA-AES128-GCM-SHA256
+ECDH-RSA-AES128-GCM-SHA256
+DH-RSA-AES256-GCM-SHA384
+ECDH-RSA-AES256-GCM-SHA384
+DH-RSA-AES128-SHA256
+ECDH-RSA-AES128-SHA256
+DH-RSA-AES256-SHA256
+ECDH-RSA-AES256-SHA384
+ECDHE-RSA-AES128-SHA
+ECDHE-ECDSA-AES128-SHA
+ECDHE-RSA-AES256-SHA
+ECDHE-ECDSA-AES256-SHA
+DHE-DSS-AES128-SHA
+DHE-RSA-AES128-SHA
+TLS_DHE_DSS_WITH_AES_256_CBC_SHA
+DHE-RSA-AES256-SHA
+AES128-SHA
+DH-DSS-AES128-SHA
+ECDH-ECDSA-AES128-SHA
+AES256-SHA
+DH-DSS-AES256-SHA
+ECDH-ECDSA-AES256-SHA
+DH-RSA-AES128-SHA
+ECDH-RSA-AES128-SHA
+DH-RSA-AES256-SHA
+ECDH-RSA-AES256-SHA
+DES-CBC3-SHA
+```
+
+下列加密算法限制已经就位：
+
+* 下列加密算法是永久限制的：
+    ```
+    !DHE-DSS-DES-CBC3-SHA
+    !DHE-RSA-DES-CBC3-SHA
+    !ECDH-RSA-DES-CBC3-SHA
+    !ECDH-ECDSA-DES-CBC3-SHA
+    !ECDHE-RSA-DES-CBC3-SHA
+    !ECDHE-ECDSA-DES-CBC3-SHA
+    ```
+
+* 以下类别的加密算法被永久限制：
+    ```
+    !aNULL
+    !eNULL
+    !EXPORT
+    !LOW
+    !MD5
+    !DES
+    !RC2
+    !RC4
+    !PSK
+    !SSLv3
+    ```
+
+如果服务器启动时使用了兼容的证书，该证书使用了前面的受限加密算法或加密算法类别，
+那么服务器启动时对加密连接的支持会被禁用掉。
 
 ## 6.4.7 Connecting to MySQL Remotely from Windows with SSH
 
+本节描述如何使用 SSH 通过加密连接连接到远程 MySQL 服务器。这些信息是由 David
+Carlson 的 `<dcarlson@mplcomm.com>` 提供的。
 
+1. 在您的 Windows 机器上安装 SSH 客户机。SSH 客户机的比较，请参阅
+   http://en.wikipedia.org/wiki/Comparison_of_SSH_clients.
+
+2. 启动 Windows SSH 客户端，设置 `Host_Name = yourmysqlserver_URL_or_IP`. 设置
+   `userid=your_userid` 用于登录服务器. 这个 `userid` 值可能与 MySQL 帐户的用户
+   名不一样。
+
+3. 设置端口转发：要么做一个远程端口转发(设置 `local_port: 3306, remote_host:
+   yourmysqlservername_or_ip, remote_port: 3306` ) 或者一个本地的端口转发 (设置
+   `port: 3306, host: localhost, remote port: 3306`).
+
+4. 保存所有的东西，否则下次你将不得不重做。
+
+5. 使用刚刚创建的 SSH 会话登录到您的服务器。
+
+6. 在您的 Windows 机器上，启动一些 ODBC 应用程序（比如 Access）。
+
+7. 在 Windows 中创建一个新文件，并按你平常的方式使用 ODBC 驱动程序链接到 MySQL，
+   注意连接的 MySQL 服务器要输入 `localhost` 而不是 `yourmysqlservername`。
+
+现在，您应该有一个到 MySQL 的 ODBC 连接，且使用 SSH 加密。
 
