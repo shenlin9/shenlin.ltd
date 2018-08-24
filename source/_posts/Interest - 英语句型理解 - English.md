@@ -284,3 +284,9 @@ the server CA certificate and against the server host name in its certificate.
 
 They can be enabled at startup and inspected but not set at runtime.
 
+
+
+
+Column, index, stored routine, event, and resource group names are not
+case-sensitive on any platform, nor are column aliases.
+列别名也不区分？？？

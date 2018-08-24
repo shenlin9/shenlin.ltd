@@ -312,7 +312,12 @@ Values”.
 
 Hexadecimal literal values are written using X'val' or 0xval notation, where val contains hexadecimal digits (0..9, A..F). Lettercase of the digits and of any leading X does not matter. A leading 0x is case-sensitive and cannot be written as 0X.
 
-Legal hexadecimal literals:
+十六进制的字面值：
+* 用 `X'val'` 或 `0xval` 格式编写，`val` 包含十六进制数字（0...9,A..F)，数字和
+  任何前导 `X` 的字母大小写都不重要。
+* 前置的 `0x` 是大小写敏感的，不能写成 `0X`。
+
+合法的十六进制字面值：
 ```
 X'01AF'
 X'01af'
@@ -322,14 +327,14 @@ x'01af'
 0x01af
 ```
 
-Illegal hexadecimal literals:
+非法的十六进制字面值：
 ```
-X'0G' (G is not a hexadecimal digit)
-0X01AF (0X must be written as 0x)
+X'0G'       (G 不是十六进制数字)
+0X01AF      (0X 必须小写为 0x)
 ```
 
-Values written using X'val' notation must contain an even number of digits or a syntax error occurs. To
-correct the problem, pad the value with a leading zero:
+使用 `X'val'` 符号编写的值必须包含偶数个数字否则出现语法错误。为了修正这个问题，
+可以用一个前导零来填充：
 ```
 mysql> SET @s = X'FFF';
 ERROR 1064 (42000): You have an error in your SQL syntax;
@@ -340,67 +345,66 @@ mysql> SET @s = X'0FFF';
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-Values written using 0xval notation that contain an odd number of digits are treated as having an extra
-leading 0. For example, 0xaaa is interpreted as 0x0aaa.
+但使用包含奇数位数字的 `0xval` 符号编写的值被视为具有额外的前导 0。例如，`0xaaa`
+被解释为 `0x0aaa`。
 
-By default, a hexadecimal literal is a binary string, where each pair of hexadecimal digits represents a
-character:
+在默认情况下，十六进制字面值是一个二进制字符串，其中每一对十六进制数字代表一个字
+符：
 ```
 mysql> SELECT X'4D7953514C', CHARSET(X'4D7953514C');
 +---------------+------------------------+
 | X'4D7953514C' | CHARSET(X'4D7953514C') |
 +---------------+------------------------+
-| MySQL | binary |
+| MySQL         | binary                 |
 +---------------+------------------------+
 
 mysql> SELECT 0x5461626c65, CHARSET(0x5461626c65);
 +--------------+-----------------------+
 | 0x5461626c65 | CHARSET(0x5461626c65) |
 +--------------+-----------------------+
-| Table | binary |
+| Table        | binary                |
 +--------------+-----------------------+
 ```
 
-A hexadecimal literal may have an optional character set introducer and COLLATE clause, to designate it
-as a string that uses a particular character set and collation:
+十六进制字面值可以有一个可选的字符集引入器和 `COLLATE` 子句，用于将它指定为一个
+使用特定字符集和校对规则的字符串：
 ```
 [_charset_name] X'val' [COLLATE collation_name]
 ```
 
-Examples:
+例如：
 ```
 SELECT _latin1 X'4D7953514C';
 SELECT _utf8 0x4D7953514C COLLATE utf8_danish_ci;
 ```
+例子使用了 `X'val'` 符号，但是 `0xval` 符号也允许引入器。有关引入器的信息，请参
+阅 Section 10.3.8, “Character Set Introducers”.
 
-The examples use X'val' notation, but 0xval notation permits introducers as well. For information about
-introducers, see Section 10.3.8, “Character Set Introducers”.
-
-In numeric contexts, MySQL treats a hexadecimal literal like a BIGINT (64-bit integer). To ensure numeric
-treatment of a hexadecimal literal, use it in numeric context. Ways to do this include adding 0 or using
-CAST(... AS UNSIGNED). For example, a hexadecimal literal assigned to a user-defined variable is a
-binary string by default. To assign the value as a number, use it in numeric context:
+在数字上下文中，MySQL 将十六进制字面值作为 `BIGINT`（64位整数）对待。为了确保十
+六进制字面值的数字处理，在数字上下文中使用它，方法包括将其加 0 或使用
+`CAST(... AS UNSIGNED)`。例如，在默认情况下，分配给用户自定义变量的十六进制字面
+值是二进制字符串。要将值赋值为一个数字，在数值上下文中使用它：
 ```
 mysql> SET @v1 = X'41';
 mysql> SET @v2 = X'41'+0;
 mysql> SET @v3 = CAST(X'41' AS UNSIGNED);
 mysql> SELECT @v1, @v2, @v3;
 +------+------+------+
-| @v1 | @v2 | @v3 |
+| @v1   | @v2   | @v3|
 +------+------+------+
-| A | 65 | 65 |
+| A     | 65    | 65 |
 +------+------+------+
 ```
 
-An empty hexadecimal value (X'') evaluates to a zero-length binary string. Converted to a number, it
-produces 0:
+空的十六进制值 (`X''`) 为 0 长度的二进制字符串，转换为数字则为 0：
 ```
 mysql> SELECT CHARSET(X''), LENGTH(X'');
 +--------------+-------------+
 | CHARSET(X'') | LENGTH(X'') |
 +--------------+-------------+
-| binary | 0 |
+| binary       | 0           |
 +--------------+-------------+
+
 mysql> SELECT X''+0;
 +-------+
 | X''+0 |
@@ -409,63 +413,65 @@ mysql> SELECT X''+0;
 +-------+
 ```
 
-The X'val' notation is based on standard SQL. The 0x notation is based on ODBC, for which
-hexadecimal strings are often used to supply values for BLOB columns.
+`X'val'` 符号是基于标准 SQL 的，`0x` 符号是基于 ODBC, 后者的十六进制字符串常被用
+于 `BLOB` 列的值。
 
-To convert a string or a number to a string in hexadecimal format, use the HEX() function:
+要将字符串或数字转换成十六进制格式的字符串，请使用 `HEX()` 函数：
 ```
 mysql> SELECT HEX('cat');
 +------------+
 | HEX('cat') |
 +------------+
-| 636174 |
+| 636174     |
 +------------+
+
 mysql> SELECT X'636174';
 +-----------+
 | X'636174' |
 +-----------+
-| cat |
+| cat       |
 +-----------+
 ```
 
-For hexadecimal literals, bit operations are considered numeric context, but bit operations permit numeric
-or binary string arguments in MySQL 8.0 and higher. To explicitly specify binary string context for
-hexadecimal literals, use a `_binary` introducer for at least one of the arguments:
+对于十六进制字面值来说，位运算被认为是数字上下文，但是位操作允许在 MySQL 8.0 和
+更高版本中使用数字或二进制字符串参数。为了显式地为十六进制字面值指定二进制字符串
+上下文，为至少一个参数使用 `_binary` 引入器：
 ```
 mysql> SET @v1 = X'000D' | X'0BC0';
 mysql> SET @v2 = _binary X'000D' | X'0BC0';
 mysql> SELECT HEX(@v1), HEX(@v2);
 +----------+----------+
-| HEX(@v1) | HEX(@v2) |
+| HEX(@v1)  | HEX(@v2) |
 +----------+----------+
-| BCD | 0BCD |
+| BCD       | 0BCD     |
 +----------+----------+
 ```
 
-The displayed result appears similar for both bit operations, but the result without `_binary` is a BIGINT
-value, whereas the result with `_binary` is a binary string. Due to the difference in result types, the
-displayed values differ: High-order 0 digits are not displayed for the numeric result.
+显示的结果在两个位操作中都是相似的，但是没有 `_binary` 的结果是一个 `BIGINT` 值
+，而 `_binary` 的结果是一个二进制字符串。由于结果类型的不同，显示的值不同：数值
+结果没有显示高位数字 0。
 
 ## 9.1.5 Bit-Value Literals
 
-Bit-value literals are written using b'val' or 0bval notation. val is a binary value written using zeros and
-ones. Lettercase of any leading b does not matter. A leading 0b is case sensitive and cannot be written as
-0B.
+位值的字面值书写格式：`b'val'` 或 `0bval`。
+`val` 是 0 和 1 的二进制值。
+`b'val'` 里的前导 b 大小写不重要；
+但 `0bval` 里的 `b` 必须是小写的，不能大写为 `0B`。
 
-Legal bit-value literals:
+合法的位值的字面值
 ```
 b'01'
 B'01'
 0b01
 ```
 
-Illegal bit-value literals:
+不合法的位值的字面值
 ```
-b'2' (2 is not a binary digit)
-0B01 (0B must be written as 0b)
+b'2' (2 不是二进制数字)
+0B01 (0B 必须写为 0b)
 ```
 
-By default, a bit-value literal is a binary string:
+默认情况下，位值的字面值是一个二进制字符串
 ```
 mysql> SELECT b'1000001', CHARSET(b'1000001');
 +------------+---------------------+
@@ -482,38 +488,36 @@ mysql> SELECT 0b1100001, CHARSET(0b1100001);
 +-----------+--------------------+
 ```
 
-A bit-value literal may have an optional character set introducer and COLLATE clause, to designate it as a
-string that uses a particular character set and collation:
+两种格式的位值字面值都可以有一个可选的字符集引入器和 `COLLATE` 子句，从而将其指
+定为一个使用特定字符集和校对规则的字符串：
 ```
 [_charset_name] b'val' [COLLATE collation_name]
 ```
 
-Examples:
+例如：
 ```
 SELECT _latin1 b'1000001';
 SELECT _utf8 0b1000001 COLLATE utf8_danish_ci;
 ```
+关于引入器的信息，参考 Section 10.3.8, “Character Set Introducers”.
 
-The examples use b'val' notation, but 0bval notation permits introducers as well. For information about
-introducers, see Section 10.3.8, “Character Set Introducers”.
-
-In numeric contexts, MySQL treats a bit literal like an integer. To ensure numeric treatment of a bit literal,
-use it in numeric context. Ways to do this include adding 0 or using CAST(... AS UNSIGNED). For
-example, a bit literal assigned to a user-defined variable is a binary string by default. To assign the value
-as a number, use it in numeric context:
+在数字上下文中，MySQL 将位值字面值视为整数对待。为了确保对位值字面值的数字处理，
+即在数字上下文中使用它，方法包括加 0 或使用 `CAST(... AS UNSIGNED)`。例如，在默
+认情况下，分配给用户自定义变量的位值字面值是二进制字符串。要将值赋值为一个数字，
+在数值上下文中使用它：
 ```
 mysql> SET @v1 = b'1100001';
 mysql> SET @v2 = b'1100001'+0;
 mysql> SET @v3 = CAST(b'1100001' AS UNSIGNED);
 mysql> SELECT @v1, @v2, @v3;
 +------+------+------+
-| @v1 | @v2 | @v3 |
+| @v1   | @v2   | @v3|
 +------+------+------+
-| a | 97 | 97 |
+| a     | 97    | 97 |
 +------+------+------+
 ```
 
-An empty bit value (b'') evaluates to a zero-length binary string. Converted to a number, it produces 0:
+空的位值 `b''` 是 0 长度的二进制字符串，转换为数字是 0
 ```
 mysql> SELECT CHARSET(b''), LENGTH(b'');
 +--------------+-------------+
@@ -530,7 +534,7 @@ mysql> SELECT b''+0;
 +-------+
 ```
 
-Bit-value notation is convenient for specifying values to be assigned to BIT columns:
+位值的表示法可以很方便地为 `BIT` 列分配值：
 ```
 mysql> CREATE TABLE t (b BIT(8));
 mysql> INSERT INTO t SET b = b'11111111';
@@ -538,42 +542,41 @@ mysql> INSERT INTO t SET b = b'1010';
 mysql> INSERT INTO t SET b = b'0101';
 ```
 
-Bit values in result sets are returned as binary values, which may not display well. To convert a bit value to
-printable form, use it in numeric context or use a conversion function such as BIN() or HEX(). High-order
-0 digits are not displayed in the converted value.
+结果集中的位值作为二进制值返回，这可能不能很好地显示。要将位值转换为可打印的形式
+，请在数值上下文中使用它或者使用诸如 `BIN()` 或 `HEX()` 之类的转换函数。在转换
+后的值中没有显示高位的数字 0。
 ```
 mysql> SELECT b+0, BIN(b), OCT(b), HEX(b) FROM t;
 +------+----------+--------+--------+
-| b+0 | BIN(b) | OCT(b) | HEX(b) |
+| b+0   | BIN(b)    | OCT(b) | HEX(b) |
 +------+----------+--------+--------+
-| 255 | 11111111 | 377 | FF |
-| 10 | 1010 | 12 | A |
-| 5 | 101 | 5 | 5 |
+| 255   | 11111111  | 377    | FF   |
+| 10    | 1010      | 12     | A    |
+| 5     | 101       | 5      | 5    |
 +------+----------+--------+--------+
 ```
 
-For bit literals, bit operations are considered numeric context, but bit operations permit numeric or binary
-string arguments in MySQL 8.0 and higher. To explicitly specify binary string context for bit literals, use a
-`_binary` introducer for at least one of the arguments:
+对于位字面量(bit literals)来说，位操作被认为是数值上下文，但是在 MySQL 8.0 和更
+高版本中位操作允许使用数字或二进制字符串参数，所以要显式地为位字面量指定二进制字
+符串上下文，请为至少其中一个参数使用 `_binary` 引入器：
 ```
 mysql> SET @v1 = b'000010101' | b'000101010';
 mysql> SET @v2 = _binary b'000010101' | _binary b'000101010';
 mysql> SELECT HEX(@v1), HEX(@v2);
 +----------+----------+
-| HEX(@v1) | HEX(@v2) |
+| HEX(@v1)  | HEX(@v2) |
 +----------+----------+
-| 3F | 003F |
+| 3F        | 003F      |
 +----------+----------+
 ```
 
-The displayed result appears similar for both bit operations, but the result without `_binary` is a BIGINT
-value, whereas the result with `_binary` is a binary string. Due to the difference in result types, the
-displayed values differ: High-order 0 digits are not displayed for the numeric result.
+两个位操作的显示结果都是相似的，但是没有使用 `_binary` 的结果是一个 `BIGINT` 值，
+而使用了 `_binary` 的结果是一个二进制字符串。由于结果类型的不同，显示的值不同：
+数值结果没有显示高位数字 0。
 
 ## 9.1.6 Boolean Literals
 
-The constants TRUE and FALSE evaluate to 1 and 0, respectively. The constant names can be written in
-any lettercase.
+常量 `TRUE` 和 `FALSE` 分别计算为 1 和 0。常量名可以用任何大小写字母来写。
 ```
 mysql> SELECT TRUE, true, FALSE, false;
 -> 1, 1, 0, 0
@@ -581,13 +584,13 @@ mysql> SELECT TRUE, true, FALSE, false;
 
 ## 9.1.7 NULL Values
 
-The NULL value means “no data.” NULL can be written in any lettercase.
+NULL 值表示“没有数据”，NULL 可以用任何大小写字母来写。
 
-Be aware that the NULL value is different from values such as 0 for numeric types or the empty string for
-string types. For more information, see Section B.5.4.3, “Problems with NULL Values”.
+注意 “NULL”值不同于数值类型的 0 或字符串类型的空字符串等值。更多信息参考：
+Section B.5.4.3, “Problems with NULL Values”.
 
-For text file import or export operations performed with LOAD DATA INFILE or SELECT ... INTO
-OUTFILE, NULL is represented by the \N sequence. See Section 13.2.7, “LOAD DATA INFILE Syntax”.
+使用 `LOAD DATA INFILE` 或 `SELECT ... INTO OUTFILE` 对文本文件执行导入或导出操
+作时，`NULL` 由 `\N` 序列表示。参考：Section 13.2.7, “LOAD DATA INFILE Syntax”.
 
-For sorting with ORDER BY, NULL values sort before other values for ascending sorts, after other values for
-descending sorts.
+使用 `ORDER BY` 排序时， 升序排序时 `NULL` 值排在其他值前面，降序排序时排在其他
+值后面。
