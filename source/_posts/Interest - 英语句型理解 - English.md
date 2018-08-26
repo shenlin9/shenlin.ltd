@@ -290,3 +290,7 @@ They can be enabled at startup and inspected but not set at runtime.
 Column, index, stored routine, event, and resource group names are not
 case-sensitive on any platform, nor are column aliases.
 列别名也不区分？？？
+
+
+
+High-order 0 digits 高阶数字 0
