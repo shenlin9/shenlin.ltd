@@ -294,3 +294,45 @@ case-sensitive on any platform, nor are column aliases.
 
 
 High-order 0 digits 高阶数字 0
+
+
+
+What character set is the statement in when it leaves the client?
+the statement in???? 什么句型
+
+
+For comparisons of strings with column values
+将字符串和列值比较？？？
+比较列值里的字符串？？？
+
+
+
+Clients can fine-tune the settings for these variables
+客户端可以调整这些变量的设置？？？
+客户端可以为这些变量调整设置？？？
+
+
+
+For systems on which the locale is available from the OS, the client uses it to
+set the default character set rather than using the compiled-in default.
+
+
+
+you should edit the file with the locale of your environment set to UTF-8
+
+
+
+
+
+
+Characters outside the BMP compare as REPLACEMENT CHARACTER and convert to '?'
+when converted to a Unicode character set that supports only BMP characters
+(utf8mb3 or ucs2). 
+？？？compare as REPLACEMENT CHARACTER
+
+
+
+
+Any TIMESTAMP or DATETIME column in a table can have automatic initialization and updating properties.
+表里的任何 TIMESTAMP 或 DATETIME 列都有自动初始化属性和自动更新属性
+表里的任何 TIMESTAMP 或 DATETIME 列都有自动初始化 和 更新属性

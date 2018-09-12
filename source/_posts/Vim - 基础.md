@@ -288,7 +288,7 @@ $ find ./ -type f -print0 | xargs -0 dos2unix
 
 ### BOM
 
-byte of mark 字节序
+byte order mark 字节序
 
 ```vim
 :set nobomb
