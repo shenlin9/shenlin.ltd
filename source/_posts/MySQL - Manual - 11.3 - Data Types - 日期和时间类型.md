@@ -614,8 +614,9 @@ mysql> SELECT NOW(), NOW()+0, NOW(3)+0;
 列，结果是 `0000`，而不是 `2000`。要想在 `YEAR(4)` 列中插入零值，但是被解释为
 `2000`，请插入字符串 `'0'` 或 `'00'`
 
-Remember that these rules are only heuristics that provide reasonable guesses as to what your data values mean. If the rules used by MySQL do not produce the values you require, you must provide unambiguous input containing four-digit year values.
-请记住，这些规则仅仅是对您的数据值意味着什么的合理猜测。如果 MySQL 所使用的规则不能产生您所需要的值，那么您必须提供包含四位数年值的明确输入。
+Remember that these rules are only heuristics that provide reasonable guesses as to what your data values mean. 
+请记住，这些规则仅仅是对您的数据值意味着什么的合理猜测。如果 MySQL 所使用的规则
+不能产生您所需要的值，那么您必须提供包含四位数年值的明确输入。
 
 `ORDER BY` 子句可以正确的排序两位数的年。
 

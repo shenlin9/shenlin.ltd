@@ -336,3 +336,11 @@ when converted to a Unicode character set that supports only BMP characters
 Any TIMESTAMP or DATETIME column in a table can have automatic initialization and updating properties.
 表里的任何 TIMESTAMP 或 DATETIME 列都有自动初始化属性和自动更新属性
 表里的任何 TIMESTAMP 或 DATETIME 列都有自动初始化 和 更新属性
+
+
+
+
+
+Make sure that the column is sorted lexically rather than by index number by coding `ORDER BY CAST(col AS CHAR)` or `ORDER BY CONCAT(col)`.
+确保列是按词法排序的，而不是由索引序号排序的，通过编码 `ORDER BY CAST(col AS CHAR)` 或 `ORDER BY CONCAT(col)`。
+确保列是通过编码 `ORDER BY CAST(col AS CHAR)` 或 `ORDER BY CONCAT(col)` 按词法排序的，而不是由索引序号排序的。
