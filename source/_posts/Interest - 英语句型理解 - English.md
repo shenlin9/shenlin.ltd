@@ -344,3 +344,14 @@ Any TIMESTAMP or DATETIME column in a table can have automatic initialization an
 Make sure that the column is sorted lexically rather than by index number by coding `ORDER BY CAST(col AS CHAR)` or `ORDER BY CONCAT(col)`.
 确保列是按词法排序的，而不是由索引序号排序的，通过编码 `ORDER BY CAST(col AS CHAR)` 或 `ORDER BY CONCAT(col)`。
 确保列是通过编码 `ORDER BY CAST(col AS CHAR)` 或 `ORDER BY CONCAT(col)` 按词法排序的，而不是由索引序号排序的。
+
+
+
+note that for a JSON column, the storage size and thus the value returned by
+this function is that used by the column prior to any partial updates that may
+have been performed on it 
+
+
+
+
+The order of two objects that are not equal is unspecified but deterministic.

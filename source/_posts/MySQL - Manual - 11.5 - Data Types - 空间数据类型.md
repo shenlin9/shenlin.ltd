@@ -11,6 +11,11 @@ MySQL 空间数据类型
 
 <!--more-->
 
+
+**Additional Resources**
+
+
+
 ## 11.5.1 Spatial Data Types
 
 
@@ -64,5 +69,8 @@ MySQL 空间数据类型
 ## 11.5.11 Using Spatial Indexes
 
 
+https://www.javdoe.com/studio/fa-pro/page-4.html
+
+http://news.dwnews.com/china/photo/2018-09-15/60085126.html#p=2
 
 
