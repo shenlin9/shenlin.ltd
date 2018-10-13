@@ -73,7 +73,9 @@ the following table.
 
 ## Date and Time Type Storage Requirements
 
-For `TIME`,`DATETIME` and `TIMESTAMP` columns, the storage required for tables created before MySQL 5.6.4 differs from tables created from 5.6.4 on. This is due to a change in 5.6.4 that permits these types to have a fractional part, which requires from 0 to 3 bytes.
+对于 `TIME`、`DATETIME` 和 `TIMESTAMP` 列，MySQL 5.6.4 之前版本和之后版本创建表
+所需要的存储空间不同。这是由于版本 5.6.4 的变化：允许这些类型有一个小数部分，需
+要 0 到 3 字节。
 
     Data Type   Storage Required        Storage Required 
                 Before MySQL 5.6.4      as of MySQL 5.6.4
@@ -84,104 +86,118 @@ For `TIME`,`DATETIME` and `TIMESTAMP` columns, the storage required for tables c
     DATETIME    8 bytes                  5 bytes + fractional seconds storage
     TIMESTAMP   4 bytes                  4 bytes + fractional seconds storage
 
-As of MySQL 5.6.4, storage for YEAR and DATE remains unchanged. However, TIME, DATETIME, and
-TIMESTAMP are represented differently. DATETIME is packed more efficiently, requiring 5 rather than 8
-bytes for the nonfractional part, and all three parts have a fractional part that requires from 0 to 3 bytes,
-depending on the fractional seconds precision of stored values.
+在 MySQL 5.6.4 中， `YEAR` 和 `DATE` 的存储空间保持不变。然而， `TIME`、
+`DATETIME` 和 `TIMESTAMP` 的表示则不同。 `DATETIME` 被打包地更高效，非小数部分只
+需要 5 个而非 8 个字节，并且这三个数据类型都有一个小数部分，取决于存储值的分秒精
+度，需要 0 到 3 字节存储空间。
 
-    Fractional Seconds Precision Storage Required
-    0 0 bytes
-    1, 2 1 byte
-    3, 4 2 bytes
-    5, 6 3 bytes
+    Fractional Seconds      Precision Storage Required
+    0                           0 bytes
+    1, 2                        1 byte
+    3, 4                        2 bytes
+    5, 6                        3 bytes
 
-For example, TIME(0), TIME(2), TIME(4), and TIME(6) use 3, 4, 5, and 6 bytes, respectively. TIME
-and TIME(0) are equivalent and require the same storage.
-For details about internal representation of temporal values, see MySQL Internals: Important Algorithms
-and Structures.
+例如, `TIME(0)`, `TIME(2)`, `TIME(4)`, `TIME(6)` 分别使用 3, 4, 5, 6 字节的存储
+空间，`TIME` 和 `TIME(0)` 等效,需要相同的存储空间。
+
+有关时态值的内部表示的具体细节信息，请参阅：
+![MySQL Internals: Important Algorithms and Structures](https://dev.mysql.com/doc/internals/en/algorithms.html)
 
 ## String Type Storage Requirements
 
-In the following table, M represents the declared column length in characters for nonbinary string types and
-bytes for binary string types. L represents the actual length in bytes of a given string value.
+下面的表中，`M` 表示声明的列长度，非二进制字符串类型按字符计算，二进制字符串类型
+按字节计算。`L` 表示给定字符串值的实际字节长度。
 
-    Data Type               Storage Required
-    CHAR(M)                     The compact family of InnoDB row formats optimize storage
-                                for variable-length character sets. See COMPACT Row Format
-                                Characteristics. Otherwise, M × w bytes, <= M <= 255, where
-                                w is the number of bytes required for the maximum-length
-                                character in the character set.
+    Data Type                   Storage Required
+    ----                        ----
+    CHAR(M)                     为可变长度字符集格式优化存储的 InnoDB 行紧凑家族，
+                                The compact family of InnoDB row formats
+                                optimize storage for variable-length character
+                                sets. See “15.8.1.2 The Physical Row Structure
+                                of an InnoDB Table --- COMPACT Row Format
+                                Characteristics”. 
+                                否则, M × w bytes, 0 <= M <= 255, w 是字符集中最
+                                大长度字符所需的字节数
+
     BINARY(M)                   M bytes, 0 <= M <= 255
-    VARCHAR(M), VARBINARY(M)    L + 1 bytes if column values require 0 − 255 bytes, L + 2 bytes if values may require more than 255 bytes
-    TINYBLOB, TINYTEXT          L + 1 bytes, where L < 2 8
-    BLOB, TEXT                  L + 2 bytes, where L < 2 16
-    MEDIUMBLOB, MEDIUMTEXT      L + 3 bytes, where L < 2 24
-    LONGBLOB, LONGTEXT          L + 4 bytes, where L < 2 32
-    ENUM('value1','value2',...) 1 or 2 bytes, depending on the number of enumeration values (65,535 values maximum)
-    SET('value1','value2',...)  1, 2, 3, 4, or 8 bytes, depending on the number of set members (64 members maximum)
+    VARCHAR(M), VARBINARY(M)    L + 1 bytes 如果列值需要 0 − 255 bytes
+                                L + 2 bytes 如果列值需要大于 255 bytes
+    TINYBLOB, TINYTEXT          L + 1 bytes, where L < 2^8
+    BLOB, TEXT                  L + 2 bytes, where L < 2^16
+    MEDIUMBLOB, MEDIUMTEXT      L + 3 bytes, where L < 2^24
+    LONGBLOB, LONGTEXT          L + 4 bytes, where L < 2^32
 
-Variable-length string types are stored using a length prefix plus data. The length prefix requires from one
-to four bytes depending on the data type, and the value of the prefix is L (the byte length of the string). For
-example, storage for a MEDIUMTEXT value requires L bytes to store the value plus three bytes to store the
-length of the value.
+    ENUM('value1','value2',...) 1 或 2 bytes, 取决于枚举值的数量 (最多 65,535 个
+                                值)
 
-To calculate the number of bytes used to store a particular CHAR, VARCHAR, or TEXT column value, you
-must take into account the character set used for that column and whether the value contains multibyte
-characters. In particular, when using a utf8 Unicode character set, you must keep in mind that not all
-characters use the same number of bytes. utf8mb3 and utf8mb4 character sets can require up to three
-and four bytes per character, respectively. For a breakdown of the storage used for different categories of
-utf8mb3 or utf8mb4 characters, see Section 10.9, “Unicode Support”.
+    SET('value1','value2',...)  1, 2, 3, 4, 或 8 bytes, 取决于集合成员的数量 (最
+                                多 64 个成员)
 
-VARCHAR, VARBINARY, and the BLOB and TEXT types are variable-length types. For each, the storage
-requirements depend on these factors:
-* The actual length of the column value
-* The column's maximum possible length
-* The character set used for the column, because some character sets contain multibyte characters
+可变长度字符串类型是使用长度前缀加上数据存储的。根据数据类型，长度前缀需要 1 到
+4 个字节，前缀的值是字符串的字节长度 `L`。例如，存储 `MEDIUMTEXT` 值需要 `L`
+字节存储值本身再加上三个字节来存储值的长度。
 
-For example, a VARCHAR(255) column can hold a string with a maximum length of 255 characters.
-Assuming that the column uses the latin1 character set (one byte per character), the actual storage
-required is the length of the string (L), plus one byte to record the length of the string. For the string
-'abcd', L is 4 and the storage requirement is five bytes. If the same column is instead declared to use the
-ucs2 double-byte character set, the storage requirement is 10 bytes: The length of 'abcd' is eight bytes
-and the column requires two bytes to store lengths because the maximum length is greater than 255 (up to
-510 bytes).
+要计算用来存储特定 `CHAR`、`VARCHAR` 或 `TEXT` 列值的字节数，您必须考虑到该列所
+使用的字符集，以及该值是否包含多字节字符。特别地，当使用 `utf8` Unicode 字符集时
+，您必须记住，并不是所有字符都使用相同的字节数。 `utf8mb3` 和 `utf8mb4` 字符集可
+以分别要求每个字符最多 3 个字节和 4 个字节。对于不同类别的 `utf8mb3` 或
+`utf8mb4` 字符的存储，请参阅 Section 10.9, “Unicode Support”。
 
-The effective maximum number of bytes that can be stored in a VARCHAR or VARBINARY column is subject
-to the maximum row size of 65,535 bytes, which is shared among all columns. For a VARCHAR column that
-stores multibyte characters, the effective maximum number of characters is less. For example, utf8mb4
-characters can require up to four bytes per character, so a VARCHAR column that uses the utf8mb4
-character set can be declared to be a maximum of 16,383 characters. See Section C.10.4, “Limits on Table
-Column Count and Row Size”.
+`VARCHAR`, `VARBINARY`, `BLOB` 和 `TEXT` 类型是可变长度类型，每个的存储需求取决
+于这些因素：
+* 列值的实际长度
+* 列的最大可能长度
+* 用于此列的字符集，因为某些字符集包含多字节字符
 
-InnoDB encodes fixed-length fields greater than or equal to 768 bytes in length as variable-length fields,
-which can be stored off-page. For example, a CHAR(255) column can exceed 768 bytes if the maximum
-byte length of the character set is greater than 3, as it is with utf8mb4.
+例如，一个 `VARCHAR(255)` 列可以容纳最大长度为 255 个字符的字符串。假设此列使用
+`latin1` 字符集（每个字符一个字节），实际需要的存储空间是字符串的长度（L），加上
+记录字符串长度的一个字节。对于字符串 'abcd'，L 是 4，存储需求是 5 字节。如果同一
+列被声明为使用 `ucs2` 双字节字符集，那么储存需求是 10 字节：abcd 的长度是 8 字节
+，并且此列需要两个字节来存储长度，因为列的最大长度大于 255（最多可达 510 字节）。
 
-The size of an ENUM object is determined by the number of different enumeration values. One byte is used
-for enumerations with up to 255 possible values. Two bytes are used for enumerations having between
-256 and 65,535 possible values. See Section 11.4.4, “The ENUM Type”.
+储存在 `VARCHAR` 或 `VARBINARY` 列中的有效最大字节数受制于最大行数 65,535 字节，
+这在所有列中都是共享的。对于储存多字节字符的 `VARCHAR` 列来说，字符的有效最大数
+量较少。例如，`utf8mb4` 的每个字符最多需要 4 个字节，所以使用 `utf8mb4` 字符集的
+`VARCHAR` 列可以被声明为最多 16,383 个字符。请参阅 Section C.10.4, “Limits on
+Table Column Count and Row Size”。
 
-The size of a SET object is determined by the number of different set members. If the set size is N, the
-object occupies (N+7)/8 bytes, rounded up to 1, 2, 3, 4, or 8 bytes. A SET can have a maximum of 64
-members. See Section 11.4.5, “The SET Type”.
+InnoDB 将大于或等于 768 字节的固定长度字段编码为可变长度字段，这些可变长度字段可
+以存储在页面之外。例如，如果字符集的最大字节长度大于 3，那么 `CHAR(255)` 的列可
+以超过 768 字节，就像 `utf8mb4` 一样。
+
+`ENUM` 对象的大小是由不同枚举值的数量决定的。一个字节用于枚举，最多有 255 个可能
+的值。两个字节用于枚举，在 256 和 65,535 个可能的值之间。参见 Section 11.4.4, “
+The ENUM Type”。
+
+一个 `SET` 对象的大小由不同的集合成员的数量决定。如果集合大小为 N，则对象占据
+`(N+7)/8` 字节，四舍五入为 1、2、3、4 或 8 字节。一个 `SET` 最多可以有 64 个成员
+。参见 Section 11.4.5, “The SET Type”。
 
 ## Spatial Type Storage Requirements
 
-MySQL stores geometry values using 4 bytes to indicate the SRID followed by the WKB representation of
-the value. The LENGTH() function returns the space in bytes required for value storage.
+MySQL stores geometry values using 4 bytes to indicate the SRID followed by the
+WKB representation of the value. 
+MySQL 使用 4 个字节来存储几何值，以指示 SRID 后跟 WKB 的值表示。`LENGTH()` 函数
+返回值存储所需的字节空间。
 
-For descriptions of WKB and internal storage formats for spatial values, see Section 11.5.3, “Supported
-Spatial Data Formats”.
+关于空间值的 WKB 和内部存储格式的描述，参见 Section 11.5.3, “Supported Spatial
+Data Formats”。
 
 ## JSON Storage Requirements
 
-In general, the storage requirement for a JSON column is approximately the same as for a LONGBLOB or
-LONGTEXT column; that is, the space consumed by a JSON document is roughly the same as it would be
-for the document's string representation stored in a column of one of these types. However, there is an
-overhead imposed by the binary encoding, including metadata and dictionaries needed for lookup, of the
-individual values stored in the JSON document. For example, a string stored in a JSON document requires
-4 to 10 bytes additional storage, depending on the length of the string and the size of the object or array in
-which it is stored.
+that is, the space consumed by a JSON document is roughly the same as it would
+be for the document's string representation stored in a column of one of these
+types. However, there is an overhead imposed by the binary encoding, including
+metadata and dictionaries needed for lookup, of the individual values stored in
+the JSON document. For example, a string stored in a JSON document requires 4 to
+10 bytes additional storage, depending on the length of the string and the size
+of the object or array in which it is stored.
+一般来说，JSON 列的存储需求与 `LONGBLOB` 或 `LONGTEXT` 列大致相同；也就是说，
+JSON 文档所消耗的空间与存储在这些类型列中的文档字符串表示大致相同。然而，二进制
+编码所带来的开销，包括用于查找的元数据和字典，以及存储在 JSON 文档中的个别值。例
+如，存储在 JSON 文档中的字符串需要 4 到 10 字节的额外存储，这取决于字符串的长度
+和存储的对象或数组的大小。
 
-In addition, MySQL imposes a limit on the size of any JSON document stored in a JSON column such that it
-cannot be any larger than the value of max_allowed_packet.
+此外，MySQL 对存储在 JSON 列中的任何 JSON 文档的大小都有限制，这样它就不能比
+`max_allowed_packet` 的值大。
+

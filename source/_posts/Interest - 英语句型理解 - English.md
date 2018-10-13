@@ -355,3 +355,42 @@ have been performed on it
 
 
 The order of two objects that are not equal is unspecified but deterministic.
+
+
+
+The compact family of InnoDB row formats optimize storage for variable-length character sets.
+
+
+
+MySQL stores geometry values using 4 bytes to indicate the SRID followed by the WKB representation of the value. 
+to indicate the SRID (followed by the WKB) representation of the value
+
+
+
+For descriptions of WKB and internal storage formats for spatial values
+关于空间值的 WKB 和内部存储格式的描述
+关于 WKB 和空间值的内部存储格式的描述
+
+
+that is, the space consumed by a JSON document is roughly the same as it would be for the document's string representation stored in a column of one of these types.
+
+
+
+
+complex code for handling of replication and crash recovery failure states
+
+
+
+
+Database configuration files. These files, one per database directory, contained database default character set attributes.
+
+
+
+
+The dictionary object cache is a shared global cache that stores previously accessed data dictionary objects in memory to enable object reuse and minimize disk I/O.
+in memory 是 stores in memory 还是 objects in memory
+
+
+
+SDI records in an InnoDB tablespace file only describe table and tablespace objects contained within the tablespace.
+contained within the tablespace 是否修饰前面的 table
