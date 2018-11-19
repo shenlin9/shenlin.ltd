@@ -394,3 +394,20 @@ in memory 是 stores in memory 还是 objects in memory
 
 SDI records in an InnoDB tablespace file only describe table and tablespace objects contained within the tablespace.
 contained within the tablespace 是否修饰前面的 table
+
+
+
+
+Metadata updates, binary log writes, and storage engine operations, where applicable, are combined into a single transaction.
+where applicable，修饰的是前面3个主语？
+
+
+
+
+The state of data dictionary, routine, event, and UDF caches is consistent with the status of the DDL operation, meaning that caches are updated to reflect whether or not the DDL operation was completed successfully or rolled back.
+The state of 只修饰字典，还是也修饰后面的 routine, event
+
+
+
+the world champion for the power of plants 
+在世界各地大力提倡植物的力量

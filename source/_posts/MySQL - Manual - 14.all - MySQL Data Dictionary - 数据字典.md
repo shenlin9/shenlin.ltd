@@ -333,13 +333,21 @@ MySQL 服务器使用在 DDL 操作时使用的内部 API 来创建和维护 SDI
     `mysqlpump` 只转储 `mysql` 中的非数据字典表。
 
   * Previously, the `--routines` and `--events` options were not required to include stored routines and events when using the `--all-databases` option: The dump included the `mysql` system database, and therefore also the `proc` and `event` tables containing stored routine and event definitions. As of MySQL 8.0, the `event` and `proc` tables are not used. Definitions for the corresponding objects are stored in data dictionary tables, but those tables are not dumped. To include stored routines and events in a dump made using `--all-databases`, use the `--routines` and `--events` options explicitly.
-  * 在此之前，`--routines` 和 `--events` 选项在使用 `--all-databases` 选项时不需要包含存储的例程和事件：转储包括 `mysql` 系统数据库，因此也包括包含存储例程和事件定义的 `proc` 和 `events` 表。在 MySQL 8.0 中，`events` 和 `proc` 表没有被使用。对应对象的定义存储在数据字典表中，但是这些表没有被转储。为了将存储的例程和事件包含在一个使用 `--all-databases` 的转储中，可以显式地使用 `--routines` 和 `--events` 选项。
+  * 以前，在使用 `--all-databases` 选项时不需要使用 `--routines` 和 `--events`
+    选项来包含存储例程和事件：转储包括 `mysql` 系统数据库，因此也包括包含存储例
+    程和事件定义的 `proc` 和 `events` 表。在 MySQL 8.0 中，`events` 和 `proc` 表
+    没有被使用。对应对象的定义存储在数据字典表中，但是这些表没有被转储。要想使用
+    `--all-databases` 选项的转储中包括存储的例程和事件，可以明确地使用
+    `--routines` 和 `--events` 选项。
 
   * Previously, the `--routines` option required the `SELECT` privilege for the `proc` table. As of MySQL 8.0, that table is not used; `--routines` requires the global `SELECT` privilege instead.
-  * 在此之前，`--routines` 选项需要 `proc` 表的 `SELECT` 特权。在 MySQL 8.0 中，该表没有使用;`--routines` 需要全局 `SELECT` 特权。
+  * 以前，`--routines` 选项需要 `proc` 表的 `SELECT` 特权。在 MySQL 8.0 中，该表
+    没有使用；`--routines` 则需要全局的 `SELECT` 特权。
 
   * Previously, it was possible to dump stored routine and event definitions together with their creation and modification timestamps, by dumping the `proc` and `event` tables. As of MySQL 8.0, those tables are not used, so it is not possible to dump timestamps.
-  * 在此之前，可以通过转储 `proc` 和 `event` 表，将存储的例程和事件定义连同它们的创建和修改时间戳一起转储。在 MySQL 8.0 中，这些表没有被使用，因此不可能转储时间戳。
+  * 在此之前，可以通过转储 `proc` 和 `event` 表，将存储的例程和事件定义连同它们
+    的创建和修改时间戳一起转储。在 MySQL 8.0 中，这些表没有被使用，因此不可能转
+    储时间戳。
 
 * 以前，创建包含非法字符的存储例程产生一个警告。在 MySQL 8.0 中，则产生一个错误。
 
@@ -352,5 +360,6 @@ MySQL 服务器使用在 DDL 操作时使用的内部 API 来创建和维护 SDI
   库目录不被 MySQL 服务器识别。
 
 * DDL 操作需要更长的时间，因为要写入存储器、撤消日志和重做日志，而不是 `.frm` 文件。
-* DDL operations take longer due to writing to storage, undo logs, and redo logs instead of `.frm` files.
+  DDL operations take longer due to writing to storage, undo logs, and redo logs
+  instead of `.frm` files.
 

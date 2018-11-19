@@ -33,15 +33,23 @@ $ mklink /J     为目录创建**联**接，效果类似文件的硬链接，类
 * 文件的硬链接删除源文件后不影响链接文件，但内容更新两者会同步
 * 目录的联结删除源目录后则链接目录也失效
 
-创建文件硬链接，不能跨分区
+`/H` 创建文件硬链接，不能跨分区
 ```
 mklink /H "config_bak/autohotkey.ahk"  "autohotkey.ahk"
 
 为 config_bak/autohotkey.ahk <<===>> autohotkey.ahk 创建了硬链接
 ```
 
-创建目录联结，可以跨分区
+`/J` 创建目录联结，可以跨分区，和快捷方式区别：举例来说，要通过快捷方式或 mklink
+的方式更改 Cocoon 浏览器的缓存目录
+`C:\Users\T460P\AppData\Local\VirtualWorld\Cocoon`，如果在
+`C:\Users\T460P\AppData\Local\VirtualWorld` 目录下创建一个名为 Cocoon 的快捷方
+式指向目标目录，则仍会被浏览器视为缺少 Cocoon 目录而自动创建，但通过下面的方式创
+建的目录联结则会被程序视为真实存在的目录：
 ```
-$ mklink /J d:\git-repo\config_bak  config_bak
-为 d:\git-repo\config_bak <<===>> config_bak 创建的联接
+C:\Users\T460P\AppData\Local\VirtualWorld>mklink /J Cocoon Z:\Cocoon
+为 Cocoon <<===>> Z:\Cocoon 创建的联接
+
+C:\Users\T460P\AppData\Local\Mozilla\Firefox\Profiles\xs7y91g2.default>mklink /J cache2 Z:\FireFox\cache2
+为 cache2 <<===>> Z:\FireFox\cache2 创建的联接
 ```
