@@ -1339,3 +1339,6 @@ of those characters as described in Section 9.2.3, “Mapping of Identifiers to 
 
 ### 13.1.18.9 Secondary Indexes and Generated Columns
 
+
+https://v.qq.com/x/cover/23fo5w35atkawom.html
+https://www.yangguiweihuo.com/12/12151/20057682.html

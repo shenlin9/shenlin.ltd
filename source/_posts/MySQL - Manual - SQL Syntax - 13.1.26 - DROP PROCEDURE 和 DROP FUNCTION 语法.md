@@ -18,16 +18,16 @@ MySQL `DROP FUNCTION` 语法
 DROP {PROCEDURE | FUNCTION} [IF EXISTS] sp_name
 ```
 
-This statement is used to drop a stored procedure or function. That is, the specified routine is
-removed from the server. You must have the ALTER ROUTINE privilege for the routine. (If the
-automatic_sp_privileges system variable is enabled, that privilege and EXECUTE are granted
-automatically to the routine creator when the routine is created and dropped from the creator when the
-routine is dropped. See Section 23.2.2, “Stored Routines and MySQL Privileges”.)
+该语句用于删除存储过程或函数。也就是说，从服务器中删除指定的例程。您必须拥有例程
+的 `ALTER ROUTINE` 特权。（如果启用了 `automatic_sp_privileges` 系统变量，当例程
+创建时，`ALTER ROUTINE` 和 `EXECUTE` 特权将自动授予例程创建者，当删除例程时，授
+予的特权将自动从例程创建者删除。）参见 Section 23.2.2, “Stored Routines and
+MySQL Privileges”。
 
-The IF EXISTS clause is a MySQL extension. It prevents an error from occurring if the procedure or
-function does not exist. A warning is produced that can be viewed with SHOW WARNINGS.
+`IF EXISTS` 子句是一个 MySQL 扩展。如果过程或函数不存在，它可以防止错误发生。可
+以使用 `SHOW WARNINGS` 查看生成的警告。
 
-DROP FUNCTION is also used to drop user-defined functions (see Section 13.7.4.2, “DROP FUNCTION
-Syntax”).
+`DROP FUNCTION` 也用于删除用户定义的函数 (Section 13.7.4.2, “DROP FUNCTION
+Syntax”)。
 
 

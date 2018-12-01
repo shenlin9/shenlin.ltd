@@ -411,3 +411,8 @@ The state of 只修饰字典，还是也修饰后面的 routine, event
 
 the world champion for the power of plants 
 在世界各地大力提倡植物的力量
+
+
+
+MySQL stores the `sql_mode` system variable setting in effect when a trigger is created
+in effect 

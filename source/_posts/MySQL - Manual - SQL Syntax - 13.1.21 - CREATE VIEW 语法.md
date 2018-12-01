@@ -15,102 +15,102 @@ MySQL `CREATE VIEW` 语法
 
 ```
 CREATE
-[OR REPLACE]
-[ALGORITHM = {UNDEFINED | MERGE | TEMPTABLE}]
-[DEFINER = { user | CURRENT_USER }]
-[SQL SECURITY { DEFINER | INVOKER }]
+    [OR REPLACE]
+    [ALGORITHM = {UNDEFINED | MERGE | TEMPTABLE}]
+    [DEFINER = { user | CURRENT_USER }]
+    [SQL SECURITY { DEFINER | INVOKER }]
 VIEW view_name [(column_list)]
 AS select_statement
-[WITH [CASCADED | LOCAL] CHECK OPTION]
+    [WITH [CASCADED | LOCAL] CHECK OPTION]
 ```
 
-The CREATE VIEW statement creates a new view, or replaces an existing view if the OR REPLACE clause
-is given. If the view does not exist, CREATE OR REPLACE VIEW is the same as CREATE VIEW. If the view
-does exist, CREATE OR REPLACE VIEW replaces it.
-For information about restrictions on view use, see Section C.5, “Restrictions on Views”.
-The select_statement is a SELECT statement that provides the definition of the view. (Selecting from
-the view selects, in effect, using the SELECT statement.) The select_statement can select from base
-tables or other views.
-The view definition is “frozen” at creation time and is not affected by subsequent changes to the definitions
-of the underlying tables. For example, if a view is defined as SELECT * on a table, new columns added to
-the table later do not become part of the view, and columns dropped from the table will result in an error
-when selecting from the view.
-The ALGORITHM clause affects how MySQL processes the view. The DEFINER and SQL SECURITY
-clauses specify the security context to be used when checking access privileges at view invocation
-time. The WITH CHECK OPTION clause can be given to constrain inserts or updates to rows in tables
-referenced by the view. These clauses are described later in this section.
-The CREATE VIEW statement requires the CREATE VIEW privilege for the view, and some privilege for
-each column selected by the SELECT statement. For columns used elsewhere in the SELECT statement,
-you must have the SELECT privilege. If the OR REPLACE clause is present, you must also have the DROP
-privilege for the view. CREATE VIEW might also require the SET_USER_ID or SUPER privilege, depending
-on the DEFINER value, as described later in this section.
-When a view is referenced, privilege checking occurs as described later in this section.
-A view belongs to a database. By default, a new view is created in the default database. To create the
-view explicitly in a given database, use db_name.view_name syntax to qualify the view name with the
-database name:
+`CREATE VIEW` 语句创建一个新视图，或者在给出 `OR REPLACE` 子句时替换现有视图。如
+果视图不存在，`CREATE OR REPLACE VIEW` 与 `CREATE VIEW` 相同。如果视图确实存在，
+`CREATE OR REPLACE VIEW` 将替换它。
+
+有关使用视图的限制，参考 Section C.5, “Restrictions on Views”.
+
+`select_statement` 是提供视图定义的 `SELECT` 语句。(从视图中选择实际上是使用
+`SELECT` 语句进行选择。) `select_statement` 可以从基本表或其他视图中进行选择。
+
+视图定义在创建时就被“冻结”了，这之后不受底层表定义的后续更改的影响。例如，如果
+一个视图在表上定义为 `SELECT *`，那么以后添加到表中的新列不会成为视图的一部分，
+并且从表中删除列后，再从视图中进行选择时将导致错误。
+
+`ALGORITHM` 子句影响 MySQL 处理视图的方式。
+`DEFINER` 和 `SQL SECURITY` 子句指定在视图调用阶段检查访问特权时使用的安全上下文。
+`WITH CHECK OPTION` 子句可用于约束视图引用的表中行的插入或更新。
+本节稍后将描述这些子句。
+
+`CREATE VIEW` 语句需要视图的 `CREATE VIEW` 特权，以及由 `SELECT` 语句选择的每个
+列的某些特权。对于 `SELECT` 语句中其他地方使用的列，必须具有 `SELECT` 特权。如果
+存在 `OR REPLACE` 子句，则还必须具有视图的 `DROP` 特权。`CREATE VIEW` 可能还需要
+`SET_USER_ID` 或 `SUPER` 特权，这取决于 `DEFINER` 值，如本节后面所述。
+
+引用视图时，将按照本节后面的描述进行特权检查。
+
+一个视图属于一个数据库。默认情况下，新视图被创建在默认数据库中。要在指定数据库中
+显式的创建视图，请使用 `db_name.view_name` 语法用数据库名限定视图名：
 ```
 CREATE VIEW test.v AS SELECT * FROM t;
 ```
 
-Unqualified table or view names in the SELECT statement are also interpreted with respect to the default
-database. A view can refer to tables or views in other databases by qualifying the table or view name with
-the appropriate database name.
+`SELECT` 语句中的未限定表名或视图名被解释为默认数据库。视图可以通过使用适当的数
+据库名称限定表或视图名称来引用其他数据库中的表或视图。
 
-Within a database, base tables and views share the same namespace, so a base table and a view cannot
-have the same name.
+在数据库中，基本表和视图共享相同的名称空间，因此基本表和视图不能具有相同的名称。
 
-Columns retrieved by the SELECT statement can be simple references to table columns, or expressions
-that use functions, constant values, operators, and so forth.
+`SELECT` 语句检索的列可以是对表列的简单引用，也可以是对使用函数、常量值、操作符
+等的表达式的引用。
 
-A view must have unique column names with no duplicates, just like a base table. By default, the names
-of the columns retrieved by the SELECT statement are used for the view column names. To define explicit
-names for the view columns, specify the optional column_list clause as a list of comma-separated
-identifiers. The number of names in column_list must be the same as the number of columns retrieved
-by the SELECT statement.
+视图必须具有惟一的列名，没有重复，就像基本表一样。默认情况下， `SELECT` 语句检索
+到的列名用于视图列名。要为视图列明确定义名称，请将可选的 `column_list` 子句指定
+为用逗号分隔的标识符列表。 `column_list` 中的名称数量必须与 `SELECT` 语句检索到
+的列数量相同。
 
-A view can be created from many kinds of SELECT statements. It can refer to base tables or other views. It
-can use joins, UNION, and subqueries. The SELECT need not even refer to any tables:
+可以从许多种 `SELECT` 语句创建视图。它可以引用基本表或其他视图。它可以使用连接、
+`UNION` 和子查询。`SELECT` 甚至不需要引用任何表：
 ```
 CREATE VIEW v_today (today) AS SELECT CURRENT_DATE;
 ```
 
-The following example defines a view that selects two columns from another table as well as an expression
-calculated from those columns:
+下面的例子定义了一个视图，该视图从另一个表中选择了两列和这些列的计算表达式:
 ```
 mysql> CREATE TABLE t (qty INT, price INT);
 mysql> INSERT INTO t VALUES(3, 50);
+
 mysql> CREATE VIEW v AS SELECT qty, price, qty*price AS value FROM t;
 mysql> SELECT * FROM v;
 +------+-------+-------+
 | qty | price | value |
 +------+-------+-------+
-| 3 | 50 | 150 |
+| 3   | 50    | 150   |
 +------+-------+-------+
 ```
 
-A view definition is subject to the following restrictions:
-• The SELECT statement cannot refer to system variables or user-defined variables.
-• Within a stored program, the SELECT statement cannot refer to program parameters or local variables.
-• The SELECT statement cannot refer to prepared statement parameters.
-• Any table or view referred to in the definition must exist. If, after the view has been created, a table or
-view that the definition refers to is dropped, use of the view results in an error. To check a view definition
-for problems of this kind, use the CHECK TABLE statement.
-• The definition cannot refer to a TEMPORARY table, and you cannot create a TEMPORARY view.
-• You cannot associate a trigger with a view.
-• Aliases for column names in the SELECT statement are checked against the maximum column length of
-64 characters (not the maximum alias length of 256 characters).
-ORDER BY is permitted in a view definition, but it is ignored if you select from a view using a statement that
-has its own ORDER BY.
+视图定义受以下限制：
+* `SELECT` 语句不能引用系统变量或用户定义变量。
+* 在存储程序中，`SELECT` 语句不能引用程序参数或局部变量。
+* `SELECT` 语句不能引用预处理语句的参数。
+* 定义中引用的任何表或视图都必须存在。如果在创建视图之后，删除定义引用的表或视图
+  ，则使用视图将导致错误。要检查有此类问题的视图定义，请使用 `CHECK TABLE` 语句
+  。
+* 视图定义不能引用 `TEMPORARY` 表，也不能创建一个 `TEMPORARY` 视图。
+* 不能把视图和触发器关联。
+* `SELECT` 语句中列别名根据最大列长度 64 个字符(而不是最大别名长度 256 个字符)进
+  行检查。
 
-For other options or clauses in the definition, they are added to the options or clauses of the statement that
-references the view, but the effect is undefined. For example, if a view definition includes a LIMIT clause,
-and you select from the view using a statement that has its own LIMIT clause, it is undefined which limit
-applies. This same principle applies to options such as ALL, DISTINCT, or SQL_SMALL_RESULT that
-follow the SELECT keyword, and to clauses such as INTO, FOR UPDATE, FOR SHARE, LOCK IN SHARE
-MODE, and PROCEDURE.
+`ORDER BY` 在视图定义中是允许的，但是如果您从视图中选择时使用的语句本身就有
+`ORDER BY`，它将被忽略。
 
-The results obtained from a view may be affected if you change the query processing environment by
-changing system variables:
+对于视图定义中的其他选项或子句，它们会被添加到引用视图的语句的选项或子句中，但是
+效果是未定义的。例如，如果一个视图定义包含一个 `LIMIT` 子句，而您从视图中进行选
+择时使用的语句也带有自己的 `LIMIT` 子句，那么应用哪个 `LIMIT` 是未定义的。这一原
+则同样适用于 `ALL`、`DISTINCT` 或 `SQL_SMALL_RESULT` 跟在 `SELECT` 关键字后面
+的选项，也同样适用于 `INTO`、`FOR UPDATE`、`FOR SHARE`、`LOCK IN SHARE MODE` 和
+`PROCEDURE` 等子句。
+
+如果您通过更改系统变量来更改查询处理环境，则从视图中获得的结果可能会受到影响：
 ```
 mysql> CREATE VIEW v (mycol) AS SELECT 'abc';
 Query OK, 0 rows affected (0.01 sec)
@@ -138,101 +138,100 @@ mysql> SELECT "mycol" FROM v;
 1 row in set (0.00 sec)
 ```
 
-The DEFINER and SQL SECURITY clauses determine which MySQL account to use when checking
-access privileges for the view when a statement is executed that references the view. The valid SQL
-SECURITY characteristic values are DEFINER (the default) and INVOKER. These indicate that the required
-privileges must be held by the user who defined or invoked the view, respectively.
+`DEFINER` 和 `SQL SECURITY` 子句决定了在执行引用了视图的语句时检查视图的访问权限
+时使用哪个 MySQL 帐户。有效的 `SQL SECURITY` 特征值是 `DEFINER`(默认值)和
+`INVOKER`，分别表明所需的特权必须由定义视图或调用视图的用户持有。
 
-If a user value is given for the DEFINER clause, it should be a MySQL account specified as
-'user_name'@'host_name', CURRENT_USER, or CURRENT_USER(). The default DEFINER value
-is the user who executes the CREATE VIEW statement. This is the same as specifying DEFINER =
-CURRENT_USER explicitly.
+如果为 `DEFINER` 子句指定了一个用户值，那么它应该是一个 MySQL 帐户，指定为
+`'user_name'@'host_name'`、`CURRENT_USER` 或 `CURRENT_USER()`。`DEFINER` 的默认
+值是执行 `CREATE VIEW` 语句的用户。这与显式指定 `DEFINER = CURRENT_USER` 相同。
 
-If the DEFINER clause is present, these rules determine the valid DEFINER user values:
-• If you do not have the SET_USER_ID or SUPER privilege, the only valid user value is your own account,
-either specified literally or by using CURRENT_USER. You cannot set the definer to some other account.
-• If you have the SET_USER_ID or SUPER privilege, you can specify any syntactically valid account name.
-If the account does not exist, a warning is generated.
-• Although it is possible to create a view with a nonexistent DEFINER account, an error occurs when the
-view is referenced if the SQL SECURITY value is DEFINER but the definer account does not exist.
-For more information about view security, see Section 23.6, “Access Control for Stored Programs and
-Views”.
+如果有 `DEFINER` 子句，则这些规则确定有效的 `DEFINER` 用户值：
+* 如果您没有 `SET_USER_ID` 或 `SUPER` 特权，唯一有效的用户值是您自己的帐户，可以
+  使用字面量指定，也可以使用 `CURRENT_USER` 指定。您不能将 `definer` 设置为其他
+  帐户。
+* 如果您拥有 `SET_USER_ID` 或 `SUPER` 特权，您可以指定任何语法上有效的帐户名称。
+  如果该帐户不存在，将生成警告。
+* 虽然创建一个不存在的 `DEFINER` 帐户的视图是可能的，但是如果 `SQL SECURITY` 值
+  是 `DEFINER`，但是 `DEFINER` 帐户不存在，那么在引用视图时就会发生错误。
 
-Within a view definition, CURRENT_USER returns the view's DEFINER value by default. For views defined
-with the SQL SECURITY INVOKER characteristic, CURRENT_USER returns the account for the view's
-invoker. For information about user auditing within views, see Section 6.3.13, “SQL-Based MySQL Account
-Activity Auditing”.
+更多关于视图安全性的信息，参考 Section 23.6, “Access Control for Stored
+Programs and Views”.
 
-Within a stored routine that is defined with the SQL SECURITY DEFINER characteristic, CURRENT_USER
-returns the routine's DEFINER value. This also affects a view defined within such a routine, if the view
-definition contains a DEFINER value of CURRENT_USER.
+在视图定义中，`CURRENT_USER` 默认返回视图的 `DEFINER` 值。对于使用 `SQL SECURITY
+INVOKER` 特性定义的视图，`CURRENT_USER` 返回视图调用程序的帐户。有关视图中用户审
+计的信息，请参见 Section 6.3.13, “SQL-Based MySQL Account Activity Auditing”。
 
-MySQL checks view privileges like this:
-• At view definition time, the view creator must have the privileges needed to use the top-level objects
-accessed by the view. For example, if the view definition refers to table columns, the creator must have
-some privilege for each column in the select list of the definition, and the SELECT privilege for each
-column used elsewhere in the definition. If the definition refers to a stored function, only the privileges
-needed to invoke the function can be checked. The privileges required at function invocation time can be
-checked only as it executes: For different invocations, different execution paths within the function might
-be taken.
-• The user who references a view must have appropriate privileges to access it (SELECT to select from it,
-INSERT to insert into it, and so forth.)
-• When a view has been referenced, privileges for objects accessed by the view are checked against the
-privileges held by the view DEFINER account or invoker, depending on whether the SQL SECURITY
-characteristic is DEFINER or INVOKER, respectively.
-• If reference to a view causes execution of a stored function, privilege checking for statements executed
-within the function depend on whether the function SQL SECURITY characteristic is DEFINER or
-INVOKER. If the security characteristic is DEFINER, the function runs with the privileges of the DEFINER
-account. If the characteristic is INVOKER, the function runs with the privileges determined by the view's
-SQL SECURITY characteristic.
+在使用 `SQL SECURITY DEFINER` 特征定义的存储例程中，`CURRENT_USER` 返回例程的
+`DEFINER` 值，这也会影响在这样一个例程中定义的视图，如果视图定义包含 `DEFINER`
+值 `CURRENT_USER`。
 
-Example: A view might depend on a stored function, and that function might invoke other stored routines.
-For example, the following view invokes a stored function f():
+MySQL 按如下检查视图权限：
+* 在视图定义时，视图创建者必须具有使用视图访问的顶级对象所需的特权。例如，如果视
+  图定义引用表列，则创建者必须对定义中的选择列表中的每一列具有某些特权，对定义中
+  其他地方使用的每一列具有 `SELECT` 特权。如果视图定义引用存储函数，则只能检查调
+  用该函数所需的特权。函数调用时所需的特权只能在执行时检查：对于不同的调用，可能
+  会采用函数内的不同执行路径。
+* 引用视图的用户必须具有访问视图的适当权限(从视图中选择的 `SELECT` 特权，插入视
+  图的 `INSERT` 特权，等等)。
+* 当一个视图被引用时，被视图访问的对象的特权将与视图 `DEFINER` 帐户或调用程序所
+  拥有的特权进行对比，这取决于 `SQL SECURITY` 特征是 `DEFINER` 还是 `INVOKER`。
+* 如果对视图的引用导致了存储函数的执行，那么在函数中执行的语句的权限检查取决于函
+  数 `SQL SECURITY` 特征是 `DEFINER` 还是 `INVOKER` 。如果安全特性是 `DEFINER`
+  ，则该函数以 `DEFINER` 帐户的特权运行。如果特征是 `INVOKER` ，则该函数以视图的
+  `SQL SECURITY` 特征所决定的特权运行。
+
+示例:视图可能依赖于存储函数，而该函数可能调用其他存储例程。
+
+例如，以下视图调用一个存储函数 `f()`:
 ```
 CREATE VIEW v AS SELECT * FROM t WHERE t.id = f(t.name);
-Suppose that f() contains a statement such as this:
+```
+
+假设 `f()` 包含这样一条语句：
+```
 IF name IS NULL then
-CALL p1();
+    CALL p1();
 ELSE
-CALL p2();
+    CALL p2();
 END IF;
 ```
 
-The privileges required for executing statements within f() need to be checked when f() executes. This
-might mean that privileges are needed for p1() or p2(), depending on the execution path within f().
-Those privileges must be checked at runtime, and the user who must possess the privileges is determined
-by the SQL SECURITY values of the view v and the function f().
+在执行 `f()` 时，需要检查执行 `f()` 中语句所需的特权。这可能意味着 `p1()` 或
+`p2()` 需要特权，这取决于 `f()` 中的执行路径。这些特权必须在运行时检查，必须拥有
+这些特权的用户由视图 `v` 的 `SQL SECURITY` 值和函数 `f()` 确定。
 
-The DEFINER and SQL SECURITY clauses for views are extensions to standard SQL. In standard SQL,
-views are handled using the rules for SQL SECURITY DEFINER. The standard says that the definer of
-the view, which is the same as the owner of the view's schema, gets applicable privileges on the view (for
-example, SELECT) and may grant them. MySQL has no concept of a schema “owner”, so MySQL adds
-a clause to identify the definer. The DEFINER clause is an extension where the intent is to have what the
-standard has; that is, a permanent record of who defined the view. This is why the default DEFINER value
-is the account of the view creator.
+视图的 `DEFINER` 和 `SQL SECURITY` 子句是对标准 SQL 的扩展。在标准 SQL 中，视图
+使用 `SQL SECURITY DEFINER` 的规则来处理。该标准规定，视图的定义者(与视图模式的
+所有者相同)可以获得视图上的适用特权(例如，`SELECT`)，并可以授予这些特权。MySQL
+没有模式“所有者 owner”的概念，所以 MySQL 添加了一个子句来标识定义者。`DEFINER`
+子句是一个扩展，其目的是拥有标准所拥有的东西;也就是说，是一个谁定义了视图的永久
+记录。这就是为什么 `DEFINER` 的默认值是视图创建者的帐户。
 
-The optional ALGORITHM clause is a MySQL extension to standard SQL. It affects how MySQL processes
-the view. ALGORITHM takes three values: MERGE, TEMPTABLE, or UNDEFINED. For more information, see
-Section 23.5.2, “View Processing Algorithms”, as well as Section 8.2.2.3, “Optimizing Derived Tables, View
-References, and Common Table Expressions”.
+可选的 `ALGORITHM` 子句是标准 SQL 的 MySQL 扩展。它影响 MySQL 处理视图的方式。
+`ALGORITHM` 有三个值：`MERGE`、`TEMPTABLE` 或 `UNDEFINED`。有关更多信息，请参见
+Section 8.2.2.3, “Optimizing Derived Tables, View References, and Common Table
+Expressions”。
 
-Some views are updatable. That is, you can use them in statements such as UPDATE, DELETE, or INSERT
-to update the contents of the underlying table. For a view to be updatable, there must be a one-to-one
-relationship between the rows in the view and the rows in the underlying table. There are also certain other
-constructs that make a view nonupdatable.
+有些视图是可更新的。也就是说，您可以在 `UPDATE`、`DELETE` 或 `INSERT` 等语句中使
+用视图来更新底层表的内容。要更新视图，视图中的行与底层表中的行之间必须存在一对一
+的关系。还有一些其他结构使视图不可更新。
 
-A generated column in a view is considered updatable because it is possible to assign to it. However, if
-such a column is updated explicitly, the only permitted value is DEFAULT. For information about generated
-columns, see Section 13.1.18.8, “CREATE TABLE and Generated Columns”.
+视图中生成的列被认为是可更新的，因为可以对其进行赋值。但是，如果这样的列被显式更
+新，那么唯一允许的值就是 `DEFAULT`。有关生成的列的信息，请参见 Section
+13.1.18.8, “CREATE TABLE and Generated Columns”
 
-The WITH CHECK OPTION clause can be given for an updatable view to prevent inserts or updates to
-rows except those for which the WHERE clause in the select_statement is true.
+可以为可更新视图提供 `WITH CHECK OPTION` 子句，以防止对行进行插入或更新，但
+`select_statement` 中的 `WHERE` 子句为真的行除外。
 
-In a WITH CHECK OPTION clause for an updatable view, the LOCAL and CASCADED keywords determine
-the scope of check testing when the view is defined in terms of another view. The LOCAL keyword restricts
-the CHECK OPTION only to the view being defined. CASCADED causes the checks for underlying views to
-be evaluated as well. When neither keyword is given, the default is CASCADED.
+在可更新视图的 `WITH CHECK OPTION` 子句中，若当前视图是根据另一个视图定义的，
+`LOCAL` 和 `CASCADE` 关键字确定了对照测验的范围。`LOCAL` 关键字将 `CHECK OPTION`
+限制在被定义的视图中。`CASCADE` 还会对底层视图的检查进行评估。当两个关键字都没有
+给出时，默认是 `CASCADE`。
 
-For more information about updatable views and the WITH CHECK OPTION clause, see Section 23.5.3,
-“Updatable and Insertable Views”, and Section 23.5.4, “The View WITH CHECK OPTION Clause”.
+有关可更新视图和 `WITH CHECK OPTION` 子句的更多信息，请参见 Section 23.5.3,“
+Updatable and Insertable Views”, Section 23.5.4, “The View WITH CHECK OPTION
+Clause”
+
+
 

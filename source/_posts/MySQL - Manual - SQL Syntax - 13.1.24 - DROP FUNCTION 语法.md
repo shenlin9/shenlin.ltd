@@ -13,11 +13,9 @@ MySQL `DROP FUNCTION` 语法
 
 <!--more-->
 
-The DROP FUNCTION statement is used to drop stored functions and user-defined functions (UDFs):
+`DROP FUNCTION` 语句用于删除存储函数和用户定义函数(UDFs):
 
-• For information about dropping stored functions, see Section 13.1.26, “DROP PROCEDURE and DROP
-FUNCTION Syntax”.
+* 删除存储函数，参考 Section 13.1.26, “DROP PROCEDURE and DROP FUNCTION Syntax”.
 
-• For information about dropping user-defined functions, see Section 13.7.4.2, “DROP FUNCTION
-Syntax”.
+* 删除用户定义函数，参考 Section 13.7.4.2, “DROP FUNCTION Syntax”.
 

@@ -50,7 +50,6 @@ DROP TABLESPACE tablespace_name
 
 这个例子演示了如何删除 InnoDB 通用表空间。一般的表空间 `ts1` 是用一个表创建的。
 在删除表空间之前，必须删除表。
-
 ```
 mysql> CREATE TABLESPACE `ts1` ADD DATAFILE 'ts1.ibd' Engine=InnoDB;
 Query OK, 0 rows affected (0.01 sec)

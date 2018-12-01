@@ -20,120 +20,120 @@ CREATE TABLESPACE tablespace_name
         [ENGINE [=] engine_name]
 ```
 
-This statement is used to create an InnoDB tablespace. An InnoDB tablespace created using CREATE
-TABLESPACE is referred to as general tablespace.
+这个语句用于创建一个 InnoDB 表空间。使用 `CREATE TABLESPACE` 创建的 InnoDB 表空
+间称为通用表空间。
 
-A general tablespace is a shared tablespace, similar to the system tablespace. It can hold multiple tables,
-and supports all table row formats. General tablespaces can also be created in a location relative to or
-independent of the MySQL data directory.
+一般的表空间是共享的表空间，类似于系统表空间，可以保存多个表，并支持所有表行格式
+。通用的表空间既可以在相对于 MySQL 数据目录的位置创建，也可以在独立于 MySQL 数据
+目录的位置创建。
 
-After creating an InnoDB general tablespace, you can use CREATE TABLE tbl_name ...
-TABLESPACE [=] tablespace_name or ALTER TABLE tbl_name TABLESPACE [=]
-tablespace_name to add tables to the tablespace.
+在创建了 InnoDB 通用表空间后，可以使用 `CREATE TABLE tbl_name ...  TABLESPACE
+[=] tablespace_name` 或 `ALTER TABLE tbl_name TABLESPACE [=] tablespace_name` 把
+表添加到表空间。 
 
-For more information, see Section 15.7.10, “InnoDB General Tablespaces”.
+更多信息参考 Section 15.7.10, “InnoDB General Tablespaces”.
 
-    Note
-    CREATE TABLESPACE is supported with InnoDB. In earlier releases, CREATE
-    TABLESPACE only supported NDB, which is the MySQL NDB Cluster storage
-    engine.
+    注意：
+    `CREATE TABLESPACE` 支持 InnoDB 引擎，在早期版本中，`CREATE TABLESPACE` 只支
+    持 NDB，即 MySQL NDB Cluster 集群存储引擎。
 
-* ADD DATAFILE: Defines the name of the tablespace data file. A data file must be specified with the
-  CREATE TABLESPACE statement, and the data file name must have a .ibd extension. An InnoDB
-  general tablespace only supports a single data file.
-  
-  To place the data file in a location outside of the MySQL data directory (DATADIR), include an absolute
-  directory path or a path relative to the MySQL data directory. If you do not specify a path, the general
-  tablespace is created in the MySQL data directory.
-  
-  To avoid conflicts with implicitly created file-per-table tablespaces, creating a general tablespace in a
-  subdirectory under the MySQL data directory is not supported. Also, when creating a general tablespace
-  outside of the MySQL data directory, the directory must exist and must be known to InnoDB prior
-  to creating the tablespace. To make an unknown directory known to InnoDB, add the directory to
-  the innodb_directories argument value. innodb_directories is a read-only startup option.
-  Configuring it requires restarting the server.
-  
-  The file_name, including the path (optional), must be quoted with single or double quotations marks.
-  File names (not counting the “.ibd” extension) and directory names must be at least one byte in length.
-  Zero length file names and directory names are not supported.
+* `ADD DATAFILE`：定义表空间数据文件的名称。
 
-* FILE_BLOCK_SIZE: Defines the block size of the tablespace data file. If you do not specify this option,
-  FILE_BLOCK_SIZE defaults to innodb_page_size. The FILE_BLOCK_SIZE setting is only required
-  if you will use the tablespace to store compressed InnoDB tables (ROW_FORMAT=COMPRESSED). In this
-  case, you must define the tablespace FILE_BLOCK_SIZE when creating the tablespace.
-  
-  If FILE_BLOCK_SIZE is equal innodb_page_size, the tablespace can only contain tables with
-  an uncompressed row format (COMPACT, REDUNDANT, and DYNAMIC row formats). Tables with a
-  COMPRESSED row format have a different physical page size than uncompressed tables. Therefore,
-  compressed tables cannot coexist in the same tablespace as uncompressed tables.
-  
-  For a general tablespace to contain compressed tables, FILE_BLOCK_SIZE must be specified, and the
-  FILE_BLOCK_SIZE value must be a valid compressed page size in relation to the innodb_page_size
-  value. Also, the physical page size of the compressed table (KEY_BLOCK_SIZE) must be equal to
-  FILE_BLOCK_SIZE/1024. For example, if innodb_page_size=16K, and FILE_BLOCK_SIZE=8K,
-  the KEY_BLOCK_SIZE of the table must be 8. For more information, see Section 15.7.10, “InnoDB
-  General Tablespaces”.
+  数据文件必须用 `CREATE TABLESPACE` 语句指定，并且数据文件名必须有一个 `.bid`
+  扩展名。一个 InnoDB 通用表空间只支持单独一个数据文件。
 
-* ENGINE: Defines the storage engine which uses the tablespace, where engine_name is the name of
-  the storage engine. Currently, only the InnoDB storage engine is supported. ENGINE = InnoDB must
-  be defined as part of the CREATE TABLESPACE statement or InnoDB must be defined as the default
-  storage engine (default_storage_engine=InnoDB).
+  要将数据文件放置在 MySQL 数据目录(`DATADIR`)之外的位置，请包含一个绝对目录路径
+  或相对于 MySQL 数据目录的路径。如果不指定路径，通用表空间将在 MySQL 数据目录中
+  创建。
+
+  为了避免与隐式创建的每个表一个文件的表空间文件（file-per-table tablespaces）冲
+  突，不支持在 MySQL 数据目录下的子目录中创建通用表空间。此外，在 MySQL 数据目录
+  之外创建一个通用表空间时，该目录必须存在，并且 InnoDB 在创建表空间之前必须知道
+  该目录。要使 InnoDB 知道一个未知的目录，请将该目录添加到 `innodb_directory` 参
+  数值。`innodb_directory` 是一个只读启动选项。配置它需要重新启动服务器。
+
+  `file_name`，包括路径(可选)，必须用单引号或双引号引用。文件名(不包括扩展名
+  `.ibd`)和目录名的长度必须至少为一个字节。不支持零长度文件名和目录名。
+
+* `FILE_BLOCK_SIZE`：定义表空间数据文件的块大小。
+
+  如果不指定此选项，`FILE_BLOCK_SIZE` 默认为 `innodb_page_size`。只有在使用表空
+  间存储压缩的 InnoDB 表(`ROW_FORMAT=COMPRESSED`)时，才需要 `FILE_BLOCK_SIZE` 设
+  置。这种情况下创建表空间时，必须定义表空间的 `FILE_BLOCK_SIZE`。
+
+  如果 `FILE_BLOCK_SIZE` 等于 `innodb_page_size`，那么表空间只能包含未压缩行格式
+  （`COMPACT`，`REDUNDANT` 和 `DYNAMIC` 行格式）的表。具有 `COMPRESSED` 行格式的
+  表与未压缩的表具有不同的物理页面大小。因此，压缩表不能与未压缩表在相同的表空间
+  中共存。
+
+  对于包含压缩表的一般表空间，必须指定 `FILE_BLOCK_SIZE` ，并且
+  `FILE_BLOCK_SIZE` 值必须是与 `innodb_page_size` 值相关的有效压缩页大小。此外，
+  压缩表的物理页面大小( `KEY_BLOCK_SIZE` )必须等于 `FILE_BLOCK_SIZE/1024` 。例如
+  ，如果 `innodb_page_size=16K` 和 `FILE_BLOCK_SIZE=8K` ，表的 `KEY_BLOCK_SIZE`
+  必须是 8。有关更多信息，请参见 Section 15.7.10, “InnoDB General Tablespaces”
+  。
+
+* `ENGINE`：定义使用表空间的存储引擎，其中 `engine_name` 是存储引擎的名称。
+
+  目前，只支持 InnoDB 存储引擎。`ENGINE = InnoDB` 必须定义为 `CREATE TABLESPACE`
+  语句的一部分，或者 InnoDB 必须定义为默认存储引擎(
+  `default_storage_engine=InnoDB` )。
 
 ### Notes
 
-• tablespace_name is a case-sensitive identifier for the tablespace. It may be quoted or unquoted. The
-forward slash character (“/”) is not permitted. Names beginning with innodb_ are either not permitted or
-are reserved for special use.
-• Creation of temporary general tablespaces is not supported.
-• General tablespaces do not support temporary tables.
-• The TABLESPACE option may be used with CREATE TABLE or ALTER TABLE to assign an InnoDB
-table partition or subpartition to a file-per-table tablespace. All partitions must belong to the same storage
-engine. Assigning table partitions to shared InnoDB tablespaces is not supported. Shared tablespaces
-include the InnoDB system tablespace and general tablespaces.
-• General tablespaces support the addition of tables of any row format using CREATE TABLE ...
-TABLESPACE. innodb_file_per_table does not need to be enabled.
-• innodb_strict_mode is not applicable to general tablespaces. Tablespace management rules
-are strictly enforced independently of innodb_strict_mode. If CREATE TABLESPACE parameters
-are incorrect or incompatible, the operation fails regardless of the innodb_strict_mode setting.
-When a table is added to a general tablespace using CREATE TABLE ... TABLESPACE or ALTER
-TABLE ... TABLESPACE, innodb_strict_mode is ignored but the statement is evaluated as if
-innodb_strict_mode is enabled.
-• Use DROP TABLESPACE to remove a general tablespace. All tables must be dropped from a general
-tablespace using DROP TABLE prior to dropping the tablespace.
-• All parts of a table added to a general tablespace reside in the general tablespace, including indexes and
-BLOB pages.
-• Similar to the system tablespace, truncating or dropping tables stored in a general tablespace creates
-free space internally in the general tablespace .ibd data file which can only be used for new InnoDB
-data. Space is not released back to the operating system as it is for file-per-table tablespaces.
-• A general tablespace is not associated with any database or schema.
-• ALTER TABLE ... DISCARD TABLESPACE and ALTER TABLE ...IMPORT TABLESPACE are not
-supported for tables that belong to a general tablespace.
-• The server uses tablespace-level metadata locking for DDL that references general tablespaces.
-By comparison, the server uses table-level metadata locking for DDL that references file-per-table
-tablespaces.
-• A generated or existing tablespace cannot be changed to a general tablespace.
-• There is no conflict between general tablespace names and file-per-table tablespace names. The “/”
-character, which is present in file-per-table tablespace names, is not permitted in general tablespace
-names.
+* `tablespace_name` 是表空间的大小写敏感的标识符。它可以被引号引用，也可以不被引
+  用。不允许使用正斜杠字符(" / ")。以 `innodb_` 开头的名称或者是不允许的，或者被
+  保留作特殊用途。
+* 不支持创建临时通用表空间。
+* 通用表空间不支持临时表。
+* `TABLESPACE` 选项可与 `CREATE TABLE` 或 `ALTER TABLE` 一起使用，以便将 InnoDB
+  表分区或子分区分配给表空间(a file-per-table tablespace)。所有分区必须属于相同
+  的存储引擎。不支持将表分区分配给共享的 InnoDB 表空间。共享表空间包括 InnoDB 系
+  统表空间和通用表空间。
+* 通用表空间支持添加任何行格式的表使用 `CREATE TABLE ...
+  TABLESPACE.innodb_file_per_table` 不需要启用。
+* `innodb_strict_mode` 不适用于通用表空间。表空间管理规则严格独立于
+  `innodb_strict_mode` 执行。如果 `CREATE TABLESPACE` 参数不正确或不兼容，则无论
+  `innodb_strict_mode` 设置如何，操作都会失败。当使用 `CREATE TABLE ...
+  TABLESPACE` 或 `ALTER TABLE ... TABLESPACE` 将一个表添加到表空间后，
+  `innodb_strict_mode` 被忽略，但语句的评估就像 `innodb_strict_mode` 是启用的一
+  样。
+* 使用 `DROP TABLESPACE` 来删除通用表空间。在删除表空间之前，必须使用 `DROP
+  TABLE` 从通用表空间中删除所有表。
+* 添加到通用表空间的表的所有部分都位于通用表空间中，包括索引和 `BLOB` 页。
+* 与系统表空间类似，截断或删除存储在通用表空间中的表会在通用表空间 `.ibd` 数据文
+  件内部创建空闲空间，但`.ibd` 数据文件只能用于新的 InnoDB 数据。空间不会释放回
+  操作系统，因为它是针对每个表空间文件的（it is for file-per-table tablespaces）
+  。
+* 通用表空间与任何数据库或模式都没有关联。
+* `ALTER TABLE ... DISCARD TABLESPACE` 和 `ALTER TABLE ...IMPORT TABLESPACE` 不
+  支持属于通用表空间的表。
+* 服务器对引用通用表空间的 DDL 使用表空间级别的元数据锁。相比之下，服务器对引用
+  文件/表空间（file-per-table）的 DDL 使用表级别元数据锁。
+* 生成的或现有的表空间不能更改为通用表空间。
+* 通用表空间名称与文件/表表空间名称（file-per-table tablespace names）之间不存在
+  冲突。出现在文件/表表空间名称中的 `/` 字符，不允许通用表空间名称中出现该字符。
 
 ### Examples
 
-This example demonstrates creating a general tablespace and adding three uncompressed tables of
-different row formats.
+这个例子演示了如何创建一个通用表空间并添加三个不同行格式的未压缩表。
 ```
 mysql> CREATE TABLESPACE `ts1` ADD DATAFILE 'ts1.ibd' Engine=InnoDB;
 Query OK, 0 rows affected (0.01 sec)
+
 mysql> CREATE TABLE t1 (c1 INT PRIMARY KEY) TABLESPACE ts1 ROW_FORMAT=REDUNDANT;
 Query OK, 0 rows affected (0.00 sec)
+
 mysql> CREATE TABLE t2 (c1 INT PRIMARY KEY) TABLESPACE ts1 ROW_FORMAT=COMPACT;
 Query OK, 0 rows affected (0.00 sec)
+
 mysql> CREATE TABLE t3 (c1 INT PRIMARY KEY) TABLESPACE ts1 ROW_FORMAT=DYNAMIC;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-This example demonstrates creating a general tablespace and adding a compressed table. The example
-assumes a default innodb_page_size of 16K. The FILE_BLOCK_SIZE of 8192 requires that the
-compressed table have a KEY_BLOCK_SIZE of 8.
+这个例子演示了如何创建一个通用表空间并添加一个压缩表。本例假设默认的
+`innodb_page_size` 为 16K，`FILE_BLOCK_SIZE` 为 8192，则 `FILE_BLOCK_SIZE` 要求
+压缩表的 `KEY_BLOCK_SIZE` 为 8。
 ```
 mysql> CREATE TABLESPACE `ts2` ADD DATAFILE 'ts2.ibd' FILE_BLOCK_SIZE = 8192 Engine=InnoDB;
 Query OK, 0 rows affected (0.01 sec)
@@ -141,4 +141,3 @@ Query OK, 0 rows affected (0.01 sec)
 mysql> CREATE TABLE t4 (c1 INT PRIMARY KEY) TABLESPACE ts2 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
 Query OK, 0 rows affected (0.00 sec)
 ```
-

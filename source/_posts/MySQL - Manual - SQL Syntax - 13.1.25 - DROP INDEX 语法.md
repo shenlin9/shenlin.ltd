@@ -15,24 +15,26 @@ MySQL `DROP INDEX` 语法
 
 ```
 DROP INDEX index_name ON tbl_name
-[algorithm_option | lock_option] ...
+    [algorithm_option | lock_option] ...
+
 algorithm_option:
-ALGORITHM [=] {DEFAULT|INPLACE|COPY}
+    ALGORITHM [=] {DEFAULT|INPLACE|COPY}
+
 lock_option:
-LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}
+    LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}
 ```
 
-DROP INDEX drops the index named index_name from the table tbl_name. This statement is mapped to
-an ALTER TABLE statement to drop the index. See Section 13.1.8, “ALTER TABLE Syntax”.
+`DROP INDEX` 从表 `tbl_name` 里删除索引 `index_name`，这个语句被映射到一个
+`ALTER TABLE` 语句以删除索引。
+Section 13.1.8, “ALTER TABLE Syntax”.
 
-To drop a primary key, the index name is always PRIMARY, which must be specified as a quoted identifier
-because PRIMARY is a reserved word:
+要删除主键，索引名永远是 `PRIMARY`，必须使用引号引起来，因为 `PRIMARY` 是一个保
+留字:
 ```
 DROP INDEX `PRIMARY` ON t;
 ```
 
-ALGORITHM and LOCK clauses may be given to influence the table copying method and level of
-concurrency for reading and writing the table while its indexes are being modified. They have the same
-meaning as for the ALTER TABLE statement. For more information, see Section 13.1.8, “ALTER TABLE
-Syntax”
+`ALGORITHM` 和 `LOCK` 子句可以在修改表索引的同时影响表的复制方法和并发性水平，它
+们的含义与 `ALTER TABLE` 语句中的相同。
+更多信息参考 Section 13.1.8, “ALTER TABLE Syntax”
 

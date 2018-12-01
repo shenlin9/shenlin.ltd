@@ -17,14 +17,16 @@ MySQL `DROP SERVER` 语法
 DROP SERVER [ IF EXISTS ] server_name
 ```
 
-Drops the server definition for the server named server_name. The corresponding row in the
-mysql.servers table is deleted. This statement requires the SUPER privilege.
+删除名为 `server_name` 的服务器定义。`mysql.servers` 表中相应的行被删除。这个语
+句需要 `SUPER` 特权。
 
-Dropping a server for a table does not affect any FEDERATED tables that used this connection information
-when they were created. See Section 13.1.16, “CREATE SERVER Syntax”.
+Dropping a server for a table does not affect any `FEDERATED` tables that used
+this connection information when they were created
+为表删除服务器不会影响创建时使用此连接信息的任何 `FEDERATED` 表。请参阅 Section
+13.1.16, “CREATE SERVER Syntax”。
 
-DROP SERVER causes an implicit commit. See Section 13.3.3, “Statements That Cause an Implicit
-Commit”.
+`DROP SERVER` 导致隐式提交。请参阅 Section 13.3.3, “Statements That Cause an
+Implicit Commit”。
 
-DROP SERVER is not written to the binary log, regardless of the logging format that is in use.
+`DROP SERVER` 不写入二进制日志，不管使用的日志格式如何。
 

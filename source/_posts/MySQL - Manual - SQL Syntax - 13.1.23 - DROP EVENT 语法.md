@@ -17,12 +17,13 @@ MySQL `DROP EVENT` 语法
 DROP EVENT [IF EXISTS] event_name
 ```
 
-This statement drops the event named event_name. The event immediately ceases being active, and is
-deleted completely from the server.
+该语句删除了名为 `event_name` 的事件。事件将立即停止活动，并从服务器上完全删除。
 
-If the event does not exist, the error ERROR 1517 (HY000): Unknown event 'event_name' results.
-You can override this and cause the statement to generate a warning for nonexistent events instead using
-IF EXISTS.
+如果事件不存在，则返回错误 `ERROR 1517 (HY000): Unknown event 'event_name'`。
 
-This statement requires the EVENT privilege for the schema to which the event to be dropped belongs.
+You can override this and cause the statement to generate a warning for nonexistent events instead using `IF EXISTS`.
+您可以重写此命令，并使用 `IF EXISTS` 为不存在的事件生成警告。
+
+This statement requires the `EVENT` privilege for the schema to which the event to be dropped belongs.
+该语句要求要删除的事件所属的模式具有 `EVENT` 特权。
 
