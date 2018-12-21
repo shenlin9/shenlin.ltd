@@ -1209,11 +1209,3 @@ See the descriptions of the -> and ->> operators, as well as those of the JSON_E
 
 This technique also can be used to provide indexes that indirectly reference columns of other types that cannot be indexed directly, such as GEOMETRY columns.
 
-https://v.qq.com/x/cover/23fo5w35atkawom.html
-https://www.yangguiweihuo.com/12/12151/20057682.html
-
-http://www.5ifxw.com/vip/
-https://www.iqiyi.com/v_19rqrh8vhw.html
-
-https://avgle.com/search/videos?search_query=hqis-&search_type=videos&page=2
-https://avgle.com/search/videos/%E5%B0%8F%E8%A5%BF%E3%81%BE%E3%82%8A%E3%81%88
