@@ -416,3 +416,8 @@ the world champion for the power of plants
 
 MySQL stores the `sql_mode` system variable setting in effect when a trigger is created
 in effect 
+
+
+
+
+The handling of foreign key references to nonunique keys or keys that contain `NULL` values is not well defined for operations such as `UPDATE` or `DELETE CASCADE`.
