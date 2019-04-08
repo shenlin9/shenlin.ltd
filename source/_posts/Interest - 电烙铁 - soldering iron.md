@@ -61,3 +61,15 @@ http://bbs.mydigit.cn/read.php?tid=1923646&page=6
 ## 关于 907 to T12 支架
 
 由 dev616 设计的新支架
+
+## 根据封装的焊接技术
+
+THT Through Hole Technology      通孔技术，适用于直插件
+
+    DIP8 DIP16  Dual Inline Package，8 或 16 代表引脚数目，通常不会直接把芯片焊
+    接到 PCB 上，而是使用芯片插座，方便更换芯片。
+
+SMD Surface Mount Devices        表面贴装元件
+
+    TQFP Thin Quad Flat Package     薄塑封四角扁平封装
+    QFN  Quad Flat no Leads         方形扁平无引脚封装

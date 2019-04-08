@@ -421,3 +421,11 @@ in effect
 
 
 The handling of foreign key references to nonunique keys or keys that contain `NULL` values is not well defined for operations such as `UPDATE` or `DELETE CASCADE`.
+
+
+it's a mosaic rich beyond the most popular artists
+这是一幅比最受欢迎的艺术家更丰富的镶嵌画
+
+
+it's a computationally heavy problem
+这是个需要大量计算能力的问题

@@ -8,6 +8,134 @@ vim 的基本设置和基础操作
 
 <!--more-->
 
+## set & let
+
+set 用于设置一个选项，而 let 用于为一个变量赋值：
+```vim
+:set encoding=utf8
+:let g:UltiSnipsExpandTrigger="<tab>"
+```
+
+选项前使用 `&` 号后也可用 let 赋值，下面语句效果相同：
+```vim
+:set  tw=80
+:let &tw=80
+
+:set fenc=utf-8
+:let &fenc="utf-8" " 必须引起来
+```
+
+有些儿选项类似布尔值，赋值时不需要值，则不能用上述方法用 let 赋值：
+```vim
+:set ic
+:set noic
+```
+
+反过来不能用 set 为变量赋值：
+```vim
+:let g:foo=50 " OK
+:set g:foo=50 " Wrong
+```
+
+## 命令历史
+
+普通模式下 `q:` 显示历史命令
+
+历史命令可使用 `dd` 删除某一行，但无法保存，因为其 buftype 为 help
+
+要删除命令历史记录，可以使用 histdel 方法，成功返回 1，否则返回 0
+```
+:call histdel(hist-names [,item])
+```
+histdel 取值：
+    "cmd"	 or ":"	  command line history
+    "search" or "/"   search pattern history
+    "expr"	 or "="   typed expression history
+    "input"  or "@"	  input line history
+    "debug"  or ">"   debug command history
+    empty		      the current or last used history
+item 取值：若为字符串，则当作正则表达式进行匹配
+           若为数字，则作为历史记录的索引号
+
+删除所有历史命令
+```
+:call histdel(":")
+```
+
+删除后重启还有???
+
+## buftype 缓存类型
+
+可简写为 bt，如 `set bt?`，普通的正常文件 bt 默认值为空，
+
+若保存时提示 `Can't write buftype, option is set`，说明 bt 值不为空，命令模式下运
+行 `:set bt=` 即可
+
+vim 帮助文件的 bt 值为 help，一般不应该手动设置文件为此值
+
+## set & setlocal
+
+vim 的选项有三个作用域：global, window-local, buffer-local.
+
+选项的作用于可以在使用帮助时查看到，如 `:help buftype` 第二行就会显示其作用域
+`local to buffer`
+
+setlocal 可简写为 setl, 为当前 buffer 或 window 设置选项的局部值（可以针对某个
+buffer 或 window 设置），但并不是所有选项都有局部值，没有局部值则使用全局值。
+
+`:setl` 显示所有和默认值不同的局部选项的局部值
+
+`:setl all` 可以显示所有局部选项的局部值
+
+When you `:set a global option`, the new value is global.
+When you `:setlocal a global option`, the new value is local.
+When you `:set a local option`, the new value is local.
+
+## remap, noremap, nnoremap and vnoremap
+
+`remap` 是一个选项，re 表示 recursion 即递归，remap 即表示按键是否递归的映射，默
+认是开启的，建议保持。
+
+`map` 和 `noremap` 都是具体的映射命令，格式：`map <lhs> <rhs>` 
+
+`noremap`  即明确表示后面的映射命令使用非递归映射。，格式：`noremap <lhs> <rhs>`
+
+> lhs : left hand side
+>
+> rhs: right hand side
+
+`map`  是否使用递归映射，则由 `remap` 选项的当前值来确定（这里有疑问，map是否是
+始终表示递归映射呢？需要确认，如果是，拿上面的remap选项有什么用），若按默认开启
+递归映射，则下例：
+
+```vim
+:map j gg
+:map Q j
+:noremap W j
+```
+
+则 `j` 映射到 `gg`，`Q` 也映射到 `gg`，因为 `j`  会被展开进行递归映射 。
+
+而 `w` 映射到 `j`，但不会映射到 `gg`，因为对于非递归映射 `j`  不会被展开。
+
+`map` 和 `noremap` 两个命令表示适用于 vim 的各种模式，若想要映射只适用于
+`normal` 模式，则在前面加 `n`，即变为 `nmap` 和 `nnoremap`；若想要映射只适用于
+`visual` 模式，则在前面加 `v`，即变为 `vmap` 和 `vnoremap`；
+
+vim 的模式和映射时的前缀含义：
+*  `n`: normal only
+* `v`: visual and select
+* `o`: operator-pending
+* `x`: visual only
+* `s`: select only
+* `i`: insert
+* `c`: command-line
+* `l`: insert, command-line, regexp-search (and others. Collectively called "Lang-Arg" pseudo-mode)
+
+`unmap` 取消映射命令，格式：`unmap <lhs>`
+
+参考：[stackoverflow 的相关讨论](https://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping)
+
 ## magic
 
 vim 毕竟是个编辑器，正则表达式中包含的大量元字符如果原封不动地引用， 势必会给不
@@ -53,20 +181,20 @@ magic 处理，\M 后面的正则表达式按照 nomagic 处理， 而忽略实�
 Ex 模式下
 
     \s  所有空白字符
-
+    
     \u  所有大写字母，等价于[A-Z]
     \U  所有小写字母，等价于[a-z]
-
+    
     \+  匹配一次或多次
-
+    
     \{m,n}
-
+    
     \(\)
-
+    
     a[bc]
-
+    
     ^
-
+    
     $
 
 
@@ -360,7 +488,7 @@ linux 以 `\n` 表示换行，`^M` 就是 linux 下多余出来的回车 `\r` �
 单文件替换 `^M` 字符为空字符可以使用下面命令
 
 ```vim
-:%s///g
+:%s/^M//g
 ```
 * 注意上面命令中的 ^ 和 M 字符不是直接输入的，而是按住 Ctrl+v Ctrl+m 产生的
 
@@ -493,31 +621,31 @@ Tab、空格和缩进
         $ vim  -o  file1 file2  水平分割成两个窗口分别显示文件
         :split         （开启另一个窗口察看同一文件）
         :split 文件名  （开启另一个窗口察看指定文件）
-
+    
     2、垂直窗口分割：
         $ vim  -O  file1 file2  垂直分割成两个窗口分别显示文件
         :vsplit（开启另一个窗口察看同一文件）
         :vsplit 文件名（开启另一个窗口察看指定文件）
-
+    
     3、在窗口之间进行切换：
         Ctrl + w + w： 在所有窗口中循环移动
         Ctrl + w + h： 向左移动窗口
         Ctrl + w + j： 向下移动窗口
         Ctrl + w + k： 向上移动窗口
         Ctrl + w + l： 向右移动窗口
-
+    
     4、增大或减少窗口大小：
         Ctrl + W + =：让所有窗口调整至相同尺寸（平均划分）
         Ctrl + W + -：将当前窗口的高度减少一行，- 号前也可以加数字指定行数，也可在ex命令中，：resize -4明确指定减少的尺寸
         Ctrl + W + +：将当前窗口的高度增加一行，+ 号前也可以加数字指定行数。同样在ex命令中，：resize +n 明确指定增加尺寸
-
+    
         Ctrl + W + < ：将当前窗口的宽度减少
         Ctrl + W + > ：将当前窗口的宽度增加
         Ctrl + W + |：将当前窗口的宽度调到最大，也可他哦你通过ex命令：vertical resize n明确指定改变宽度
-
+    
     5、关闭窗口：
         四种方法：离开（quit）、关闭（close）、隐藏（hide）、关闭其他窗口（only）
-
+    
         1）将光标切换到当前窗口下，然后按照关闭单个窗口的方法关闭窗口。例如：q命令。
         2）关闭所有窗口文件：在所有关闭单个窗口的命令中加上all，例如：qall命令。
         3）关闭除当前窗口之外的文件：only。
@@ -547,7 +675,7 @@ vim 启动时，处理完配置文件`.vimrc`后，会接着扫描`packpath`中�
 		call foolib#getit()
 	pack/foo/start/two/plugin/two.vim
 		call foolib#getit()
-
+	
 	pack/foo/start/lib/autoload/foolib.vim
 		func foolib#getit()
 

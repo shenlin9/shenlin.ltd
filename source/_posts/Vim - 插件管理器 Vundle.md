@@ -35,7 +35,7 @@ $ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 ## 增加插件配置
 
 打开配置文件
-````
+```
 //windows
 gvim $VIM\_vimrc
 
@@ -66,7 +66,7 @@ filetype plugin indent on
 * 所有插件必须写在`call vundle#begin()`和`call vundle#end()`之间
 * 安装 github 的插件直接写"作者/库名"即可
 * %USERPROFILE% 值为 c:\users\ssl
-* $VIM 为 vim 的安装根目录
+* `$VIM` 为 vim 的安装根目录
 
 重新载入配置文件，查看插件列表
 ```
@@ -81,6 +81,9 @@ filetype plugin indent on
 ```
 :PluginInstall
 ```
+安装完毕 `l` 键查看安装日志或错误。
+
+注意安装时若使用了 SSR 等翻墙软件可能会出现安装错误：fatal: early EOF
 
 安装配色方案
 ```

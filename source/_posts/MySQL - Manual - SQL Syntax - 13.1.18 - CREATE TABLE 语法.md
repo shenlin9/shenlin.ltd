@@ -687,11 +687,12 @@ InnoDB does not support the `KEY_BLOCK_SIZE` option when creating temporary tabl
 
 * MAX_ROWS
 
-The maximum number of rows you plan to store in the table. This is not a hard limit, but rather a hint to the storage engine that the table must be able to store at least this many rows.  The maximum `MAX_ROWS` value is 4294967295; larger values are truncated to this limit.
+计划存储在表中的最大行数。这不是一个硬性限制，而是对存储引擎的提示，即表必须能够
+存储至少这么多行。最大 `MAX_ROWS` 值为 4294967295；更大的值会被截断到这个极限。
 
 * MIN_ROWS
 
-The minimum number of rows you plan to store in the table. The `MEMORY` storage engine uses this option as a hint about memory use.
+计划存储在表中的最小行数。`MEMORY` 存储引擎使用这个选项作为内存使用的提示。
 
 * PACK_KEYS
 
@@ -858,7 +859,7 @@ You may not use either `VALUES LESS THAN` or `VALUES IN` clauses with `PARTITION
 
 * RANGE(expr)
 
-In this case, expr shows a range of values using a set of `VALUES LESS THAN` operators. When using range partitioning, you must define at least one partition using `VALUES LESS THAN`. You cannot use `VALUES IN` with range partitioning.
+In this case, `expr` shows a range of values using a set of `VALUES LESS THAN` operators. When using range partitioning, you must define at least one partition using `VALUES LESS THAN`. You cannot use `VALUES IN` with range partitioning.
 
     Note
     For tables partitioned by RANGE, VALUES LESS THAN must be used with either an integer literal value or an expression that evaluates to a single integer value.  In MySQL 8.0, you can overcome this limitation in a table that is defined using PARTITION BY RANGE COLUMNS, as described later in this section.
@@ -879,13 +880,13 @@ CREATE TABLE t1 (
     year_col INT,
     some_data INT
 )
-PARTITION BY RANGE (year_col) (
-PARTITION p0 VALUES LESS THAN (1991),
-PARTITION p1 VALUES LESS THAN (1995),
-PARTITION p2 VALUES LESS THAN (1999),
-PARTITION p3 VALUES LESS THAN (2002),
-PARTITION p4 VALUES LESS THAN (2006),
-PARTITION p5 VALUES LESS THAN MAXVALUE
+    PARTITION BY RANGE (year_col) (
+    PARTITION p0 VALUES LESS THAN (1991),
+    PARTITION p1 VALUES LESS THAN (1995),
+    PARTITION p2 VALUES LESS THAN (1999),
+    PARTITION p3 VALUES LESS THAN (2002),
+    PARTITION p4 VALUES LESS THAN (2006),
+    PARTITION p5 VALUES LESS THAN MAXVALUE
 );
 ```
 
@@ -895,7 +896,7 @@ PARTITION p5 VALUES LESS THAN MAXVALUE
 
 * RANGE COLUMNS(column_list)
 
-This variant on RANGE facilitates partition pruning for queries using range conditions on multiple columns (that is, having conditions such as `WHERE a = 1 AND b < 10 or WHERE a = 1 AND b = 10 AND c < 10`). It enables you to specify value ranges in multiple columns by using a list of columns in the `COLUMNS` clause and a set of column values in each `PARTITION ... VALUES LESS THAN` (`value_list`) partition definition clause. (In the simplest case, this set consists of a single column.) The maximum number of columns that can be referenced in the `column_list` and `value_list` is 16.
+This variant on `RANGE` facilitates partition pruning for queries using range conditions on multiple columns (that is, having conditions such as `WHERE a = 1 AND b < 10 or WHERE a = 1 AND b = 10 AND c < 10`). It enables you to specify value ranges in multiple columns by using a list of columns in the `COLUMNS` clause and a set of column values in each `PARTITION ... VALUES LESS THAN` (`value_list`) partition definition clause. (In the simplest case, this set consists of a single column.) The maximum number of columns that can be referenced in the `column_list` and `value_list` is 16.
 
 The `column_list` used in the `COLUMNS` clause may contain only names of columns; each column in the list must be one of the following MySQL data types: the integer types; the string types; and time or date column types. Columns using `BLOB`, `TEXT`, `SET`, `ENUM`, `BIT`, or spatial data types are not permitted; columns that use floating-point number types are also not permitted. You also may not use functions or arithmetic expressions in the `COLUMNS` clause.
 
@@ -935,7 +936,7 @@ PARTITION r2 VALUES IN (3, 7, 11, 15, 19, 23),
 PARTITION r3 VALUES IN (4, 8, 12, 16, 20, 24)
 );
 ```
-When using list partitioning, you must define at least one partition using VALUES IN. You cannot use `VALUES LESS THAN` with `PARTITION BY LIST`.
+When using list partitioning, you must define at least one partition using `VALUES IN`. You cannot use `VALUES LESS THAN` with `PARTITION BY LIST`.
 
     Note
     For tables partitioned by LIST, the value list used with VALUES IN must consist of integer values only. In MySQL 8.0, you can overcome this limitation using partitioning by LIST COLUMNS, which is described later in this section.
@@ -1010,25 +1011,28 @@ The number of subpartitions can be indicated using the `SUBPARTITIONS` keyword f
 * DATA DIRECTORY and INDEX DIRECTORY
 
   `DATA DIRECTORY` and `INDEX DIRECTORY` may be used to indicate the directory where, respectively,
-  the data and indexes for this partition are to be stored. Both the data_dir and the index_dir must be absolute system path names.
+  the data and indexes for this partition are to be stored. Both the `data_dir` and the `index_dir` must be absolute system path names.
   You must have the `FILE` privilege to use the `DATA DIRECTORY` or `INDEX DIRECTORY` partition option.
   Example:
   ```
   CREATE TABLE th (id INT, name VARCHAR(30), adate DATE)
   PARTITION BY LIST(YEAR(adate))
   (
-  PARTITION p1999 VALUES IN (1995, 1999, 2003)
-  DATA DIRECTORY = '/var/appdata/95/data'
-  INDEX DIRECTORY = '/var/appdata/95/idx',
-  PARTITION p2000 VALUES IN (1996, 2000, 2004)
-  DATA DIRECTORY = '/var/appdata/96/data'
-  INDEX DIRECTORY = '/var/appdata/96/idx',
-  PARTITION p2001 VALUES IN (1997, 2001, 2005)
-  DATA DIRECTORY = '/var/appdata/97/data'
-  INDEX DIRECTORY = '/var/appdata/97/idx',
-  PARTITION p2002 VALUES IN (1998, 2002, 2006)
-  DATA DIRECTORY = '/var/appdata/98/data'
-  INDEX DIRECTORY = '/var/appdata/98/idx'
+      PARTITION p1999 VALUES IN (1995, 1999, 2003)
+      DATA DIRECTORY = '/var/appdata/95/data'
+      INDEX DIRECTORY = '/var/appdata/95/idx',
+
+      PARTITION p2000 VALUES IN (1996, 2000, 2004)
+      DATA DIRECTORY = '/var/appdata/96/data'
+      INDEX DIRECTORY = '/var/appdata/96/idx',
+
+      PARTITION p2001 VALUES IN (1997, 2001, 2005)
+      DATA DIRECTORY = '/var/appdata/97/data'
+      INDEX DIRECTORY = '/var/appdata/97/idx',
+
+      PARTITION p2002 VALUES IN (1998, 2002, 2006)
+      DATA DIRECTORY = '/var/appdata/98/data'
+      INDEX DIRECTORY = '/var/appdata/98/idx'
   );
   ```
   `DATA DIRECTORY` and `INDEX DIRECTORY` behave in the same way as in the `CREATE TABLE` statement's `table_option` clause as used for MyISAM tables.
