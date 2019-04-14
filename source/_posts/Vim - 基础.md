@@ -8,6 +8,98 @@ vim 的基本设置和基础操作
 
 <!--more-->
 
+## filetype
+
+Vim 可根据文件名和文件内容来检测文件类型，启用文件类型探测：
+
+    :filetype on
+
+查看当前的设置
+
+    :filetype
+    filetype Detection:ON Plugin:ON Indent:On
+
+
+## 快捷键
+
+{ctrl-w} v 垂直拆分窗口
+{ctrl-w} s 水平拆分窗口
+{ctrl-w} n 水平新窗口
+{ctrl-w} q 退出当前窗口
+{ctrl-w} c 关闭当前窗口
+{ctrl-w} o 只保留当前窗口
+
+## 智能感知
+
+用于编程语言的自动完成
+
+**new-omni-completion**
+
+在插入模式下使用 `CTRL-X CTRL-O` 触发自动完成 
+
+使用 `omnifunc` 选项指定实现自动完成功能的函数
+
+目前支持的语言：
+
+	C					    |ft-c-omni|
+	(X)HTML with CSS		|ft-html-omni|
+	JavaScript				|ft-javascript-omni|
+	PHP					    |ft-php-omni|
+	Python
+	Ruby					|ft-ruby-omni|
+	SQL					    |ft-sql-omni|
+	XML					    |ft-xml-omni|
+	any language with syntax highlighting	|ft-syntax-omni|
+
+```vim
+" 启用智能感知
+filetype plugin on
+set omnifunc=syntaxcomplete#Complete
+```
+
+**completopt**
+
+需 `+insert_expand` 特性支持
+
+默认值 "menu,preview"
+
+取值和含义：
+* menu
+* menuone
+* longest
+* preview
+* noinsert
+* noselect
+
+## wildmeu, wildmode
+
+**wildmenu**
+
+命令行的自动补全使用增加模式，即会在命令行上垂直显式匹配的内容
+
+当使用了 wilmode 后，只有其取值为 "full" 才会使用 wildmenu 模式，"longest" 和
+"list" 不会启用
+
+**wildmode**
+
+使用逗号分隔，最多可以包含 4 个部分，设定了每次按 Tab 键时的自动完成模式，循环
+调用。
+
+可用值：
+* "" 补全第一个匹配。
+* "full" 用下一个完整的匹配补全。在最后一次匹配之后，使用原来的字符串，然后又是第一个匹配。
+* "longest" 用最长的公共子串补全。如果结果没有变长，使用下一个部分。
+* "longest:full" 类似于 “longest”，但如果 ‘wildmenu’ 打开的话，使用之。
+* "list" 如果有多于一个补全，列出所有的匹配。
+* "list:full" 如果有多于一个补全，列出所有的匹配并先用第一个补全。
+* "list:longest" 如果有多于一个补全，列出所有的匹配并先用最长的子串补全。
+
+```
+set wildmenu
+set wildmode=longest,list,full
+```
+使用 `<Tab>`, `<Shift-Tab>` 或者 `<CTRL-N>`, `<CTRL-P>` 来上下切换高亮选中的匹配
+
 ## set & let
 
 set 用于设置一个选项，而 let 用于为一个变量赋值：
@@ -80,7 +172,7 @@ vim 的选项有三个作用域：global, window-local, buffer-local.
 选项的作用于可以在使用帮助时查看到，如 `:help buftype` 第二行就会显示其作用域
 `local to buffer`
 
-setlocal 可简写为 setl, 为当前 buffer 或 window 设置选项的局部值（可以针对某个
+`setlocal 可简写为 setl, 为当前 buffer 或 window 设置选项的局部值（可以针对某个
 buffer 或 window 设置），但并不是所有选项都有局部值，没有局部值则使用全局值。
 
 `:setl` 显示所有和默认值不同的局部选项的局部值

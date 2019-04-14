@@ -1,4 +1,4 @@
-﻿---
+---
 title: NeoVim NyaoVim
 categories:
   - Vim
@@ -39,7 +39,7 @@ vim-plug 是一个单独的文件 plug.vim，
 
 然后保存到 neovim 的 autoload 目录里即可
 
-插件的安装目录：$LOCALAPPDATA\nvim\plugged
+插件的安装目录：`$LOCALAPPDATA\nvim\plugged`
 
 ## 给 NeoVim 安装 Markdown 预览插件
 
@@ -80,7 +80,7 @@ NyaoVim 基于 NeoVim 做了进一步开发，需要先安装上面的 NeoVim
 npm install -g nyaovim
 ```
 
-配置文件位置：$APPDATA\NyaoVim\nyaovimrc.html
+配置文件位置：`$APPDATA\NyaoVim\nyaovimrc.html`
 ```
 :ehoc $APPDATA\NyaoVim\nyaovimrc.html
 

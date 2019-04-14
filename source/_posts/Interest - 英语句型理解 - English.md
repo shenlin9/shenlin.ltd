@@ -429,3 +429,8 @@ it's a mosaic rich beyond the most popular artists
 
 it's a computationally heavy problem
 这是个需要大量计算能力的问题
+
+
+Arthur C. Clarke:
+Any sufficiently advanced technology is indistinguishable from magic.
+任何足够先进的技术都与魔法无异。
