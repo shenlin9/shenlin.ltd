@@ -239,3 +239,39 @@ C:\Users\T460P>netsh winhttp import proxy source=ie
     代理服务器:  127.0.0.1:1088
     绕过列表     :  niuza.com;guancha.cn;jandan.net;toutiao.com;tmall.com;taobao.com;jd.com;zhihu.com;alicdn.com;youku.com;iqiyi.com;bilibili.com;qq.com;baidu.com;google.com;<local>
 ```
+
+## Windows 下安装 GCC
+
+使用 cygwin
+使用 mingw64
+使用 msys2
+使用 tdm-gcc
+
+## cygwin, mingw, msys2
+
+
+
+## vim
+
+```bash
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+```
+
+```vim
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+```

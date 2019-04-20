@@ -53,3 +53,4 @@ C:\Users\T460P\AppData\Local\VirtualWorld>mklink /J Cocoon Z:\Cocoon
 C:\Users\T460P\AppData\Local\Mozilla\Firefox\Profiles\xs7y91g2.default>mklink /J cache2 Z:\FireFox\cache2
 为 cache2 <<===>> Z:\FireFox\cache2 创建的联接
 ```
+注意执行命令时前面的目录不能存在会自动创建，而后面的目录必须存在不会自动创建
