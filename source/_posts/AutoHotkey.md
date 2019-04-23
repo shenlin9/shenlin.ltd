@@ -1,12 +1,12 @@
 ---
-title: AutoHotKey - 基础
+title: AutoHotKey - 杂项
 categories:
   - AutoHotKey
 tags:
   - AutoHotKey
 ---
 
-AutoHotKey - 基础
+AutoHotKey - 杂项
 
 <!--more-->
 
@@ -90,26 +90,26 @@ show_all_win(win_title)
 ;return
 
 ;---test，右 win 键代替鼠标右键---
-;RWin::AppsKey
+RWin::AppsKey
 
 ;---test，~ 符号表示不影响按键的原来功能 ---
-;~ScrollLock::msgbox,scroll lock ...
+~ScrollLock::msgbox,scroll lock ...
 
 
 ;读写注册表
-;RegWrite, REG_DWORD, HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings\, ProxyEnable, %OutputVar%
-;RegRead, OutputVar, HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Connections\, DefaultConnectionSettings
-;RegWrite, REG_BINARY, HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Connections\, DefaultConnectionSettings, %Proxy%
-;msgbox,Done:%OutputVar%
+RegWrite, REG_DWORD, HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings\, ProxyEnable, %OutputVar%
+RegRead, OutputVar, HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Connections\, DefaultConnectionSettings
+RegWrite, REG_BINARY, HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Connections\, DefaultConnectionSettings, %Proxy%
+msgbox,Done:%OutputVar%
 
 
 ;鼠标相关
-;WheelUp::msgbox,滚轮向上滚动
-;WheelDown::msgbox,滚轮向下滚动
+WheelUp::msgbox,滚轮向上滚动
+WheelDown::msgbox,滚轮向下滚动
 
 ;四向滚轮
-;WheelLeft::^+TAB
-;WheelRight::^TAB
+WheelLeft::^+TAB
+WheelRight::^TAB
 
 ;MButton::msgbox,滚轮点击
 ;MButton::
@@ -141,4 +141,65 @@ show_all_win(win_title)
 ;XButton2::Backspace
 ;XButton2::^+TAB
 ```
+
+## 锁定系统和更改睡眠时间
+
+```autohotkey
+RunWait, rundll32.exe user32.dll`,LockWorkStation    ; 要运行的目标程序中有逗号则必须被转义
+RunWait, %comspec% /c powercfg /X -monitor-timeout-ac 2 && powercfg /X -standby-timeout-ac 2,,Hide
+```
+
+## 关闭、打开显示器
+
+```autohotkey
+SendMessage,0x112,0xF170,2,,Program Manager
+            ;0x112：WM_SYSCOMMAND，
+            ;0xF170：SC_MONITORPOWER，
+                    ;2：关闭。
+                    ;1：activate thedisplay "low power" mode。
+                    ;-1：turn the monitor on
+```
+
+## 关闭、打开显示器并设定休眠时间
+
+```autohotkey
+;============================关闭、打开显示器并设定休眠时间====================
+; Wait for it to be released because otherwise the hook state gets reset
+; while the key is down, which causes the up-event to get suppressed,
+; which in turn prevents toggling of the ScrollLock state/light:
+~ScrollLock::
+KeyWait, ScrollLock
+GetKeyState, ScrollLockState, ScrollLock, T
+If ScrollLockState = D
+{
+    RunWait, %comspec% /c powercfg /X -standby-timeout-ac 2,,Hide
+    ;RunWait, %comspec% /c powercfg /X -monitor-timeout-ac 2 && powercfg /X -standby-timeout-ac 2,,Hide
+    RunWait, rundll32.exe user32.dll`,LockWorkStation    ; 要运行的目标程序中有逗号则必须被转义
+    Sleep,500
+    SendMessage,0x112,0xF170,2,,Program Manager
+} else {
+    RunWait, %comspec% /c powercfg /X -standby-timeout-ac 60,,Hide
+}
+```
+
+## 睡眠
+
+```autohotkey
+; 即使关闭了休眠，也不是真正的睡眠，是一种只能使用电源按键唤醒的混合方式
+RunWait, %comspec% /c rundll32.exe powrprof.dll`,SetSuspendState 0`,1`,0
+;BOOLEAN SetSuspendState(
+;  BOOLEAN bHibernate,
+    ;// If this parameter is TRUE, the system hibernates. If the parameter
+    ;// is FALSE, the system is suspended.
+;  BOOLEAN bForce
+    ;//  This parameter has no effect.
+;  BOOLEAN bWakeupEventsDisabled
+    ;// If this parameter is TRUE, the system disables all wake events. If
+    ;// the parameter is FALSE, any system wake events remain enabled.
+;);
+
+; 这个方法没测试
+DllCall("PowrProf\SetSuspendState", "Int", 0, "Int", 0, "Int", 0)
+```
+https://superuser.com/questions/42124/how-can-i-put-the-computer-to-sleep-from-command-prompt-run-menu
 

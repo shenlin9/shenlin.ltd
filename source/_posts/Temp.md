@@ -1,3 +1,14 @@
+---
+title: Temp - To Be Reorganize
+categories:
+  - Temp
+tags:
+  - Temp
+---
+
+Temp - To Be Reorganize
+
+<!--more-->
 
 ## git ssh
 
@@ -275,3 +286,80 @@ Plugin 'VundleVim/Vundle.vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
 ```
+
+## ssh
+
+The authenticity of host 'github.com (13.229.188.59)' can't be established.
+RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
+Are you sure you want to continue connecting (yes/no)? yes
+
+## Win10 磁盘占用过高
+
+计算机\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Enum\PCI\VEN_8086&DEV_A103&SUBSYS_505017AA&REV_31\3&b1bfb68&0&B8\Device Parameters\Interrupt Management\MessageSignaledInterruptProperties\
+
+MSISupported 默认值 1 改为 0
+
+## 网卡地址为 169.254.211.*
+
+169.254.211.0 到 169.254.211.255 属于 Private Network，仅用于局域网，造成获取
+到此地址的原因：
+* dhcp 获取地址失败
+* 手动指定的地址冲突
+
+  连接特定的 DNS 后缀 . . . . . . . :
+  本地链接 IPv6 地址. . . . . . . . : fe80::bcb1:c08c:d484:d33b%4
+  自动配置 IPv4 地址  . . . . . . . : 169.254.211.59
+  子网掩码  . . . . . . . . . . . . : 255.255.0.0
+  默认网关. . . . . . . . . . . . . : 192.168.3.1
+
+https://en.wikipedia.org/wiki/Private_network
+
+## vim powerline font
+
+```vim
+" air-line
+let g:airline_powerline_fonts = 1
+
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+" unicode symbols
+let g:airline_left_sep = '?'
+let g:airline_left_sep = '?'
+let g:airline_right_sep = '?'
+let g:airline_right_sep = '?'
+let g:airline_symbols.linenr = '?'
+let g:airline_symbols.linenr = '?'
+let g:airline_symbols.linenr = '?'
+let g:airline_symbols.branch = '?'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'T'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
+
+" airline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
+```
+
+## Alt + Tab 背景透明度
+
+HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\MultitaskingView\AltTabViewHost
+
+新建两个 DWORD 值
+
+    整个屏幕的透明度：BackgroundDimmingLayer_percent
+
+    背景框的透明度：Grid_backgroundPercent，
+
+其取值范围都是 0 到 100，实时生效无需重启
+
+[Text](http://www.url.com)
+
+
