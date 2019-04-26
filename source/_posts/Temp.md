@@ -363,3 +363,127 @@ HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Multitaskin
 [Text](http://www.url.com)
 
 
+## Alt + ESC
+
+What Alt+Esc actually does is drop the active window to the bottom of the pile,
+while effectively brings the next open window into view, the next windows which
+is not minimized;
+
+sometimes, however, this means you'll need to click Alt+Esc again to bring the
+window into focus so you can start typing in it or otherwise actively working in
+the window.
+
+## SSH
+
+```bash
+➜  SSRSpeed (master) ssh-keygen -f /d/Documents/TopSecret/GCP_Private_Key_SSH_Format.ppk -p
+Enter old passphrase:
+Enter new passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved with the new passphrase.
+
+➜  SSRSpeed (master) ssh -i /d/Documents/TopSecret/GCP_Private_Key_SSH_Format.ppk shenlin1970@34.92.146.185
+```
+
+## 更改用户 SHELL
+
+```bash
+$ chsh -l
+$ cat /etc/shells
+```
+
+User account modifications will not be saved if you have opened /etc/passwd (vim
+/etc/passwd) when you try to change the info.
+```bash
+$ sudo chsh -s /bin/zsh
+```
+
+Alternative: try with usermod (as your username):
+```bash
+$ sudo usermod -s /bin/zsh shenlin1970
+```
+
+If this doesn't work either, edit /etc/passwd by hand.
+please use `vipw` instead of vim as they set the appropriate file locks.
+```bash
+$ sudo vipw
+```
+
+Then:
+1.exit for server
+2.restart terminal
+3.log into server, and check by echo $SHELL – in successful case it changed :)
+
+## change shell withoud sudo or su
+
+prevents locked-down accounts from changing their shells, and selectively lets
+people use chsh themselves WITHOUT sudo or su
+
+https://serverfault.com/questions/202468/changing-the-shell-using-chsh-via-the-command-line-in-a-script
+
+
+## SSR
+
+```bash
+➜  ~ systemctl status shadowsocks-r.service
+● shadowsocks-r.service - LSB: Fast tunnel proxy that helps you bypass firewalls
+   Loaded: loaded (/etc/rc.d/init.d/shadowsocks-r; bad; vendor preset: disabled)
+   Active: active (exited) since Thu 2019-04-25 09:50:05 CST; 4h 11min ago
+     Docs: man:systemd-sysv-generator(8)
+  Process: 2966 ExecStart=/etc/rc.d/init.d/shadowsocks-r start (code=exited, status=0/SUCCESS)
+
+Apr 25 09:50:03 instance-1 systemd[1]: Starting LSB: Fast tunnel proxy that helps you bypass firewalls...
+Apr 25 09:50:04 instance-1 shadowsocks-r[2966]: 2019-04-25 09:50:04 INFO     util.py:94 loading libcrypto from libcrypto.so.10
+Apr 25 09:50:05 instance-1 shadowsocks-r[2966]: 2019-04-25 09:50:05 INFO     shell.py:74 ShadowsocksR SSRR 3.2.2 2018-05-22
+Apr 25 09:50:05 instance-1 shadowsocks-r[2966]: IPv6 support
+Apr 25 09:50:05 instance-1 shadowsocks-r[2966]: Starting ShadowsocksR success
+Apr 25 09:50:05 instance-1 systemd[1]: Started LSB: Fast tunnel proxy that helps you bypass firewalls.
+
+➜  ~ sudo python /usr/local/shadowsocks/server.py -c /etc/shadowsocks-r/config.json -d stop
+IPv6 support
+2019-04-25 14:01:59 INFO     shell.py:74 ShadowsocksR SSRR 3.2.2 2018-05-22
+stopped
+
+➜  ~ systemctl status shadowsocks-r.service
+● shadowsocks-r.service - LSB: Fast tunnel proxy that helps you bypass firewalls
+   Loaded: loaded (/etc/rc.d/init.d/shadowsocks-r; bad; vendor preset: disabled)
+   Active: active (exited) since Thu 2019-04-25 09:50:05 CST; 4h 12min ago
+     Docs: man:systemd-sysv-generator(8)
+  Process: 2966 ExecStart=/etc/rc.d/init.d/shadowsocks-r start (code=exited, status=0/SUCCESS)
+
+Apr 25 09:50:03 instance-1 systemd[1]: Starting LSB: Fast tunnel proxy that helps you bypass firewalls...
+Apr 25 09:50:04 instance-1 shadowsocks-r[2966]: 2019-04-25 09:50:04 INFO     util.py:94 loading libcrypto from libcrypto.so.10
+Apr 25 09:50:05 instance-1 shadowsocks-r[2966]: 2019-04-25 09:50:05 INFO     shell.py:74 ShadowsocksR SSRR 3.2.2 2018-05-22
+Apr 25 09:50:05 instance-1 shadowsocks-r[2966]: IPv6 support
+Apr 25 09:50:05 instance-1 shadowsocks-r[2966]: Starting ShadowsocksR success
+Apr 25 09:50:05 instance-1 systemd[1]: Started LSB: Fast tunnel proxy that helps you bypass firewalls.
+```
+
+## v2ray
+
+```log
+2019/04/25 14:24:55 [Warning] v2ray.com/core/transport/internet/websocket:
+failed to serve http for WebSocket > accept tcp [::]:53501: use of closed network connection
+
+2019/04/25 14:24:56 [Warning] v2ray.com/core: V2Ray 4.18.0 started
+```
+
+## tmux
+
+https://my.oschina.net/u/144160/blog/875643
+
+tmux里面用鼠标滚轮来卷动窗口内容
+
+在 tmux里面，因为每个窗口(tmux window)的历史内容已经被tmux接管了，所以原来
+console/terminal提供的Shift+PgUp/PgDn所显示的内容并不是当前窗口的历史内容，所以
+要用C-b [ 进入copy-mode，然后才能用PgUp/PgDn/光标/Ctrl-S等键在copy-mode中移动。
+
+如果要启用鼠标滚轮来卷动窗口内容的话，可以按C-b :然后输入
+    setw mode-mouse on
+这就可以了。如果要对所有窗口开启的话:
+    setw -g mode-mouse on
+(这种情况下，Vi/Emacs等全屏程序并不受影响，还可以自己接管滚轮事件)
+
+也可以加到~/.tmux.conf里面
+     set-window-option -g mode-mouse on
+(setw其实是set-window-option的别名)

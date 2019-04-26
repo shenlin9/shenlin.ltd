@@ -122,3 +122,16 @@ Kill all the tmux sessions:
 
     +  break pane into window (e.g. to select text by mouse to copy)
     -  restore pane from window
+
+## 查看历史命令
+
+在 tmux 里面，因为每个窗口(tmux window)的历史内容已经被tmux接管了，所以原来
+console/terminal提供的Shift+PgUp/PgDn所显示的内容并不是当前窗口的历史内容，那么
+应该怎么办呢?
+
+先按 `<prefix><PgUp>` 或 `<prefix>[` 进入 tmux 的 copy mode，然后：
+* 按 `<PgUp>` `<PgDown>` 上下翻页查看历史输出
+* 按 `<Ctrl>+s` 搜索，`n` 和 `N` 分别向下查找和向上查找下一个
+* `q` 或 `<ESC>` 退出
+* `g` 提示要定位到第几行
+
