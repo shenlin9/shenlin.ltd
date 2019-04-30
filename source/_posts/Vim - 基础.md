@@ -8,6 +8,18 @@ vim 的基本设置和基础操作
 
 <!--more-->
 
+## linebreak, breakat, breakindent, showbreak, wrap
+
+linebreak 只影响文件的显示方式，不影响其内容。
+```vim
+set linebreak
+set nolinebreak
+```
+当启用 `linebreak` 后，会在 `breakat` 设定的字符处换行显示（但不插入 `<EOL>`），而不是在屏幕最后一个
+字符处换行显示
+
+## textwidth, wrapmargin
+
 ## filetype
 
 Vim 可根据文件名和文件内容来检测文件类型，启用文件类型探测：
