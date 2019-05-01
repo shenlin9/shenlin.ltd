@@ -4,8 +4,9 @@ categories:
 - Python
 tags:
 - Python
-- Keywords
-- Identifiers
+- Python Keywords
+- Python Identifiers
+- Python Variables
 date: 2019-04-29 14:03:37
 ---
 

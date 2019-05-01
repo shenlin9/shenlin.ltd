@@ -971,3 +971,58 @@ categories:
 
 how to?
 实现 `<leader>` 键映射 `ysiw`，然后按 `'`， `"` 则分别添加单引号和双引号
+
+## 无线电英语
+
+Roger: 收到
+
+approach: coming to land
+
+All clear：周围安全
+
+Affirmative：是（表肯定）
+
+Negative：否（表否定）
+
+Over：完毕（等待回话）
+
+Copy：明白，清楚
+
+Say Again：再说一遍
+
+Need back up：需要支援
+
+Cover me：掩护我
+
+Fire in the hole：小心手雷
+
+Enemy down：敌人被消灭
+
+## vimrc
+
+```vim
+let g:input_toggle = 1
+
+"插入模式进入普通模式自动切换为英文输入法
+function! Fcitx2en()
+   let s:input_status = system("fcitx-remote")
+   if s:input_status == 2
+      let g:input_toggle = 1
+      let l:a = system("fcitx-remote -c")
+   endif
+endfunction
+
+"普通模式进入插入模式自动切换为中文输入法
+function! Fcitx2zh()
+   let s:input_status = system("fcitx-remote")
+   if s:input_status != 2 && g:input_toggle == 1
+      let l:a = system("fcitx-remote -o")
+      let g:input_toggle = 0
+   endif
+endfunction
+
+"set timeoutlen=150
+"autocmd InsertLeave * call Fcitx2en()
+"autocmd InsertEnter * call Fcitx2zh()
+
+```
