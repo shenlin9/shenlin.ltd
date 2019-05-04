@@ -12,6 +12,255 @@ Python - Data Types - String
 
 <!--more-->
 
+## Create Strings
+
+Python 中使用单引号、双引号、三个单引号或三个双引号包含起来的一个或多个字符序列
+称为字符串。
+
+Python 中单引号、双引号的作用一样：
+```python
+>>> str = 'abc\ndef'
+>>> str
+'abc\ndef'
+
+>>> str = "abc\ndef"
+>>> str
+'abc\ndef'
+```
+
+Python 使用三个引号支持换行字符串：
+```python
+>>> str = '''
+... abc
+... def
+... '''
+>>> str
+'\nabc\ndef\n'
+
+>>> str = """
+... abc
+... def
+... """
+>>> str
+'\nabc\ndef\n'
+```
+
+可以在单引号中使用双引号，双引号中使用单引号，三个引号的也适用此规则。
+
+## Immutable
+
+Python 中的字符串是不可变的，这表示将分配一次内存并在此后重复使用：
+```python
+>>> str = 'abc'
+>>> str2 = str
+>>> id(str)
+2189979736024
+>>> id(str2)
+2189979736024
+```
+
+若要对字符串删除字符、修改字符等任何修改都会导致错误：
+```python
+>>> str = 'i am super man'
+>>> str[0] = 'I'
+TypeError: 'str' object does not support item assignment
+
+>>> del str[0]
+TypeError: 'str' object doesn't support item deletion
+```
+
+只可以移除整个字符串：
+```python
+>>> str1 = 'hello, world!'
+>>> del str1
+>>> print(str1)
+NameError: name 'str1' is not defined
+```
+
+## Unicode
+
+Python 的两个流行版本：2.7 和 3.4           （??? 3.4 需确认）
+
+Python 2 中的字符串默认是 8 位 ASCII 编码，字母 'u' 作前缀表示 Unicode 编码字符
+串：
+```python
+>>> type("python string in Python 2")
+<type 'str'>
+
+>>> type(u"python string in Python 2")          # 字符串前加 u 表示 Unicode
+<type 'unicode'>
+```
+
+Python 3 中的字符串默认就是 Unicode 的 UTF-8 编码：
+```python
+>>> type("python string in Python 3")
+<class 'str'>
+
+>>> type(u"python string in Python 3")
+<class 'str'>
+```
+
+## Escape Characters
+
+Python 中无论是单引号还是双引号，转义字符都会被解释器解释：
+```python
+>>> print('a\nb')
+a
+b
+>>> print("a\nb")
+a
+b
+```
+
+转义字符列表：
+
+    \\	    Backslash (\)
+    \”	    Double-quote (“)
+
+    \b	    ASCII backspace (BS)
+    \r	    Carriage Return (CR)
+    \n	    ASCII linefeed (LF)
+    \t	    Horizontal Tab (TAB)
+    \v	    ASCII vertical tab (VT)
+
+    \a	    ASCII bell (BEL)
+    \f	    ASCII Form feed (FF)
+    \cx or \Cx	Control-x
+
+    \N{name}	Character named name in the Unicode database (Unicode only)
+    \uxxxx	A character with 16-bit hex value xxxx (Unicode only)
+    \Uxxxxxxxx	A character with 32-bit hex value xxxxxxxx (Unicode only)
+    \ooo	Characters with octal value ooo
+    \xnn	A character with hex value nn where n can be anything from the range 0-9, a-f or A-F.
+
+## Format Characters
+
+`%` 操作符用于格式化字符串，常和 print 搭配：
+```python
+>>> print('He is %s, %d years old' % ('jack', 21))
+He is jack, 21 years old
+```
+
+可使用的格式化字符列表：
+
+    %c	character
+    %s	string conversion via str() before formatting
+    %i	signed decimal integer
+    %d	signed decimal integer
+    %u	unsigned decimal integer
+    %o	octal integer
+    %x	hexadecimal integer (lowercase letters)
+    %X	hexadecimal integer (UPPER-case letters)
+    %e	exponential notation (with lowercase ‘e’)
+    %E	exponential notation (with UPPER-case ‘E’)
+    %f	floating point real number
+    %g	the shorter of %f and %e
+    %G	the shorter of %f and %E
+
+## String Operators
+
+### Concatenation +
+
+使用 `+` 号连接字符串：
+```python
+>>> "this" + "world"
+thisworld
+```
+
+## Repetition *
+
+使用 `*` 号重复字符串：
+```python
+>>> str1 = 'xyz'
+>>> str1 * 3
+'xyzxyzxyz'
+
+>>> 'a' * 3
+'aaa'
+```
+
+### Range []
+
+使用 `[]` 提取单个字符：
+```python
+>>> "hello"[1]
+'e'
+
+>>> "hello"[-1]
+'o'
+```
+
+字符串的字符下标从 0 开始，但负数下标，则是从 -1 开始，即：
+
+    P   Y   T   H   O   N
+    0   1   2   3   4   5
+    -6  -5  -4  -3  -2  -1
+
+### Range Slicing [x:y]
+
+使用 `[x:y]` 语法从字符串中提取子字符串：
+```python
+>>> str = "0123456789"
+
+>>> print(str[1:4])
+123
+>>> print(str[4:])
+456789
+>>> print(str[:4])
+0123
+
+>>> print(str[-3:])
+789
+>>> print(str[:-3])
+0123456
+>>> print(str[-3:-1])
+78
+
+>>> print(str[:])
+0123456789
+```
+
+### Membership (in & not in)
+
+in 和 not in 判断是否包含子字符串：
+```python
+>>> 'he' in 'hello'
+True
+
+>>> 'he' not in 'hello'
+False
+```
+
+### Interating (for)
+
+使用 for 逐个字符迭代一个字符串：
+```python
+>>> for s in 'hello':
+...     s
+...
+'h'
+'e'
+'l'
+'l'
+'o'
+```
+
+#### Raw String (r/R)
+
+字符串前加 `r` 或 `R` 表示原生字符串，会忽略字符串中转义字符的含义：
+```python
+>>> 'a\nb'
+'a\nb'
+>>> print("a\nb")
+a
+b
+
+>>> print(r"a\nb")
+a\nb
+>>> print(R"a\nb")
+a\nb
+```
+
 ## String Functions
 
 ### Conversion Functions
@@ -112,21 +361,29 @@ False
 **isdigit()**
 
 如果字符串中的所有字符都是数字(需至少包含一个字符，即为非空字符串)，则返回 True
-，否则返回false。
+，否则返回 False。
 
 数字包括十进制字符和需要特殊处理的数字，如兼容性上标数字。这包括不能用于以10为基
 数形成数字的数字，比如Kharosthi数字。在形式上，数字是具有属性值Numeric_Type=
 digit或Numeric_Type=Decimal的字符。
 
-**isnumeric()**
+**isdecimal(), isdigit(), isnumeric()**
 
-如果字符串中的所有字符都是数字字符，并且至少有一个字符，则返回true，否则返回false。
+如果字符串中的所有字符都是数字字符，并且至少有一个字符，则返回 True，否则返回
+False。
 
 数字字符包括数字字符，以及所有具有Unicode数值属性的字符，例如U+2155，粗俗分数1 /
 5。在形式上，数字字符是那些具有属性值Numeric_Type=Digit、Numeric_Type=Decimal或
 Numeric_Type= numeric的字符。
 
 ```python
+>>> "3.14".isdecimal()
+False
+>>> "3.14".isdigit()
+False
+>>> "3.14".isnumeric()
+False
+
 >>> "四".isdecimal()      # 中文数字
 False
 >>> "四".isdigit()
