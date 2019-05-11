@@ -4,7 +4,7 @@ categories:
 - Python
 tags:
 - Python
-- List
+- Python List
 date: 2019-05-04 15:07:03
 ---
 
@@ -164,26 +164,56 @@ False
 
 ### extend(), append()
 
+List 是可修改对象，允许通过多种方法改变其长度。
+
+直接把 List 相加，这时原 List 都没改变，返回的是一个新 List 对象：
+```python
+>>> L1 = ['a', 'b']
+>>> L2 = ['c', 'd']
+>>> L3 = ['e', 'f']
+>>> L1 + L2 + L3
+['a', 'b', 'c', 'd', 'e', 'f']
+```
+
+使用 extend 方法，这时是直接修改的原 List 对象：
+```python
+>>> L1 = ['a', 'b']
+>>> L2 = ['c', 'd']
+>>> L3 = ['e', 'f']
+>>> L1.extend(L2)
+>>> L1.extend(L3)
+>>> L1
+['a', 'b', 'c', 'd', 'e', 'f']
+```
+
+使用 append 方法，也是直接修改的原 List 对象，但是为原对象添加嵌套 List：
+```python
+>>> L1 = ['a', 'b']
+>>> L2 = ['c', 'd']
+>>> L3 = ['e', 'f']
+>>> L1.append(L2)
+>>> L1.append(L3)
+>>> L1
+['a', 'b', ['c', 'd'], ['e', 'f']]
+```
+
 ## Access/Index
-2.1 Using the index operator
-2.2 Access a List using Index – Example
-2.3 Reverse indexing
+
+使用索引操作符 `[]`
+
+索引必须是整数或切片，如 `[3]` `[3:5]`，使用其他类型数据作索引会导致 TypeError
+
+索引从 0 开始，负数索引从 -1 开始，索引越界会导致 IndexError
 
 ## Slicing
-3.1 Slicing Examples
-3.1.1 Return the three elements, i.e. [3, 4, 5] from the list
-3.1.2 Print slice as [3, 5], Don’t change the first or last index
-3.1.3 Slice from the third index to the second last element
-3.1.4 Get the slice from start to the second index
-3.1.5 Slice from the second index to the end
-3.1.6 Reverse a list using the slice operator
-3.1.7 Reverse a list but leaving values at odd indices
-3.1.8 Create a shallow copy of the full list
-3.1.9 Copy of the list containing every other element
 
-切片操作符冒号 `:`，语法格式为 `[m:n]`，表示从索引 `m` 开始提取，到索引 `n-1` 结
-束，不包括索引 `n`，注意切片操作都是左含右不含，即包含左边的元素，不包含右边的元
-素。
+切片操作语法：
+
+`[start(optional):stop(optional):step(optional)]`
+
+表示从索引 `start` 开始提取，到索引 `stop` 结束，不包括索引 `stop`，左含右不含，
+即包含左边的元素，不包含右边的元素，这样也意味着 `stop` 是几就表示截取到第几个元
+素（包含）。
 
 可以像字符串一样，通过切片操作符提取元素：
 ```python
@@ -204,29 +234,293 @@ False
 
 >>> my_list[:]
 [0, 1, 2, 3, 4, 5, 6, 7]
+
+>>> s = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+>>> s[0:6:2]
+[0, 2, 4]
+
+>>> s[2:8:-1]
+[]
+>>> s[8:2:-1]
+[8, 7, 6, 5, 4, 3]
+```
+
+### 切片的应用场景
+
+通过切片反转列表：
+```python
+>>> s = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+>>> s[::-1]
+[8, 7, 6, 5, 4, 3, 2, 1, 0]
+```
+
+通过切片反转列表，且只保留第 1、3、5、7等奇数位的值：
+```python
+>>> s = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+>>> s[::-2]
+[8, 6, 4, 2, 0]
+```
+
+创建列表的浅拷贝（Shadow Copy）：
+```python
+>>> s = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+>>> id(s)
+2295131142984
+
+>>> s2 = s[::]
+>>> id(s2)
+2295132095496
 ```
 
 ## Iterate
-4.1 Traversing a List – Example
+
+使用 for 循环对列表进行迭代：
+```python
+for element in List:
+    print(element)
+```
+
+如果同时需要索引，搭配使用 enumerate：
+```python
+for index, element in enumerate(List):
+    print(index. element)
+```
+
+如果只需要索引，搭配使用 len 和 range：
+```python
+for index in range(len(List)):
+    print(index)
+```
+
+列表支持迭代器协议，要想创建一个迭代器，可以使用内置的 iter 函数:
+```python
+it = iter(List)
+element = it.next() # 第一个元素
+element = it.next() # 第二个元素
+```
 
 ## Add/Update elements
-5.1 Modifying a List using Assignment Operator
-5.2 Modifying a List with Insert Method
+
+### 使用赋值操作符
+
+可以一次性为列表的一个范围的切片进行赋值：
+```python
+>>> s = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+>>> s[2:5] = ['a', 'b', 'c']
+>>> s
+[0, 1, 'a', 'b', 'c', 5, 6, 7, 8]
+```
+
+### 使用 insert 方法
+
+使用 insert 方法插入一个元素：
+```python
+>>> s = [0, 1, 2]
+>>> s.insert(1, 'a')
+>>> s
+[0, 'a', 1, 2]
+```
+
+插入多个元素可以通过切片，为切片位置赋值：
+```python
+>>> s = [0, 1, 2]
+>>> s[1:1] = ['a', 'b']
+>>> s
+[0, 'a', 'b', 1, 2]
+```
 
 ## Remove/Delete elements
-6.1 Delete List Elements using Del Operator
-6.2 Delete List Elements using Remove() and POP()
+
+### 使用 del 关键字
+
+使用 del 关键字可以移除一个元素、多个元素，甚至整个列表：
+```python
+>>> s = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+
+>>> del s[2]
+>>> s
+[0, 1, 3, 4, 5, 6, 7, 8]
+
+>>> del s[3:5]
+>>> s
+[0, 1, 3, 6, 7, 8]
+
+>>> del s
+>>> s
+NameError: name 's' is not defined
+```
+
+### 使用 remove, pop, clear 方法
+
+remove 根据值删除元素
+```python
+>>> s = ['a', 'b', 'c']
+>>> s.remove('b')
+>>> s
+['a', 'c']
+```
+
+pop 使用索引删除最末尾元素，且返回此元素值，这也是把列表当作堆栈使用的方法，遵循
+FILO（First In Last Out） 模式：
+```python
+>>> s = ['a', 'b', 'c', 'd', 'e']
+>>> s.pop()
+'e'
+>>> s
+['a', 'b', 'c', 'd']
+>>> s.pop()
+'d'
+>>> s
+['a', 'b', 'c']
+```
+
+pop 也可以删除指定索引的元素：
+```python
+>>> s = ['a', 'b', 'c']
+>>> s.pop(1)
+'b'
+>>> s
+['a', 'c']
+```
+
+通过切片赋值来删除元素：
+```python
+>>> s = ['a', 'b', 'c', 'd', 'e']
+>>> s[2:4] = []
+>>> s
+['a', 'b', 'e']
+```
+
+使用 clear 清空列表元素：
+```python
+>>> s = ['a', 'b', 'c', 'd', 'e']
+>>> s.clear()
+>>> s
+[]
+```
 
 ## Searching elements
-7.1 Traversing a list in Python – Example
+
+使用 in 操作符检测元素是否在列表中：
+```python
+>>> 'a' in ['b', 'c', 'a']
+True
+>>> 'd' in ['b', 'c', 'a']
+False
+```
+
+使用 index 方法找出符合其值的第一个索引：
+```python
+>>> ['b', 'c', 'a', 'c'].index('c')
+1
+```
+
+index 方法执行一个线性搜索，找到第一个匹配时则中断搜索，最终没找到则抛出异常
+ValueError：
+```python
+>>> ['b', 'c', 'a', 'c'].index('d')
+ValueError: 'd' is not in list
+
+>>> try:
+...     result = ['b', 'c', 'a', 'c'].index('d')
+... except ValueError:
+...     result = 'no found'
+...
+>>> result
+'no found'
+```
+
+index 可以指定第二个参数，表示开始搜索的索引位置：
+```python
+>>> ['a', 'b', 'c', 'b', 'e', 'b'].index('b')
+1
+>>> ['a', 'b', 'c', 'b', 'e', 'b'].index('b', 2)
+3
+>>> ['a', 'b', 'c', 'b', 'e', 'b'].index('b', 3)
+3
+```
+
+???利用 index 的第二个参数自动跳出循环：
+搜索所有匹配：
+```python
+>>> s = ['a', 'b', 'c', 'b', 'e', 'b']
+>>> loc = -1
+>>> try:
+...     while 1:
+...             loc = s.index('b', loc+1)
+...             print("match at:", loc)
+... except ValueError:
+...     pass
+...
+match at: 1
+match at: 3
+match at: 5
+```
+
+min 和 max 方法支持可迭代对象，因此可用于列表，找出列表元素的最小值和最大值：
+```python
+>>> min([1, 2, 3, 4])
+1
+>>> max([1, 2, 3, 4])
+4
+```
 
 ## Sorting
-8.1 List’s sort() method
-8.2 Built-in sorted() function
+
+列表排序可使用列表自己实现的 sort 方法，或者使用 python 内置的 sorted 函数。
+
+列表的 sort 方法，默认为升序，若改为降序，需传参数 `reverse = True`：
+```python
+>>> s = ['b', 'd', 'c', 'a']
+>>> s.sort()
+>>> s
+['a', 'b', 'c', 'd']
+
+>>> s.sort(reverse = True)
+>>> s
+['d', 'c', 'b', 'a']
+```
+
+内置的 sorted 函数，返回的是一个新列表，默认也是升序，改为降序，则第二个参数传
+`reverse = True`：
+```python
+>>> s = ['b', 'd', 'c', 'a']
+>>> s2 = sorted(s)
+>>> s2
+['a', 'b', 'c', 'd']
+>>> s3 = sorted(s, reverse = True)
+>>> s3
+['d', 'c', 'b', 'a']
+```
+
+Please note that **in place** sorting algorithms are more efficient as they don
+’t need temporary variables (such as a new list) to hold the result.
+请注意，现有的排序算法更有效，因为它们不需要临时变量(如新列表)来保存结果。
 
 ## list methods
 
+append()	It adds a new element to the end of the list.
+extend()	It extends a list by adding elements from another list.
+insert()	It injects a new element at the desired index.
+remove()	It deletes the desired element from the list.
+pop()	    It removes as well as returns an item from the given position.
+clear()	    It flushes out all elements of a list.
+index()	    It returns the index of an element that matches first.
+count()	    It returns the total no. of elements passed as an argument.
+sort()	    It orders the elements of a list in an ascending manner.
+reverse()	It inverts the order of the elements in a list.
+copy()	    It performs a shallow copy of the list and returns.
 
 ## list built-in functions
+
+all()	It returns True if the list has elements with a True value or is blank.
+any()	If any of the members has a True value, then it also returns True.
+enumerate()	It returns a tuple with an index and value of all the list elements.
+len()	The return value is the size of the list.
+list()	It converts all iterable objects and returns as a list.
+max()	The member having the maximum value
+min()	The member having the minimum value
+sorted()	It returns the sorted copy of the list.
+sum()	The return value is the aggregate of all elements of a list.
 
 

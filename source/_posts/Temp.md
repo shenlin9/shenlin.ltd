@@ -1026,3 +1026,19 @@ endfunction
 "autocmd InsertEnter * call Fcitx2zh()
 
 ```
+
+## U 型批头
+
+U型规格按一字宽度计算。
+
+U3  1.5mm
+U4  1.8mm
+U5  2.0mm
+U6  2.3mm
+
+## Y 型批头
+
+Y0  3 
+Y1  4
+Y2  5
+Y3  6
