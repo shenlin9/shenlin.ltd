@@ -1055,3 +1055,25 @@ E指的是EMC的高端存储。
 IOE 产品，多是用在金融、证券、电信、保险、电力等传统行业，互联网企业，使用多是定
 制服务器，开源软件等。比如操作系统使用 Linux，存储使用开源分布式存储，数据库使用
 MySQL 或是 PostGreSQL 等。
+
+## Open Hardware
+
+开源硬件
+
+"Open hardware" 或 "open source hardware" 指的是物理对象的设计规范，以任何人都可
+以研究、修改、创建和分发所述对象的方式授权。
+
+"Open hardware" 的 “源代码”指的是：电路图、蓝图、逻辑设计、计算机辅助设计(CAD)
+图纸或文件等。
+
+https://opensource.com/resources/what-open-hardware
+
+## OSHWA
+
+Open Source Hardware Association 开源硬件协会
+
+Sino：bit是一款用于中国计算机教育的单板微控制器。 这是第一个中国 OSHWA 认证项目
+，基于 Calliope mini 并获得 Calliope mini项目的许可。
+
+Sino：bit 由开源硬件传播者和 DIY 爱好者 Naomi Wu 创建，网名机械妖姬(Naomi 'SexyCyborg' Wu)。
+
