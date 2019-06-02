@@ -1077,3 +1077,38 @@ Sino：bit是一款用于中国计算机教育的单板微控制器。 这是第
 
 Sino：bit 由开源硬件传播者和 DIY 爱好者 Naomi Wu 创建，网名机械妖姬(Naomi 'SexyCyborg' Wu)。
 
+## English
+
+Learning leads to success and Sharing brings you recognition.
+
+Wall Clock Time  经过时间
+
+## SSH
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the ECDSA key sent by the remote host is
+SHA256:rhzSxr8z4iDDHI8xc9LPmHnRGkCjQK4tFRWy5+lq/ZU.
+Please contact your system administrator.
+Add correct host key in /c/Users/T460P/.ssh/known_hosts to get rid of this message.
+Offending ECDSA key in /c/Users/T460P/.ssh/known_hosts:5
+ECDSA host key for 34.92.146.185 has changed and you have requested strict checking.
+Host key verification failed.
+
+## 端口
+
+检查端口被哪个进程占用
+```
+# netstat -lnp|grep 22
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      2849/sshd           
+tcp6       0      0 :::22                   :::*                    LISTEN      2849/sshd           
+unix  2      [ ACC ]     STREAM     LISTENING     22703    1426/NetworkManager  /var/run/NetworkManager/private-dhcp
+
+# ps 2849
+  PID TTY      STAT   TIME COMMAND
+ 2849 ?        Ss     0:00 /usr/sbin/sshd -D
+```
