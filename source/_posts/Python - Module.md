@@ -17,7 +17,7 @@ Python - Module
 模块是 Python 模块化编程的支柱。
 
 Python 模块带来了一些好处，比如我们可以减少代码中的冗余，可以让我们保持编码风格
-的一致性。节省了时间，提高了可读性和生产力。它们还用于扩展 python 的功能，并允许
+的一致性。节省了时间，提高了可读性和生产力。它们还用于扩展 Python 的功能，并允许
 世界各地的不同开发人员以协调的方式工作。
 
 模块主要是文件(后缀 `.py`)，其中包含 Python 代码，这些代码定义了函数、类、变量等。
@@ -100,6 +100,31 @@ import os
 使用别名：
 ```python
 import os as o
+```
+
+### 循环依赖 circular dependency
+
+要避免递归 import 从而导致循环依赖，如模块 A import 模块 B，而模块 B 又 import
+了模块 A，则会导致错误：
+```python
+import A
+import B
+```
+
+在 Python 中，import 也是一个可执行语句。
+每个 import 子句都将导致相应模块的执行。
+此外，在相关代码（在 def 或类中）执行之前，嵌入在模块中的任何函数或类都不会生效。
+
+递归导入模块可能会导致程序中的循环依赖。
+
+A.py
+```python
+insert into t('') values()
+```
+
+B.py
+```python
+insert into s() values()('')
 ```
 
 ## Install New Modules

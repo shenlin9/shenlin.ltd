@@ -1112,3 +1112,34 @@ unix  2      [ ACC ]     STREAM     LISTENING     22703    1426/NetworkManager  
   PID TTY      STAT   TIME COMMAND
  2849 ?        Ss     0:00 /usr/sbin/sshd -D
 ```
+
+## Modulation 调制
+
+https://www.youtube.com/watch?v=Lll53ihvAaM
+
+电磁波频率和能量的关系：E = hv， v 频率
+
+人说话的声音频率很低，因此能量也很低，而电磁波若以这么低的频率传输，则传输距离会
+很近，因此为了使电磁波传送的更远，就要提高其频率，使电磁波具有高能量，这就是调制。
+
+一张纸扔不远，一个纸团可以扔的远
+
+carrier signal 载波信号
+
+信号的三个属性：
+* amplitude 振幅
+* frequency 频率
+* phase 相
+
+frequency modulation：carrier signal 根据 message signal 变化而变化
+
+## SSH
+
+```
+➜  shenlin.ltd (master) gcp
+The authenticity of host '34.92.146.185 (34.92.146.185)' can't be established.
+ECDSA key fingerprint is SHA256:rhzSxr8z4iDDHI8xc9LPmHnRGkCjQK4tFRWy5+lq/ZU.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '34.92.146.185' (ECDSA) to the list of known hosts.
+Last login: Sun Jun  2 16:07:12 2019 from 74.125.41.104
+```

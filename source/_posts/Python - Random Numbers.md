@@ -408,6 +408,46 @@ NumPy 是 Python 中的一个科学计算模块。它提供了生成多维数组
 pip install numpy
 ```
 
+???numpy 中方法的调用方式
+```python
+>>> import random
+>>> random.random_integers(1,10,2)
+AttributeError: module 'random' has no attribute 'random_integers'
+
+>>> import numpy
+>>> random.random_integers(1,10,2)
+AttributeError: module 'random' has no attribute 'random_integers'
+
+>>> numpy.random_integers(1,10,2)
+AttributeError: module 'numpy' has no attribute 'random_integers'
+```
+
+random_integers 已弃用，使用 randint 替代：
+```python
+>>> from numpy import *
+>>> random.random_integers(1, 99, 7)
+__main__:1: DeprecationWarning: This function is deprecated. Please call randint(1, 99 + 1) instead
+array([95, 30, 91, 79, 18, 39, 31])
+```
+
+numpy 应该是覆盖了默认的 random.choice 方法：
+```python
+>>> random.choice(seq)
+0.4
+>>> random.choice(seq, 1)
+TypeError: choice() takes 2 positional arguments but 3 were given
+>>> random.choice(seq, size=2)
+TypeError: choice() got an unexpected keyword argument 'size'
+
+>>> from numpy import *
+>>> random.choice(seq, size=2)
+array([0.2, 0.3])
+>>> random.choice(seq, size=2, replace=False)
+array([0.1, 0.4])
+>>> random.choice(seq, size=2, replace=True)
+array([0.2, 0.2])
+```
+
 ## How to generate a universal random number
 
 ### UUID

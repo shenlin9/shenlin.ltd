@@ -26,6 +26,13 @@ Python 中单引号、双引号的作用一样：
 >>> str = "abc\ndef"
 >>> str
 'abc\ndef'
+
+>>> print('a\nb')
+a
+b
+>>> print("a\nb")
+a
+b
 ```
 
 Python 使用三个引号支持换行字符串：
@@ -45,18 +52,36 @@ Python 使用三个引号支持换行字符串：
 '\nabc\ndef\n'
 ```
 
-可以在单引号中使用双引号，双引号中使用单引号，三个引号的也适用此规则。
+可以在单引号中使用双引号，双引号中使用单引号，三引号中使用单、双引号：
+```python
+>>> s = """
+... abc"def
+... """
+>>> d = '''
+... mno'nno
+... '''
+>>>
+>>> s = """
+... abc'ddd
+... """
+```
 
 ## Immutable
 
 Python 中的字符串是不可变的，这表示将分配一次内存并在此后重复使用：
 ```python
->>> str = 'abc'
->>> str2 = str
->>> id(str)
-2189979736024
->>> id(str2)
-2189979736024
+>>> s1 = 'abc'
+>>> s2 = s1
+>>> id(s1)
+1939387111384
+>>> id(s2)
+1939387111384
+
+>>> s2 = s1 + 'd'
+>>> id(s2)
+1939417032048
+>>> id(s1)
+1939387111384
 ```
 
 若要对字符串删除字符、修改字符等任何修改都会导致错误：
@@ -110,28 +135,45 @@ b
 >>> print("a\nb")
 a
 b
+
+>>> print("""a\n
+... b""")
+a
+
+b
+>>> print('''a\n
+... b''')
+a
+
+b
 ```
 
 转义字符列表：
 
-    \\	    Backslash (\)
-    \”	    Double-quote (“)
+    \\	        Backslash (\)
+    \”	        Double-quote (“)
 
-    \b	    ASCII backspace (BS)
-    \r	    Carriage Return (CR)
-    \n	    ASCII linefeed (LF)
-    \t	    Horizontal Tab (TAB)
-    \v	    ASCII vertical tab (VT)
+    \b	        ASCII backspace (BS)
+    \r	        Carriage Return (CR)
+    \n	        ASCII linefeed (LF)
+    \t	        Horizontal Tab (TAB)
+    \v	        ASCII vertical tab (VT)
 
-    \a	    ASCII bell (BEL)
-    \f	    ASCII Form feed (FF)
+    \a	        ASCII bell (BEL)
+    \f	        ASCII Form feed (FF)
     \cx or \Cx	Control-x
 
     \N{name}	Character named name in the Unicode database (Unicode only)
-    \uxxxx	A character with 16-bit hex value xxxx (Unicode only)
+    \uxxxx	    A character with 16-bit hex value xxxx (Unicode only)
     \Uxxxxxxxx	A character with 32-bit hex value xxxxxxxx (Unicode only)
-    \ooo	Characters with octal value ooo
-    \xnn	A character with hex value nn where n can be anything from the range 0-9, a-f or A-F.
+    \ooo	    Characters with octal value ooo
+    \xnn	    A character with hex value nn where n can be anything from the
+                range 0-9, a-f or A-F.
+
+```python
+>>> print('ab\bc')
+ac
+```
 
 ## Format Characters
 
@@ -139,6 +181,11 @@ b
 ```python
 >>> print('He is %s, %d years old' % ('jack', 21))
 He is jack, 21 years old
+
+>>> print('%s--%d','abc',123)
+%s--%d abc 123
+>>> print('%s--%d' %('abc',123))
+abc--123
 ```
 
 可使用的格式化字符列表：
@@ -156,6 +203,19 @@ He is jack, 21 years old
     %f	floating point real number
     %g	the shorter of %f and %e
     %G	the shorter of %f and %E
+
+```python
+>>> print('%s %o' %('abc',123))
+abc 173
+>>> print('%s %x' %('abc',123))
+abc 7b
+>>> print('%s %X' %('abc',123))
+abc 7B
+>>> print('%s %E' %('abc',123))
+abc 1.230000E+02
+>>> print('%s %e' %('abc',123))
+abc 1.230000e+02
+```
 
 ## String Operators
 
@@ -265,7 +325,7 @@ a\nb
 
 ### Conversion Functions
 
-**Capitalize()**
+**str.capitalize()**
 
 最大化首字母，其他字母全部转换为小写字母：
 ```python
@@ -273,7 +333,7 @@ a\nb
 'Hello, world!'
 ```
 
-**lower(), upper()**
+**str.lower(), str.upper()**
 
 全部转换为小写或大写：
 ```python
@@ -284,7 +344,7 @@ a\nb
 'HELLO, WORLD!'
 ```
 
-**swapcase()**
+**str.swapcase()**
 
 大小写调换，即大写字母转为小写，小写字母转为大写：
 ```python
@@ -292,7 +352,7 @@ a\nb
 'hELLO, WORLD!'
 ```
 
-**title()**
+**str.title()**
 
 按标题样式返回字符串，即每个单词的首字母大写：
 ```python
@@ -300,7 +360,7 @@ a\nb
 'You Are Welcome In China At Any Time!'
 ```
 
-**count( str[, beg [, end]])**
+**str.count( str[, beg [, end]])**
 
 返回在指定的起使和终止索引范围内（左含右不含）子字符串出现的次数，大小写敏感：
 ```python
@@ -314,7 +374,7 @@ a\nb
 
 ### Comparison Functions
 
-**islower(), isupper()**
+**str.islower(), str.isupper()**
 
 当全部字符串都是小写或都是大写时返回 True，全是数字字符串则始终返回 False，包括
 数字时则忽略数字只根据字母判断：
@@ -340,7 +400,7 @@ False
 True
 ```
 
-**isdecimal()**
+**str.isdecimal()**
 
 如果字符串中的所有字符都是十进制字符(需至少包含一个字符，即为非空字符串)，则返回 True
 ，否则返回 false。
@@ -358,7 +418,7 @@ True
 False
 ```
 
-**isdigit()**
+**str.isdigit()**
 
 如果字符串中的所有字符都是数字(需至少包含一个字符，即为非空字符串)，则返回 True
 ，否则返回 False。
@@ -376,6 +436,7 @@ False。
 5。在形式上，数字字符是那些具有属性值Numeric_Type=Digit、Numeric_Type=Decimal或
 Numeric_Type= numeric的字符。
 
+三个函数的不同在于对待特定的 Unicode 字符时：
 ```python
 >>> "3.14".isdecimal()
 False
@@ -383,31 +444,67 @@ False
 False
 >>> "3.14".isnumeric()
 False
+>>> u'2.15'.isdigit()
+False
 
->>> "四".isdecimal()      # 中文数字
+# 中文数字
+>>> "四".isnumeric()
+True
+>>> "四".isdecimal()
 False
 >>> "四".isdigit()
 False
->>> "四".isnumeric()
-True
 
-
->>> "12345½".isdecimal()   # 分数
+# 分数
+>>> "12345½".isdecimal()
 False
 >>> "12345½".isdigit()
 False
 >>> "12345½".isnumeric()
 True
 
->>> "Ⅳ".isdecimal()        # 注意这里不是字母 I 和 V，而是罗马数字 4
+## 下标
+>>> '3₇'.isnumeric()
+True
+>>> '3₇'.isdigit()
+True
+>>> '3₇'.isdecimal()
+False
+
+# 注意这里不是字母 I 和 V，而是罗马数字 4
+>>> "Ⅳ".isnumeric()
+True
+>>> "Ⅳ".isdecimal()
 False
 >>> "Ⅳ".isdigit()
 False
->>> "Ⅳ".isnumeric()
+
+# 圆圈数字 22
+>>> '㉒'.isnumeric()
 True
+>>> '㉒'.isdigit()
+False
+>>> '㉒'.isdecimal()
+False
+
+## 反色的圆圈数字 60
+>>> '㉍'.isnumeric()
+True
+>>> '㉍'.isdigit()
+False
+>>> '㉍'.isdecimal()
+False
+
+## 苏州码子，在 Unicode 中标记为 HANGZHOU NUMERAL
+>>> '〥'.isnumeric()
+True
+>>> '〥'.isdigit()
+False
+>>> '〥'.isdecimal()
+False
 ```
 
-**isalpha()**
+**str.isalpha()**
 
 如果字符串所有字符都是字母(至少包含一个字符，非空字符串)，则返回 True：
 ```python
@@ -419,7 +516,7 @@ False
 True
 ```
 
-**isalnum()**
+**str.isalnum()**
 
 如果字符串所有字符都是字母或小数(至少包含一个字符，非空字符串)，则返回 True：
 ```python
@@ -432,10 +529,10 @@ True
 
 ### Padding Functions
 
-**ljust(width[,fillchar]), rjust(width[,fillchar]), center(width[,fillchar])**
+**str.ljust(width[,fillchar=' ']), str.rjust(width[,fillchar=' ']), str.center(width[,fillchar=' '])**
 
-使用指定的字符 fillchar，把字符串填充的指定的长度 width，原字符串可位于左侧、中
-间、右侧：
+使用指定的字符 fillchar，把字符串填充到指定的长度 width，原字符串可位于左侧、中
+间、右侧，默认填充字符是空格：
 ```python
 >>> 'chapter 13.1'.ljust(40, '-')
 'chapter 13.1----------------------------'
@@ -455,7 +552,7 @@ True
 'chapter 13.1'
 ```
 
-**zfill(width)**
+**str.zfill(width)**
 
 左侧用 0 填充字符串到指定长度，若字符串以 + 或 - 号开头，则填充的 0 位于 + 或 -
 号后面：
@@ -469,9 +566,15 @@ True
 '-00chapter 13.1'
 ```
 
+不会截断字符串：
+```python
+>>> 'abcdef'.zfill(3)
+'abcdef'
+```
+
 ### Search Functions
 
-**find(sub[, start[, end]]), rfind(sub[, start[, end]])**
+**str.find(sub[, start[, end]]), str.rfind(sub[, start[, end]])**
 
 find 返回子字符串的第一次出现处的索引，rfind 返回子字符串最后一次出现处的索引，
 没有找到时返回 -1：
@@ -486,7 +589,7 @@ find 返回子字符串的第一次出现处的索引，rfind 返回子字符串
 -1
 ```
 
-**index(sub[, start[, end]]), rindex(sub[, start[, end]])**
+**str.index(sub[, start[, end]]), str.rindex(sub[, start[, end]])**
 
 和 find、rfind 一样，不同的是：如果没有找到子字符串，不是返回 -1，而是会抛出一个
  ValueError异常：
@@ -503,9 +606,9 @@ ValueError: substring not found
 
 ### String Substitution Functions
 
-**replace(old,new[,count])**
+**str.replace(old,new[,count=-1])**
 
-对字符串进行指定次数替换或全部替换
+对字符串进行指定次数替换或全部替换，count 默认值 -1 表示全部替换：
 ```python
 >>> "This is a exmaple, isn't it?".replace('is', 'was')
 "Thwas was a exmaple, wasn't it?"
@@ -514,41 +617,52 @@ ValueError: substring not found
 "Thwas was a exmaple, isn't it?"
 ```
 
-**split([sep[,maxsplit]])**
+**str.split([sep[,maxsplit]])**
 
-对字符串使用指定分隔符按指定最大分隔次数分隔，或全部分隔，返回一个 List
+对字符串使用指定分隔符按指定最大分隔次数分隔，或全部分隔，返回一个列表对象。
 默认分隔符是空格，分隔符不能为空，如 ''
 若指定了最大分隔次数 maxsplit，则元素个数 = maxsplit + 1
 ```python
->>> "This is a exmaple, isn't it?".split()
-['This', 'is', 'a', 'exmaple,', "isn't", 'it?']
+>>> 'abc abc abc'.split()
+['abc', 'abc', 'abc']
 
->>> "This is a exmaple, isn't it?".split(' ', 3)
-['This', 'is', 'a', "exmaple, isn't it?"]
+>>> 'abc abc abc'.split(' ')
+['abc', 'abc', 'abc']
 
->>> "This is a exmaple, isn't it?".split(' ', 100)
-['This', 'is', 'a', 'exmaple,', "isn't", 'it?']
+>>> 'abcabcabc'.split('c')
+['ab', 'ab', 'ab', '']
 
->>> "This is a exmaple, isn't it?".split('', 3)
+>>> 'abcabcabc'.split('c',2)
+['ab', 'ab', 'abc']
+
+>>> 'abcabcabc'.split('c',1)
+['ab', 'abcabc']
+
+>>> 'abcabcabc'.split('c',100)
+['ab', 'ab', 'ab', '']
+
+>>> 'abcabcabc'.split('',100)
 ValueError: empty separator
 ```
 
-**splitlines([num])**
+**str.splitlines(keepends=False)**
 
-对字符串按换行符进行分隔，若 num 值为正数，则换行符包含在返回的 List 中：
+对字符串按换行符进行分隔，若 keepends 为 True，则换行符包含在返回的 List 中：
 ```python
->>> str1 = '''hello,
-... everyone,
-... I am a software living in china'''
+>>> 'abc\ndef\nghi'.splitlines(True)
+['abc\n', 'def\n', 'ghi']
 
->>> str1.splitlines()
-['hello,', 'everyone,', 'I am a software living in china']
+>>> 'abc\ndef\nghi'.splitlines(1)
+['abc\n', 'def\n', 'ghi']
 
->>> str1.splitlines(1)
-['hello,\n', 'everyone,\n', 'I am a software living in china']
+>>> 'abc\ndef\nghi'.splitlines(False)
+['abc', 'def', 'ghi']
+
+>>> 'abc\ndef\nghi'.splitlines(0)
+['abc', 'def', 'ghi']
 ```
 
-**join(iterable)**
+**str.join(iterable)**
 
 使用指定分隔符把可迭代对象连接为一个字符串：
 ```python
@@ -567,7 +681,26 @@ ValueError: empty separator
 
 ### Misc String Functions
 
-**strip([chars]), lstrip([chars]), rstrip([chars])**
+**len(string)**
+
+返回容器内元素的数量：
+```python
+>>> len("Hello, world!")
+13
+
+>>> len('abc')
+3
+>>> len(('a','b','c'))
+3
+>>> len(['a','b','c'])
+3
+>>> len({'a','b','c'})
+3
+>>> len({'a':1,'b':2,'c':3})
+3
+```
+
+**str.strip(chars=None), str.lstrip(chars=None), str.rstrip(chars=None)**
 
 从字符串开头、结尾或两头移除指定的字符，不指定字符或指定 None 则默认移除空格：
 ```python
@@ -586,11 +719,48 @@ ValueError: empty separator
 'abcabcabc'
 ```
 
-**len(string)**
+**str.expandtabs(tabsize=8)**
 
-返回字符串长度：
+使用 tabsize 个空格替换 Tab 键，tabsize 的默认值是 8，返回的是字符串的副本，因字
+符串对象不可修改：
 ```python
->>> len("Hello, world!")
-13
+>>> print('a\tb\tc')
+a       b       c
+
+>>> print('a\tb\tc'.expandtabs(2))
+a b c
+>>> print('a\tb\tc'.expandtabs(3))
+a  b  c
+>>> print('a\tb\tc'.expandtabs(4))
+a   b   c
+>>> print('a\tb\tc'.expandtabs(8))
+a       b       c
 ```
 
+**str.partition(s)**
+
+使用指定的分隔符 s 把字符串 str 分隔成 3 部分，并始终返回一个包含 3 个元素的元组
+：分隔符前面的部分、分隔符本身和分隔符后面的部分。如果没找到分隔符，则返回的元组
+包含原字符串和两个空元素。
+```python
+>>> 'ab12cd12ef12gh'.partition('12')
+('ab', '12', 'cd12ef12gh')
+
+>>> 'abcd'.partition('a')
+('', 'a', 'bcd')
+>>> 'abcd'.partition('b')
+('a', 'b', 'cd')
+>>> 'abcd'.partition('c')
+('ab', 'c', 'd')
+>>> 'abcd'.partition('d')
+('abc', 'd', '')
+>>> 'abcd'.partition('e')
+('abcd', '', '')
+```
+
+**str.encode(encoding="utf-8", errors="strict")**
+
+```python
+>>> 'abc  我我我'.encode()
+b'abc  \xe6\x88\x91\xe6\x88\x91\xe6\x88\x91'
+```
