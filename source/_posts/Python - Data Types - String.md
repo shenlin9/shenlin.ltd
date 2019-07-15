@@ -164,15 +164,20 @@ b
     \cx or \Cx	Control-x
 
     \N{name}	Character named name in the Unicode database (Unicode only)
+    \ooo	    Characters with octal value ooo
+
     \uxxxx	    A character with 16-bit hex value xxxx (Unicode only)
     \Uxxxxxxxx	A character with 32-bit hex value xxxxxxxx (Unicode only)
-    \ooo	    Characters with octal value ooo
     \xnn	    A character with hex value nn where n can be anything from the
                 range 0-9, a-f or A-F.
 
 ```python
 >>> print('ab\bc')
 ac
+>>> print("\xab")
+«
+>>> print("\xac")
+¬
 ```
 
 ## Format Characters

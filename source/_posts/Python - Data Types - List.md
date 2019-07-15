@@ -516,11 +516,12 @@ copy()	    It performs a shallow copy of the list and returns.
 all()	It returns True if the list has elements with a True value or is blank.
 any()	If any of the members has a True value, then it also returns True.
 enumerate()	It returns a tuple with an index and value of all the list elements.
+sorted()	It returns the sorted copy of the list.
 len()	The return value is the size of the list.
 list()	It converts all iterable objects and returns as a list.
+
 max()	The member having the maximum value
 min()	The member having the minimum value
-sorted()	It returns the sorted copy of the list.
 sum()	The return value is the aggregate of all elements of a list.
 
 
