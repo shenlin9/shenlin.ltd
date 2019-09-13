@@ -1192,3 +1192,136 @@ Last login: Sun Jun  2 16:07:12 2019 from 74.125.41.104
 
 上翻看上面的同学，回答的都是充电时的电压，楼主想问的是满电静置后的电压啊。
 新电池满电的静置电压是13.2－13.5V之间，在这个范围以外的都有问题。
+
+## find
+
+```
+➜  ~ find . -name "tmux.conf" -maxdepth 1
+find: warning: you have specified the -maxdepth option after a non-option argument -name, but options are not positional (-maxdepth affects tests specified before it as well as those specified after it).  Please specify options before other arguments.
+```
+
+## python
+
+```
+>>> a,*b,c = [1,2,3,4,5,6]
+>>> a
+1
+>>> b
+[2, 3, 4, 5]
+>>> c
+6
+
+>>> _,d,_ = (1,2,3)
+>>> d
+2
+>>> _
+3
+
+>>> for a,b,c in [(1,2,3),(4,5,6),(7,8,9)]:
+...     print(a)
+...     print(b)
+...     print(c)
+...
+1
+2
+3
+4
+5
+6
+7
+8
+9
+
+>>> for tag,*args in [('a',1,2),('b',3,4),('c',5,6)]:
+...     print(tag)
+...     print(args)
+...
+a
+[1, 2]
+b
+[3, 4]
+c
+[5, 6]
+
+
+>>> line = 'nobody:*:-2:-2:Unprivileged User:/var/empty:/usr/bin/false'
+>>> uname, *fields, homedir, sh = line.split(':')
+>>> uname
+'nobody'
+>>> homedir
+'/var/empty'
+>>> sh
+'/usr/bin/false'
+>>> fields
+['*', '-2', '-2', 'Unprivileged User']
+```
+
+???用分割语法巧妙的实现递归算法
+```
+>>> def sum(items):
+... head, *tail = items
+... return head + sum(tail) if tail else head
+...
+>>> sum(items)
+36
+```
+
+## DC/EP
+
+DC，digital currency，数字货币
+EP，electronic payment，电子支付
+
+## 开关电源
+
+https://www.bilibili.com/video/av14253527
+
+### 线性电源
+
+先通过变压器线圈降压，如 220v 到 18v
+然后通过四个二极管的桥式整流成直流
+然后再串联一个降压电阻，降压到需要的电压 + 0.6v，如 12.6v
+把12.6v电压连接到三极管的基极，则集电极得到需要的电压 12v
+
+缺点：不稳定，因为 220v 的市电不稳定，所以降压后的 18v 也不稳定，则三极管的基极
+的 12.6v 也不稳定，则集电极电压不稳
+
+解决方法1：最简单的就是在基极连一个值为 12.65 的稳压二极管，但稳压二极管的稳压范
+围特别窄，因此这种电源的稳压范围特别小。
+
+解决方法2：基极连一个三极管，三极管发射极接地(基总)，三极管基极接几个电阻(称为取
+样电阻)，称为串联降压型稳压电源
+
+基本都已被开关电源替代，因纹波大。
+
+像水波一样，纹波个数越多，纹波越小，纹波个数越少，纹波越大，220v50hz的市电，经上
+面电路整流后的18v直流的纹波是每秒100个纹波，最后的12v的纹波也大，负载工作不稳定
+。
+
+也因此 18v 直流的并联滤波电容需要特别大，否则滤波不干净。最终的 12v 还要再接一个
+滤波电容以过滤纹波。但越大的滤波电容在充电放电时，造成的电流损耗越大，从而造成带
+动负载能力的降低。
+
+缺点：纹波大，功率小，带负载能力弱
+
+### 桥式整流
+
+头接头直流输出
+尾接尾接地
+头尾相接交流输入
+
+ ---220v----
+           |
+    ----|>----|>---- + 
+    |
+   GND
+    |
+    ----|>----|>---- -
+           |
+ ---220v----
+
+
+### 三极管状态
+
+* 截至(断路不通)
+* 放大(即线性，相当于电阻)
+* 饱和(相当于导线)

@@ -13,6 +13,8 @@ shell awk
 
 awk 是一款用于数据流的工具，可以对行和列进行操作，并有內建的函数、数组等
 
+awk 的名称来自于创始人Alfred Aho、Peter Weinberger 和 Brian Kernighan 姓氏的首字母
+
 ## 工作原理
 
 awk 脚本的结构如下：

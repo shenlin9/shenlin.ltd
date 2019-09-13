@@ -22,3 +22,14 @@ $ find . \( -path './alipay' -o -path './WxpayAPI' \) -prune -o -name '*.php' -p
 $ find . \( -path './alipay' -o -path './WxpayAPI' \) -prune -o -type f -name '*.php' -exec dos2unix {} \;
 ```
 * {} 和 \ 之间必须有空格
+
+```
+$ find . -type f
+```
+* f 普通文件
+* l 符号连接
+* d 目录
+* c 字符设备
+* b 块设备
+* s 套接字
+* p Fifo

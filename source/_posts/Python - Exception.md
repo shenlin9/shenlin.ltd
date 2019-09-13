@@ -329,7 +329,7 @@ EOFError            It gets raised if the input functions (input()/raw_input())
 
 ## Built-in Exception
 
-AirthmeticError     For errors in numeric calculation.
+ArithmeticError     For errors in numeric calculation.
 AssertionError	    If the assert statement fails.
 AttributeError	    When an attribute assignment or the reference fails.
 EOFError	        If there is no input or the file pointer is at EOF.
@@ -349,7 +349,7 @@ OSError	            When a system operation fails.
 OverflowError	    It occurs if the result of an arithmetic operation exceeds the range.
 ReferenceError	    When a weak reference proxy accesses a garbage collected reference.
 RuntimeError	    If the generated error doesn’t fall under any category.
-StandardError	    It is a base class for all built-in exceptions except <StopIteration> and <SystemExit>.
+StandardError	    It is a base class for all built-in exceptions except `<StopIteration>` and `<SystemExit>`.
 StopIteration	    The `next()` function has no further item to be returned.
 SyntaxError	        For errors in Python syntax.
 IndentationError	It occurs if the indentation is not proper.

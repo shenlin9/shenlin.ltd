@@ -59,7 +59,7 @@ noarch，no architecture
 这类软件包是包含了源代码的 rpm 包， 在安装时需要进行编译。在编译时会根据cpu的类型来产生相应后缀的软件包.
 
 
-以安装oracle-validated-1.1.0-21.el5.src.rpm为例
+以安装 oracle-validated-1.1.0-21.el5.src.rpm 为例
 ```bash
 #先安装 rpm build 工具
 yum install rpm* rpm-build rpmdev*

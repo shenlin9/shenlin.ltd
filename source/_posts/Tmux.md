@@ -129,7 +129,7 @@ Kill all the tmux sessions:
 console/terminal提供的Shift+PgUp/PgDn所显示的内容并不是当前窗口的历史内容，那么
 应该怎么办呢?
 
-先按 `<prefix><PgUp>` 或 `<prefix>[` 进入 tmux 的 copy mode，然后：
+先按 `<prefix>` 然后：
 * 按 `<PgUp>` `<PgDown>` 上下翻页查看历史输出
 * 按 `<Ctrl>+s` 搜索，`n` 和 `N` 分别向下查找和向上查找下一个
 * `q` 或 `<ESC>` 退出

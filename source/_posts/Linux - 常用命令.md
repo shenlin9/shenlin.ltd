@@ -214,7 +214,6 @@ linux格式更严格，如上一级目录dos直接写cd..，而linux下cd和..�
 
 
     rmdir：只能删除空目录，使用较少
-              
 
 
     命令名称：cat
@@ -388,8 +387,20 @@ linux格式更严格，如上一级目录dos直接写cd..，而linux下cd和..�
 		英文原意：
 		所在路径：/bin/umask ???which umask???查找不到
 		执行权限：所有用户
-		功能描述：显示或设置新建文件和目录时缺省的权限，这里不是直接设置权限数值，而是使用掩码值的方法，即777减去缺省的权限数值，即得到掩码值
+		功能描述：显示或设置新建文件和目录时缺省的权限
 		语法：
+
+        显示当前权限掩码
+        ```
+        ➜  ~ umask
+        002
+
+        ➜  ~ umask -S
+        u=rwx,g=rwx,o=rx
+        ```
+
+        由于在umask中所指定的权限是要从文件中删除的，所以，这里不是直接设置权限
+        数值，而是使用掩码值的方法，即777减去缺省的权限数值，即得到掩码值。
 
               umask 
 
@@ -402,7 +413,7 @@ linux格式更严格，如上一级目录dos直接写cd..，而linux下cd和..�
                      ——————
                        755  
 
-              umask - S
+              umask -S
 
                  以rwx形式显示新建文件或目录的缺省权限，如：
 
@@ -419,9 +430,28 @@ linux格式更严格，如上一级目录dos直接写cd..，而linux下cd和..�
                  ——————
                    022  
 
+            利用umask命令可以指定哪些权限将在新文件的默认权限中被删除，例如：
+
+            umask u=, g=w, o=rwx
+
+            应注意：操作符“=”在umask命令和chmod命令中的作用恰恰相反。在chmod命
+            令中，利用它来设置指定的权限，而其余权限则被删除；但是在umask命令中
+            ，它将在原有权限的基础上删除指定的权限。
+
+            执行该命令以后，对于下面创建的新文件，其文件主的权限未做任何改变，而
+            组用户没有写权限，其他用户的所有权限都被取消。
+
+
+
+
+
 	    注意；	
 
             linux缺省权限规则：缺省创建的文件不能授予可执行权限，所以即使默认的权限有执行权限，也只是目录有，文件没有。
+
+            不受此规则限制的除了创建的是目录，还包括通过编译程序创建的可执行文件。
+
+            就是说不能直接利用umask命令创建一个可执行的文件，用户只能在其后利用chmod命令使它具有执行权限。
 
             所以touch newfile3，即使umask是022，即权限值是755，文件也是没有执行权限的，实际是644。是linux的一个小安全机制，可防止病毒、木马等文件。 
 
@@ -445,6 +475,15 @@ linux格式更严格，如上一级目录dos直接写cd..，而linux下cd和..�
 		功能描述：只查找命令目录，显示命令所在的绝对路径
                   同时也会显示命令帮助文档所在的目录
 		举例：whereis ls
+
+        ```
+        ➜  ~ which ls
+        ls='ls --color=tty'
+                /usr/bin/ls
+
+        ➜  ~ whereis ls
+        ls: /usr/bin/ls /usr/share/man/man1/ls.1.gz
+        ```
 
 		命令名称：find
 		英文原意：
@@ -522,7 +561,7 @@ linux格式更严格，如上一级目录dos直接写cd..，而linux下cd和..�
 				-a and 逻辑与，即查找的两个条件必须都满足
 				-o or  逻辑或，即查找的两个条件满足一个即可
 				
-					find /etc -name init* -a -type f 只列出文件，不列出目录(f 文件 d 目录 l 软链接)
+					find /etc -name "init*" -a -type f 只列出文件，不列出目录(f 文件 d 目录 l 软链接)
 
             连接符-exec 命令 {} \;
 
@@ -663,11 +702,10 @@ linux格式更严格，如上一级目录dos直接写cd..，而linux下cd和..�
 		指令所在路径：/usr/bin/apropos
 		执行权限：all user
 		语法：apropos [任何关键字]
-		功能描述：
+		功能描述：通过关键字查询手册
 		范例：apropos ls 查看ls命令的帮助信息，相当于man -k
 
                 查看配置文件的内容 ，如apropos 配置文件名
-
 
 		指令名称：makewhatis
 		指令英文原意：
@@ -692,8 +730,8 @@ linux格式更严格，如上一级目录dos直接写cd..，而linux下cd和..�
 
             归档压缩
             ---------
-            $tar -cavf testfile.tar.gz testfile1 testfile2 testfile3
-            $tar -cavf testfile.tar.bz2 testfile1 testfile2 testfile3
+            $tar -acvf testfile.tar.gz testfile1 testfile2 testfile3
+            $tar -acvf testfile.tar.bz2 testfile1 testfile2 testfile3
                 -c 创建新归档文件
                 -a 使用归档后缀名来决定压缩程序，gzip还是bzip2，不带此参数则仅打包不压缩
                 -v 详细地列出处理的文件
@@ -926,9 +964,10 @@ linux格式更严格，如上一级目录dos直接写cd..，而linux下cd和..�
 
 		alias命令可显示所有命令的别名
 
-		别名可使命令更容易记忆，如alias copy = cp
+		别名可使命令更容易记忆，如alias copy=cp
 
 		命令别名定义：alias 别名=命令
+                        注意等号两边不要有空格
 		              alias 别名="命令 -选项"
 						带选项时需要双引号括起来
 		删除别名：unalias 别名
