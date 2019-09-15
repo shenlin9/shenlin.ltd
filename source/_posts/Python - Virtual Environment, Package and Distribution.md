@@ -421,6 +421,8 @@ False
 [1, 2, [3, 4, 8], 5, 6, 7]
 [1, 2, [3, 4, 8], 5, 6]
 ```
+注意上面的 list 函数，用于把可迭代对象转换为列表对象，如果所给的参数已经是列表对
+象，则通过对列表对象进行一个浅拷贝来创建一个新的列表对象。
 
 深层复制会创建一个新对象并递归的复制它包含的所有对象：
 ```python
@@ -443,6 +445,8 @@ False
 
 ## First Class Object
 
+All objects in python are said to be ‘first class’ i.e. all objects that can
+be named by an identifier have equal status：
 ```python
 >>> s = len
 >>> s('abc')
@@ -455,8 +459,229 @@ False
 3
 ```
 
-## first
+可以利用此特性编写紧凑灵活的代码，例如，通过列表推导的方式批量更改列表元素的数据
+类型：
+```python
+>>> ls_types = [str, int, float]
+>>> stock = 'goog, 3, 12.3'
+>>> ls_stock = stock.split(',')
+>>> ls_stock
+['goog', ' 3', ' 12.3']
+
+>>> ls = [ty(val) for ty, val in zip(ls_types, ls_stock)]
+>>> ls
+['goog', 3, 12.3]
+```
+
+## Builtin Datatypes
+
+    Category    Type name       Description
+    --------------------------------------------
+    None        NoneType        x = None
+
+    Numbers     int             integer
+                float           floating point
+                complex         complex number
+                boolean         True or False
+
+    Sequences   str             character string
+                list            list
+                tuple           tuple
+
+    Mapping     dict            Dictionary
+
+    Sets        set             Mutable set
+                frozenset       Immutable set
+
+### None
 
 ```python
+>>> x = None
+>>> type(x)
+<class 'NoneType'>
+```
 
+None 常用作函数定义时关键字参数的默认值：
+```python
+>>> def addNum(a = None, b = None):
+	print(a + b)
+	return None
+
+>>> s = addNum(2, 3)
+5
+>>> type(s)
+<class 'NoneType'>
+```
+
+None 被认为是 False：
+```python
+>>> if None:
+	print('None is considered as True')
+else:
+	print('None is considered as False')
+
+None is considered as False
+```
+
+isinstance 函数不能和 None 一起使用：
+```python
+>>> n = 1
+>>> isinstance(n, None)
+TypeError: isinstance() arg 2 must be a type or tuple of types
+```
+
+### Numbers
+
+复数表示为由两个浮点数组成的对：
+```python
+>>> c = 2 + 3j
+>>> c.real
+2.0
+>>> c.imag
+3.0
+>>> c.conjugate()
+(2-3j)
+```
+
+### Sequences
+
+序列是可以通过非负整数索引的集合对象，Python 有三种序列类型：string, tuple, list
+，string 和 tuple 是不可变类型，list 是可变类型。
+
+针对所有序列都可用的常用操作：
+```python
+>>> s = [1, 2, 3, 4, 5]
+
+>>> s[0:3:2]
+[1, 3]
+
+>>> len(s)
+5
+>>> min(s)
+1
+>>> max(s)
+5
+
+>>> sum(s)
+15
+>>> sum(s, 1)
+16
+
+>>> all(item > 0 for item in s)
+True
+>>> all(item > 4 for item in s)
+False
+>>> any(item < 0 for item in s)
+False
+>>> any(item > 4 for item in s)
+True
+
+
+>>> s = 'abcde'
+>>> s[0:3:2]
+'ac'
+>>> len(s)
+5
+>>> min(s)
+'a'
+>>> max(s)
+'e'
+>>> sum(s)
+TypeError: unsupported operand type(s) for +: 'int' and 'str'
+>>> all(item < 'f' for item in s)
+True
+>>> any(item > 'f' for item in s)
+False
+```
+
+只针对可变序列可用的常用操作：赋值和删除
+```python
+>>> s = [1,2,3,4,5]
+>>> s[0] = 9
+>>> s[0:3:2]
+[9, 3]
+>>> s
+[9, 2, 3, 4, 5]
+>>> s[0:3:2] = [8, 7]
+>>> s
+[8, 2, 7, 4, 5]
+>>> del s[4]
+>>> s
+[8, 2, 7, 4]
+>>> del s[0:3:2]
+>>> s
+[2, 4]
+```
+
+### List
+
+列表可看作电子表格中的某一列，虽可以存储多种类型的数据，但常用于存储同一种数据类
+型，常用的操作：
+```python
+>>> s = list('abcde')
+>>> s
+['a', 'b', 'c', 'd', 'e']
+
+>>> s.append('f')
+>>> s
+['a', 'b', 'c', 'd', 'e', 'f']
+
+>>> s.extend(['g', 'h'])
+>>> s
+['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+
+>>> s.count('c')
+1
+>>> s.index('d')
+3
+>>> s.index('d',4)
+ValueError: 'd' is not in list
+
+>>> s.insert(3, 'i')
+>>> s
+['a', 'b', 'c', 'i', 'd', 'e', 'f', 'g', 'h']
+
+>>> s.pop()
+'h'
+>>> s
+['a', 'b', 'c', 'i', 'd', 'e', 'f', 'g']
+>>> s.pop(3)
+'i'
+>>> s
+['a', 'b', 'c', 'd', 'e', 'f', 'g']
+
+>>> s.remove('c')
+>>> s
+['a', 'b', 'd', 'e', 'f', 'g']
+>>> s.extend(['j', 'j'])
+>>> s
+['a', 'b', 'd', 'e', 'f', 'g', 'j', 'j']
+>>> s.remove('j')
+>>> s
+['a', 'b', 'd', 'e', 'f', 'g', 'j']
+
+>>> s.reverse()
+>>> s
+['j', 'g', 'f', 'e', 'd', 'b', 'a']
+```
+
+list 类的 sort 方法会直接修改原列表的元素顺序，而内置 sorted 函数却不修改原列表
+的元素顺序，而是直接返回新的列表，若要用此列表则需要手动保存，而 sort 方法则不可
+以直接保存其输出：
+```python
+>>> s
+['j', 'g', 'f', 'e', 'd', 'b', 'a']
+>>> sorted(s, reverse = True)
+['j', 'g', 'f', 'e', 'd', 'b', 'a']
+>>> sorted(s)
+['a', 'b', 'd', 'e', 'f', 'g', 'j']
+>>> s
+['j', 'g', 'f', 'e', 'd', 'b', 'a']
+>>> s.sort()
+>>> s
+['a', 'b', 'd', 'e', 'f', 'g', 'j']
+>>> k = s.sort()
+>>> k
+>>> k is None
+True
 ```
