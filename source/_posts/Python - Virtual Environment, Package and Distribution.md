@@ -685,3 +685,382 @@ list 类的 sort 方法会直接修改原列表的元素顺序，而内置 sorte
 >>> k is None
 True
 ```
+
+list 的 sort 方法和 sorted 函数都有关键字参数 key：
+```python
+>>> members = [['zhang', 12], ['li', 25], ['wang', 6]]
+
+>>> members.sort(key = lambda name:name[0])
+>>> members
+[['li', 25], ['wang', 6], ['zhang', 12]]
+
+>>> members.sort(key = lambda age:age[1])
+>>> members
+[['wang', 6], ['zhang', 12], ['li', 25]]
+
+>>> m = sorted(members, key = lambda name:name[0])
+>>> m
+[['li', 25], ['wang', 6], ['zhang', 12]]
+>>> m = sorted(members, key = lambda age:age[1])
+>>> m
+[['wang', 6], ['zhang', 12], ['li', 25]]
+```
+
+### String
+
+和列表方法不同，字符串方法不直接修改原字符串，而是返回另一个新的字符串对象：
+```python
+>>> 'abc'.startswith('ab')
+True
+>>> 'abc'.startswith('abc')
+True
+>>> 'abc'.endswith('c')
+True
+>>> 'a\tb\tc'.expandtabs(8)
+'a       b       c'
+
+
+>>> 'abcabc'.count('b')
+2
+>>> 'abcabcabc'.replace('bc','BC')
+'aBCaBCaBC'
+
+>>> 'abcabc'.find('b')
+1
+>>> 'abcabc'.rfind('b')
+4
+>>> 'abcabc'.find('d')
+-1
+>>> 'abcabc'.index('b')
+1
+>>> 'abcabc'.rindex('b')
+4
+>>> 'abcabc'.index('d')
+ValueError: substring not found
+
+
+>>> 'abc123'.isalnum()
+True
+>>> 'abc'.isalpha()
+True
+>>> '123'.isdigit()
+True
+>>> 'ab c'.isspace()
+False
+>>> '   '.isspace()
+True
+
+>>> 'Hello World'.istitle()
+True
+>>> 'i am from china'.capitalize()
+'I am from china'
+>>> 'i am from china'.title()
+'I Am From China'
+
+
+>>> 'abc'.center(20)
+'        abc         '
+>>> 'abc'.center(20, '-')
+'--------abc---------'
+>>> 'abc'.ljust(10, '-')
+'abc-------'
+>>> 'abc'.rjust(10, '-')
+'-------abc'
+>>> 'abc'.zfill(10)
+'0000000abc'
+
+
+>>> 'abcabc'.strip('ac')
+'bcab'
+>>> ' abc'.lstrip(' ab')
+'c'
+>>> 'abcabc'.rstrip('bc')
+'abca'
+
+>>> 'abc'.islower()
+True
+>>> 'Ab'.isupper()
+False
+>>> 'ABC'.isupper()
+True
+>>> 'ABC'.lower()
+'abc'
+>>> 'abc'.upper()
+'ABC'
+>>> 'Hello World'.swapcase()
+'hELLO wORLD'
+
+>>> '-'.join(['a','b','c'])
+'a-b-c'
+
+>>> 'abcabcabc'.split('c')
+['ab', 'ab', 'ab', '']
+>>> 'abcabcabc'.rsplit('c')
+['ab', 'ab', 'ab', '']
+>>> 'abcabcabc'.splitlines()
+['abcabcabc']
+>>> 'abc\nabc\nabc\n'.splitlines()
+['abc', 'abc', 'abc']
+>>> 'abc\nabc\nabc\n'.splitlines(1)
+['abc\n', 'abc\n', 'abc\n']
+>>> 'abc\nabc\nabc\n'.splitlines(keepends = 1)
+['abc\n', 'abc\n', 'abc\n']
+
+>>> 'My name is {}, I am {} years old, my height is {}'.format('shen', 20, 173.5)
+'My name is shen, I am 20 years old, my height is 173.5'
+
+>>> 'I am {1} years old, my height is {2}, my name is {0}'.format('shen', 20, 173.5)
+'I am 20 years old, my height is 173.5, my name is shen'
+
+>>> 'I am {age} years old, my height is {height}, my name is {name}'.format(name
+= 'shen', age = 20, height = 173.5)
+'I am 20 years old, my height is 173.5, my name is shen'
+```
+
+## Mapping Types
+
+### Dict
+
+字典是 Python 中唯一内置的映射类型
+```python
+>>> d = {'a':1, 'b':2, 'c':3}
+>>> len(d)
+3
+>>> d['b']
+2
+>>> 3 in d
+False
+>>> 'c' in d
+True
+>>> d.get('c', 'not foud')
+3
+>>> d.get('d', 'not foud')
+'not foud'
+>>> d.get('c')
+3
+>>> d.get('c', 33)
+3
+>>> d.get('e', 55)
+55
+
+>>> d.update({'d':4, 'e':5})
+>>> d
+{'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5}
+
+>>> e = d.copy()
+>>> id(d);id(e)
+2234402513688
+2234402513904
+
+>>> f = {}
+>>> f = f.fromkeys(d, 1)
+>>> f
+{'a': 1, 'b': 1, 'c': 1}
+>>> f = f.fromkeys(d)
+>>> f
+{'a': None, 'b': None, 'c': None}
+>>> dict.fromkeys(['a','b','c'])
+{'a': None, 'b': None, 'c': None}
+>>> dict.fromkeys(['a','b','c'], 3)
+{'a': 3, 'b': 3, 'c': 3}
+
+>>> d.setdefault('c', 33)
+3
+>>> d.setdefault('d', 4)
+4
+>>> d
+{'a': 1, 'b': 2, 'c': 3, 'd': 4}
+
+>>> d.pop('c', 'not found')
+3
+>>> d
+{'a': 1, 'b': 2, 'd': 4}
+>>> d.pop('c', 'not found')
+'not found'
+
+>>> d.keys()
+dict_keys(['a', 'b', 'd'])
+>>> list(d.keys())
+['a', 'b', 'd']
+>>> d.values()
+dict_values([1, 2, 4])
+>>> list(d.values())
+[1, 2, 4]
+>>> d.items()
+dict_items([('a', 1), ('b', 2), ('d', 4)])
+>>> list(d.items())
+[('a', 1), ('b', 2), ('d', 4)]
+```
+
+### Set
+
+* 集合元素是无序的、不可重复的。
+* 集合分两种类型：set 和 frozenset
+* 两种集合中的元素都必须是不可更改类型，如把可更改类型列表添加到集合则出错。
+* set 可以添加、删除元素，但 frozenset 则不允许对元素进行此操作。
+
+```python
+>>> s = {1,2,3,4,2,3,4}
+>>> s
+{1, 2, 3, 4}
+>>> s. add(['a','b'])
+TypeError: unhashable type: 'list'
+>>> s. add(('a','b'))
+>>> s
+{1, 2, 3, 4, ('a', 'b')}
+>>> s. add({'a':1 ,'b': 2})
+TypeError: unhashable type: 'dict'
+```
+
+set 和 frozenset 都有的操作：
+```python
+>>> s
+{1, 2, 3, 4, ('a', 'b')}
+>>> len(s)
+5
+>>> t = s.copy()
+>>> t
+{1, 2, 3, 4, ('a', 'b')}
+>>> id(s);id(t)
+1952032744616
+1952032744392
+>>> t.add(5)
+>>> s;t
+{1, 2, 3, 4, ('a', 'b')}
+{1, 2, 3, 4, 5, ('a', 'b')}
+
+>>> s.isdisjoint(t)
+False
+>>> s.issubset(t)
+True
+>>> t.issuperset(s)
+True
+
+>>> s.difference(t)
+set()
+>>> t.difference(s)
+{5}
+>>> s.intersection(t)
+{1, 2, 3, 4, ('a', 'b')}
+>>> s.symmetric_difference(t)
+{5}
+
+>>> s.union(t)
+{1, 2, 3, 4, 5, ('a', 'b')}
+```
+
+frozenset 没有而 set 独有的操作：
+```python
+>>> s = {1, 2, 3, 4}
+>>> s.add(5)
+>>> s
+{1, 2, 3, 4, 5}
+>>> t = s.copy()
+>>> t
+{1, 2, 3, 4, 5}
+>>> t.update([5,6,7])
+>>> t
+{1, 2, 3, 4, 5, 6, 7}
+>>> t.remove(4)
+>>> t.pop()
+1
+>>> t
+{2, 3, 5, 6, 7}
+>>> t.remove(99)
+Traceback (most recent call last):
+  File "<pyshell#10>", line 1, in <module>
+    t.remove(99)
+KeyError: 99
+>>> t.discard(99)
+>>> s.intersection_update(t)
+>>> s
+{2, 3, 5}
+>>> t
+{2, 3, 5, 6, 7}
+>>> s.difference_update(t)
+>>> t
+{2, 3, 5, 6, 7}
+>>> s.symmetric_difference_update(t)
+>>> s
+{2, 3, 5, 6, 7}
+>>> s.clear()
+>>> s
+set()
+```
+
+## 表示程序结构的内置类型
+
+### 可调用类型
+
+#### User-defined functions
+
+包含了 def 语句创建的函数和 lambda 操作符创建的函数
+
+自定义函数的属性：
+```python
+>>> def add2num(x, y = 3):
+	'''This function add 2 numbers
+	and return the sum'''
+	z = 1
+	return x + y + z
+
+>>> add2num.__name__
+'add2num'
+
+>>> add2num.__doc__
+'This function add 2 numbers\n\tand return the sum'
+
+>>> add2num.__dict__
+{}
+
+>>> add2num.__code__
+<code object add2num at 0x0000019F971E8D20, file "<pyshell#18>", line 1>
+
+>>> add2num.__defaults__
+(3,)
+
+>>> add2num.__globals__
+{'__name__': '__main__', '__doc__': None, '__package__': None, '__loader__':
+<class '_frozen_importlib.BuiltinImporter'>, '__spec__': None,
+'__annotations__': {}, '__builtins__': <module 'builtins' (built-in)>, 'x':
+<function <lambda> at 0x0000019F9725C048>, 'add2num': <function add2num at
+0x0000019F9687C268>}
+
+>>> add2num.__closure__
+```
+
+#### Methods
+
+类中包含 3 种方法：类方法、实例方法、静态方法
+
+```python
+
+```
+
+#### Classes and instances are callable
+
+### Class, types and instances 
+
+### 模块
+
+### 特殊方法
+
+#### Object creation and destruction
+
+#### String representation
+
+#### Type checking
+
+#### Attribute access
+
+#### Descriptors
+
+#### Sequence and mapping methods
+
+#### Iteration
+
+#### Callable interface
+
+#### Context management protocol
+
+#### Object inspection and dir()

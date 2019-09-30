@@ -55,6 +55,26 @@ lambda 语句可以出现在不允许 def 出现的地方。例如，在列表�
 9
 ```
 
+lambda 赋予变量：
+```python
+>>> k = lambda x: x * 2
+>>> k(3)
+6
+>>> k(4)
+8
+```
+
+lambda 赋予参数：
+```python
+>>> members = [['zhang', 12], ['li', 25], ['wang', 6]]
+>>> members.sort(key = lambda name:name[0])
+>>> members
+[['li', 25], ['wang', 6], ['zhang', 12]]
+>>> members.sort(key = lambda age:age[1])
+>>> members
+[['wang', 6], ['zhang', 12], ['li', 25]]
+```
+
 ## lambda and filter() and map()
 
 一些方法可以接受函数对象作为参数，被称为高阶函数。
