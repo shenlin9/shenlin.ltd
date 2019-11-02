@@ -1034,10 +1034,31 @@ set()
 类中包含 3 种方法：类方法、实例方法、静态方法
 
 ```python
-
+git status
+git add -A
+git commit -m "notes"
+git push
 ```
 
 #### Classes and instances are callable
+
+```python
+from functions import wrap
+
+    @wraps_me
+    def wrapper(*args, **kwargs):
+        def
+    return wrapper
+
+    @aps_me
+    def wrapper():
+        pass
+
+    @weibo
+    def test():
+        def test2():
+            sss
+```
 
 ### Class, types and instances 
 
@@ -1047,20 +1068,60 @@ set()
 
 #### Object creation and destruction
 
+```python
+git status
+```
+
 #### String representation
+
+```python
+
+```
 
 #### Type checking
 
+```python
+
+```
+
 #### Attribute access
+
+```python
+
+```
 
 #### Descriptors
 
+```python
+
+```
+
 #### Sequence and mapping methods
+
+```python
+
+```
 
 #### Iteration
 
+```python
+
+```
+
 #### Callable interface
+
+```python
+
+```
 
 #### Context management protocol
 
+```python
+
+```
+
 #### Object inspection and dir()
+
+```python
+
+```
