@@ -528,6 +528,13 @@ isinstance 函数不能和 None 一起使用：
 >>> n = 1
 >>> isinstance(n, None)
 TypeError: isinstance() arg 2 must be a type or tuple of types
+
+>>> isinstance('a', str)
+True
+>>> isinstance('a', (int,bool))
+False
+>>> isinstance('a', (int,bool,str))
+True
 ```
 
 ### Numbers

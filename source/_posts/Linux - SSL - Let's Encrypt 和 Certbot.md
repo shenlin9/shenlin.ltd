@@ -269,7 +269,11 @@ $ certbot --help webroot
 ```
 
 证书 90 天过期，过期之前使用 renew 子命令更新：
-```
+```bash
+# 查看状态
+$ sudo certbot certificates
+
+# 更新
 $ sudo systemctl stop nginx
 $ sudo certbot renew
 $ sudo systemctl start nginx
