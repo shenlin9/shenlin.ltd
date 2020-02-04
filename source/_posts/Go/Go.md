@@ -12,4 +12,677 @@ Go
 
 Go
 
-## 
+## Go 环境变量
+
+```
+C:\Users\T460P>go env
+set GO111MODULE=
+set GOARCH=amd64
+set GOBIN=
+set GOCACHE=C:\Users\T460P\AppData\Local\go-build
+set GOENV=C:\Users\T460P\AppData\Roaming\go\env
+set GOEXE=.exe
+set GOFLAGS=
+set GOHOSTARCH=amd64
+set GOHOSTOS=windows
+set GONOPROXY=
+set GONOSUMDB=
+set GOOS=windows
+set GOPATH=C:\Users\T460P\go
+set GOPRIVATE=
+set GOPROXY=https://proxy.golang.org,direct
+set GOROOT=c:\go
+set GOSUMDB=sum.golang.org
+set GOTMPDIR=
+set GOTOOLDIR=c:\go\pkg\tool\windows_amd64
+set GCCGO=gccgo
+set AR=ar
+set CC=gcc
+set CXX=g++
+set CGO_ENABLED=1
+set GOMOD=
+set CGO_CFLAGS=-g -O2
+set CGO_CPPFLAGS=
+set CGO_CXXFLAGS=-g -O2
+set CGO_FFLAGS=-g -O2
+set CGO_LDFLAGS=-g -O2
+set PKG_CONFIG=pkg-config
+set GOGCCFLAGS=-m64 -mthreads -fno-caret-diagnostics -Qunused-arguments -fmessage-length=0 -fdebug-prefix-map=Z:\TEMP\go-build614126502=/tmp/go-build -gno-record-gcc-switches
+```
+
+其他环境变量都设置好了???，仅 GOPATH 环境变量需要自己设置，且名称要大写???，多个
+目录用分号分隔：
+
+Windows 下：通过系统环境变量
+
+Linux 下设置 GOPATH：
+
+## Go 目录
+
+Go 强制规定的目录结构，在 GOPATH 下必须为下列三个目录：
+* src   存放代码源文件
+* pkg   存放编译后生成的包文件
+* bin   存放编译后生成的的可执行文件
+
+## Go 命令
+
+常用 go 子命令
+* go get        获取远程包，需已安装 git 或 hg
+
+* go run        编译并运行程序
+* go build      编译包和依赖
+* go install    编译包和程序
+
+* go test       运行测试文件，即以 `_test.go` 结尾的文件
+* go fmt        格式化源代码，一般让 IDE 保存时自动调用
+* go doc        查看文档，如查看 fmt 包中的所有函数 `go doc fmt`，或只看特定函数
+                `go doc fmt Println`
+
+在 go 1.12 之后的版本中，godoc 不再做为 go 编译器的一部分存在。
+```
+C:\Users\T460P>go version
+go version go1.13.6 windows/amd64
+```
+
+## godoc 命令
+
+可以通过 go get 命令安装：
+```
+C:\Users\T460P>go get -u -v golang.org/x/tools/cmd/godoc
+package golang.org/x/tools/cmd/godoc: unrecognized import path
+"golang.org/x/tools/cmd/godoc" (https fetch: Get
+https://golang.org/x/tools/cmd/godoc?go-get=1: dial tcp 216.239.37.1:443:
+connectex: A connection attempt failed because the connected party did not
+properly respond after a period of time, or established connection failed
+because connected host has failed to respond.)
+```
+
+在本地建立 Go 官网：
+```
+godoc -http=:8080
+```
+
+## 变量组
+
+函数体内不可进行一组变量的声明
+```go
+
+var (
+    name = "cn"
+    age = 70
+)
+
+func test() {
+
+}
+```
+
+## go 程序的一般结构
+
+```go
+// 当前包名
+package main
+
+// 导入的其他包名
+import (
+    "fmt"
+)
+
+// 常量声明
+const (
+    PI = 3.14
+)
+
+// 全局变量声明
+var (
+    Nation = "CN"
+)
+
+// 一般类型声明
+type intType int
+
+// 结构类型声明
+type car struct {}
+
+// 接口类型声明
+type usb interface {}
+
+// 程序入口
+func main() {
+
+}
+```
+
+## main 包和 main 函数
+
+main 包和 main 函数是唯一对应的，即 main 包中必须包含一个 main 函数，main 函数也
+必须位于 main 包中。
+```go
+// 没有 main 包 ：
+go run: cannot run non-main package
+
+// main 包中没有定义 main 函数：
+# command-line-arguments
+runtime.main_main·f: function main is undeclared in the main package
+```
+
+## import 别名和省略调用
+
+如下面的 fmt 重命名为 io，而 os 包重命名为点，之后调用 os 的函数可以不使用包名，
+不建议使用省略调用：
+```go
+package main
+
+import io "fmt"
+import . "os"
+
+func main() {
+    io.Println("hello")
+    io.Println(Args)
+}
+```
+
+## 可见性规则
+
+根据约定，go 语言根据首字母的大小写来确定常量、变量、类型、结构、接口、函数的可
+见性：
+* 首字母小写为 private
+* 首字母大写为 public
+
+编码规范为常量全大写，如果是不可见常量，则可以前面加下划线 ???
+
+## 数据类型
+
+### 基本类型
+
+* bool      1 字节  取值 true 和 false，不可用 0 、1 数字等隐式转换
+
+* byte      1 字节  0 ~ 255, uint8 别名
+* rune      4 字节  -2^32/2 ~ 2^32/2 - 1，int32 的别名，一般用于 Unicode 操作
+
+* int8      1 字节     -128 ~ 127
+* uint8     1 字节        0 ~ 255
+* int16     2 字节   -32768 ~ 32767
+* uint16    2 字节        0 ~ 65535
+* int32     4 字节  -2^32/2 ~ 2^32/2 - 1
+* uint32    4 字节        0 ~ 2^32 - 1
+* int64     8 字节  -2^64/2 ~ 2^64/2 - 1
+* uint64    8 字节        0 ~ 2^64 - 1
+
+* int       根据运行平台，为 4 字节或 8 字节
+* uint      根据运行平台，为 4 字节或 8 字节
+
+* float32   4 字节，精确到 7 位小数
+* float64   8 字节，精确到 15 位小数，没有 double 型
+
+* complex64     8 字节
+* complex128    16 字节
+
+* uintptr       用于保存指针的 32 位或 64 位
+* array
+* struct
+* string
+
+### 复合类型
+
+* slice     切片
+* map       类似于哈希表
+* chan      通道
+
+* interface 接口类型
+* func      函数类型
+
+## 类型零值
+
+零值不等于空值，而是变量被声明为某种类型后的默认值，如 bool 的零值为 false，数值
+类型的零值为 0，字符处类型的零值为空字符串，引用类型。
+
+## 类型别名
+
+自定义类型 
+```go
+type (
+    mytype int8
+)
+
+func main() {
+    var s mytype
+    s = 3
+    fmt.Println(s)
+}
+```
+
+类型别名和自定义类型的区别是，别名变量之间可以直接赋值，无需类型转换，但自定义类
+型之间赋值需要进行类型转换的，因为自定义类型和原类型只是底层的数据结构相同，其实
+是两种类型。
+
+例如 byte 是 uint8 的别名，rune 是 int32 的别名，byte 和 uint8 之间可以直接进行
+赋值：
+```go
+func main() {
+    var a uint8 = 12
+    var b byte
+    b = a
+    fmt.Println(b)
+}
+```
+
+下面的自定义类型和原类型之间就需要类型转换才可以：
+```go
+type (
+    mytype int8
+)
+
+func main() {
+    var s mytype = 3
+    var t int8
+    t = s
+    // 需要类型转换
+    // t = int8(s)
+    fmt.Println(t)
+}
+
+错误提示：cannot use s (type mytype) as type int8 in assignment
+```
+
+## 变量声明
+
+用 var 声明变量
+```go
+var t string
+t = hello
+
+var t string = "hello"
+
+var t  = "hello"        // 这种情况将根据赋值推断变量类型
+```
+
+还可以省略 var 关键字，并使用类型推断，进行最简短的变量声明赋值：
+```go
+t := "hello"
+```
+
+注意全局变量必须使用 var 关键字声明，不可使用 `:=` 的方式声明
+
+全局变量可以使用变量组一次声明多个变量，但方法体内不可使用变量组声明：
+```go
+var (
+    s string
+    t int
+)
+```
+
+方法体内使用这种并行的方式一次声明多个变量：
+```go
+func main() {
+    var a,b,c,d int
+    a,b,c,d = 1,2,3,4
+    fmt.Println(a,b,c,d)
+}
+
+func main() {
+    var a,b,c,d int = 1,2,3,4
+    fmt.Println(a,b,c,d)
+}
+
+func main() {
+    a,b,c,d := 1,2,3,4
+    fmt.Println(a,b,c,d)
+}
+```
+
+全局变量也可以使用并行方式：
+```go
+var (
+    i,j = 5,6
+)
+```
+
+占位符和 `:=` 常用于函数返回值：
+```go
+func main() {
+    a,b,_,d := 1,2,3,4
+    fmt.Println(a,b,d,i,j)
+}
+```
+
+## 类型转换
+
+go 中不允许隐式转换，所有的转换必须显式进行，转换的格式：
+```go
+<ValueA> [:]= <TypeOfValueA>(<ValueB>)
+```
+
+例如
+```go
+func main() {
+    a := 1.1
+    b := int(a)
+    fmt.Println(b)
+}
+
+func main() {
+    a := 1
+    b := float32(a)
+    fmt.Println(b)
+}
+```
+
+只能在两种互相兼容的类型之间进行类型转换：
+```go
+func main() {
+    var s byte = 65
+    var t string
+    t = string(s)
+    fmt.Println(t)
+}
+输出：A
+
+func main() {
+    a := true
+    b := int(a)
+    fmt.Println(b)
+}
+
+// 错误提示：cannot convert a (type bool) to type int
+```
+
+上面的第一个例子如要输出字符串 65，则需用下面的方法：
+```go
+import (
+	"fmt"
+    "strconv"
+)
+
+func main() {
+    var s int = 65
+    var t string
+    t = strconv.Itoa(s) // Itoa 接收的参数类型为 int
+    fmt.Println(t)
+}
+
+// 输出 "65"
+
+func main() {
+    var s int
+    var t string = "65"
+    s,_ = strconv.Atoi(t)
+    // s = int(t)
+    fmt.Println(s)
+}
+
+// 输出 65
+```
+
+## 常量
+
+常量的值在编译时就已确定，赋值表达式中必须是常量，可有函数，但必须是内置函数
+
+常量定义只使用 `=` 不能使用 `:=`
+
+**常量的初始化规则**
+
+* 在定义常量组时，不提供初始值，则表示使用上一行的表达式进行初始化
+```go
+const PI = 3.14
+const s string = "abc"
+const (
+    i,j = len(s), i * 2
+    m = 3
+    n               // 这里直接使用 m 的值
+    k,K = 4,5
+    p,P             // p 和 P 分别使用 k 和 K 的值
+)
+
+func main() {
+    fmt.Println(PI,s,i,j,m,n,k,K,p,P)
+}
+
+// 输出
+3.14 abc 3 6 3 3 4 5 4 5
+```
+
+* iota 常量计数器
+
+每个常量组中从 0 开始，每定义一个常量就加 1，下一个常量组重新从 0 开始计数：
+```go
+const (
+    a = 'A'     // 65
+    b           // 65
+    c = iota    // 2
+    d           // 3
+    e = iota    // 4
+)
+
+const (
+    f = 'A'     // 65
+    g           // 65
+    h = iota    // 2
+)
+
+func main() {
+    fmt.Println(a,b,c,d,e,f,g,h)
+}
+// 输出：65 65 2 3 4 65 65 2
+```
+
+利用 iota 实现计算机存储单位的枚举：
+```go
+const (
+    _          = iota
+    KB float64 = 1 << (iota * 10)
+    MB
+    GB
+    TB
+    PB
+    EB
+    ZB
+    YB
+)
+```
+
+## 运算符
+
+位运算符：
+* & 按位与
+* | 按位或
+* ^ 按位异或
+* &^ 按位置0，如 `A &^ B`，当第二个操作数 B 的位为 1 时，则第一位操作数对应位必须
+  为 0， 则 `0110 &^ 1011 = 0100`
+
+注意 go 中的 `++` `--` 是作为语句而不是表达式，因此：
+```go
+i := 0
+i++      // 可以的
+++i      // 不可以，只能放变量右侧
+j := i++ // 不可以，语句不可赋值给变量
+```
+
+## 指针
+
+go 保留了指针，但不支持指针运算符 `->`，而是：
+* 使用 `.` 操作指针目标对象的成员
+* 使用 `&` 获取变量地址
+* 使用 `*` 通过指针间接访问目标对象
+
+指针默认值是 nil 而不是 NULL
+
+```go
+func main() {
+    v := 3
+    var p *int
+    fmt.Println(p)          // <nil>
+    // fmt.Println(*p)      // panic: runtime error: invalid memory address or nil pointer dereference
+    p = &v
+    fmt.Println(p)          // 0xc0000120d0
+    fmt.Println(*p)         // 3
+}
+```
+
+## 控制结构
+
+### if 语句
+
+if 语句的：
+* 条件表达式**不能**使用括号括起来
+* 支持一个初始化表达式，初始化表达式的变量范围为当前的 if else 语句块
+* 左大括号必须和条件语句或 else 在同一行
+
+```go
+func main() {
+    a := 5
+    if a := 4; a > 2 {
+        fmt.Println(a)
+    }
+    fmt.Println(a)
+}
+// 输出 4 5
+```
+
+### for 语句
+
+```go
+for a := 5; a > 0; a-- {
+    fmt.Println(a)
+}
+// 输出 5 4 3 2 1
+```
+
+### switch case 语句
+
+case 语句不需要 `break`，会执行完匹配的代码块自动跳转出来，反而要继续执行其后的
+case，则需要 `fallthrough`
+
+没有 case else 语句，而是 default 语句
+
+不可以使用类型或表达式作为条件语句
+
+```go
+func main() {
+    switch a := 2; a {
+        case 1:
+            fmt.Println(1)
+        case 2:
+            fmt.Println(2)
+            fallthrough
+        case 3:
+            fmt.Println("greater than or equal to 2")
+    }
+
+    // 输出
+    // 2
+    // greater than or equal to 2
+
+    b := 2
+    switch {
+        case b < 1:
+            fmt.Println("less than 1")
+        case b < 2:
+            fmt.Println("less than 2")
+        default:
+            fmt.Println("less than 3")
+    }
+
+    // 输出
+    // less than 3
+}
+```
+
+## 跳转语句
+
+3 个跳转语句：
+* goto LABEL        调整程序执行位置，跳到 LABEL 标签标识的代码开始执行
+* break [LABEL]     跳出 LABEL 标签所标识的循环
+* continue [LABEL]  跳到 LABEL 标签标识的循环开始执行
+
+不同于其他语言，go 语言中的 break 和 continue 后面还可以跟标签，即指定跳转到某个
+标签
+
+```go
+func main() {
+    LABEL1:
+    for i:=1; i<5; i++ {
+        for {
+            fmt.Println(i)
+            break LABEL1
+        }
+    }
+}
+
+// 输出
+// 1
+
+func main() {
+    LABEL1:
+    for i:=1; i<5; i++ {
+        for {
+            fmt.Println(i)
+            continue LABEL1
+        }
+    }
+}
+
+// 输出
+// 1
+// 2
+// 3
+// 4
+
+func main() {
+    LABEL1:
+    for i:=1; i<5; i++ {
+        for {
+            fmt.Println(i)
+            goto LABEL1
+        }
+    }
+}
+
+// 输出，一直是 1 无限循环
+// 1
+// 1
+// 1
+// .....
+```
+
+## 数组
+
+定义格式： `var <VarName> [n]<Type>`，n 指定数组长度， n >= 0，例如：
+```go
+var names [3]string
+```
+
+数组长度也为类型的一部分，因此不同长度的数组，类型不一样，不能直接赋值
+```go
+var n [3]int
+var o [3]int
+var p [2]int
+n = o           // 没问题
+n = p           // 出错
+                // 输出
+                // cannot use o (type [2]int) as type [3]int in assignment
+```
+
+数组长度 n 也可用三个点替代，这时需要同时指定数组元素，指定了几个数组元素就表示
+数组长度为几：
+```go
+m := [...]int{1,2,3,4,5}
+fmt.Println(m)      // 输出 [1 2 3 4 5]
+```
+
+数组赋值时可以根据下标指定值：
+```go
+func main() {
+    k := [4]int{3,4}
+    fmt.Println(k)      // 输出 [3 4 0 0] 
+
+    j := [4]int{2:7,3:9}    // 下标 3 的元素赋值 9，其他元素使用类型的零值
+    fmt.Println(j)      // 输出 [0 0 7 9] 
+}
+```
+
+下标和三个点也可以结合使用：
+```go
+n := [...]int{3:7}
+fmt.Println(n)
+```
