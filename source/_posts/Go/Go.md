@@ -652,7 +652,26 @@ func main() {
 var names [3]string
 ```
 
-数组长度也为类型的一部分，因此不同长度的数组，类型不一样，不能直接赋值
+使用 new 关键字生成一个指向数组的指针
+```go
+p := new([3]int)
+fmt.Println(p)          // &[0 0 0]，注意前面的 & 号，表示 p 是一个数组指针
+p[1] = 3
+fmt.Println(p)          // &[0 3 0]
+```
+
+其他语言中的数组为一种引用类型，go 语言中，数组是一种值类型，可以使用 `==` 和
+`!=` 进行比较，不能使用 `<` 和 `>` 进行比较：
+```go
+c  := [3]int{1,2,3}
+d  := [3]int{4,2,3}
+e  := [2]int{2,3}
+fmt.Println(c==d)       // 输出 false
+fmt.Println(c!=d)       // 输出 true
+fmt.Println(e!=d)       // 错误，类型不通
+```
+
+数组长度也是类型的一部分，因此不同长度的数组，类型不一样，不能互相赋值、比较：
 ```go
 var n [3]int
 var o [3]int
@@ -667,22 +686,272 @@ n = p           // 出错
 数组长度为几：
 ```go
 m := [...]int{1,2,3,4,5}
-fmt.Println(m)      // 输出 [1 2 3 4 5]
+fmt.Println(m)              // 输出 [1 2 3 4 5]
 ```
 
 数组赋值时可以根据下标指定值：
 ```go
 func main() {
     k := [4]int{3,4}
-    fmt.Println(k)      // 输出 [3 4 0 0] 
+    fmt.Println(k)          // 输出 [3 4 0 0] 
 
     j := [4]int{2:7,3:9}    // 下标 3 的元素赋值 9，其他元素使用类型的零值
-    fmt.Println(j)      // 输出 [0 0 7 9] 
+    fmt.Println(j)          // 输出 [0 0 7 9] 
 }
 ```
 
 下标和三个点也可以结合使用：
 ```go
 n := [...]int{3:7}
-fmt.Println(n)
+fmt.Println(n)              // 输出 [0 0 0 7]
 ```
+
+数组的指针：
+```go
+a := [5]int{3:1}
+var p *[5]int = &a
+fmt.Println(p)              // 输出 &[0 0 0 1 0]
+```
+
+指针的数组：
+```go
+a := [5]int{1,2,3,4,5}
+b := [5]*int{&a[0],&a[1],&a[2],&a[3],&a[4]}
+fmt.Println(a)              // 输出 [1 2 3 4 5]
+fmt.Println(b)              // 输出 [0xc00008a090 0xc00008a098 0xc00008a0a0 0xc00008a0a8 0xc00008a0b0]
+```
+
+多维数组：
+```go
+e := [2][3]int{{1,2,3},{4,5,6}}
+f := [...][3]int{{1,2,3},{4,5,6}}   // 第二维不可以用三个点
+fmt.Println(e)
+fmt.Println(f)
+// 输出 [[1 2 3] [4 5 6]]
+// 输出 [[1 2 3] [4 5 6]]
+```
+
+数组冒泡排序：
+```go
+a := [6]int{3,9,7,6,1,4}
+fmt.Println(a)
+num := len(a)
+for j := 0; j < num; j++ {
+    for i := 0; i < j; i++ {
+        if a[i] < a[j] {
+            tmp := a[i]
+            a[i] = a[j]
+            a[j] = tmp
+        }
+    }
+}
+fmt.Println(a)
+```
+
+## 切片
+
+数组是内存中一块连续的数据，无法改变其占用的空间，而通过切片对数组的引用，可以实
+现变长数组的效果，切片的容量参数就是指定为切片初始化分配的内存空间大小，而其长度
+参数则是实际存储的元素个数，当要存储的元素个数超过切片容量时，会再次重新为切片分
+配一块连续的存储空间，其大小为目前的两倍，每次超过当前容量时，都会按当前容量的2
+倍重新分配空间，如一个切片其容量为10，当要存储大于10个元素时，则会重新分配20个元
+素的空间，当要存储的元素增加到21时，则再为其重新分配40个元素的空间.....，如此频
+繁重新分配空间会导致效率降低，所以切片的容量参数应该设置合理，即数据可能使用到最
+大的空间是多少，就分配多大的容量。
+
+`[n]int` 或 `[...]int` 是数组类型，而 `[]int` 是切片类型
+
+数组是值类型，切片是引用类型，它关联了底部数组的局部或全部，可以通过底层数组获取
+生成切片，或直接创建切片。
+
+`make([]Type,len,cap)`
+* cap 可省略，则和 len 相同
+* len 元素个数，对应的函数 len(slice)
+* cap 容量，对应的函数 cap(slice)
+
+直接从数组生成切片：
+```go
+var s []int
+a := [10]int{0,1,2,3,4,5,6,7,8,9}
+s = a[3]            // cannot use a[3] (type int) as type []int in assignment
+fmt.Println(s)      // 这种方式是取出数组单个元素而不是切片
+s = a[3:4]
+fmt.Println(s)      // [3]
+s = a[3:8]
+fmt.Println(s)      // [3 4 5 6 7]
+s = a[3:]
+fmt.Println(s)      // [3 4 5 6 7 8 9]
+s = a[:8]
+fmt.Println(s)      //[0 1 2 3 4 5 6 7]
+s = a[:-2]          // invalid slice index -2 (index must be non-negative)
+fmt.Println(s)
+s = a[:]
+fmt.Println(s)      // [0 1 2 3 4 5 6 7 8 9]
+```
+
+切片容量的自动变化：
+```go
+a := [10]int{0,1,2,3,4,5,6,7,8,9}
+fmt.Println(a)          // [0 1 2 3 4 5 6 7 8 9]
+
+s1 := make([]int, 3, 3) // 这里定义切片的容量为 3
+fmt.Println(len(s1))    // 3
+fmt.Println(cap(s1))    // 3  <-- 容量确实为 3
+
+s1 = a[2:5]             // 对数组切片后，容量自动变化为 8
+fmt.Println(len(s1))    // 3
+fmt.Println(cap(s1))    // 8
+```
+
+### 切片操作
+
+#### Reslice
+
+切片可能存在两种越界：
+* 第一是 index out of range：使用 [n] 的方式获取单个元素时，n 大于或等于了切片的
+  长度则越界
+* 第二是 slice bounds out of range：使用 [m:n] 的方式对切片再次进行切片时，n 大
+  于了切片的容量
+```go
+func main() {
+    a := [10]int{0,1,2,3,4,5,6,7,8,9}
+    fmt.Println(a)          // [0 1 2 3 4 5 6 7 8 9]
+
+    s1 := make([]int, 3, 3)
+    fmt.Println(len(s1))    // 3
+    fmt.Println(cap(s1))    // 3
+
+    s1 = a[2:5]
+    fmt.Println(len(s1))    // 3
+    fmt.Println(cap(s1))    // 8
+
+    fmt.Println(s1[3])      // 报错：index out of range [3] with length 3
+                            // 即长度为 3，下标最大为 2
+                            // 切片获取单个元素时索引不能超过切片的长度
+
+    fmt.Println(s1)         // [2 3 4]
+    fmt.Println(s1[3:8])    // [5 6 7 8 9]
+                            // 虽然 s1 长度为 3 只有 3 个元素，但其容量为 8，可
+                            // 以对其容量内的数据再次切片
+    fmt.Println(s1[3:9])    // slice bounds out of range [:9] with capacity 8
+                            // s1 本身就是切片，再对其切片时，不能超过其容量
+}
+```
+
+#### Append
+
+在切片尾部追加单个元素或另一个切片，这里的切片尾部是指切片的长度，不是容量，当追
+加的内容超过切片容量时，会为切片重新分配空间：
+```go
+s := make([]int, 3, 6)
+fmt.Printf("%v---%p\n", s, s)   // [0 0 0]---0xc00000c2d0
+s = append(s,3,4,5)
+fmt.Printf("%v---%p\n", s, s)   // [0 0 0 3 4 5]---0xc00000c2d0
+s = append(s,6,7,8)
+fmt.Printf("%v---%p\n", s, s)   // [0 0 0 3 4 5 6 7 8]---0xc0000180c0，这里内存
+                                // 地址变化，因为重新分配了空间
+```
+
+当追加的内容超过切片容量，重新为切片分配空间后，其关联的底层数组不再是原来的数组
+：
+```go
+a := []int{0,1,2,3}
+s := a[0:3]
+k := a[0:3]
+fmt.Println(cap(s))                 // 4
+
+fmt.Printf("%v,%p\n", a, a)         // 0xc00000a3c0:[0 1 2 3]
+fmt.Printf("%v,%p\n", s, s)         // 0xc00000a3c0:[0 1 2]
+fmt.Printf("%p:%v\n", k, k)         // 0xc00000a3c0:[0 1 2]
+
+s = append(s,4)
+fmt.Printf("%v,%p\n", a, a)         // 0xc00000a3c0:[0 1 2 4] 这里对切片使用 append 更改了底层数组???
+fmt.Printf("%v,%p\n", s, s)         // 0xc00000a3c0:[0 1 2 4]
+fmt.Printf("%p:%v\n", k, k)         // 0xc00000a3c0:[0 1 2]
+
+s = append(s,5)
+fmt.Printf("%v,%p\n", a, a)         // 0xc00000a3c0:[0 1 2 4]
+fmt.Printf("%v,%p\n", s, s)         // 0xc00000e280:[0 1 2 4 5] 这里切片重新分配空间，地址更改
+fmt.Printf("%p:%v\n", k, k)         // 0xc00000a3c0:[0 1 2]
+```
+
+#### Copy
+
+`copy(slice1, slice2)` 把 slice2 中的元素复制到 slice1 中，默认从索引 0 开始替换
+，最后长度为 slice1 的长度：
+```go
+s1 := []int{0,1,2,3,4,5,6}
+s2 := []int{7,8,9}
+copy(s1, s2)
+fmt.Println(s1)                     // [7 8 9 3 4 5 6]
+
+s1 = []int{0,1,2,3,4,5,6}
+s2 = []int{7,8,9}
+copy(s2, s1)
+fmt.Println(s2)                     // [0 1 2]
+
+// 复制时也可通过切片指定范围
+s1 = []int{0,1,2,3,4,5,6}
+s2 = []int{7,8,9}
+copy(s1[2:4], s2[1:])
+fmt.Println(s1)                     // [0 1 8 9 4 5 6]
+```
+
+第一个变量 `a` 为切片，其他两个都是数组，注意 `cap` 容量也可以测数组：
+```go
+a := []int{1,2,3,4}
+a = append(a,5,6,7,8)
+
+b := [...]int{1,2,3,4}
+//b = append(b,5,6,7,8)     // 错误： first argument to append must be slice
+
+c := [4]int{1,2,3,4}
+//c = append(c,5,6,7,8)     // 错误：first argument to append must be slice
+```
+
+## map
+
+特点：
+* 以 `key:value` 形式存储数据，类似其他语言的哈希表或字典
+* key 必须是支持 `==` 和 `!=` 比较的数据类型，value 可以为任意类型：函数、map、
+    slice 等
+* map 搜索比线性查找快很多，但比使用索引访问数据的 slice 等类型慢 100 倍
+
+使用 `make(map[keyType]valueType, cap)` 创建，容量 cap 可省略，像 slice 一样，超
+过容量会扩容，还支持使用简写方式 `:=` 创建：
+```go
+var m map[int]string
+m = {0:"a", 1:"b", 2:"c"}               // 错误：non-declaration statement outside function body
+m = map[int]string{}                    // map[]
+m = map[int]string{0:"a", 1:"b", 2:"c"} // map[0:a 1:b 2:c]
+fmt.Println(m)
+
+var n map[int]string
+n = make(map[int]string)
+fmt.Println(n)          // map[]
+
+var o map[int]string = make(map[int]string)
+fmt.Println(o)          // map[]
+
+p := make(map[int]string)
+p = map[int]string{0:"a", 1:"b", 2:"c"}
+fmt.Println(o)          // map[0:a 1:b 2:c] 
+
+p := map[int]string{0:"a", 1:"b", 2:"c"}
+fmt.Println(o)          // map[0:a 1:b 2:c] 
+```
+
+可以把 `map[keyType]valueType` 如 `map[int]string` 看作是一个类型，即 map 类型
+
+
+len 获取键值对个数，delete 删除指定键值对
+```go
+
+```
+
+for range 进行迭代
+```go
+
+```
+
+
