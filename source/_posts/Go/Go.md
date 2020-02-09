@@ -97,6 +97,27 @@ properly respond after a period of time, or established connection failed
 because connected host has failed to respond.)
 ```
 
+变量的默认设置：
+```
+set GO111MODULE=
+set GOPROXY=https://proxy.golang.org,direct
+```
+
+```
+# 启用 Go Modules 功能
+PS > $env:GO111MODULE="on"
+# 配置 GOPROXY 环境变量
+PS > $env:GOPROXY="https://goproxy.io"
+
+PS > go get -u -v golang.org/x/tools/cmd/godoc
+```
+
+通过命令行设置代理，命令行窗口关闭后失效：
+```
+set http_proxy=socks5://127.0.0.1:1087 && go get -u -v golang.org/x/tools/cmd/godoc
+```
+高级设置，环境变量中设置
+
 在本地建立 Go 官网：
 ```
 godoc -http=:8080
