@@ -936,7 +936,7 @@ c := [4]int{1,2,3,4}
 * 以 `key:value` 形式存储数据，类似其他语言的哈希表或字典
 * key 必须是支持 `==` 和 `!=` 比较的数据类型，value 可以为任意类型：函数、map、
     slice 等
-* map 搜索比线性查找快很多，但比使用索引访问数据的 slice 等类型慢 100 倍
+* map 搜索比线性查找快很多，但比使用索引访问数据的数组、slice 等类型慢 100 倍
 
 使用 `make(map[keyType]valueType, cap)` 创建，容量 cap 可省略，像 slice 一样，超
 过容量会扩容，还支持使用简写方式 `:=` 创建：
@@ -967,12 +967,100 @@ fmt.Println(o)          // map[0:a 1:b 2:c]
 
 len 获取键值对个数，delete 删除指定键值对
 ```go
-
+func main() {
+    m := make(map[int]string)
+    fmt.Println(m[1])           // 输出空，当访问不存在的键值时不出错
+    m[1] = "a"
+    fmt.Println(m[1])
+    fmt.Println(len(m))         // 1
+    delete(m, 1)                //
+    fmt.Println(m[1])
+}
 ```
 
-for range 进行迭代
+map 的 map，即其键对应的值也是一个 map：`map[int]map[int]string`
 ```go
+m := make(map[int]map[int]string)       // 只初始化了最外层的 map
+m[1] = make(map[int]string)             // 内层的 map 初始化
+m[1][1] = "a"
+fmt.Println(m[1][1])                    // a
 
+m := make(map[int]make(map[int]string)) // 不能这样连写
 ```
 
+map 取值时可返回多个值，可以用于判断是值为类型的零值还是值未初始化：
+```go
+n := make(map[int]int)
 
+n[1] = 0
+v, ok := n[1]
+fmt.Println(v)      // 0
+fmt.Println(ok)     // true
+
+v, ok = n[2]
+fmt.Println(v)      // 0
+fmt.Println(ok)     // false
+```
+
+`for index, value := range slice` 对切片进行迭代时，其返回的 value 为复制品，
+```go
+func main() {
+    s := []int{3, 4, 5}
+    fmt.Println(s)              // [3 4 5]
+
+    for k, v := range s {
+        v = v + k
+    }
+    fmt.Println(s)              // [3 4 5]
+
+    for k, v := range s {       // 因为 k，v 都是块级变量，所以上面声明过了这里
+                                // 又要重新声明
+        s[k] = v + 1
+
+    }
+    fmt.Println(s)              // [4 5 6]
+}
+```
+
+`for key, value := range map` 对 map 进行迭代时，其返回的 value 也为复制品，
+```go
+func main() {
+    m := make([]map[int]string, 5)  // 元素为 map 的切片：[]map[int]string
+    for _, v := range m {
+        v = make(map[int]string, 1)
+        v[1] = "ok"
+        fmt.Println(v)
+    }
+    fmt.Println(m)
+}
+
+// 输出
+map[1:ok]
+map[1:ok]
+map[1:ok]
+map[1:ok]
+map[1:ok]
+[map[] map[] map[] map[] map[]]
+```
+
+map 是无序的，通过对 map 键的排序，实现对 map 的间接排序：
+```go
+import (
+	"fmt"
+    "sort"
+)
+
+func main() {
+    m := map[int]string{1:"a", 2:"b", 3:"c", 4:"d"}
+    s := make([]int, 5)
+    i := 0
+    for k, _ := range m {
+        s[i] = k
+        i++
+    }
+    sort.Ints(s)            // 没有这行，则每次输出的顺序都不一样
+    fmt.Println(s)          // [0 1 2 3 4]
+}
+```
+
+## 函数

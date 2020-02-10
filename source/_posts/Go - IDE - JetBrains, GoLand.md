@@ -106,6 +106,90 @@ fmt.Println(s)
 ，则说明调用了还未实现的方法，这时使用快捷键 `alt + enter`，在弹出列表中选
 `implement missing methods`，则会自动补全缺失方法
 
+**填充结构字段**
+
+如下代码：
+```go
+type Address struct {
+	street string
+}
+
+type Person struct {
+	name string
+	age int
+	address Address
+}
+
+
+func main() {
+	p := Person{}
+	fmt.Println(p)
+}
+```
+将光标定位到 `p := Person{}` 大括号中间，按 `alt + enter`，弹出列表选 `fill all
+fields`，则变为：
+```go
+	p := Person{
+		name:    "",
+		age:     0,
+		address: Address{},
+	}
+```
+
+**去除多余的类型转换**
+
+如下所示当你把一个字符串 `getData()` 再使用类型转换 `[]byte` 转换为字符串时：
+```go
+func main() {
+	_ = ioutil.WriteFile("./out.txt", []byte(getData()), 0644)
+}
+```
+将光标定位到 `[]byte`，然后按 `alt + enter`，选择 `Delete conversion`
+
+**删除无用的参数**
+
+如下代码：
+```go
+type gophersGreeter struct {
+	how string
+	who string
+}
+
+func (greeter gophersGreeter) greet(how string, who string) {
+	fmt.Printf("%s %s!", greeter.how, greeter.who)
+}
+```
+
+将光标定位到参数位置，按 `alt + enter`，选择 `Delete all unsed parameters`
+```go
+func (greeter gophersGreeter) greet() {
+	fmt.Printf("%s %s!", greeter.how, greeter.who)
+}
+```
+
+或者它们的名字没有使用到，但类型使用到，则可以选择 `Delete parameter names`，变
+为：
+```go
+func (greeter gophersGreeter) greet(string, string) {
+	fmt.Printf("%s %s!", greeter.how, greeter.who)
+}
+```
+
+**更改参数声明的长短类型**
+
+如果方法或函数的参数有多个，且为同一个类型，则有长短两种声明格式：
+```go
+func greet(how, who, what, when string) {
+	fmt.Printf("%s %s!", how, who)
+}
+
+func greet(how string, who string, what string, when string) {
+	fmt.Printf("%s %s!", how, who)
+}
+```
+光标定位到参数处，按下 `alt + enter`，分别选择 `Reuse signature types` 和
+`Expand signature types` 可在这两种格式间切换。
+
 **格式化字符串参数**
 
 光标移动到字符串上，然后按快捷键 `alt + enter`，会出现可用操作的列表，如下面的代
@@ -128,7 +212,89 @@ format string argument`，会提示你输入变量名，输入 `subj.id` 回车�
 fmt.Printf("hello %s %d", subj.name, subj.id)
 ```
 
-**光标移动**
+**后缀完成模板**
+
+可以使用一系列预定义的后缀自动完成模板，将其应用到已输入的表达式，如下面的函数要
+返回 3，可以在先输入 3 后再输入 `.retu`，接着弹出列表选 return 模板，则自动变为
+`return 3`：
+```go
+func test() int{
+	return 3
+}
+```
+
+再例如下面的代码要判断 err 是否为 nil：
+```go
+file, err := os.Open("example.txt")
+```
+则先输入 `err`，再输入点和 `nn`，即 `err.nn`，然后弹出的列表选 `nn` 对应的模板，
+则自动变为：
+```go
+if err != nil {
+
+}
+```
+
+再例如下面代码：
+```go
+    file.Write(data).
+```
+后面输入 `rr`，选 `rr` 模板则变为：
+```go
+	if _, err := file.Write(data); err != nil {
+		return 0
+	}
+```
+
+再例如下面代码：
+```go
+    func filter(lines []string) {
+        lines.
+    }
+
+```
+在后面输入 `forr`，选 `forr` 模板则变为：
+```go
+	for i, line := range lines {
+
+	}
+```
+
+**从返回类型创建函数**
+
+如下代码，缺少对应的函数返回 handler：
+```go
+func main() {
+	http.HandleFunc("/", handler)
+}
+```
+将光标定位到 handler，按下 `alt + enter`，选择 `Create function 'handler'`，则变
+为：
+```go
+func main() {
+	http.HandleFunc("/", handler)
+}
+
+func handler(writer http.ResponseWriter, request *http.Request) {
+
+}
+```
+
+**调试 debug**
+
+???
+
+`ctrl + F8` 设置或取消断点
+
+`alt + F8` 调用计算表达式
+
+`alt + F9` Run to cursor
+
+`F7` 进入调用的函数内部
+
+`ctrl + F2` 停止调试
+
+**其他**
 
 `ctrl + shift + enter` 无需光标移动到行尾，可直接切换到下一行输入
 
