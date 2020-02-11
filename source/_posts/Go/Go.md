@@ -1364,9 +1364,10 @@ defer 和闭包、匿名函数例子1???
 func main() {
     for i := 0; i < 3; i++ {
         fmt.Println("a", i)
-        defer fmt.Println("a",i)
-        defer fmt.Println("c",i)
-        defer func(){fmt.Println("d", i)}()
+        defer fmt.Println("a",i)    // defer 在定义时就获取了值的拷贝，这里的循
+        // 环中的 defer 就是在每次循环时获取 i 值 0 1 2，然后传递给后面的定义
+        defer fmt.Println("c",i)    // 这里的 i 是参数，会复制值后传递
+        defer func(){fmt.Println("d", i)}()     // 调用匿名函数这里的 i 是引用
         defer fmt.Println("")
     }
 }
@@ -1396,10 +1397,11 @@ func main() {
     a := [4]func(){}
 
     for i := 0; i < 4; i++ {
-        a[i] = func(){fmt.Println(i)}
+        a[i] = func(){fmt.Println(i)}   // 这里的 i 不是通过参数的值拷贝传递的，
+        // 而是直接使用的 main 函数中的 i，所以其是通过引用地址的方式访问 i
     }
 
-    //fmt.Println(i)       // 取消注释则这里提示 undefined: i
+    //fmt.Println(i)       // 这里提示 undefined: i
 
     for _, f := range a {
         f()
