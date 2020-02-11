@@ -1064,3 +1064,356 @@ func main() {
 ```
 
 ## 函数
+
+Go 函数也是一种数据类型
+
+Go 函数支持：
+* 无需声明原型
+* 不定长度变参
+* 多个返回值
+* 命名返回值
+* 匿名函数
+* 闭包
+
+Go 函数不支持：
+* 嵌套
+* 重载
+* 默认参数
+
+命名返回值：
+```go
+func main() {
+    fmt.Println(test1())            // 1 2 3
+    fmt.Println(test2())            // 1 2 3
+}
+
+func test1() (int, int, int) {
+    a, b, c := 1, 2, 3
+    return a, b, c
+}
+
+func test2() (a, b, c int) {        // 命名返回值是函数的内部变量
+    a, b, c = 1, 2, 3               // 这里不能再写为 :=
+    return
+}
+```
+
+在参数名和类型之间加三个点，则参数变为一个切片，即为不定长变参，其必须作为参数列
+表最后一个参数：
+```go
+func main() {
+    test(0,1,2,3)                   // [1 2 3 99]
+    test(0,1,2,3,4,5)               // [1 2 3 4 5 99]
+}
+
+func test(a int, b...int) {
+    b = append(b, 99)
+    fmt.Println(b)
+}
+```
+
+不定长变参为切片，而切片为引用类型，但注意不是在调用函数的地方作为切片传递过去的
+，而是在函数声明的地方变为切片，所以和直接传递切片变量过去有区别：
+```go
+func main() {
+    a, b := 1,2
+    test1(a, b)
+    fmt.Println(a,b)
+
+    s := []int{1, 2}
+    test2(s)
+    fmt.Println(s)
+}
+
+func test1(b...int) {
+    b[0] = 3
+    b[1] = 4
+    fmt.Println(b)
+}
+
+func test2(b []int) {
+    b[0] = 3
+    b[1] = 4
+    fmt.Println(b)
+}
+
+// 输出
+[3 4]
+1 2
+[3 4]
+[3 4]
+```
+
+值变量的指针传递
+```go
+func main() {
+    d := 6
+    test3(&d)
+    fmt.Println(d)      // 9
+}
+
+func test3(i *int) {
+    *i = 9
+}
+```
+
+Go 函数也是一种数据类型
+```go
+func main() {
+    a := test
+    a()             // hello
+}
+
+func test() {
+    fmt.Println("hello")
+}
+```
+
+匿名函数即不需要指定名称的函数，可通过变量调用：
+```go
+func main() {
+    a := func() {
+        fmt.Println("world")
+    }
+    a()             // world
+}
+```
+
+匿名函数也可定义时调用
+```go
+func main() {
+
+    func() {
+        fmt.Println("hello")
+    }()
+
+}
+
+匿名函数不能作为顶层函数，只能位于其他函数体内：
+```go
+
+```
+
+返回函数的函数即为闭包函数：
+```go
+func main() {
+    a := closure(10)
+    fmt.Println(a(1))       // 11
+    fmt.Println(a(2))       // 12
+    fmt.Println(a(3))       // 13
+}
+
+func closure(x int) func (int) int{
+    fmt.Printf("%p\n", &x)          // 这输出1次 0xc0000120e0
+    return func (y int) int {
+        fmt.Printf("%p\n", &x)      // 这里输出3次 0xc0000120e0
+        return x + y
+    }
+}
+```
+
+## defer
+
+按调用顺序的相反顺序执行：
+```go
+func main() {
+    for i := 0; i < 3; i++ {
+        fmt.Println("a", i)
+        defer fmt.Println("b",i)
+    }
+}
+
+// 输出
+a 0
+a 1
+a 2
+b 2
+b 1
+b 0
+```
+
+defer 支持匿名函数的调用：
+```go
+func main() {
+    i := 1
+    fmt.Println(1, i)
+    i++
+    defer func() {
+        fmt.Println(2, i)
+        i++
+    }()
+    fmt.Println(3, i)
+    i++
+}
+
+//输出
+1 1
+3 2
+2 3
+```
+
+循环内调用 defer 时注意变量的值：
+```go
+func main() {
+    for i := 0; i < 3; i++ {
+        func() {
+            fmt.Println(i)
+        }()
+    }
+}
+// 输出
+0
+1
+2
+
+
+func main() {
+    for i := 0; i < 3; i++ {
+        func() {
+            defer fmt.Println(i)
+        }()
+    }
+}
+// 输出
+0
+1
+2
+
+func main() {
+    for i := 0; i < 3; i++ {
+        defer func() {
+            fmt.Println(i)
+        }()
+    }
+}
+// 输出
+3
+3
+3
+```
+
+defer 调用在函数 return 之后执行，因此 defer 与匿名函数结合可在 return 之后修改
+函数计算结果：
+```go
+
+```
+
+Go 没有异常机制，它使用 panic/recover 模式来处理错误，panic 可以在任何地方引发：
+```go
+func main() {
+    A()
+    B()
+    C()
+}
+
+func A() {
+    fmt.Println("func A executed")
+}
+
+
+func B() {
+    panic("func B panic")
+    fmt.Println("func B executed")
+}
+
+func C() {
+    fmt.Println("func C executed")
+}
+
+// 输出
+func A executed
+panic: func B panic
+
+goroutine 1 [running]:
+main.B(...)
+        C:/Users/T460P/test.go:19
+main.main()
+        C:/Users/T460P/test.go:9 +0x9d
+exit status 2
+```
+
+但 recover 只在 defer 调用的函数中有效，因为 defer 可以确保任何情况下都会被执行
+，下面是使用 defer、panic、recover 的演示，通过 defer 语句，把处于 panic 状态的
+程序 recover 回来，只修改上面的函数 B：
+```go
+func B() {
+    defer func() {
+        if err := recover(); err != nil {
+            fmt.Println("func B recovered")
+        }
+    }()
+
+    panic("func B panic")               // 注意 panic 语句必须位于 defer 之后
+    fmt.Println("func B executed")      // 这句始终没执行
+}
+
+// 输出
+func A executed
+func B recovered
+func C executed
+```
+
+defer 调用即使在函数发生严重错误时也会执行，因此常用于资源清理、文件关闭、解锁以
+及记录时间等操作：
+```go
+
+```
+
+defer 和闭包、匿名函数例子1???
+```go
+func main() {
+    for i := 0; i < 3; i++ {
+        fmt.Println("a", i)
+        defer fmt.Println("a",i)
+        defer fmt.Println("c",i)
+        defer func(){fmt.Println("d", i)}()
+        defer fmt.Println("")
+    }
+}
+
+// 输出
+a 0
+a 1
+a 2
+
+d 3
+c 2
+b 2
+
+d 3
+c 1
+b 1
+
+d 3
+c 0
+b 0
+
+```
+
+defer 和闭包、匿名函数例子2???
+```go
+func main() {
+    a := [4]func(){}
+
+    for i := 0; i < 4; i++ {
+        a[i] = func(){fmt.Println(i)}
+    }
+
+    //fmt.Println(i)       // 取消注释则这里提示 undefined: i
+
+    for _, f := range a {
+        f()
+    }
+}
+// 输出
+4
+4
+4
+4
+```
+
+## struct 结构
+
+```go
+
+```
