@@ -1416,6 +1416,178 @@ func main() {
 
 ## struct 结构
 
+Go 没有 class，只有 struct：
 ```go
+type human struct {
+    height int
+    name string;         // 分号可有可无
+    age int
+}
 
+func main() {
+    h0 := human{}
+    fmt.Println(h0)     // {0 0}
+
+    h1 := human{name:"lin", age:10, }   // 最后的逗号可有可无
+    fmt.Println(h1)     // {0 lin 10}
+
+    h2 := human{
+        name:"yan",
+        age:30,        // 注意这里最后的逗号必须有，否则报错 unexpected newline,
+                       // expecting comma or }
+    }
+    fmt.Println(h2)    // {0 yan 30}
+}
+```
+
+struct 是值类型，还可以进行 `==` 和 `!=` 比较，但不能进行 `<` 和 `>` 比较：
+```go
+type human struct {
+    age int
+    name string
+}
+                            // 两者虽然结构相同，但名称不同，是不同的类型
+type human2 struct {
+    age int
+    name string
+}
+
+func main() {
+    p1 := human{age:10, name:"shen"}
+    p2 := human{age:11, name:"shen"}
+    p3 := human2{age:11, name:"shen"}
+    fmt.Println(p1 == p2)       // false
+    fmt.Println(p1 == p3)       // 类型不同不能比较 (mismatched types human and human2)
+}
+```
+
+struct 是值类型，通过值拷贝传递参数：
+```go
+func main() {
+    h1 := human{name:"lin", age:10, }
+    fmt.Println(h1)
+    A(h1)
+    fmt.Println(h1)
+}
+
+func A(h human) {
+    h.age = 40
+    fmt.Println("func A:",h)
+}
+
+// output
+{0 lin 10}
+func A: {0 lin 40}
+{0 lin 10}
+```
+
+但值传递效率较底，较多使用 struct 的引用传递：
+```go
+func main() {
+    h1 := &human{name:"lin", age:10,}   // 推荐在变量定义处使用 &，则以后所有
+                                        // 用到 h1 的地方都是引用
+    fmt.Println(h1)
+    A(h1)                               // 不推荐在调用处使用 & 写作 A(&h1)
+    h1.name = "alin"                    // go 的优化，不必写作 *h1.name = "alian"
+    fmt.Println(h1)
+}
+
+func A(h *human) {                      // 接收参数的地方仍然要使用 * 号
+    h.age = 40
+    fmt.Println("func A:",h)
+}
+
+//output
+&{0 lin 10}
+func A: &{0 lin 40}
+&{0 alin 40}
+```
+
+struct 支持匿名字段：
+```go
+type human struct {
+    int
+    string
+}
+
+func main() {
+    p := person{10, "shen"}     // 严格按照结构字段的声明顺序
+    fmt.Println(p)
+}
+```
+
+struct 支持匿名结构：
+```go
+func main() {
+    s := &struct {          // 注意这里也是通过 & 获取指向结构的指针
+        age int
+        name string
+    }{
+        age:2,
+        name:"ahui",
+    }
+    fmt.Println(s.age)
+    fmt.Println(s)
+}
+
+//output
+2
+&{2 ahui}
+```
+
+struct 可以嵌入，看起来像继承，但不是继承：
+```go
+type human struct {
+    age int
+    name string
+}
+
+type habits struct {
+    run int
+    jump int
+}
+
+type teacher struct {
+    sex int
+    hb habits // 嵌入结构，有字段名称
+    human     // 嵌入结构，无字段名称，则其字段名称默认为结构名称，即 human human
+    contact struct {    // 匿名嵌入结构，contact 是类型名，不是字段名
+        addr string
+        phone string
+    }
+}
+
+func main() {
+    t := teacher{
+        sex: 1,
+
+        // 有字段名嵌入结构初始化方法
+        hb: habits{run:1},
+        //jump: 1,
+        // unknown field 'jump' in struct literal of type teacher
+
+        // 无字段名嵌入结构初始化方法
+        human: human{name:"shen", },
+        //age: 13,
+        // cannot use promoted field human.age in struct literal of type teacher 
+
+        // 匿名结构不能在这里初始化
+        //contact: contact{phone:"999"},
+        // undefined: contact
+
+        //phone: "999",
+        //  unknown field 'phone' in struct literal of type teacher
+    }
+
+    t.hb.jump = 0
+    // t.jump = 0 // t.jump undefined (type teacher has no field or method jump)
+
+    t.human.age = 11
+    t.age = 11
+
+    t.contact.addr = "beijing"
+    //t.addr = "beijing" // t.addr undefined (type teacher has no field or method addr)
+
+    fmt.Println(t)
+}
 ```
