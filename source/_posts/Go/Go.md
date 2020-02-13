@@ -212,6 +212,9 @@ func main() {
 
 编码规范为常量全大写，如果是不可见常量，则可以前面加下划线 ???
 
+注意这里的可见性范围指的是以包 package 为单位，即同一个包内都是可见的，只有跨包
+后才有可见不可见。???
+
 ## 数据类型
 
 ### 基本类型
@@ -1591,3 +1594,427 @@ func main() {
     fmt.Println(t)
 }
 ```
+
+嵌入结构时可以有重名，但调用时若模糊不清则会报错：
+```go
+type O struct {
+    A
+    B
+}
+
+type A struct {
+    name string
+}
+
+type B struct {
+    name string
+}
+
+func main() {
+    h := O{A:A{name:"A"}, B:B{name:"B"},}
+    fmt.Println(h.A.name)   // 正确输出 A
+    fmt.Println(h.B.name)   // 正确输出 B
+    // fmt.Println(h.name)  // 只有这里模糊不清的名字报错 ambiguous selector h.name
+}
+
+```
+
+同名时先获取最外层结构名称：
+```go
+type O struct {
+    name string
+    A
+    B
+}
+
+type A struct {
+    name string
+}
+
+type B struct {
+    name string
+}
+
+func main() {
+    h := O{name:"O", A:A{name:"A"}, B:B{name:"B"},}
+    fmt.Println(h.A.name)   // A
+    fmt.Println(h.B.name)   // B
+    fmt.Println(h.name)     // O
+}
+```
+
+## method 方法
+
+Go 的方法是函数的语法糖，函数增加接收者即变为方法，而实际 Go 方法的第一个参数就
+是接收者。
+
+函数定义时增加接收者即变为方法：
+```go
+func (r Receiver)MethodName() {}
+```
+
+接收者为结构类型的变量，注意下例中方法 test1 和 test2 的唯一区别，就是使用的是默
+认的值传递还是通过指针，所以 Receiver 遵守参数传递规则，可以是值类型或者指针类型
+，另外使用指针调用方法时，也无需使用 `*` 符号，和通过指针调用字段是一样的，可以
+使用值或指针来调用方法，编译器会自动完成转换
+```go
+type A struct {
+    name string
+}
+
+func (a A)test1() {
+    a.name = "11"
+    fmt.Println("struct A method 1")
+}
+
+func (a *A)test2() {
+    a.name = "22"
+    fmt.Println("struct A method 2")
+}
+
+func main() {
+    s := A{name:"00"}
+    s.test1()           // 注意这里无需使用 `*s.test1()` 这种方式
+    fmt.Println(s)      // {00}，值传递，修改字段失败
+    s.test2()
+    fmt.Println(s)      // {22}
+}
+```
+
+底层类型可以通过别名实现方法绑定：
+```go
+type A int
+
+func (a *A)test() {
+    fmt.Println("type A method 1")
+}
+
+func main() {
+    var s A
+    s.test()        // 这种调用称为 Method Value
+    (*A).test(&s)   // 这种调用类似于类的静态方法，直接由类型调用，称为 Method Expression
+}
+```
+由此看出类型别名 A 有了新方法，这个新方法不一定适合原来的 int 类型，所以类型 A
+和类型 int 之间不能直接进行赋值，需要强制转换。
+
+类型 A 也不会拥有底层类型 int 所附带的方法???
+
+Go 方法没有重载，即一个类型绑定的方法名不能重复，不同类型的方法名可以重复：
+```go
+type A int
+type B int
+
+func (a *A)test() {
+    fmt.Println("type A method 1")
+}
+
+func (a *A)test(i int) {            // 错误 method redeclared: A.test，
+                                    // 若 *A 改为 *B 则没问题
+    fmt.Println("type A method 1")
+}
+
+func main() {
+    var s A
+    s.test()
+}
+```
+
+方法绑定只能在同一个包中进行，即方法和类型必须在同一个包中。
+
+和字段一样，如果外部结构和嵌入结构存在同名方法，则优先找到外部结构方法，优先调用
+外部结构的方法
+
+上面的方法名都是小写，按 Go 的访问规则都是私有字段，而方法仍然可以访问，是因为私
+有是针对其他包而言，同一个包中不存在私有公有。
+
+练习：为底层类型 int 增加一个方法，实现调用后加 100
+```go
+type MyInt int
+
+func main() {
+    var o MyInt         // 这里写为 o := 0 则为 int 类型，或者写为 o := MyInt(0)
+    o.add(100)
+    fmt.Println(o)
+}
+
+func (a *MyInt) add(num int) {
+    *a += MyInt(num)            // 注意这里必须是 *a， 而不是 a，因为 a 是个内存
+                                // 地址，无法和后面的数值型相加
+}
+```
+
+## interface 接口
+
+接口就是一个协议, 规定了一组成员
+接口的成员就是一个或多个方法签名
+接口的方法只有声明，没有实现
+接口没有数据字段
+
+方法签名不需要 `func` 关键字
+```go
+type interface_name interface {
+    func1_signature
+    func2_signature
+    ....
+}
+```
+
+Go 的接口实现无需显式声明：
+只要某个类型拥有该接口的所有方法签名，即算实现该接口，无需显式声明实现了哪个接口
+，这称为 Structural Typing
+```go
+import (
+	"fmt"
+    "strconv"
+)
+
+type USB interface {
+    powerConnect() string
+    dataConnect(current int) string
+}
+
+type PC struct {
+    voltage int
+}
+
+// ???
+// 下面的改为指针接收器 *PC，则提示错误 ：
+// PC does not implement USB (powerConnect method has pointer receiver)
+func (p PC) powerConnect() string{
+    return "pc is plugged " + strconv.Itoa(p.voltage) + "v power"
+}
+
+func (p PC) dataConnect(c int) string{
+    return "pc has " + strconv.Itoa(c) + " USB"
+}
+
+func main(){
+    var u USB
+    u = PC {555555}
+
+    // 只能这样赋值，改为 u.voltage = 5 这种赋值方法，则提示：
+    // u.voltage undefined (type USB has no field or method voltage)
+    fmt.Println(u.powerConnect())
+    fmt.Println(u.dataConnect(3))
+    disconnect(u)
+}
+
+func disconnect(p USB) {
+    fmt.Println("disconnected")
+}
+
+//output
+pc is plugged 555555v power
+pc has 3 USB
+disconnected
+```
+
+### 嵌入接口
+
+接口可以匿名嵌入其它接口，或嵌入到结构中
+
+将上面的一个接口：
+```go
+type USB interface {
+    powerConnect() string
+    dataConnect(current int) string
+}
+```
+改为：
+```go
+type USB interface {
+    USBPower
+    dataConnect(current int) string
+}
+
+type USBPower interface {
+    powerConnect() string
+}
+```
+
+### 类型断言
+
+```go
+func disconnect(p USB) {
+    fmt.Println("disconnected")
+}
+```
+上面的 disconnect 方法接收的是 USB 类型，可以在断开时判断一下其是否为实现了 USB
+的 PC 类型，如下所示 `pc, ok := usb.(PC)` 即为类型断言：
+```go
+func disconnect(usb USB) {
+    if pc, ok := usb.(PC); ok {
+        fmt.Println(pc.voltage, "v  power disconnected")
+        return
+    }
+    fmt.Println("Unknown device")
+}
+```
+
+### 空接口
+
+**空接口可以作为任何类型数据的容器**
+
+因为 Go 的接口实现规则就是无需显式声明，只要某个类型拥有该接口的所有方法签名，即
+算实现该接口，而空接口中无任何方法，则所有的结构都实现了空接口，这个空接口就相当
+于其他语言中最顶层的 Object 对象：
+```go
+type empty interface {
+}
+```
+
+用上面的 disconnect 方法举例，其接收类型改为空接口，即表示可接收任何类型的数据：
+```go
+func disconnect(usb interface{}) {
+    if pc, ok := usb.(PC); ok {
+        fmt.Println(pc.voltage, "v  power disconnected")
+        return
+    }
+    fmt.Println("Unknown device")
+}
+```
+
+### Type Switch
+
+若接收类型改为空接口，则类型断言更适合 type switch：
+```go
+func disconnect(usb interface{}) {
+    switch v := usb.(type) {
+        case PC:
+            fmt.Println(v.voltage, "v  power disconnected")
+        default:
+            fmt.Println("unknown device")
+    }
+}
+```
+
+注意上面的 type switch，`usb.(type)` 必须放在 switch 里，否则报错： `use of
+.(type) outside type switch`，下面这样使用是不行的：
+```go
+    switch v := usb.(type); v {
+```
+这样输出也不行：
+```go
+    fmt.Println(usb.(type))
+```
+
+通过类型断言的 `ok pattern` 可以判断接口中的数据类型
+
+使用 `type switch` 则可针对空接口进行比较全面的类型判断
+
+### 接口转换
+
+接口也是一种类型，也可以进行转换，但只能结构 Teacher 向接口 Person 转，前提是
+Teacher 实现了 Person 的所有方法：
+```go
+type USBPower interface {
+    powerConnect() string
+}
+
+type PC struct {
+    voltage int
+}
+
+func (p PC) powerConnect() string{
+    return "pc is plugged " + strconv.Itoa(p.voltage) + "v power"
+}
+
+func main() {
+    var p PC
+    p = PC{5}
+
+    var r USBPower
+    r = USBPower(p)
+    fmt.Println(r.powerConnect())
+}
+```
+
+注意，上面的操作是将对象赋值给接口，此时会发生拷贝，而接口内部存储的是指向这个复
+制品的指针，既无法修改复制品的状态，也无法获取指针
+```go
+func main(){
+    var p PC
+    p = PC{5}
+
+    var r USBPower
+    r = USBPower(p)                 // 这里是个复制品
+    fmt.Println(r.powerConnect())
+
+    p.voltage = 10
+    fmt.Println(r.powerConnect())
+}
+
+// output
+pc is plugged 5v power
+pc is plugged 5v power
+```
+
+### 接口 nil
+
+只有当接口存储的类型和对象都为 nil 时，接口才等于 nil
+```go
+func main(){
+    var f interface{}
+    fmt.Println(f == nil)
+
+    var i *int = nil
+    f = i
+    fmt.Println(f == nil)
+}
+
+// output
+true
+false
+```
+
+### 匿名字段方法
+
+接口同样支持匿名字段方法
+
+和调用结构方法不同，接口调用不会做receiver的自动转换，方法集的问题 ???
+
+接口也可实现类似OOP中的多态
+
+
+## reflection 反射
+
+反射可大大提高程序的灵活性，使得 interface{} 有更大的发挥余地
+反射使用 TypeOf 和 ValueOf 函数从接口中获取目标对象信息
+反射会将匿名字段作为独立字段（匿名字段本质）
+想要利用反射修改对象状态，前提是 interface.data 是 settable，
+即 pointer-interface
+- 通过反射可以“动态”调用方法
+
+## concurrency 并发
+
+很多人都是冲着 Go 大肆宣扬的高并发而忍不住跃跃欲试，但其实从
+源码的解析来看，goroutine 只是由官方实现的超级“线程池”而已。
+不过话说回来，每个实例 4-5KB 的栈内存占用和由于实现机制而大幅
+减少的创建和销毁开销，是制造 Go 号称的高并发的根本原因。另外，
+goroutine 的简单易用，也在语言层面上给予了开发者巨大的便利。
+
+并发不是并行：Concurrency Is Not Parallelism
+并发主要由切换时间片来实现“同时”运行，在并行则是直接利用
+多核实现多线程的运行，但 Go 可以设置使用核数，以发挥多核计算机
+的能力。
+
+Goroutine 奉行通过通信来共享内存，而不是共享内存来通信。
+
+## Channel
+
+Channel 是 goroutine 沟通的桥梁，大都是阻塞同步的
+通过 make 创建，close 关闭
+Channel 是引用类型
+可以使用 for range 来迭代不断操作 channel
+可以设置单向或双向通道
+可以设置缓存大小，在未被填满前不会发生阻塞
+
+### Select
+
+可处理一个或多个 channel 的发送与接收
+同时有多个可用的 channel时按随机顺序处理
+可用空的 select 来阻塞 main 函数
+可设置超时
+
+
