@@ -1986,6 +1986,113 @@ false
 即 pointer-interface
 - 通过反射可以“动态”调用方法
 
+```go
+import (
+	"fmt"
+    "reflect"
+)
+
+type User struct {
+    id int          // reflect 包读取这个包的字段，则遵循可见性规则
+                    // 这里改为小写字母开头，则读取非导出字段会报错
+                    // panic: reflect.Value.Interface: cannot return value
+                    // obtained from unexported field or method
+    Name string
+    Age int
+}
+
+func (u User) Say() { // 这里的方法名改为小写字母开头，reflect 遍历读取时不报错
+    fmt.Println(u.Name, "say hello")
+}
+
+func (u User) Run() {
+    fmt.Println(u.Name, "is running")
+}
+
+func main() {
+    user := User{12, "shen", 30}
+    info(user)
+    info(&user)
+}
+
+func info(t interface{}) {
+    o := reflect.TypeOf(t)
+    fmt.Println("Type: ", o.Name())
+
+    // 防止传入类型错误
+    // 像 info(&user) 这种调用方法，reflect 会报错
+    if k := o.Kind(); k != reflect.Struct {
+        fmt.Println("Wrong Type")
+        return
+    }
+
+    v := reflect.ValueOf(t)
+    fmt.Println("Field Values: ", v)
+
+    for i:=0; i<o.NumField(); i++ {
+        fmt.Println("Field Name: ", o.Field(i).Name, "Field Type: ", o.Field(i).Type, "Field Value: ", v.Field(i).Interface())
+    }
+
+    for i:=0; i<o.NumMethod(); i++ {
+        fmt.Println("Method Name: ", o.Method(i).Name, "Method Type: ", o.Method(i).Type)
+    }
+}
+
+//output
+Type:  User
+Field Values:  {12 shen 30}
+Field Name:  Id Field Type:  int Field Value:  12
+Field Name:  Name Field Type:  string Field Value:  shen
+Field Name:  Age Field Type:  int Field Value:  30
+Method Name:  Run Method Type:  func(main.User)
+Method Name:  Say Method Type:  func(main.User)
+Type:
+Wrong Type
+```
+
+### 嵌入结构的反射
+
+反射通过索引获取匿名嵌入结构
+```go
+type User struct {
+    Id int
+    Name string
+    Age int
+}
+
+type Manager struct {
+    User
+    title string
+}
+
+func main() {
+    m := Manager{User:User{12, "shen", 30}, title:"manager"}
+    t := reflect.TypeOf(m)
+
+    fmt.Printf("%#v\n", t.Field(0))
+    fmt.Printf("%#v\n", t.FieldByIndex([]int{0, 0})) // 0,0 表示 Manager 的第一
+                                                     // 个成员的第一个成员
+}
+
+//output
+reflect.StructField{Name:"User", PkgPath:"", Type:(*reflect.rtype)(0x4c0660), Tag:"", Offset:0x0, Index:[]int{0}, Anonymous:true}
+reflect.StructField{Name:"Id", PkgPath:"", Type:(*reflect.rtype)(0x4ae7c0), Tag:"", Offset:0x0, Index:[]int{0}, Anonymous:false}
+```
+
+### 通过反射修改值
+
+```go
+x := 123
+v := reflect.ValueOf(&x)
+v.Elem().SetInt(999)
+fmt.Println(x)
+
+//output
+999
+```
+
+00:19:00
+
 ## concurrency 并发
 
 很多人都是冲着 Go 大肆宣扬的高并发而忍不住跃跃欲试，但其实从
@@ -2000,6 +2107,96 @@ goroutine 的简单易用，也在语言层面上给予了开发者巨大的便�
 的能力。
 
 Goroutine 奉行通过通信来共享内存，而不是共享内存来通信。
+
+使用 go 创建一个 GoRoutine
+```go
+func main() {
+   go LetsGo()
+}
+
+func LetsGo() {
+    fmt.Println("lets go,lets do it")
+}
+```
+运行上面的代码可以发现，去掉 go 之后会正常输出，加上 go 之后则没有输出，这是因为
+go 语句创建了一个 GoRoutine，则 LetsGo 在新创建的线程中运行，而 main 函数则在
+LetsGo 输出之前就结束掉了，程序退出了
+
+可以让 main 程序暂停运行几秒，等待另一个线程的 LetsGo 输出：
+```go
+import (
+	"fmt"
+    "time"
+)
+
+func main() {
+   go LetsGo()
+   time.Sleep(2 * time.Second)  // 这里最好不要直接写 2，而是用 time 给的单位
+                               // time.Second 乘上你要的秒数
+}
+
+func LetsGo() {
+    fmt.Println("lets go,lets do it")
+}
+```
+
+但这样通过在暂停主程序执行的方法不完美，正确的方法应该是 LetsGo 运行完后告诉
+main 函数，main 函数接到通知后再退出，这就是 channel 的作用，即让两者可以通信
+，使用 make 创建 channel：`make(chan int)`, int 代表要存储的数据类型，注意中间没
+有逗号：
+```go
+var c chan bool         // chan 类型变量声明，后面必须有要存储的数据类型，如 bool
+
+func main() {
+    c = make(chan bool) // 注意这里没有逗号
+    go LetsGo()
+    <- c
+}
+
+func LetsGo() {
+    fmt.Println("lets go,lets do it")
+    c <- true
+}
+```
+
+使用匿名方法可以简化上面代码：
+```go
+func main() {
+    c := make(chan bool)
+    go func() {
+        fmt.Println("lets go,lets do it")
+        c <- true
+        // close(c)     执行完主程序退出，可以不关闭
+    }()
+    <-c
+}
+```
+
+??? 什么情况下
+使用 for range 迭代读取 channel 的值：
+```go
+func main() {
+    c := make(chan bool)
+    go func() {
+        fmt.Println("lets go,lets do it")
+        c <- true
+        close(c)    // 必须关闭，否则提示 all goroutines are asleep - deadlock!
+    }()
+
+    for v := range c {
+        fmt.Println(v)
+    }
+}
+```
+
+有缓冲的先放后取
+无缓冲的先取后放
+
+有缓存的 channel 是异步的，发送方会一直阻塞直到数据被拷贝到缓冲区；如果缓冲区已
+满，则发送方只能在接收方取走数据后才能从阻塞状态恢复。
+
+无缓存的 channel 是同步阻塞的，接收方会一直阻塞直到有数据到来，发送方会一直阻塞
+直到接收方将数据取出。
 
 ## Channel
 
