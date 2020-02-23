@@ -28,3 +28,4 @@ Vim 中运行 `:version` 查看是否有 `+python/dyn`，`+python3/dyn`
 `:py import sys; print(sys.version)`
 
 `:py3 import sys; print(sys.version)`
+

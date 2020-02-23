@@ -2108,7 +2108,7 @@ goroutine 的简单易用，也在语言层面上给予了开发者巨大的便�
 
 Goroutine 奉行通过通信来共享内存，而不是共享内存来通信。
 
-使用 go 创建一个 GoRoutine
+主协程先退出，导致子协程还没来得及执行就退出：
 ```go
 func main() {
    go LetsGo()
@@ -2119,8 +2119,8 @@ func LetsGo() {
 }
 ```
 运行上面的代码可以发现，去掉 go 之后会正常输出，加上 go 之后则没有输出，这是因为
-go 语句创建了一个 GoRoutine，则 LetsGo 在新创建的线程中运行，而 main 函数则在
-LetsGo 输出之前就结束掉了，程序退出了
+go 语句创建了一个子协程 GoRoutine，则 LetsGo 在新创建的协程中运行，而 main 函数所
+在的主协程在调用 LetsGo 之后马上就结束退出了，则 LetsGo 所在的子协程也会立即结束
 
 可以让 main 程序暂停运行几秒，等待另一个线程的 LetsGo 输出：
 ```go
@@ -2138,6 +2138,11 @@ func main() {
 func LetsGo() {
     fmt.Println("lets go,lets do it")
 }
+```
+
+或者 main 程序让出自己的时间片，让子协程先执行完，然后主协程再执行：
+```go
+
 ```
 
 但这样通过在暂停主程序执行的方法不完美，正确的方法应该是 LetsGo 运行完后告诉
@@ -2189,6 +2194,21 @@ func main() {
 }
 ```
 
+### 缓冲
+
+阻塞: 在执行过程中暂停，以等待某个条件的触发，我们就称之为阻塞
+
+Receivers always block until there is data to receive.
+无论是否有缓冲，没有数据可接收时，接收方总是在等待接收数据
+
+If the channel is unbuffered, the sender blocks until the receiver has received the value.
+无缓冲 channel，发送方总是在等待接收方接收数据。
+
+If the channel has a buffer, the sender blocks only until the value has been copied to the buffer; 
+if the buffer is full, this means waiting until some receiver has retrieved a value.
+有缓冲 channel，发送方总是在等待数据被复制到缓冲区，如果缓冲区满了，则等待某个接收方取走一个数据。
+
+
 有缓冲的先放后取
 无缓冲的先取后放
 
@@ -2213,5 +2233,3 @@ Channel 是引用类型
 同时有多个可用的 channel时按随机顺序处理
 可用空的 select 来阻塞 main 函数
 可设置超时
-
-

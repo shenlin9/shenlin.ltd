@@ -23,7 +23,7 @@ cinst -y neovim
 
 linux 位置：`$HOME\.config\nvim\init.vim`
 
-Windows 位置：`$LOCALAPPDATA\nvim\init.vim`
+Windows 位置：`~\APPDATA\LOCAL\nvim\init.vim`
 
 ```
 :echo $LOCALAPPDATA\nvim\init.vim

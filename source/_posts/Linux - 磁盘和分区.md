@@ -58,3 +58,5 @@ sudo lvextend -L+20G /dev/vg/home
 
 
 有100M的未分配空间
+
+
