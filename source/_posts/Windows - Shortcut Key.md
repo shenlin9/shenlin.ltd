@@ -23,7 +23,10 @@ Windows Shortcut Key
 
 - [Win] + Print Screen : 直接截屏并保存到图片文件夹
 
-- [Win] + A ：打开通知中心
-- [Win] + I ：打开 Windows 设置
-- [Win] + K ：打开搜索无线设备，如蓝牙耳机
+- [Win] + a：打开通知中心
+- [Win] + i：打开 Windows 设置
+- [Win] + k：打开搜索无线设备，如蓝牙耳机
+- [Win] + v：打开剪贴板历史
+- [Win] + s：打开 Widows 搜索
+
 - Ctrl + Shift + Esc ：任务管理器

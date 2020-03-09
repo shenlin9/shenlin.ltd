@@ -8,6 +8,13 @@ vim 的基本设置和基础操作
 
 <!--more-->
 
+## vim 
+
+```bash
+$ vim -y # 进入插入模式
+$ vim -R # 只读 
+```
+
 ## linebreak, breakat, breakindent, showbreak, wrap
 
 linebreak 只影响文件的显示方式，不影响其内容。

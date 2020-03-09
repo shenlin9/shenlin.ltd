@@ -203,3 +203,54 @@ DllCall("PowrProf\SetSuspendState", "Int", 0, "Int", 0, "Int", 0)
 ```
 https://superuser.com/questions/42124/how-can-i-put-the-computer-to-sleep-from-command-prompt-run-menu
 
+## 按键序列
+
+```autohotkey
+; 先按左 Contrl 再输入两个字符后触发
+LControl & F1::return  ; Make left-control a prefix by using it in front of "&" at least once.
+LControl::
+Input, OutputVar, L2
+MsgBox %OutputVar%
+return
+
+; 按键序列，先按 
+g & F1::return
+g::
+Input, OutputVar, L2
+MsgBox %OutputVar%
+return
+
+; 同时按下 a 和 k
+a & k::MsgBox You press a and k same time
+$a::Send, a ;避免无法输入 a
+
+; 按键序列，自动触发
+; 输入 @shen 后自动替换为邮件地址
+:*:@me::shenlin1970@gmail.com
+
+; 按键序列，空格触发
+::btw::
+MsgBox, You input btw
+return
+
+
+;实现 Ctrl + e + c 这样的效果
+;https://superuser.com/questions/724653/how-do-i-create-a-hotkey-for-a-sequence-of-inputs-while-holding-ctrl-e-g-ctrl/725303#725303
+~$Ctrl UP::
+    ChordIsBroken := True
+    Return
+^e::
+    ChordIsBroken := False
+    Input, OutputVar, L1 M
+    If (!ChordIsBroken && Asc(OutputVar) = 3)
+    {
+        MsgBox "Hello, World!"
+    }
+    Else
+    {
+        SendInput %OutputVar%
+    }
+    Return
+
+$^e::
+```

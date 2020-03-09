@@ -7,13 +7,40 @@ tags:
   - FHS
 ---
 
-FHS : Filesystem Hierarchy Standard 文件系统层次化标准
-
-https://zh.wikipedia.org/wiki/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E6%A0%87%E5%87%86#cite_ref-11
-http://www.pathname.com/fhs/pub/fhs-2.3.html
-http://www.pathname.com/fhs/
+FHS、LFH、FSSTND
 
 <!--more-->
+
+## FSSTND、FHS 历史
+
+FSSTND: File System STaNDard            文件系统标准
+   FHS: Filesystem Hierarchy Standard   文件系统层次结构标准
+
+简单来说，FSSTND 是 FHS 的前身，FSSTND 1.2 的下一个版本，改名为 FHS 2.0:
+* 1994 年发布，FSSTND 1.0，专门针对 Linux 的文件系统层次化标准，
+* 1995 年发布，FSSTND 1.2
+* 1997 年发布，FHS 2.0，此时不仅版本升级，而且 FSSTND 名称终结，原因是：
+    * 新标准不再只针对 Linux，而是更加全面的解决其他类Unix系统目录层次结构普遍存在的问题
+    * 为了适应标准范围的扩充，标准的名称修改为 FHS 文件系统层次结构标准。
+
+### LFH
+
+Linux Filesystem Hierarchy
+https://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/index.html
+
+文章里的 FSSTND v2.3 final (January 29, 2004)，应该是 FHS v2.3
+
+LFH 应该是基于 FHS，针对 Linux 的规范描述???
+
+## FHS
+
+定义了 Linux 发行版的目录结构和目录的内容
+
+由 Linux 基金会制定，最新版本 3.0，发布于 2015 年
+
+https://zh.wikipedia.org/wiki/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E6%A0%87%E5%87%86#cite_ref-11
+https://refspecs.linuxfoundation.org/FHS_3.0/fhs-3.0.html
+http://www.pathname.com/fhs/
 
 因为Linux的开发人员实在太多了，如果每个人都使用自己的目录配置方法，那么将可能会带来很多管理问题。你能想象，你进入一个企业之后，所接触到的Linux目录配置方法竟然跟你以前学的完全不同吗？所以，后来就有所谓的文件系统层次标准(Filesystem Hierarchy Standard，FHS)出台。
 
@@ -61,6 +88,26 @@ cd ../var/log(relative)
 
 提示:root在Linux里面的意义很多。如果从“账号”的角度来看，root指“系统管理员”身份，如果以“目录”的角度来看，root指的是根目录，就是/ 。要特别注意。
 
+## FHS目录配置下，常见的几个问题及解答
+
+请说明/bin与/usr/bin目录所放置的执行文件有何不同之处？
+　　　/bin主要放置在开机时，以及进入单人维护模式后还能够被使用的指令，至于/usr/bin则是大部分软件提供的指令放置处。
+
+请说明/bin与/sbin目录所放置的执行文件有何不同之处？
+　　　/bin放置的是一般用户惯用的指令，至于/sbin则是系统管理员才会使用到的指令。不过/bin是/sbin都与开机、单人维护模式有关。更多的执行档会被放置到/usr/bin　　　　　　　及/usr/sbin下。
+
+哪几个目录不能够与根目录放置到不同的partition中，并说明该目录所放置的数据为何？
+/etc：配置文件
+/bin：开机及单人维护模式下，一般用户可以使用的指令
+/sbin：开机及单人维护模式下，系统管理员可以使用的指令
+/lib：函式库
+/dev：装置及接口设备档案
+说明为何根目录要小一点比较好？另外在分割时，为什么/home，/usr，/var，/tmp最好与根目录放到不同的分割槽？试说明可能的原因为何（由目录放置数据的内容谈起）？
+　　　根据FHS的说明，越小的可以放置的较为集中且读取频率较不频繁，可避免较多的错误。至于/home(用户家目录)，/usr(软件资源)，/var(变动幅度较大的数据)，/tmp(系统　　　暂存，数据莫名)中，因为数据量较大或者是读取频率较高，或是不明的使用情况较多，因此建议不要与根目录放在一起，也会有助于系统安全。
+
+早起的Unix系统文件名最多允许14个字符，而新的Unix与Linux系统中，文件名最多可以容许几个字符？
+　　　由于使用Ext2/Ext3文件系统，单一档名可达255字符，完整文件名（包含路径）可达4096个字符。
+
 ## 目录
 
 ### etc
@@ -72,7 +119,6 @@ cd ../var/log(relative)
 
 Optional application software packages
 
-http://baike.baidu.com/item/FHS
 http://www.cnblogs.com/lifeinsmile/p/4280223.html
 http://www.cnblogs.com/happyframework/p/4480228.html
 
@@ -173,3 +219,5 @@ http://www.cnblogs.com/happyframework/p/4480228.html
 /usr                Unix Shared Resources
                     最初的含义就是 user，是 Unix 系统是用来存放用户家目录的，即相当于现在的 /home 目录，
                     但现在用来存放共享的可执行文件、库
+
+https://zhuanlan.zhihu.com/p/34712557

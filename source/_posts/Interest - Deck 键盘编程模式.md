@@ -32,3 +32,15 @@ fn+f1~f7为多媒体按键
 
 
 fn+f8锁win
+
+Deck Francium Lite 87N 的键帽采用二色成型 PBT 加热升华印字工艺，这个二色成型的工艺是将两个颜色不同的塑料成型为一个键帽，可以令键帽有不褪色的特性；而热升华印字工艺也同样有不褪色的特性，这使得 Deck Francium Lite 的键帽变得十分耐用。
+
+Deck Francium Lite 87N 还支持宏编程，其内置了 RAM 芯片，能够对每个按键都进行 64 键的编程，这对于发烧友玩家来说十分重要。另外一个对游戏玩家比较有用的设计则是全键无冲了，尽管一般来说做到 6 键无冲已经足够，但 Deck Francium Lite 87N 还是将这一设计加入了。
+
+个别功能键里，比如 Caps、F10 等键位，是有配备 LED 背光的，并且会从键帽中一个透光的横条中显示出来蓝光，至于其他的键位，虽然没有 LED 背光，但预留了灯位，这也是方便玩家进行后期的 DIY。
+
+原文網址：https://kknews.cc/design/rpear.html
+
+原文網址：https://kknews.cc/design/rpear.html
+
+原文網址：https://kknews.cc/design/rpear.html

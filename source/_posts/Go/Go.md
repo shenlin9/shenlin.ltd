@@ -123,7 +123,23 @@ set http_proxy=socks5://127.0.0.1:1087 && go get -u -v golang.org/x/tools/cmd/go
 godoc -http=:8080
 ```
 
-## 变量组
+## 变量
+
+变量声明：
+```go
+var m bool
+var i int = 10
+var s string = "abc"
+```
+* 使用 var 关键字定义变量
+* 变量名在前，变量类型在后，好处之一就是可以多个同类型变量同时声明
+
+* 声明的变量必须使用，否则报错
+```go
+var i,j,k int = 3,4,5
+```
+
+### 变量组
 
 函数体内不可进行一组变量的声明
 ```go
@@ -2207,7 +2223,6 @@ If the channel is unbuffered, the sender blocks until the receiver has received 
 If the channel has a buffer, the sender blocks only until the value has been copied to the buffer; 
 if the buffer is full, this means waiting until some receiver has retrieved a value.
 有缓冲 channel，发送方总是在等待数据被复制到缓冲区，如果缓冲区满了，则等待某个接收方取走一个数据。
-
 
 有缓冲的先放后取
 无缓冲的先取后放
