@@ -254,3 +254,67 @@ return
 
 $^e::
 ```
+
+速盘急速版
+```autohotkey
+; ================速盘急速版破解，自动更改日期和开始下载=================
+
+; ------今天实际日期--------
+Today = %A_YYYY%/%A_MM%/%A_DD%
+
+; ------昨天的日期--------
+Yesterday  = %A_Now%   ; 必须为 YYYYMMDDHH24MISS 格式才能使用下面的函数
+EnvAdd, Yesterday, -1, days
+FormatTime, Yesterday, %Yesterday%, ShortDate
+
+TheDate = %Today%
+
+; ------设置系统日期--------
+SetDate()
+{
+    global
+
+    if (TheDate = Today)
+        TheDate = %Yesterday%
+    else
+        TheDate = %Today%
+
+    RunWait, %comspec% /c date %TheDate%,,Hide
+    return
+}
+
+; ------启动程序自动开始下载--------
+DownLoad()
+{
+    SetDate()
+
+    Run,supan
+    WinWait,速盘 - 极速版
+    Sleep,100
+    Send {Click 650,123}
+    Send {Click 1493,239}
+    Send !{TAB}
+    Sleep,70000
+
+    IfWinExist,速盘 - 极速版
+    {
+        WinActivate
+        WinClose
+        Sleep,500
+        IfWinExist, Confirm
+            Send {Enter}
+        Sleep,1500
+        DownLoad()
+    }
+    return
+}
+
+;^\::DownLoad()
+```
+
+只按 RWin 键则弹出运行框，但和其他键组合则不弹运行对话框
+Make RWin a prefix by using it in front of "&" at least once.
+```autohotkey
+RWin & F1::return
+RWin::#r
+```
