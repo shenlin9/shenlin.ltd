@@ -318,3 +318,16 @@ Make RWin a prefix by using it in front of "&" at least once.
 RWin & F1::return
 RWin::#r
 ```
+
+双击ctrl
+```autohotkey
+;=============================test=========================================
+
+~LControl::
+if (A_PriorHotkey = "~LControl" and A_TimeSincePriorHotkey < 500)
+{
+    ; Too much time between presses, so this isn't a double-press.
+    Send, #s
+    return
+}
+```
