@@ -32,7 +32,7 @@ git 是一个 DVCS.
 Git 更像是把数据看作是对小型文件系统的一组快照。 每次你提交更新，或在 Git 中保存项目状态时，它主要对当时的全部文件制作一个快照并保存这个快照的索引。 为了高效，如果文件没有修改，Git 不再重新存储该文件，而是只保留一个链接指向之前存储的文件。 
 Git 对待数据更像是一个 快照流。
 
-![初始版本和差异](https://git-scm.com/book/en/v2/images/deltas.png)
+![初始版本和差异](https://git-scm.com/book/en/v2/images/snapshots.png)
 
 #### 几乎所有操作都是本地执行
 

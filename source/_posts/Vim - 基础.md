@@ -15,7 +15,7 @@ $ vim -y # 进入插入模式
 $ vim -R # 只读 
 ```
 
-## linebreak, breakat, breakindent, showbreak, wrap
+## linebreak, breakat, breakindent, showbreak
 
 linebreak 只影响文件的显示方式，不影响其内容。
 ```vim
@@ -25,7 +25,32 @@ set nolinebreak
 当启用 `linebreak` 后，会在 `breakat` 设定的字符处换行显示（但不插入 `<EOL>`），而不是在屏幕最后一个
 字符处换行显示
 
-## textwidth, wrapmargin
+## textwidth, wrapmargin, wrap
+
+**textwidth**
+
+设定一行文本的宽度，超过此设定宽度后，英文在输入空格时将自动插入换行，中文不需要空格也会换行。
+
+默认值是 0，表示不会自动换行
+
+**wrapmargin**
+
+设定距离屏幕右侧多少文本宽度时，自动插入换行符。
+
+即此设定和屏幕宽度有关，相当于：wrapmargin = 屏幕宽度 - textwidth
+
+**textwidth 和 wrapmargin**
+
+一个设定从左侧开始的固定文本宽度，一个设定距离右侧屏幕边缘的宽度，当两个值都被设定时，将采用 textwidth 的值。
+
+**wrap**
+
+textwidth 和 wrapmargin 两个选项都更改了缓冲区的文本内容，即是真的插入了换行符，
+
+而此选项并不真正插入换行符，只是在文本超过窗口宽度时，改为换行显示，若关闭此选项
+，则超过窗口的文本也不会换行，需使用光标移动查看。
+
+布尔值，默认开启
 
 ## filetype
 

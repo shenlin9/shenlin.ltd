@@ -85,7 +85,7 @@ $ mv hooks/post-update.sample hooks/post-update
 $ chmod a+x hooks/post-update
 ```
 *  post-update 挂钩会默认执行合适的命令（git update-server-info），来确保通过 HTTP 的获取和克隆操作正常工作。 
-*  在你通过 SSH 向版本库推送之后执行git update-server-info命令
+*  在你通过 SSH 向版本库推送之后执行 `git update-server-info` 命令
 *  然后其他人通过命令克隆：
 ```
 $ git clone https://example.com/gitproject.git
