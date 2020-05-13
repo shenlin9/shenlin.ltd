@@ -48,6 +48,30 @@ UEFI : Unified Extensible Firmware Interface，统一可扩展固件接口
 
 UEFI是BIOS的升级替代方案。
 
+Linux 下相关的 UEFI 命令：
+
+1. 若是启用 uefi 的系统，则下列位置会列出文件，否则若为 legacy bios 则没有文件：
+```
+ls /sys/firmware/efi
+```
+
+2. uefi 中的启动顺序
+```
+sudo efibootmgr
+```
+
+## BIOS 中相关设置
+
+Secure Boot：安全启动，启用此设置后，当电脑启动时，固件会检查每个启动软件的签名，包括 UEFI 固件驱动
+程序（也称为选项 ROM）、EFI 应用程序和操作系统。其本意是保证安全，但也导致了其他问题，首先这需要主板内置安全启动数据库，记录允许启动的操作系统的密钥，
+由于Windows的市场地位，几乎所有厂商的设备都会预置 Windows 的密钥以确保自己的设备支持安全启动 Windows 。然而，基于 Linux 内核等的操作系统的密钥显然是不可能被普遍内置的，因此，引导这类操作系统需要关闭安全启动。
+
+Fedora、Ubuntu 等通过缴费的方式加入了自己的签名因此可以直接安装，不用关闭安全启动
+
+CSM support：Compatibility Support Module，兼容支持模块，是为了兼容部分不支持
+UEFI 而只能在 Legacy 模式下工作的老设备而保留，以及不支持或者不能完全支持 UEFI 
+的操作系统而设立的，例如 Win7，关闭可以加快自检速度。
+
 ## MBR
 
 ## GPT

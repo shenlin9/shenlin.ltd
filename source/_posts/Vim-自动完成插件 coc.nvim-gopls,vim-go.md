@@ -232,3 +232,13 @@ redhat 系 linux 可执行：
 ```
 $ sudo dnf install ripgrep
 ```
+
+## 问题
+
+coc.nvim 提示不能下载：we encountered an issue downloading the language server
+
+若是使用了代理，则需要 `coc-settings.json` 增加设置：
+
+    "http.proxy": "http://127.0.0.1:1088"
+
+注意 http 代理前面有 `http://`
