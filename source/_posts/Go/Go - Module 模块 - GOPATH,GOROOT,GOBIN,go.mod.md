@@ -25,7 +25,160 @@ Go 模块是一些相关包 (package) 的集合，模块也是交换源代码的
 
 ## GOPATH
 
+Go 路径用于解析 import 语句，由 `go/build` 包实现。
 
+`GOPATH` 环境变量列出了查找 Go 代码的位置：
+* Unix 系统中，该值是冒号分隔的字符串
+* Windows 系统中，该值是分号分隔的字符串
+
+如果未设置环境变量 `GOPATH`，则其默认值为用户主目录中名为 `go` 的子目录(除非此目
+录中包含 Go 发行版)：
+* Unix 系统中为 `$HOME/go`
+* Windows 系统中为 `%USERPROFILE%\go`
+
+使用命令 `go env GOPATH` 可以查看当前 GOPATH 的值。
+
+GOPATH 中列出的每个目录，必须具有规定的结构：
+* src
+* pkg
+* bin
+
+**src**
+
+src 目录包含源代码src 下的路径确定了导入路径或可执行文件名称。
+
+**pkg**
+
+pkg 目录包含已安装的包对象，在 Go 的目录树中，每个操作系统和架构的组合对都有自己
+的 pkg 子目录，即 `pkg/GOOS_GOARCH`
+
+如果 GOPATH 的目录列表中有一个 DIR 目录，DIR 目录下有一个源代码目录
+`DIR/src/foo/bar`，则其导入路径为 `"foo/bar"`，其编译后的包被安装到了
+`"DIR/pkg/GOOS_GOARCH/foo/bar.a"`
+
+**bin**
+
+bin 目录包含已编译的命令。
+
+每个已编译的命令都使用它的源代码目录来命名，但不是使用整个完整路径，而是最后一级
+目录名。例如：
+
+    源代码目录为            `DIR/src/foo/quux`，
+    则编译后的命令被安装到  `DIR/bin/quux`，
+    而不是                  `DIR/bin/foo/quux`
+
+前缀 `foo/` 被去除，这样可以通过把 `DIR/bin` 目录添加到系统环境变量 `PATH` 中来
+获取已安装的命令。
+
+如果设置了环境变量 GOBIN，则编译后的命令会被安装到 GOBIN 指定的目录，而不是 `DIR
+/bin` 目录。
+
+GOBIN 指定的目录必须是绝对路径。
+
+下面是一个目录结构的例子：
+
+    GOPATH=/home/user/go
+
+    /home/user/go/
+        src/
+            foo/
+                bar/               (go code in package bar)
+                    x.go
+                quux/              (go code in package main)
+                    y.go
+        bin/
+            quux                   (installed command)
+        pkg/
+            linux_amd64/
+                foo/
+                    bar.a          (installed package object)
+
+Go 会搜索 GOPATH 列表中的每个目录来查找源代码，但是新包总是下载保存到列表中的第
+一个目录。
+
+See https://golang.org/doc/code.html for an example.
+
+## GOPATH and Modules
+
+当使用模块时，GOPATH 就不再被用于解决导入的路径问题。
+
+但是 GOPATH 仍然被用来存储下载的源代码(位于 `GOPATH/pkg/mod` 目录) 和编译后的命
+令(位于 `GOPATH/bin`)
+
+## Internal Directories
+
+Go 的目录结构中一个特殊的目录是 `internal`，位于 `internal` 和其子目录中的代码，
+只有 `internal` 目录的父目下的代码才可以调用，即只有以 `internal` 目录的父目为根
+的代码才可以调用 `internal`。
+
+这是上面目录结构的扩展版本：
+
+    /home/user/go/
+        src/
+            crash/
+                bang/              (go code in package bang)
+                    b.go
+            foo/                   (go code in package foo)
+                f.go
+                bar/               (go code in package bar)
+                    x.go
+                internal/
+                    baz/           (go code in package baz)
+                        z.go
+                quux/              (go code in package main)
+                    y.go
+
+`z.go` 的导入路径为 `"foo/internal/baz"`，但是这行导入语句只能出现在 foo 的目录
+树源代码中，即 `foo/f.go`， `foo/bar/x.go`， `foo/quux/y.go` 可以使用这条导入语
+句，但 `crash/bang/b.go` 中不可以。
+
+See https://golang.org/s/go14internal for details.
+
+## Vendor Directories
+
+Go 1.6 可以使用外部依赖项的本地副本(local copies of external dependencies)来满足
+导入外部依赖项，通常称为供应商。
+
+和 `internal` 类似，`vendor` 下的代码只允许位于 `vendor` 父目录的目录树中的代码
+导入，但是导入路径和 `internal` 不同，`vendor` 下代码的导入路径省略前缀到 vendor
+目录(vendor 目录本身也省略)，即可理解为 `vendor` 下代码的导入路径是相对于 `vendor`
+目录的，而 `internal` 导入路径是相对于 `src` 目录的。
+
+例子：
+
+    /home/user/go/
+        src/
+            crash/
+                bang/              (go code in package bang)
+                    b.go
+            foo/                   (go code in package foo)
+                f.go
+                bar/               (go code in package bar)
+                    x.go
+                vendor/
+                    crash/
+                        bang/      (go code in package bang)
+                            b.go
+                    baz/           (go code in package baz)
+                        z.go
+                quux/              (go code in package main)
+                    y.go
+
+和 internal 同样的可见性规则，但是 `z.go` 代码可被导入为 `"baz"`，即相对于
+`vendor` 目录，而不是相对于 `src` 的 `"foo/vendor/baz"` 目录。
+
+Code in vendor directories deeper in the source tree shadows code in higher directories. Within the subtree rooted at foo, an import of "crash/bang" resolves to "foo/vendor/crash/bang", not the top-level "crash/bang".
+
+`vendor` 目录中的代码不再进行导入路径检查。(see 'go help importpath').
+
+When 'go get' checks out or updates a git repository, it now also updates submodules.
+使用 `go get` 命令检出或更新一个版本库时，现在也会更新子模块。
+
+Vendor directories do not affect the placement of new repositories being checked out for the first time by 'go get': those are always placed in the main GOPATH, never in a vendor subtree.
+Vendor 目录不影响 `go get` 首次检出的新代码库的位置，它们总是放置到 GOPATH 中，从
+不会检出到 vendor 子目录。
+
+See https://golang.org/s/go15vendor for details.
 
 ## 模块支持
 
@@ -166,16 +319,51 @@ go 命令在维护 `go.mod` 中的 `require` 语句时，会跟踪哪些依赖�
 如果直接编辑 `go.mod` 文件，类似 `go build` 和 `go list` 这样的命令会假定要进行
 升级，并自动的进行任何隐式的升级，同时同步修改 `go.mod` 中的版本号。
 
+### build flags
 
-构建标记 `-mod` 对更新和使用 `go.mod` 文件提供了更多控制：
+go 命令调用时可以使用一些构建标记(build flags)，例如 `-mod` 就是标记之一，此标
+记对更新和使用 `go.mod` 文件提供了更多控制，其取值有 3 个：
+* readonly
+* vendor
+* mod
 
-If invoked with -mod=readonly, the go command is disallowed from the implicit automatic updating of go.mod described above. Instead, it fails when any changes to go.mod are needed. This setting is most useful to check that go.mod does not need updates, such as in a continuous integration and testing system.  The "go get" command remains permitted to update go.mod even with -mod=readonly, and the "go mod" commands do not take the -mod flag (or any other build flags).
+注意：`go mod` 命令不采用任何构建标记。
 
-If invoked with -mod=vendor, the go command loads packages from the main module's vendor directory instead of downloading modules to and loading packages from the module cache. The go command assumes the vendor directory holds correct copies of dependencies, and it does not compute the set of required module versions from go.mod files. However, the go command does check that vendor/modules.txt (generated by 'go mod vendor') contains metadata consistent with go.mod.
+**-mod=readonly**
 
-If invoked with -mod=mod, the go command loads modules from the module cache even if there is a vendor directory present.
+如果 go 命令调用时使用 `-mod=readonly`，
 
-If the go command is not invoked with a -mod flag and the vendor directory is present and the "go" version in go.mod is 1.14 or higher, the go command will act as if it were invoked with -mod=vendor.
+则不允许 go 命令对 `go.mod` 文件进行上述规则的隐式更新(有个例外，就是 `go get` 
+命令不受影响仍然可以更新 `go.mod` 文件)，此项设置用于核实 `go.mod` 文件是否需要
+更新最有用，例如在连续集成和测试系统时。
+
+**-mod=vendor**
+
+如果 go 命令调用时使用 `-mod=vendor`，
+
+则 go 命令将直接从主模块的供应商目录加载包，而不是把模块下载到模块缓存，再从模块
+缓存中加载包。
+
+且 go 命令假定供应商目录包含了正确的依赖模块，不再从 `go.mod` 文件中计算依赖模块
+的版本号。
+
+但是 go 命令会检查 `vendor/modules.txt` 文件(`go mod vendor` 命令生成)中是否包含
+和 `go.mod` 中一致的的元数据。
+
+**-mod=mod**
+
+如果 go 命令调用时使用 `-mod=mod`，
+
+即使有供应商目录，go 命令也从模块缓存中加载模块。
+
+**不使用 -mod 标记**
+
+同时满足下列 3 个条件，则 go 命令的行为和使用 `-mod=vendor` 标记时一致：
+* `go.mod` 中 go 的版本大于等于 1.14
+* 调用 go 命令时没有使用 `-mod` 标记
+* 有供应商目录
+
+简单说，就是新版本的 Go 默认使用供应商目录。
 
 ## Pseudo-versions
 
@@ -359,18 +547,11 @@ HTTP response. The string "direct" may appear in the proxy list,
 to cause a direct connection to be attempted at that point in the search.
 Any proxies listed after "direct" are never consulted.
 
-The GOPRIVATE and GONOPROXY environment variables allow bypassing
-the proxy for selected modules. See 'go help module-private' for details.
+The GOPRIVATE and GONOPROXY environment variables allow bypassing the proxy for selected modules. See 'go help module-private' for details.
 
-No matter the source of the modules, the go command checks downloads against
-known checksums, to detect unexpected changes in the content of any specific
-module version from one day to the next. This check first consults the current
-module's go.sum file but falls back to the Go checksum database, controlled by
-the GOSUMDB and GONOSUMDB environment variables. See 'go help module-auth'
-for details.
+No matter the source of the modules, the go command checks downloads against known checksums, to detect unexpected changes in the content of any specific module version from one day to the next. This check first consults the current module's go.sum file but falls back to the Go checksum database, controlled by the GOSUMDB and GONOSUMDB environment variables. See 'go help module-auth' for details.
 
-See 'go help goproxy' for details about the proxy protocol and also
-the format of the cached downloaded packages.
+See 'go help goproxy' for details about the proxy protocol and also the format of the cached downloaded packages.
 
 ## Modules and vendoring
 
@@ -394,8 +575,7 @@ from the vendor directory instead of accessing the network or the local module
 cache. To explicitly enable vendoring, invoke the go command with the flag
 -mod=vendor. To disable vendoring, use the flag -mod=mod.
 
-Unlike vendoring in GOPATH, the go command ignores vendor directories in
-locations other than the main module's root directory.
+Unlike vendoring in GOPATH, the go command ignores vendor directories in locations other than the main module's root directory.
 
 ## ??
 
@@ -407,3 +587,109 @@ locations other than the main module's root directory.
 `go help mod`
 
 `go help gopath`
+
+## go.mod 文件
+
+A module version is defined by a tree of source files, with a go.mod file in its root. When the go command is run, it looks in the current directory and then successive parent directories to find the go.mod marking the root of the main (current) module.
+模块版本由根目录中带有 `go.mod` 文件的源文件树定义。
+
+运行 go 命令时，它会在当前目录中查找，然后依次向上在每一级父目录中查找 `go.mod`，以标记主（当前）模块的根目录。
+
+`go.mod` 文件：
+* `go.mod` 文件本身是面向行的，每行只包含一个指令。
+* 指令由一个动词加上后面跟着的参数组成。
+* `go.mod` 文件使用 `//` 注释，不使用 "/* */" 注释。
+
+例如：
+
+	module my/thing
+	go 1.12
+	require other/thing v1.0.2
+	require new/thing/v2 v2.3.4
+	exclude old/thing v1.2.3
+	replace bad/thing v1.4.5 => good/thing v1.4.5
+
+这些动词包括：
+
+	module      定义模块路径
+	go          设置要求的 go 版本号
+	require     设置需求的模块及其版本号或更高版本号
+	exclude     设置排除的模块及其版本号
+	replace     设置要把哪个版本的哪个模块替换为另一个模块的哪个版本号
+
+    exclude 和 replace 仅应用于主模块的 `go.mod` 文件，在依赖模块里都被忽略。
+    See https://research.swtch.com/vgo-mvs for details.
+
+就像 Go 里的导入块语句一样，多个相同的动词也可以创建一个块：
+
+	require (
+		new/thing v2.3.4
+		old/thing v1.2.3
+	)
+
+`go.mod` 文件被设计为既可以直接编辑，也可以轻松的通过程序更新，`go mod edit` 命
+令就是用于解析和编辑 `go.mod` 文件的命令行接口，主要由程序和脚本调用。
+See 'go help mod edit'.
+
+The go command automatically updates go.mod each time it uses the module graph,
+to make sure go.mod always accurately reflects reality and is properly
+formatted. For example, consider this go.mod file:
+每次 go 命令使用了模块关系图时，go 都会自动更新 `go.mod` 文件以确保 `go.mod` 准
+确的反映了实际情况和文件内容被正确的进行了格式化。
+
+        module M
+
+        require (
+                A v1
+                B v1.0.0
+                C v1.0.0
+                D v1.2.3
+                E dev
+        )
+
+        exclude D v1.2.3
+
+go 命令自动更新 `go.mod` 文件时：
+* 会将不规范的版本标识符重写为语义版本格式(semver)，因此上面的 A 的 v1 会变为
+  v1.0.0，E 的 dev 会变为 dev 分支上最新提交的伪版本，也许是
+  v0.0.0-20180523231146-b3f5c0f6e5f1。
+* 会根据排除规则(exclude)修改需求规则(require)，如上面的 `exclude D v1.2.3` 语句
+  会导致 `require` 部分使用 D 的下一个可用版本，可能是 `D v1.2.4` 或者 `D
+  v1.3.0`。
+* 会移除重复的需求，还会移除误导的需求(require)。例如，在上例中，如果 A v1.0.0 本
+  身需要 B v1.2.0 和 C v1.0.0，则 `go.mod` 文件中对 B v1.0.0 的需求有误导，因为
+  已被 A 对 B 的 v1.2.0 需求取代， `go.mod` 文件中对 C v1.0.0 的需求重复，因为 A
+  已包含同样的版本需求，所以 B 和 C 都将被移除。但是如果模块 M 包含的包直接从 B
+  或 C 导入了包，则对 B 或 C 的需求将保留，并且会更新为所使用的实际版本。
+* 会重新规范格式化 `go.mod` 文件，这样将来的机械化更改(future mechanical
+  changes)只会导致最小的变动。
+
+因为模块图(module graph)定义了导入语句的含义，任何加载包的命令都会使用和更新
+`go.mod` 文件，包括 `go build, go get, go install, go list, go test, go mod
+graph, go mod tidy, go mod why`
+
+The expected language version, set by the go directive, determines which
+language features are available when compiling the module.  Language features
+available in that version will be available for use.  Language features removed
+in earlier versions, or added in later versions, will not be available. Note
+that the language version does not affect build tags, which are determined by
+the Go release being used.
+
+go 指令设置的预期语言版本确定编译模块时哪些语言特性是可用的。该版本中可用的语言
+功能将可用。在较早版本中删除或在较新版本中添加的语言功能将不可用。请注意，语言版
+本不会影响构建标记(build tags)，该构建标记由所使用的 Go 发行版确定。
+
+> go mod graph 命令以文本形式打印出模块需求图(已应用过了替换项)，输出的每行以空
+> 格分隔两个字段：模块和此模块的依赖。
+>
+> 每个模块的描述格式为 `path@version` 的字符串，除了 main 模块没有 `@version` 后
+> 缀。
+
+> 例如：
+> $ go mod graph
+> github.com/poloxue/testmod golang.org/x/text@v0.3.2
+> github.com/poloxue/testmod rsc.io/quote/v3@v3.1.0
+> golang.org/x/text@v0.3.2 golang.org/x/tools@v0.0.0-20180917221912-90fa682c2a6e
+> rsc.io/quote/v3@v3.1.0 rsc.io/sampler@v1.3.0
+> rsc.io/sampler@v1.3.0 golang.org/x/text@v0.0.0-20170915032832-14c0d48ead0c
+
