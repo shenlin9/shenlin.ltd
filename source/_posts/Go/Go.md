@@ -330,7 +330,7 @@ func main() {
 用 var 声明变量
 ```go
 var t string
-t = hello
+t = "hello"
 
 var t string = "hello"
 
