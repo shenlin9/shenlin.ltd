@@ -361,3 +361,8 @@ UnboundLocalError	If the code using an unassigned reference gets executed.
 UnicodeError	    For a Unicode encoding or decoding error.
 ValueError	        When a function receives invalid values.
 ZeroDivisionError	If the second operand of division or modulo operation is zero.
+
+## 
+
+通常是调用函数的代码知道如何处理异常，而不是被调用函数本身知道如何处理异常。所以
+你常常会看到 raise语句在一个函数中，try 和 except 语句在调用该函数的代码中。

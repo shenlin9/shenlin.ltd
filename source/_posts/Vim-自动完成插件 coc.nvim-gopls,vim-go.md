@@ -40,7 +40,7 @@ Vim-自动完成插件 coc.nvim
 
 使用命令打开编辑用户配置文件：
 ```vim
-:CocConfig`
+:CocConfig
 ```
 
 使用命令打开编辑工作区配置文件：
@@ -109,7 +109,7 @@ let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
 ```
 
-Use coc.nvim, with the following coc-settings.json configuration:
+Use `coc.nvim`, with the following `coc-settings.json` configuration:
 ```json
   "languageserver": {
     "golang": {

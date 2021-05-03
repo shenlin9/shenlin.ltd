@@ -349,4 +349,319 @@ file.truncate(size)	Truncates the file’s size. If the optional size argument i
 file.write(string)	It writes a string to the file. And it doesn’t return any value.
 file.writelines(sequence)	Writes a sequence of strings to the file. The sequence is possibly an iterable object producing strings, typically a list of strings.
 
+## ----------------------------------------------
+
+## os.path.join
+
+windows 和 linux 的路径分隔符不同，`os.path.join` 可以自动根据系统返回路径字符串
+：
+```python
+>>> import os
+>>> os.path.join("windows", "system32")
+'windows\\system32'
+
+>>> os.path.join("c", "windows", "system32")
+'c\\windows\\system32'
+>>> os.path.join("c:", "windows", "system32")
+'c:windows\\system32'
+>>> os.path.join("c:\\windows", "system32", "dev")
+'c:\\windows\\system32\\dev'
+```
+
+## os.getcwd(), os.chdir()
+
+分别获取当前工作目录和切换当前工作目录：
+```python
+>>> import os
+>>> os.getcwd()
+'C:\\Python37'
+
+>>> os.chdir("D:\\")
+>>> os.getcwd()
+'D:\\'
+```
+虽然文件夹是目录的更新的名称，但请注意，当前工作目录（或当前目录）是标准术语，没
+有当前工作文件夹这种说法。
+
+## os.makedirs()
+
+将创建路径中的每一个文件夹，确保完整的路径名是存在的：
+```python
+>>> import os
+>>> os.makedirs("d:\\t1\\t2\\t3")
+>>> os.makedirs("d:\\t1\\t2\\t3")
+FileExistsError: [WinError 183] 当文件已存在时，无法创建该文件。: 'd:\\t1\\t2\\t3'
+```
+注意，第一遍创建成功，第二遍时因为 t3 文件夹已存在而报错。
+
+## os.path 模块
+
+os.path.abspath(path)   获取绝对路径
+```python
+>>> os.path.abspath(".")
+'D:\\t1\\t2\\t3'
+>>> os.path.abspath("t4\\t5")
+'D:\\t1\\t2\\t3\\t4\\t5'
+>>> os.path.abspath("..\\t4\\t5")
+'D:\\t1\\t2\\t4\\t5'
+```
+
+os.path.isabs() 判断是否绝对路径
+```python
+>>> os.path.isabs(".")
+False
+>>> os.path.isabs("t3")
+False
+>>> os.path.isabs("d:\\t3")
+True
+```
+
+os.path.relpath(path, start) 返回如何从 start 到 path 的相对路径的字符串
+```python
+>>> os.path.relpath("d:\\t1\\t2\\t3", "d:\\t1")
+'t2\\t3'
+>>> os.path.relpath("d:\\t1", "d:\\t1\\t2\\t3")
+'..\\..'
+```
+
+os.path.dirname(path) 返回路径中的目录名称，其实是最后一个斜杠之前的路径
+os.path.basename(path) 返回路径中的基本名称，其实是最后一个斜杠之后的路径
+这两个方法都不检测路径中的目录是否存在，以及最后一个是文件还是目录
+```python
+>>> os.path.dirname("d:\\t1\\t2\\t3\\abc.txt")
+'d:\\t1\\t2\\t3'
+>>> os.path.basename("d:\\t1\\t2\\t3\\abc.txt")
+'abc.txt'
+
+>>> os.path.dirname("d:\\t1\\t2\\t3")
+'d:\\t1\\t2'
+>>> os.path.basename("d:\\t1\\t2\\t3")
+'t3'
+
+>>> os.path.dirname("d:\\t1\\t2\\NotExists")
+'d:\\t1\\t2'
+>>> os.path.basename("d:\\t1\\t2\\NotExists")
+'NotExists'
+```
+
+os.path.split() 则获得目录名和基本名的元组:
+```python
+>>> os.path.split("d:\\t1\\t2\\t3\\abc.txt")
+('d:\\t1\\t2\\t3', 'abc.txt')
+```
+
+变量 os.path.sep 存储的是当前系统的路径分隔符：
+```python
+>>> os.path.join("windows", "system32").split(os.path.sep)
+['windows', 'system32']
+```
+
+os.path.getsize(path) 返回指定文件的大小，目录则总返回 0：
+```python
+>>> os.path.getsize("t1\\t2\\t3\\abc.txt")
+729
+>>> os.path.getsize("d:\\t1\\t2\\t3\\abc.txt")
+729
+>>> os.path.getsize("d:\\t1\\t2\\t3")
+0
+```
+
+os.listdir()
+```python
+>>> os.listdir("d:\\vimerror")
+['bandicam 2020-05-14 09-22-51-908.mp4', 'bandicam 2020-05-16 11-11-08-857.mp4', 'Snipaste_2020-05-14_10-46-03.png']
+
+>>> t = 0
+>>> for fn in os.listdir("d:\\vimerror"):
+        t += os.path.getsize("vimerror\\" + fn)
+>>> t
+1419700
+```
+
+## 检查路径有效性
+
+os.path.exists(path) 如果 path 参数所指的文件或文件夹存在，返回 True
+os.path.isfile(path) 如果 path 参数所指的是一个存在的文件，返回 True
+os.path.isdir(path)  如果 path 参数所指的是一个存在的目录，返回 True
+```python
+>>> os.path.exists("d:\\t1\\t2")
+True
+>>> os.path.isdir("d:\\t1\\t2\\t3")
+True
+>>> os.path.isdir("d:\\t1\\t2\\t3\\abc.txt")
+False
+>>> os.path.isfile("d:\\t1\\t2\\t3\\abc.txt")
+True
+```
+
+## 文本文件读写
+
+“纯文本文件”只包含基本文本字符，不包含字体、大小和颜色信息。所有其他文件都是“
+二进制文件”，诸如字处理文档、PDF、图像、电子表格和可执行程序。每种不同类型的二
+进制文件，都必须用它自己的方式来处理。
+
+当文件不存在时，通过 open() 函数获得的文件对象，执行写模式和添加模式都会自动创建
+一个新的空文件。
+
+写模式将覆写原有的文件，从头开始，就像你用一个新值覆写一个变量的值，在写模式下，
+文件在打开时就被清空了原有内容。
+```python
+>>> f = open("d:\\t1\\t2\\t3\\abc.txt", encoding="utf8")
+>>> f.read()
+"123\nabc\n你好啊"
+
+>>> f = open("d:\\t1\\t2\\t3\\abc.txt", 'w', encoding="utf8") # 已清空文件内容
+>>> f.close()
+
+>>> f = open("d:\\t1\\t2\\t3\\abc.txt", encoding="utf8")
+>>> f.read()
+''
+```
+
+文件对象在执行完 read() 或 readlines() 后，已经处于文件末尾，再读取则为空，需要
+关闭文件再打开。
+```python
+>>> f = open("d:\\t1\\t2\\t3\\abc.txt", encoding="utf8")
+>>> f.readlines()
+['123\n', 'abc\n', '你好啊']
+>>> f.read()
+''
+>>> f.close()
+```
+
+## 变量保存到文件
+
+### 使用 shelve 模块保存到二进制文件
+
+使用 shelve 模块，可以直接把 Python 的数据结构保存到二进制的 shelf 文件中，读写
+shelf 文件不需要设置读模式或写模式，因为 shelf 文件打开后既能读也能写。
+
+使用 `shelve.open()` 获得的 shelf 文件对象，其操作像字典一样：
+```python
+>>> import shelve
+
+>>> shelf_file = shelve.open("d:\\t1\\cars")
+>>> shelf_file["audi"] = ["a4", "a5", "a6"]
+>>> shelf_file["bmw"] = ["m1", "m2", "m3"]
+>>> shelf_file.close()
+```
+注意不要使用 shelve 打开文本文件，否则报错。
+上面的代码在 Windows 下会生成 3 个文件：cars.bak、cars.dat 和 cars.dir，而在
+linux 下生成 1 个文件 cars.db
+
+读取操作也像字典一样：
+```python
+>>> shelf_file = shelve.open("d:\\t1\\cars")
+>>> shelf_file["audi"]
+['a4', 'a5', 'a6']
+>>> shelf_file["bmw"]
+['m1', 'm2', 'm3']
+>>> shelf_file.close()
+```
+
+同样也有 keys， values 属性：
+```python
+>>> shelf_file = shelve.open("d:\\t1\\cars")
+
+>>> shelf_file.keys()
+KeysView(<shelve.DbfilenameShelf object at 0x0225D890>)
+>>> list(shelf_file.keys())
+['audi', 'bmw']
+
+>>> shelf_file.values()
+ValuesView(<shelve.DbfilenameShelf object at 0x0225D890>)
+>>> list(shelf_file.values())
+[['a4', 'a5', 'a6'], ['m1', 'm2', 'm3']]
+```
+
+### 用 pprint.pformat() 函数保存到文本文件
+
+pprint.pprint()函数将列表或字典中的内容“漂亮打印”到屏幕，而 pprint.pformat()函
+数将返回同样的文本字符串，但不打印输出。
+
+假定你有一个字典，保存在一个变量中，你希望保存这个变量和它的内容，以便将来使用。
+就可以利用 pprint.pformat()函数将返回的字符串，将 Python 数据类型转换为纯文本字
+符串，然后将它写入一个文本文件：
+```python
+>>> import pprint
+>>> cats = [{'name': 'Zophie', 'desc': 'chubby'}, {'name': 'Pooka', 'desc': 'fluffy'}]
+>>> pprint.pformat(cats)
+"[{'desc': 'chubby', 'name': 'Zophie'}, {'desc': 'fluffy', 'name': 'Pooka'}]"
+>>> fileObj = open('myCats.py', 'w')
+>>> fileObj.write('cats = ' + pprint.pformat(cats) + '\n')
+83
+>>> fileObj.close()
+```
+注意上面保存的是后缀为 `.py` 的文件，这是因为 pprint.pformat() 函数返回的字符串
+不仅是易于阅读的格式，同时也是语法上正确的Python 代码，直接保存为 `.py` 文件的好
+处：此时该文件就是一个可以导入的模块，像其他模块一样。如果你需要使用存储在其中的
+变量，就可以直接导入它使用：
+```python
+>>> import myCats
+>>> myCats.cats
+[{'name': 'Zophie', 'desc': 'chubby'}, {'name': 'Pooka', 'desc': 'fluffy'}]
+>>> myCats.cats[0]
+{'name': 'Zophie', 'desc': 'chubby'}
+>>> myCats.cats[0]['name']
+'Zophie'
+```
+也就是利用 pprint.pformat() 函数，Python 程序可以生成其他 Python 程序。然后可以
+将这些生成的 `.py` 文件导入到其他 Python 脚本中。
+
+### 总结
+
+对于大多数应用，利用 shelve 模块来保存数据，是将变量保存到文件的最佳方式。
+
+但创建一个`.py` 文件（而不是利用 shelve 模块保存变量）的好处在于，因为它是一个文
+本文件，所以任何人都可以用一个简单的文本编辑器读取和修改该文件的内容。
+
+其限制就是：只有基本数据类型，诸如整型、浮点型、字符串、列表和字典，可以作为简单
+文本写入一个文件。例如，File 对象就不能够编码为文本。
+
+## shutil 模块
+
+### 删除文件和文件夹
+
+os.unlink(path) 删除文件
+os.rmdir(path) 删除空文件夹，必须是完全空的，有空子文件夹也不行
+```python
+>>> import os
+
+>>> os.unlink("d:\\t1\\t2\\t3\\abc.txt")
+
+>>> os.rmdir("d:\\t1\\t2\\t3")
+OSError: [WinError 145] 目录不是空的。: 'd:\\t1\\t2\\t3'
+>>> os.rmdir("d:\\t1\\t2\\t3\\t4")
+OSError: [WinError 145] 目录不是空的。: 'd:\\t1\\t2\\t3\\t4'
+```
+
+而要删除一个指定的目录，包括其下的子目录和文件，则使用 shutil 模块更方便：
+```python
+>>> import shutil
+>>> shutil.rmtree("d:\\t1\\t2\\t3")
+```
+
+`shutil.rmtree()` 删除的文件和文件夹不可恢复
+??? windows 下是删除到了回收站
+
+send2trash()
+```python
+
+```
+
+```python
+
+```
+
+```python
+
+```
+
+```python
+
+```
+
+```python
+
+```
 
