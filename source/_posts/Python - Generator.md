@@ -171,6 +171,8 @@ thid yield
 
 ### Generator Expression
 
+生成器表达式
+
 类似于 lambda 表达式创建匿名函数，也可以使用生成器表达式来创建匿名的生成器函数，
 其语法和列表推导语法一样，只是把方括号改为了小括号：
 ```python
@@ -189,6 +191,20 @@ gen_expr = (var**(1/2) for var in seq)
 ...
 6
 8
+```
+
+生成器表达式可以组合：
+```python
+>>> lst = [2, 3, 4, 5]
+>>> itr = ((x*2, x**2) for x in lst)
+>>> next(itr)
+(4, 4)
+>>> next(itr)
+(6, 9)
+>>> next(itr)
+(8, 16)
+>>> next(itr)
+(10, 25)
 ```
 
 和列表推导还有个不同点，列表一次性返回所有值，而生成器一次返回一个值：
@@ -250,7 +266,7 @@ class AP:
     def __iter__(self):
         return self
 
-    def __next__(self): 
+    def __next__(self):
         if self.count >= self.len:
             raise StopIteration
         elif self.count == 0:

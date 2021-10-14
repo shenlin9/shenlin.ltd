@@ -43,7 +43,7 @@ except ExceptionI:
 except ExceptionII:
 	If there is ExceptionII, then execute this block.
 	......................
-except(Exception3[, Exception4[,...ExceptionN]]]):
+except (Exception3[, Exception4[,...ExceptionN]]]):
 	If there is Exception3 or Exception4..., then execute this block.
 	......................
 except Exception as ex:

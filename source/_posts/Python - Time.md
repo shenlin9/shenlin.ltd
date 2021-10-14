@@ -86,6 +86,10 @@ elapsed time: 0.3001973628997803
 
 ### time.clock()
 
+DeprecationWarning:
+    time.clock has been deprecated in Python 3.3 and will be removed from Python
+    3.8: use time.perf_counter or time.process_time instead
+
 time.clock() 返回处理器时钟时间，可以用来进行性能测试和基准测试，
 ```python
 >>> time.clock()
@@ -265,7 +269,7 @@ tzname      返回一个包含本地非 DST 和 DST 时区的元组。
 -28800
 
 >>> time.tzname
-('ÖÐ¹ú±ê×¼Ê±¼ä', 'ÖÐ¹úÏÄÁîÊ±')
+('中国标准时间', '中国夏令时')
 
 >>> ','.join(time.tzname).encode('latin-1').decode('gbk')
 '中国标准时间,中国夏令时'

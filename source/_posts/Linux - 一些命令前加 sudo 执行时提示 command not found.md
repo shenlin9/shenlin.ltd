@@ -66,7 +66,7 @@ sudo后由PP产生了CP，CP是无法获取PP所在的目录的内容的（具�
 ## 解决方法
 
 
-    –with-secure-path[=PATH]
+    --with-secure-path[=PATH]
 
     Path used for every command run from sudo(8). If you don’t trust the people running sudo to have a sane PATH environment variable you may want to use this. Another use is if you want to have the “root path” be separate from the “user path.” You will need to customize the path for your site. NOTE: this is not applied to users in the group specified by –with-exemptgroup. If you do not specify a path, “/bin:/usr/ucb:/usr/bin:/usr/sbin:/sbin:/usr/etc:/etc” is used.
 

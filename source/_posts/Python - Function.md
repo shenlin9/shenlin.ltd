@@ -367,11 +367,11 @@ NameError: name 'b' is not defined
 
 ## 函数中的名称解析
 
-LEGB规则用于搜索名称引用：
-* L local
-* E enclosing functions
-* G global
-* B built-in
+LEGB 规则代表了函数中变量的优先解析顺序：
+* L locals      函数内的名字空间，包括局部变量和形参
+* E enclosing   外部嵌套函数的名字空间（闭包中常见）
+* G globals     全局变量，函数定义所在模块的名字空间
+* B builtins    内置模块的名字空间
 
 逐个取消下面 var 的注释：
 ```python
@@ -423,6 +423,45 @@ fn1()
 >>> f()
 10
 ```
+
+要为 `d[0]` 赋值时，
+```python
+>>> def test():
+...     d = [1]
+...     def test2():
+...             d[0] = 2
+...     test2()
+...     print(d)
+...
+>>> test()
+[2]
+
+>>> def test():
+...     d = 1
+...     def test2():
+...             d = 2
+...     test2()
+...     print(d)
+...
+>>> test()
+1
+```
+
+python3 支持 `nonlocal`，python2 使用可变变量来实现类似功能：
+```python
+
+```
+
+`global` 和 `nonlocal` 
+```python
+
+```
+
+赋值和读取：
+```python
+
+```
+
 
 ## 函数的返回值
 
